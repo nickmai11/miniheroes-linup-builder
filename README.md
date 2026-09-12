@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# nextjs-fullstack
 
-## Getting Started
+Personal fullstack starter: Next.js (App Router) · TypeScript · Tailwind v4 · Drizzle ORM · SQLite (libsql) · Zod · Prettier.
 
-First, run the development server:
+## Setup
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env   # already done on first init
+pnpm install
+pnpm db:push           # create tables in local.db from src/db/schema.ts
+pnpm dev               # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Script                               | What it does                                  |
+| ------------------------------------ | --------------------------------------------- |
+| `pnpm dev` / `build` / `start`       | Next.js                                       |
+| `pnpm lint` / `typecheck` / `format` | ESLint, `tsc --noEmit`, Prettier              |
+| `pnpm db:push`                       | Sync schema to the DB (fast, dev)             |
+| `pnpm db:generate` + `db:migrate`    | Versioned SQL migrations in `drizzle/` (prod) |
+| `pnpm db:studio`                     | Browse the DB in Drizzle Studio               |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Layout
 
-## Learn More
+```
+src/
+  app/            routes (App Router)
+    api/          route handlers  (health, notes)
+    notes/        server component page + server actions
+  db/             drizzle client (index.ts) and schema (schema.ts)
+  lib/env.ts      zod-validated environment
+drizzle.config.ts
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Going to production
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Point `DATABASE_URL` (and `DATABASE_AUTH_TOKEN`) at a Turso/libsql database, run `pnpm db:migrate`, and deploy to Vercel or any Node host.
