@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Hammer } from "lucide-react";
+import Image from "next/image";
+import { DivinityIcon } from "@/components/divinity-icon";
 import { HeroPortrait, RoleBadge } from "@/components/hero-portrait";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -11,8 +13,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import type { ArtifactTier } from "@/db/schema";
+import { versioned } from "@/lib/asset-version";
 import { getHeroDetail } from "@/lib/heroes";
-import { ROLE_LABELS, SKILL_KIND_LABELS } from "@/lib/hero-labels";
+import {
+  ARTIFACT_TIER_LABELS,
+  ROLE_LABELS,
+  SKILL_KIND_LABELS,
+} from "@/lib/hero-labels";
 
 export const dynamic = "force-dynamic";
 
@@ -71,32 +79,190 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
 
           <Card>
             <CardHeader>
-              <CardTitle>Skills</CardTitle>
+              <CardTitle>Talents</CardTitle>
               <CardDescription>
-                The six skill slots from the in-game hero card.
+                The Talent tab: unlock stars, artifact bonuses and core bonuses.
               </CardDescription>
             </CardHeader>
             <CardContent>
               {hero.skills.length === 0 ? (
                 <p className="text-muted-foreground text-sm">
-                  No skills recorded for {hero.name} yet.
+                  No talents recorded for {hero.name} yet.
                 </p>
               ) : (
                 <ul className="grid gap-3 sm:grid-cols-2">
-                  {hero.skills.map((skill) => (
+                  {hero.skills.map((skill) => {
+                    const bonuses = hero.artifactBonuses.filter(
+                      (b) => b.skillId === skill.id,
+                    );
+                    const cores = hero.cores.filter(
+                      (c) => c.skillId === skill.id,
+                    );
+                    return (
+                      <li
+                        key={skill.id}
+                        className="bg-background flex flex-col gap-2 rounded-lg border p-3"
+                      >
+                        <div className="flex items-center gap-3">
+                          {skill.iconUrl ? (
+                            <Image
+                              src={versioned(skill.iconUrl)}
+                              alt=""
+                              width={48}
+                              height={48}
+                              className="size-12 shrink-0"
+                            />
+                          ) : (
+                            <span
+                              aria-hidden
+                              className="bg-muted size-12 shrink-0 rounded-full"
+                            />
+                          )}
+                          <div className="flex min-w-0 flex-col">
+                            <span className="text-primary text-xs font-medium tracking-wide uppercase">
+                              {SKILL_KIND_LABELS[skill.kind]}
+                              {skill.unlockStars
+                                ? ` · ${skill.unlockStars}★`
+                                : ""}
+                            </span>
+                            <span className="font-medium">{skill.name}</span>
+                          </div>
+                        </div>
+                        {skill.description && (
+                          <p className="text-muted-foreground text-sm">
+                            {skill.description}
+                          </p>
+                        )}
+                        {bonuses.map((bonus) => (
+                          <p
+                            key={bonus.id}
+                            className="flex items-start gap-2 text-sm"
+                          >
+                            <TierIcon tier={bonus.tier} />
+                            <span>
+                              <span className="font-medium">
+                                Artifact Bonus:{" "}
+                              </span>
+                              <span className="text-muted-foreground">
+                                {bonus.description}
+                              </span>
+                            </span>
+                          </p>
+                        ))}
+                        {cores.map((core) => (
+                          <p
+                            key={core.id}
+                            className="flex items-start gap-2 text-sm"
+                          >
+                            <Image
+                              src={versioned("/icons/core.png")}
+                              alt="core"
+                              width={22}
+                              height={22}
+                              className="mt-0.5 size-5.5 shrink-0"
+                            />
+                            <span>
+                              <span className="font-medium">
+                                {core.name} Core:{" "}
+                              </span>
+                              <span className="text-muted-foreground">
+                                {core.description}
+                              </span>
+                            </span>
+                          </p>
+                        ))}
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Artifacts</CardTitle>
+              <CardDescription>
+                {hero.name}&apos;s divine weapon and the ability each quality
+                tier unlocks.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4">
+              {!hero.artifactName ? (
+                <p className="text-muted-foreground text-sm">
+                  No artifact recorded for {hero.name} yet.
+                </p>
+              ) : (
+                <>
+                  <div className="flex items-center gap-3">
+                    {hero.artifactIconUrl && (
+                      <Image
+                        src={versioned(hero.artifactIconUrl)}
+                        alt=""
+                        width={64}
+                        height={64}
+                        className="size-16 shrink-0"
+                      />
+                    )}
+                    <span className="text-lg font-medium">
+                      {hero.artifactName}
+                    </span>
+                  </div>
+                  <ul className="flex flex-col gap-2">
+                    {hero.artifactBonuses.map((bonus) => {
+                      const skill = hero.skills.find(
+                        (sk) => sk.id === bonus.skillId,
+                      );
+                      return (
+                        <li
+                          key={bonus.id}
+                          className="bg-background flex items-start gap-3 rounded-lg border p-3"
+                        >
+                          <TierIcon tier={bonus.tier} size={28} />
+                          <div className="flex min-w-0 flex-col gap-0.5">
+                            <span className="text-primary text-xs font-medium tracking-wide uppercase">
+                              {ARTIFACT_TIER_LABELS[bonus.tier]}
+                              {skill
+                                ? " · Artifact Bonus"
+                                : " · Artifact Skill"}
+                            </span>
+                            <span className="font-medium">
+                              {skill?.name ?? bonus.name}
+                            </span>
+                            <p className="text-muted-foreground text-sm">
+                              {bonus.description}
+                            </p>
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Divinities</CardTitle>
+              <CardDescription>
+                Mythic divinities from {hero.name}&apos;s artifact.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {hero.divinities.length === 0 ? (
+                <p className="text-muted-foreground text-sm">
+                  No divinities recorded for {hero.name} yet.
+                </p>
+              ) : (
+                <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  {hero.divinities.map((d, i) => (
                     <li
-                      key={skill.id}
-                      className="bg-background flex flex-col gap-1 rounded-lg border p-3"
+                      key={`${d.id}-${i}`}
+                      className="flex items-center gap-2 rounded-lg border border-red-500/50 bg-red-500/10 px-3 py-2"
                     >
-                      <span className="text-primary text-xs font-medium tracking-wide uppercase">
-                        {SKILL_KIND_LABELS[skill.kind]}
-                      </span>
-                      <span className="font-medium">{skill.name}</span>
-                      {skill.description && (
-                        <p className="text-muted-foreground text-sm">
-                          {skill.description}
-                        </p>
-                      )}
+                      <DivinityIcon divinity={d} size={40} />
+                      <span className="text-sm font-medium">{d.name}</span>
                     </li>
                   ))}
                 </ul>
@@ -138,5 +304,18 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
         </div>
       </div>
     </main>
+  );
+}
+
+function TierIcon({ tier, size = 22 }: { tier: ArtifactTier; size?: number }) {
+  return (
+    <Image
+      src={versioned(`/icons/artifact-${tier}.png`)}
+      alt={`${ARTIFACT_TIER_LABELS[tier]} tier`}
+      width={size}
+      height={size}
+      className="mt-0.5 shrink-0"
+      style={{ width: size, height: size }}
+    />
   );
 }

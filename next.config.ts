@@ -1,11 +1,12 @@
 import type { NextConfig } from "next";
-import { PORTRAIT_VERSION } from "./src/lib/portrait-version";
+import { ASSET_VERSION } from "./src/lib/asset-version";
 
 const nextConfig: NextConfig = {
   images: {
-    // Hero portraits are served with a cache-busting `?v=` query string.
+    // Every game image is served with a cache-busting `?v=` query string
+    // (see src/lib/asset-version.ts).
     localPatterns: [
-      { pathname: "/heroes/**", search: `?v=${PORTRAIT_VERSION}` },
+      { pathname: "/**", search: `?v=${ASSET_VERSION}` },
       { pathname: "/**", search: "" },
     ],
   },

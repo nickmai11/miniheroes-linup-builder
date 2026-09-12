@@ -1,10 +1,6 @@
 import Image from "next/image";
 import type { Hero } from "@/db/schema";
-import { PORTRAIT_VERSION } from "@/lib/portrait-version";
-
-function versioned(url: string) {
-  return `${url}${url.includes("?") ? "&" : "?"}v=${PORTRAIT_VERSION}`;
-}
+import { versioned } from "@/lib/asset-version";
 
 function initials(name: string) {
   return name
@@ -72,7 +68,7 @@ export function RoleBadge({
 }) {
   return (
     <Image
-      src={BADGE_SRC[role]}
+      src={versioned(BADGE_SRC[role])}
       alt={role}
       title={role}
       width={size}

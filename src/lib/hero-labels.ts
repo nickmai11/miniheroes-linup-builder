@@ -1,5 +1,10 @@
 // Client-safe display labels (no DB imports here).
-import type { HeroRarity, HeroRole, SkillKind } from "@/db/schema";
+import type {
+  ArtifactTier,
+  HeroRarity,
+  HeroRole,
+  SkillKind,
+} from "@/db/schema";
 
 export const ROLE_LABELS: Record<HeroRole, string> = {
   warrior: "Warrior",
@@ -20,4 +25,12 @@ export const SKILL_KIND_LABELS: Record<SkillKind, string> = {
   special: "Special Skill",
   attribute: "Attribute",
   enhance: "Enhance",
+  passive: "Passive",
+};
+
+export const ARTIFACT_TIER_LABELS: Record<ArtifactTier, string> = {
+  purple: "Purple",
+  gold: "Gold",
+  red: "Red",
+  rainbow: "Rainbow",
 };

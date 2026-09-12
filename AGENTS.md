@@ -12,8 +12,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 This repo is a lineup-sharing tool for the mobile game Mini Heroes: Magic Throne.
 Read `docs/mini-heroes-magic-throne.md` before touching hero data, portraits, or
-lineup logic. Two hard rules from the owner: hero portraits come only from the
-owner's screenshots in `game-play-screenshots/heroes/` (never from the internet), and
+lineup logic, and `docs/hero-details-page.md` before adding or changing a hero's
+detail page. Two hard rules from the owner: hero portraits come only from the
+owner's screenshots in `gameplay/heroes/` (never from the internet), and
 the portrait must show the whole card art panel with the artifact-progress diamond
 removed. Regenerate portraits and seed data with `scripts/slice-hero-cards.py`.
 

@@ -25,7 +25,7 @@ export default async function DivinitiesPage() {
   return (
     <PageShell
       title="Divinities"
-      description={`${divinities.length} stat badges from the divine weapon screen, grouped by the in-game popup title.`}
+      description="Stat badges from the divine weapon screen, grouped by the in-game popup title."
     >
       {groups.length === 0 ? (
         <p className="text-muted-foreground">No divinities recorded yet.</p>

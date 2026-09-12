@@ -29,6 +29,27 @@
       "when": 1789228501430,
       "tag": "0003_cooing_the_twelve",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1789229424571,
+      "tag": "0004_redundant_titania",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1789229733962,
+      "tag": "0005_puzzling_gambit",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1789230296485,
+      "tag": "0006_lean_mimic",
+      "breakpoints": true
     }
   ]
 }

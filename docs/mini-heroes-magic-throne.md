@@ -42,7 +42,8 @@ seed data lives in `src/data/heroes.ts`.
 
 ### Hero details (owner-defined, 2026-09-12)
 
-The hero detail page must show exactly these things about a hero:
+How to build a hero's page (screenshots, scripts, data, checklist) is in
+`docs/hero-details-page.md`. The page must show exactly these things about a hero:
 
 1. **Name**
 2. **Class** (Warrior / Marksman / Mage / Support)
@@ -59,9 +60,51 @@ The app should store the class-wide II/IV once per class, not per hero.
 Not part of the hero page: Level / ATK / HP / DEF / power (they depend on the
 player's investment), skins, and the fan "Tank / DPS" label.
 
-Open questions for the owner: what "divinities" and "cores" look like in-game and
-how they map to the compendium's "Divine Weapon" panel (a named weapon ringed by six
-unlabelled stat icons), and whether "talents" means the six skill tiles below.
+Where each lives in the game (owner screenshots, 2026-09-12): **talents** = the
+Talent tab (six skills); **cores** = the four `<Gear>·Core` bonuses shown under a
+talent; **divinities** = the six badges around the artifact on the Artifact tab
+(only the two red / mythic ones are recorded); **awakening skills** = not yet
+screenshotted.
+
+### Talents, artifact and cores (game, 2026-09-12)
+
+**Talent tab.** Six talents: the **Ultimate Skill** in the centre and five in a
+ring. Kinds seen: Ultimate Skill, Special Skill, Battle Skill, Enhance, Passive.
+Each talent has a name and description; a progress bar ("Max" / "Currently full")
+tracks talent levels. Tapping a talent opens up to three panels:
+
+1. the talent itself (kind + description),
+2. **Artifact Bonus** — an extra effect on that talent, colour-coded by the
+   artifact quality that unlocks it (purple, gold, red diamond),
+3. **`<Gear>·Core`** — a core bonus that further modifies the talent, e.g.
+   "Cavalier Helm·Core: 「Water Blade」 additionally inflicts True DMG equal to
+   18%(54%) of Attack". The four cores are Helm, Armor, Boots and the weapon
+   (Blade of Valor for Sea Captain). The app stores the core name without the
+   "·Core" suffix.
+
+**Artifact tab.** The hero's divine weapon: a named artifact with stars and
+ATK/DEF/HP (player-dependent, not stored), an "Ascension Bonus" line, and the six
+divinity badges around it. The artifact popup lists one ability per quality tier:
+purple / gold / red are the three talents' Artifact Bonuses, and a fourth
+rainbow tier adds a new skill (Sea Captain: **Ship Raid**). The app stores all four
+in `hero_artifact_bonuses`; the rainbow one has no talent.
+
+**Sea Captain** (Warrior · DPS · Eternal; artifact Siren Blade):
+
+| Talent         | Kind           | Artifact Bonus                                    | Core                                            |
+| -------------- | -------------- | ------------------------------------------------- | ----------------------------------------------- |
+| Ghost Ship     | Ultimate Skill | red: converts 75% of damage dealt into self HP    | Blade of Valor: +360% of Attack as Physical DMG |
+| Torrent        | Special Skill  | gold: on hit −20% DEF, −25% MOV SPD for 5s        | Brawler's Armor: drains 120 Energy              |
+| Rogue Waves    | Enhance        | —                                                 | —                                               |
+| Steadfast Body | Passive        | —                                                 | —                                               |
+| Water Blade    | Battle Skill   | purple: more damage the farther the enemy, ×4 cap | Cavalier Helm: True DMG = 18%(54%) of Attack    |
+| Undying        | Enhance        | —                                                 | Brawler's Boots: enemy final DMG −15%           |
+| Ship Raid      | Artifact       | rainbow tier ability of Siren Blade               | —                                               |
+
+Unlock order (clockwise from lower-left): Water Blade 2★, Rogue Waves 5★, Torrent 8★,
+Steadfast Body 12★, Undying 16★; Ghost Ship (ultimate) is available from the start.
+Siren Blade's rainbow-tier skill **Ship Raid** is not attached to any talent.
+Full descriptions are in `src/data/hero-details.ts`.
 
 ### Divinities (game, 2026-09-12)
 
@@ -80,7 +123,8 @@ the "Divinity" suffix. So "DMG Reduction Divinity" whose row reads
 "All Physical RES" is **Physical RES**. The popup title (minus "Divinity") is kept
 as `kind`.
 
-30 divinities read from the owner's popups (`gameplay/divinities/`, 131 shots with
+Divinities have rarities; the app only includes **mythic (red)** ones (owner). The
+30 mythic divinities read from the owner's popups (`gameplay/divinities/`, 131 shots with
 duplicates; produced by `scripts/slice-divinities.py`):
 
 | Kind          | Divinities (stat rows)                                                                                      |
@@ -169,6 +213,16 @@ is said. These override anything marked (web).
 - 2026-09-12 — A hero has awakening skills I–IV. **Awakening skills II and IV are the same for all heroes of the same class**; I and III are per hero.
 - 2026-09-12 — The owner pointed at MR-UK's hero compendium posts on the official Discord (`📚｜hero-compendium` forum) as the reference for what a hero's info looks like.
 - 2026-09-12 — Divinity screenshots live in `gameplay/divinities/` (with duplicates). Divinities go in the DB with their icon and what they do. Name = the stat without "All" and without "Divinity", e.g. **DMG Reduction** (not "DMG Reduction Divinity", not "All DMG Reduction").
+- 2026-09-12 — Per-hero divinity slots are **not** to be recorded for now (work started from ELLA's Discord charts was aborted and reverted).
+- 2026-09-12 — Divinities have rarities. Only the **mythic (red)** divinities need to be included in the app.
+- 2026-09-12 — Talent screenshots live in `gameplay/talents/` (Sea Captain first). The hero screen has tabs **Attribute / Talent / Rune / Artifact**; the header shows the hero's stars and three tags, e.g. **Warrior · DPS · Eternal** — so "DPS" (position) and "Eternal" (quality) are real in-game labels. Game version 1.25.12.
+- 2026-09-12 — **Talents** are the six skills on the Talent tab: the Ultimate Skill in the centre and five around it (Special Skill, Battle Skill, Enhance ×2, Passive). Each has a name, a kind and a description; some also show an **Artifact Bonus** (unlocked by artifact quality: purple / gold / red diamond) and a **Core** bonus (`<Gear>·Core`, e.g. "Cavalier Helm·Core") that modifies that talent.
+- 2026-09-12 — **Cores** (owner's "cores") are the four `<Gear>·Core` bonuses: Helm, Armor, Boots and Blade (weapon) for a warrior. Each names the talent it enhances.
+- 2026-09-12 — The **Artifact** tab is the divine weapon: a named artifact (Sea Captain: **Siren Blade**, 5★) with ATK/DEF/HP, one ability per artifact quality tier (purple / gold / red = the talents' Artifact Bonuses, rainbow = a fourth, new ability), ringed by the six divinities. Only the two **red** divinities (bottom row) are mythic.
+- 2026-09-12 — Sea Captain's mythic divinities (from the owner's Artifact screenshot): **Warrior ATK** (left) and **ATK** (right).
+- 2026-09-12 — The five ring talents unlock by **star progress: 2★, 5★, 8★, 12★, 16★, going clockwise** around the ring (the Ultimate in the centre is available from the start).
+- 2026-09-12 — Each talent's **icon image** must be shown in the app (cut from the owner's talent screenshots).
+- 2026-09-12 — The hero page gets a separate **Artifacts** section. An artifact bonus that is attached to a talent is listed in both the Talents and the Artifacts sections; one that is not attached to any talent (e.g. Sea Captain's rainbow-tier "Ship Raid") is listed only under Artifacts, never under Talents.
 
 ## How the app models it
 
@@ -178,7 +232,20 @@ is said. These override anything marked (web).
   "Divinity"), `iconUrl` (`/divinities/<slug>.png`). Seeded from `src/data/divinities.ts`
   by `ensureDivinitiesSeeded()` in `src/lib/divinities.ts`; no hero link yet.
 - `hero_skills` table: `heroId`, `kind` (ultimate | battle | special | attribute |
-  enhance), `name`, `description`, `sortOrder` — the six skill slots of the in-game card.
+  enhance | passive), `name`, `description`, `unlockStars`, `iconUrl`, `sortOrder` —
+  the six talents.
+- `hero_artifact_bonuses` table: `heroId`, `tier` (purple | gold | red | rainbow),
+  `skillId` (the talent it modifies; null for the rainbow-tier artifact skill),
+  `name` (rainbow only), `description`, `sortOrder`. A bonus attached to a talent is
+  shown under that talent **and** in the Artifacts section; an unattached one only
+  in the Artifacts section.
+- `hero_cores` table: `heroId`, `skillId` (the talent it modifies), `name` (gear
+  name without "·Core"), `description`, `sortOrder`.
+- `hero_divinities` table: `heroId`, `divinityId`, `position` (0 = left red, 1 =
+  right red) — only the mythic divinities, read from the owner's Artifact screenshots.
+- `heroes.artifactName` / `artifactIconUrl` — the divine weapon's name and image.
+- Per-hero details are seeded from `src/data/hero-details.ts` by
+  `ensureHeroDetailsSeeded()` for heroes that have no skills yet.
 - `/heroes/[slug]` — hero detail: large portrait, badge + name, class, notes, skills
   (empty until recorded), and every saved lineup the hero appears in. "Start a lineup
   with X" opens the builder with that hero pre-placed in slot 1.
@@ -213,7 +280,7 @@ be toggled in the header (`next-themes`, class strategy). Add components with
 ## Portrait pipeline
 
 Portraits are **only** sliced from the owner's screenshots in
-`game-play-screenshots/heroes/` (Archive screen, 3 cards per row). Do not source hero
+`gameplay/heroes/` (Archive screen, 3 cards per row). Do not source hero
 images from the internet — the owner rejected that.
 
 `scripts/slice-hero-cards.py` does the whole job:
@@ -230,11 +297,24 @@ If a screenshot is added or a card moves, edit the `LAYOUT` table in the script 
 in reading order, roles, rarity per screenshot) and rerun it. Then run the upsert in
 `scripts/upsert-heroes.sql` (or `pnpm db:push`/Drizzle) so Supabase matches.
 
-Because portrait files are replaced in place, the URL carries a cache-busting
-`?v=N` from `src/lib/portrait-version.ts`. Bump `PORTRAIT_VERSION` after re-slicing;
-`next.config.ts` allows exactly that query string for `/heroes/**`.
+Because image files are replaced in place, every game image URL carries a
+cache-busting `?v=N` from `src/lib/asset-version.ts` (`versioned()`). Bump
+`ASSET_VERSION` after re-slicing anything (portraits, divinity / talent / artifact
+icons); `next.config.ts` allows exactly that query string for all local images.
+Symptom when forgotten: the browser keeps showing the old icon.
 
 The portrait tile keeps the card's 81:100 aspect ratio so the whole panel shows.
+
+### Talent icon pipeline
+
+`scripts/slice-talent-icons.py` cuts, per hero listed in its `LAYOUT`, from the
+Talent-tab popup screenshots in `gameplay/talents/` (699×1260 phone captures): the
+round talent icon (`public/talents/<hero>/<skill-slug>.png`), the artifact-bonus
+diamond for each quality tier (`public/icons/artifact-{purple,gold,red}.png`), the
+core gem (`public/icons/core.png`), and the artifact image from the Artifact tab
+(`public/artifacts/<hero>.png`). The shared icons are written once. Paths are then
+referenced by hand in `src/data/hero-details.ts`; the hero page syncs that seed
+into the DB on view (`syncHeroDetail`).
 
 ### Divinity icon pipeline
 

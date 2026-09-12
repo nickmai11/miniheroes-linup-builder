@@ -34,6 +34,9 @@ export const heroes = pgTable("heroes", {
   rarity: text("rarity", { enum: HERO_RARITIES }).notNull(),
   // Path under /public (e.g. "/heroes/monkey-king.png") or null for no portrait.
   imageUrl: text("image_url"),
+  // Divine weapon name and image from the Artifact tab (e.g. "Siren Blade").
+  artifactName: text("artifact_name"),
+  artifactIconUrl: text("artifact_icon_url"),
   notes: text("notes").notNull().default(""),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
@@ -44,8 +47,15 @@ export type Hero = typeof heroes.$inferSelect;
 export type NewHero = typeof heroes.$inferInsert;
 
 /**
- * The six skill slots shown on a hero's in-game detail card:
- * Ultimate Skill, Battle Skill, Special Skill, Attribute, and two Enhance slots.
+ * Artifact quality tiers in unlock order. Purple / gold / red each unlock a
+ * bonus attached to one talent; rainbow adds the artifact's own skill.
+ */
+export const ARTIFACT_TIERS = ["purple", "gold", "red", "rainbow"] as const;
+export type ArtifactTier = (typeof ARTIFACT_TIERS)[number];
+
+/**
+ * Talent kinds from the in-game Talent tab (Ultimate Skill, Special Skill,
+ * Battle Skill, Enhance, Passive; "attribute" is the older card label).
  */
 export const SKILL_KINDS = [
   "ultimate",
@@ -53,6 +63,7 @@ export const SKILL_KINDS = [
   "special",
   "attribute",
   "enhance",
+  "passive",
 ] as const;
 export type SkillKind = (typeof SKILL_KINDS)[number];
 
@@ -66,13 +77,65 @@ export const heroSkills = pgTable(
     kind: text("kind", { enum: SKILL_KINDS }).notNull(),
     name: text("name").notNull(),
     description: text("description").notNull().default(""),
-    // Display order on the card (0-5).
+    // Star progress that unlocks the talent (2/5/8/12/16 clockwise around the
+    // ring); 0 for the ultimate.
+    unlockStars: integer("unlock_stars"),
+    // Path under /public (e.g. "/talents/sea-captain/ghost-ship.png").
+    iconUrl: text("icon_url"),
+    // Display order (0 = ultimate, then the ring, then the artifact ability).
     sortOrder: integer("sort_order").notNull().default(0),
   },
   (t) => [index("hero_skills_hero_id_idx").on(t.heroId)],
 );
 
 export type HeroSkill = typeof heroSkills.$inferSelect;
+
+/**
+ * The abilities of a hero's artifact, one per quality tier. Purple / gold / red
+ * bonuses modify a talent (`skillId`); the rainbow one is the artifact's own
+ * skill and has no talent.
+ */
+export const heroArtifactBonuses = pgTable(
+  "hero_artifact_bonuses",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    heroId: integer("hero_id")
+      .notNull()
+      .references(() => heroes.id, { onDelete: "cascade" }),
+    skillId: integer("skill_id").references(() => heroSkills.id, {
+      onDelete: "set null",
+    }),
+    tier: text("tier", { enum: ARTIFACT_TIERS }).notNull(),
+    // Skill name for the rainbow tier; null when attached to a talent.
+    name: text("name"),
+    description: text("description").notNull().default(""),
+    sortOrder: integer("sort_order").notNull().default(0),
+  },
+  (t) => [index("hero_artifact_bonuses_hero_id_idx").on(t.heroId)],
+);
+
+export type HeroArtifactBonus = typeof heroArtifactBonuses.$inferSelect;
+
+/** The four `<Gear>·Core` bonuses; each modifies one talent. */
+export const heroCores = pgTable(
+  "hero_cores",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    heroId: integer("hero_id")
+      .notNull()
+      .references(() => heroes.id, { onDelete: "cascade" }),
+    skillId: integer("skill_id").references(() => heroSkills.id, {
+      onDelete: "set null",
+    }),
+    // Gear name without the "·Core" suffix, e.g. "Cavalier Helm".
+    name: text("name").notNull(),
+    description: text("description").notNull().default(""),
+    sortOrder: integer("sort_order").notNull().default(0),
+  },
+  (t) => [index("hero_cores_hero_id_idx").on(t.heroId)],
+);
+
+export type HeroCore = typeof heroCores.$inferSelect;
 
 /**
  * Divinities: the per-stat badges ringed around a hero's divine weapon, levelled
@@ -94,6 +157,30 @@ export const divinities = pgTable("divinities", {
 
 export type Divinity = typeof divinities.$inferSelect;
 export type NewDivinity = typeof divinities.$inferInsert;
+
+/**
+ * A hero's mythic (red) divinities from the Artifact tab: position 0 is the
+ * bottom-left badge, 1 the bottom-right. Non-mythic badges are not recorded.
+ */
+export const heroDivinities = pgTable(
+  "hero_divinities",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    heroId: integer("hero_id")
+      .notNull()
+      .references(() => heroes.id, { onDelete: "cascade" }),
+    divinityId: integer("divinity_id")
+      .notNull()
+      .references(() => divinities.id, { onDelete: "cascade" }),
+    position: integer("position").notNull(),
+  },
+  (t) => [
+    unique().on(t.heroId, t.position),
+    index("hero_divinities_divinity_id_idx").on(t.divinityId),
+  ],
+);
+
+export type HeroDivinity = typeof heroDivinities.$inferSelect;
 
 export const LINEUP_SIZE = 5;
 

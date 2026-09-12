@@ -3,6 +3,9 @@
 
 Usage:  python3 scripts/slice-divinities.py            (needs Pillow + numpy)
 
+After rerunning, bump ASSET_VERSION in src/lib/asset-version.ts so browsers and
+next/image drop their cached copies of replaced icons.
+
 Reads every screenshot in gameplay/divinities/ (the "<X> Divinity" enhance popup:
 red title bar, badge on the left, "Level" row, then the stat row), groups the
 duplicates by badge + text, matches each group to CATALOG, and writes:
@@ -30,7 +33,7 @@ OUT = os.path.join(ROOT, "public/divinities")
 TS = os.path.join(ROOT, "src/data/divinities.ts")
 SQL = os.path.join(ROOT, "scripts/upsert-divinities.sql")
 
-NB = " "  # macOS puts a narrow no-break space before "PM" in screenshot names
+NB = "\u202f"  # macOS puts a narrow no-break space before "PM" in screenshot names
 S = lambda t: f"Screenshot 2026-09-12 at {t}{NB}PM.png"
 
 # (representative screenshot, name, kind). Order = display order.

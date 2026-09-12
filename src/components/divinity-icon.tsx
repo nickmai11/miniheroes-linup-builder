@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { Divinity } from "@/db/schema";
+import { versioned } from "@/lib/asset-version";
 
 /** The in-game divinity badge (orange frame, blue centre). */
 export function DivinityIcon({
@@ -13,7 +14,7 @@ export function DivinityIcon({
 }) {
   return (
     <Image
-      src={divinity.iconUrl}
+      src={versioned(divinity.iconUrl)}
       alt={divinity.name}
       width={size}
       height={size}
