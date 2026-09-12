@@ -1,26 +1,16 @@
-import Link from "next/link";
+import type { Metadata } from "next";
+import { PageShell } from "@/components/page-shell";
 import { getAllHeroes } from "@/lib/heroes";
 import { HeroPool } from "./hero-pool";
 
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = { title: "Heroes" };
 
 export default async function HeroesPage() {
   const heroes = await getAllHeroes();
-
   return (
-    <main className="mx-auto flex w-full max-w-5xl flex-col gap-6 p-8">
-      <header className="flex items-baseline justify-between">
-        <h1 className="text-2xl font-semibold">Hero pool</h1>
-        <nav className="flex gap-4 text-sm">
-          <Link href="/lineups" className="underline">
-            Lineups
-          </Link>
-          <Link href="/lineups/new" className="underline">
-            Build a lineup
-          </Link>
-        </nav>
-      </header>
+    <PageShell title="Hero pool">
       <HeroPool heroes={heroes} />
-    </main>
+    </PageShell>
   );
 }

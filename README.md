@@ -1,6 +1,6 @@
 # nextjs-fullstack
 
-Lineup builder / knowledge base for **Mini Heroes: Magic Throne** — read [docs/mini-heroes-magic-throne.md](docs/mini-heroes-magic-throne.md) first for what the game is, how heroes/roles/rarities work, and how portraits are produced. Built on a personal fullstack starter: Next.js (App Router) · TypeScript · Tailwind v4 · Drizzle ORM · SQLite (libsql) · Zod · Prettier.
+Lineup builder / knowledge base for **Mini Heroes: Magic Throne** — read [docs/mini-heroes-magic-throne.md](docs/mini-heroes-magic-throne.md) first for what the game is, how heroes/roles/rarities work, and how portraits are produced. UI is shadcn/ui (base-nova style on Base UI) with a custom "Throne" theme in `src/app/globals.css` (gold primary, parchment light / navy dark, `next-themes` toggle in the header). Built on a personal fullstack starter: Next.js (App Router) · TypeScript · Tailwind v4 · Drizzle ORM · SQLite (libsql) · Zod · Prettier.
 
 ## Setup
 
@@ -30,7 +30,8 @@ src/
     heroes/       hero pool: read-only grid with portraits + role badges
     lineups/      saved lineups, /new builder, /[id] detail
     notes/        server component page + server actions
-  components/     hero-portrait.tsx (portrait tile + role badge)
+  components/     ui/ (shadcn), site-header, theme-toggle, page-shell, role-filter,
+                  hero-portrait.tsx (portrait tile + class badge)
   data/heroes.ts  seed roster (auto-inserted on first load, idempotent)
   db/             drizzle client (index.ts) and schema (schema.ts)
   lib/            env.ts, heroes.ts, lineups.ts (queries)

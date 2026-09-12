@@ -45,8 +45,8 @@ seed data lives in `src/data/heroes.ts`.
 A battle lineup is **5 heroes**. Conventional wisdom (web) is one of each role plus a
 flex pick, but the whole point of this app is to record the owner's better answers.
 
-The app labels slots _Front 1, Front 2, Back 1, Back 2, Back 3_. That is an
-assumption about the formation grid; the owner has not confirmed the real layout.
+There is **no "Front 1 / Front 2 / Back" slot naming** in the game (owner, 2026-09-12).
+The app labels slots plainly _Slot 1–5_ until the owner describes the real formation.
 
 ### Progression systems (web, unverified)
 
@@ -75,6 +75,7 @@ is said. These override anything marked (web).
 - 2026-09-12 — The diamond in the bottom-left of an Archive card (purple / yellow / blue / red) is **artifact progress**. It must not be displayed in portraits.
 - 2026-09-12 — There are exactly **four hero classes**: Warrior, Marksman, Mage, Support. There is no "unassigned" class. The in-game class badge (circle at the card's top-right) is shown next to every hero name in the app instead of a text label; rarity is not shown as text.
 - 2026-09-12 — The hero pool is read-only: no add/edit/upload of heroes in the app. Roster changes go through the screenshots + `scripts/slice-hero-cards.py`.
+- 2026-09-12 — There is nothing like "Front 1 / Front 2" in the game. Lineup slots must not be labelled front/back; use plain Slot 1–5 until the owner explains the formation.
 - 2026-09-12 — Roles and rarities in the app were read from the owner's Archive screenshots: badge = role, card colour = rarity (red mythic, gold legend, purple epic). 65 heroes at this date.
 
 ## How the app models it
@@ -91,6 +92,14 @@ is said. These override anything marked (web).
   accessed directly through Drizzle + postgres.js as the least-privilege role
   `lineup_app`. RLS is enabled on every table with an allow-all policy for that role
   only, so nothing leaks through the Supabase REST API.
+
+### UI theme
+
+shadcn/ui components (`src/components/ui/`, base-nova style) themed in
+`src/app/globals.css`: gold primary, warm parchment light mode, deep navy dark mode,
+0.75rem radius, slightly enlarged type scale. Light/dark follows the system and can
+be toggled in the header (`next-themes`, class strategy). Add components with
+`pnpm dlx shadcn@latest add <name>`.
 
 ## Portrait pipeline
 

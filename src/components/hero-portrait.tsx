@@ -30,7 +30,7 @@ export function HeroPortrait({
 }) {
   return (
     <div
-      className={`relative aspect-[81/100] w-full overflow-hidden rounded-md ring-1 ring-neutral-300 dark:ring-neutral-700 ${className}`}
+      className={`ring-border relative aspect-[81/100] w-full overflow-hidden rounded-md ring-1 ${className}`}
     >
       {hero.imageUrl ? (
         <Image
@@ -43,7 +43,7 @@ export function HeroPortrait({
         />
       ) : (
         <div
-          className="flex h-full w-full items-center justify-center bg-neutral-200 text-lg font-semibold text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
+          className="bg-muted text-muted-foreground flex h-full w-full items-center justify-center text-lg font-semibold"
           aria-label={hero.name}
         >
           {initials(hero.name)}
@@ -64,9 +64,11 @@ const BADGE_SRC: Record<Hero["role"], string> = {
 export function RoleBadge({
   role,
   size = 20,
+  className = "",
 }: {
   role: Hero["role"];
   size?: number;
+  className?: string;
 }) {
   return (
     <Image
@@ -75,7 +77,7 @@ export function RoleBadge({
       title={role}
       width={size}
       height={size}
-      className="inline-block shrink-0"
+      className={`inline-block shrink-0 ${className}`}
     />
   );
 }
@@ -91,9 +93,9 @@ export function HeroName({
   badgeSize?: number;
 }) {
   return (
-    <span className={`inline-flex min-w-0 items-center gap-1 ${className}`}>
-      <RoleBadge role={hero.role} size={badgeSize} />
-      <span className="truncate">{hero.name}</span>
+    <span className={`inline-flex min-w-0 items-start gap-1.5 ${className}`}>
+      <RoleBadge role={hero.role} size={badgeSize} className="mt-px" />
+      <span className="leading-snug break-words">{hero.name}</span>
     </span>
   );
 }

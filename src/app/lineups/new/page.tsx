@@ -1,26 +1,19 @@
-import Link from "next/link";
+import type { Metadata } from "next";
+import { PageShell } from "@/components/page-shell";
 import { getAllHeroes } from "@/lib/heroes";
 import { LineupBuilder } from "./lineup-builder";
 
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = { title: "Build a lineup" };
 
 export default async function NewLineupPage() {
   const heroes = await getAllHeroes();
-
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 p-8">
-      <header className="flex items-baseline justify-between">
-        <h1 className="text-2xl font-semibold">Build a lineup</h1>
-        <nav className="flex gap-4 text-sm">
-          <Link href="/heroes" className="underline">
-            Hero pool
-          </Link>
-          <Link href="/lineups" className="underline">
-            Saved lineups
-          </Link>
-        </nav>
-      </header>
+    <PageShell
+      title="Build a lineup"
+      description="Click heroes to fill the five slots, then write up why the team works."
+    >
       <LineupBuilder heroes={heroes} />
-    </main>
+    </PageShell>
   );
 }

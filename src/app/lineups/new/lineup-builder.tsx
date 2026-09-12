@@ -1,14 +1,19 @@
 "use client";
 
+import { Plus, Search, X } from "lucide-react";
 import { useMemo, useState, useTransition } from "react";
-import { HERO_ROLES, LINEUP_SIZE, type Hero } from "@/db/schema";
-import { HeroName, HeroPortrait, RoleBadge } from "@/components/hero-portrait";
-import { ROLE_LABELS } from "@/lib/hero-labels";
+import { LINEUP_SIZE, type Hero } from "@/db/schema";
+import { HeroName, HeroPortrait } from "@/components/hero-portrait";
+import { RoleFilterGroup, type RoleFilter } from "@/components/role-filter";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 import { saveLineup } from "../actions";
 
-type RoleFilter = Hero["role"] | "all";
-
-const SLOT_LABELS = ["Front 1", "Front 2", "Back 1", "Back 2", "Back 3"];
+const SLOT_LABELS = ["Slot 1", "Slot 2", "Slot 3", "Slot 4", "Slot 5"];
 
 export function LineupBuilder({ heroes }: { heroes: Hero[] }) {
   const [slots, setSlots] = useState<(number | null)[]>(
@@ -40,19 +45,13 @@ export function LineupBuilder({ heroes }: { heroes: Hero[] }) {
   function pickHero(heroId: number) {
     setError(null);
     setSlots((prev) => {
-      // Clicking a selected hero removes it from the lineup.
       const existing = prev.indexOf(heroId);
       if (existing !== -1) {
         const next = [...prev];
         next[existing] = null;
         return next;
       }
-      const target =
-        activeSlot !== null && prev[activeSlot] === null
-          ? activeSlot
-          : activeSlot !== null
-            ? activeSlot
-            : prev.indexOf(null);
+      const target = activeSlot ?? prev.indexOf(null);
       if (target === -1) return prev;
       const next = [...prev];
       next[target] = heroId;
@@ -80,40 +79,27 @@ export function LineupBuilder({ heroes }: { heroes: Hero[] }) {
   const filled = slots.filter((s) => s !== null).length;
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
+    <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
       <section className="flex flex-col gap-4">
-        <div className="flex flex-wrap items-center gap-2">
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search heroes…"
-            className="rounded border border-neutral-300 bg-transparent px-3 py-1.5 text-sm dark:border-neutral-700"
-          />
-          <div className="flex flex-wrap gap-1">
-            {(["all", ...HERO_ROLES] as RoleFilter[]).map((r) => (
-              <button
-                key={r}
-                type="button"
-                onClick={() => setRole(r)}
-                className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs ${
-                  role === r
-                    ? "border-black bg-black text-white dark:border-white dark:bg-white dark:text-black"
-                    : "border-neutral-300 dark:border-neutral-700"
-                }`}
-              >
-                {r !== "all" && <RoleBadge role={r} size={14} />}
-                {r === "all" ? "All" : ROLE_LABELS[r]}
-              </button>
-            ))}
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="relative">
+            <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2" />
+            <Input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search heroes…"
+              className="w-56 pl-8"
+            />
           </div>
+          <RoleFilterGroup value={role} onChange={setRole} />
         </div>
-        <p className="text-xs text-neutral-500">
+        <p className="text-muted-foreground text-sm">
           {activeSlot !== null
             ? `Pick a hero for ${SLOT_LABELS[activeSlot]}.`
-            : "Click a hero to add it to the next empty slot, or click a slot first to target it."}
+            : "Click a hero to add it to the next empty slot, or click a slot first to target it. Click a selected hero to remove it."}
         </p>
-        <ul className="grid grid-cols-4 gap-2 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-7">
-          {visible.map((hero, i) => {
+        <ul className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5 xl:grid-cols-6">
+          {visible.map((hero) => {
             const isSelected = selected.has(hero.id);
             return (
               <li key={hero.id}>
@@ -121,20 +107,19 @@ export function LineupBuilder({ heroes }: { heroes: Hero[] }) {
                   type="button"
                   onClick={() => pickHero(hero.id)}
                   title={hero.notes || hero.name}
-                  className={`flex w-full flex-col gap-1 rounded-md p-1 text-left transition ${
-                    isSelected
-                      ? "bg-neutral-200 opacity-60 dark:bg-neutral-800"
-                      : "hover:bg-neutral-100 dark:hover:bg-neutral-900"
-                  }`}
+                  aria-pressed={isSelected}
+                  className={cn(
+                    "bg-card hover:border-primary/60 focus-visible:ring-ring/50 flex w-full flex-col gap-1 rounded-lg border p-1 text-left shadow-xs transition-all focus-visible:ring-3 focus-visible:outline-none",
+                    isSelected && "border-primary opacity-50",
+                  )}
                 >
                   <HeroPortrait
                     hero={hero}
-                    sizes="(max-width: 640px) 25vw, 120px"
-                    priority={i < 7}
+                    sizes="(max-width: 640px) 33vw, 160px"
                   />
                   <HeroName
                     hero={hero}
-                    className="text-xs font-medium"
+                    className="min-h-9 text-xs font-medium"
                     badgeSize={16}
                   />
                 </button>
@@ -144,81 +129,92 @@ export function LineupBuilder({ heroes }: { heroes: Hero[] }) {
         </ul>
       </section>
 
-      <aside className="flex flex-col gap-4 lg:sticky lg:top-8 lg:self-start">
-        <h2 className="font-medium">
-          Lineup{" "}
-          <span className="text-sm font-normal text-neutral-500">
-            {filled}/{LINEUP_SIZE}
-          </span>
-        </h2>
-        <div className="grid grid-cols-5 gap-2 lg:grid-cols-3">
-          {slots.map((heroId, i) => {
-            const hero = heroId === null ? null : heroById.get(heroId);
-            const active = activeSlot === i;
-            return (
-              <div key={i} className="flex flex-col gap-1">
-                <button
-                  type="button"
-                  onClick={() => setActiveSlot(active ? null : i)}
-                  className={`relative aspect-[81/100] w-full rounded-md border-2 border-dashed ${
-                    active
-                      ? "border-black dark:border-white"
-                      : "border-neutral-300 dark:border-neutral-700"
-                  }`}
-                  aria-label={`${SLOT_LABELS[i]}${hero ? `: ${hero.name}` : ", empty"}`}
-                >
-                  {hero ? (
-                    <HeroPortrait
-                      hero={hero}
-                      className="border-0"
-                      sizes="96px"
-                    />
-                  ) : (
-                    <span className="absolute inset-0 flex items-center justify-center text-xl text-neutral-400">
-                      +
-                    </span>
-                  )}
-                </button>
-                <span className="truncate text-center text-[10px] text-neutral-500">
-                  {hero ? hero.name : SLOT_LABELS[i]}
-                </span>
-                {hero && (
+      <Card className="lg:sticky lg:top-20 lg:self-start">
+        <CardHeader>
+          <CardTitle className="flex items-baseline justify-between">
+            Lineup
+            <span className="text-muted-foreground text-sm font-normal">
+              {filled}/{LINEUP_SIZE}
+            </span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          <div className="grid grid-cols-5 gap-2 lg:grid-cols-3">
+            {slots.map((heroId, i) => {
+              const hero = heroId === null ? null : heroById.get(heroId);
+              const active = activeSlot === i;
+              return (
+                <div key={i} className="flex flex-col gap-1">
                   <button
                     type="button"
-                    onClick={() => clearSlot(i)}
-                    className="text-[10px] text-red-600 hover:underline"
+                    onClick={() => setActiveSlot(active ? null : i)}
+                    aria-label={`${SLOT_LABELS[i]}${hero ? `: ${hero.name}` : ", empty"}`}
+                    className={cn(
+                      "relative aspect-[81/100] w-full overflow-hidden rounded-md border-2 border-dashed transition-colors",
+                      active
+                        ? "border-primary"
+                        : "border-border hover:border-primary/60",
+                    )}
                   >
-                    remove
+                    {hero ? (
+                      <HeroPortrait
+                        hero={hero}
+                        className="ring-0"
+                        sizes="110px"
+                      />
+                    ) : (
+                      <Plus className="text-muted-foreground absolute inset-0 m-auto size-5" />
+                    )}
                   </button>
-                )}
-              </div>
-            );
-          })}
-        </div>
+                  <div className="text-muted-foreground flex items-center justify-between gap-1 px-0.5 text-xs">
+                    <span className="truncate">
+                      {hero ? hero.name : SLOT_LABELS[i]}
+                    </span>
+                    {hero && (
+                      <button
+                        type="button"
+                        onClick={() => clearSlot(i)}
+                        aria-label={`Remove ${hero.name}`}
+                        className="hover:bg-muted hover:text-foreground rounded p-0.5"
+                      >
+                        <X className="size-3.5" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
 
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Lineup name (e.g. Arena anti-mage)"
-          className="rounded border border-neutral-300 bg-transparent px-3 py-2 text-sm dark:border-neutral-700"
-        />
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Why this works: positioning, skill order, what it counters, gear priorities…"
-          rows={6}
-          className="rounded border border-neutral-300 bg-transparent px-3 py-2 text-sm dark:border-neutral-700"
-        />
-        {error && <p className="text-sm text-red-600">{error}</p>}
-        <button
-          type="button"
-          onClick={submit}
-          disabled={pending || filled === 0 || !name.trim()}
-          className="rounded bg-black px-4 py-2 text-sm text-white disabled:opacity-50 dark:bg-white dark:text-black"
-        >
-          {pending ? "Saving…" : "Save lineup"}
-        </button>
-      </aside>
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="lineup-name">Name</Label>
+            <Input
+              id="lineup-name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="e.g. Arena anti-mage"
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="lineup-notes">Why it works</Label>
+            <Textarea
+              id="lineup-notes"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Positioning, skill order, what it counters, gear priorities…"
+              rows={6}
+            />
+          </div>
+          {error && <p className="text-destructive text-sm">{error}</p>}
+          <Button
+            onClick={submit}
+            disabled={pending || filled === 0 || !name.trim()}
+            size="lg"
+          >
+            {pending ? "Saving…" : "Save lineup"}
+          </Button>
+        </CardContent>
+      </Card>
     </div>
   );
 }

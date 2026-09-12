@@ -1,43 +1,67 @@
 import Link from "next/link";
+import { ArrowRight, Hammer, ListOrdered, Users } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
+const SECTIONS = [
+  {
+    href: "/heroes",
+    icon: Users,
+    title: "Hero pool",
+    description: "Every hero with in-game art and class badge.",
+  },
+  {
+    href: "/lineups/new",
+    icon: Hammer,
+    title: "Build a lineup",
+    description: "Pick five heroes and write up why the team works.",
+  },
+  {
+    href: "/lineups",
+    icon: ListOrdered,
+    title: "Saved lineups",
+    description: "Browse and share the lineups you have recorded.",
+  },
+] as const;
 
 export default function Home() {
   return (
-    <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center gap-6 p-8">
-      <h1 className="text-3xl font-semibold">Mini Heroes lineup builder</h1>
-      <p className="text-neutral-600 dark:text-neutral-400">
-        Lineup knowledge base for Mini Heroes: Magic Throne. Pick heroes from
-        the pool, save the formation with your notes, and share it.
-      </p>
-      <ul className="list-inside list-disc space-y-1">
-        <li>
-          <Link href="/heroes" className="underline">
-            /heroes
-          </Link>{" "}
-          — hero pool with in-game portraits and role badges
-        </li>
-        <li>
-          <Link href="/lineups/new" className="underline">
-            /lineups/new
-          </Link>{" "}
-          — build a 5-hero lineup and write up why it works
-        </li>
-        <li>
-          <Link href="/lineups" className="underline">
-            /lineups
-          </Link>{" "}
-          — saved lineups
-        </li>
-      </ul>
-      <p className="text-xs text-neutral-500">
-        Starter routes still available:{" "}
-        <Link href="/notes" className="underline">
-          /notes
-        </Link>
-        ,{" "}
-        <Link href="/api/health" className="underline">
-          /api/health
-        </Link>
-      </p>
+    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-10 px-4 py-12 sm:px-6">
+      <section className="flex flex-col gap-4">
+        <p className="text-primary text-sm font-medium">
+          Mini Heroes: Magic Throne
+        </p>
+        <h1 className="max-w-2xl text-3xl font-semibold">
+          Lineup knowledge, straight from the Archive.
+        </h1>
+        <p className="text-muted-foreground max-w-2xl">
+          A place to record which five heroes go together, why, and what they
+          counter. Portraits and class badges come from the game itself.
+        </p>
+        <div>
+          <Link href="/lineups/new" className={buttonVariants({ size: "lg" })}>
+            Build a lineup <ArrowRight data-icon="inline-end" />
+          </Link>
+        </div>
+      </section>
+      <section className="grid gap-4 sm:grid-cols-3">
+        {SECTIONS.map(({ href, icon: Icon, title, description }) => (
+          <Link key={href} href={href} className="group">
+            <Card className="group-hover:border-primary/60 h-full transition-colors">
+              <CardHeader>
+                <Icon className="text-primary mb-2 size-5" aria-hidden />
+                <CardTitle>{title}</CardTitle>
+                <CardDescription>{description}</CardDescription>
+              </CardHeader>
+            </Card>
+          </Link>
+        ))}
+      </section>
     </main>
   );
 }

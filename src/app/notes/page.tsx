@@ -17,26 +17,26 @@ export default async function NotesPage() {
       <NoteForm />
       <ul className="flex flex-col gap-3">
         {rows.length === 0 && (
-          <li className="text-neutral-500">No notes yet.</li>
+          <li className="text-muted-foreground">No notes yet.</li>
         )}
         {rows.map((note) => (
           <li
             key={note.id}
-            className="flex items-start justify-between gap-4 rounded border border-neutral-200 p-4 dark:border-neutral-800"
+            className="bg-card flex items-start justify-between gap-4 rounded-lg border p-4"
           >
             <div>
               <h2 className="font-medium">{note.title}</h2>
               {note.body && (
-                <p className="mt-1 text-sm whitespace-pre-wrap text-neutral-600 dark:text-neutral-400">
+                <p className="text-muted-foreground mt-1 text-sm whitespace-pre-wrap">
                   {note.body}
                 </p>
               )}
-              <p className="mt-2 text-xs text-neutral-500">
+              <p className="text-muted-foreground mt-2 text-xs">
                 {note.createdAt.toLocaleString()}
               </p>
             </div>
             <form action={deleteNote.bind(null, note.id)}>
-              <button className="text-sm text-red-600 hover:underline">
+              <button className="text-destructive text-sm hover:underline">
                 Delete
               </button>
             </form>
