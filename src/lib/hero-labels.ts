@@ -3,6 +3,7 @@ import type {
   ArtifactTier,
   HeroRarity,
   HeroRole,
+  RuneType,
   SkillKind,
 } from "@/db/schema";
 
@@ -34,3 +35,15 @@ export const ARTIFACT_TIER_LABELS: Record<ArtifactTier, string> = {
   red: "Red",
   rainbow: "Rainbow",
 };
+
+export const RUNE_TYPE_LABELS: Record<RuneType, string> = {
+  attack: "Attack Runes",
+  effect: "Effect Runes",
+  energy: "Energy Runes",
+  survival: "Survival Runes",
+};
+
+/** "7%" for percentage attributes, "50" for flat ones (energy). */
+export function formatMaxValue(a: { maxValue: number; isPercent: boolean }) {
+  return a.isPercent ? `${a.maxValue}%` : String(a.maxValue);
+}

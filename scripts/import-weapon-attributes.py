@@ -1,0 +1,161 @@
+#!/usr/bin/env python3
+"""
+Import the weapon attribute catalog from the owner's "Possible Attributes"
+popups in gameplay/weapons/ (the (!) next to "Additional Attributes" on a
+weapon's screen).
+
+Each popup lists the pool of random additional attributes one weapon can roll.
+Many screenshots repeat the same popup and the popup does not name the weapon,
+so this imports the *union* of attribute names once each (no duplicates) and
+only prints the distinct pools for reference.
+
+Text is read with macOS Vision OCR (scripts/ocr-text.swift, compiled on first
+run). The popup is translucent, so background text bleeds in; only strings
+matching CATALOG names count. A popup whose text matches nothing is reported
+and fails the run; a name seen in a popup but missing from CATALOG fails too.
+
+Writes:
+  src/data/weapon-attributes.ts        seed used by ensureWeaponAttributesSeeded()
+  scripts/upsert-weapon-attributes.sql same rows as SQL for syncing Supabase
+"""
+import collections
+import glob
+import os
+import re
+import subprocess
+import sys
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SRC = os.path.join(ROOT, "gameplay/weapons")
+TS = os.path.join(ROOT, "src/data/weapon-attributes.ts")
+SQL = os.path.join(ROOT, "scripts/upsert-weapon-attributes.sql")
+SWIFT = os.path.join(ROOT, "scripts/ocr-text.swift")
+BIN = os.path.join(ROOT, "scripts/__pycache__/ocr-text")
+
+# Names as printed in the popup, in display order (grouped by stat family).
+# Weapons are their own system, not divinities (owner, 2026-09-13).
+CATALOG = [
+    "DMG Increase",
+    "Physical DMG Boost",
+    "Magic DMG Boost",
+    "Melee DMG Boost",
+    "Ranged DMG Boost",
+    "DMG Reduction",
+    "Physical RES",
+    "Magic RES",
+    "Melee DMG Reduct",
+    "Ranged DMG Reduct",
+    "CRIT Rate",
+    "CRIT Damage",
+    "Anti-Control Rate",
+    "Control RES",
+    "SPD Reduction RES",
+    "CRIT DMG RES",
+    "Anti-CRIT Rate",
+    "Knockback Resist",
+    "Knockback Effect",
+    "Heavy Injury Effect",
+    "ATK SPD",
+    "Healing Effect",
+    "Receive Healing",
+    "Reflect DMG",
+]
+MIN_CONFIDENCE = 0.9
+
+
+def slugify(name: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
+
+
+def ocr(files):
+    if not os.path.exists(BIN) or os.path.getmtime(BIN) < os.path.getmtime(SWIFT):
+        os.makedirs(os.path.dirname(BIN), exist_ok=True)
+        subprocess.run(["swiftc", "-O", "-o", BIN, SWIFT], check=True)
+    out = subprocess.run([BIN, *files], check=True, capture_output=True, text=True).stdout
+    result, cur = {}, None
+    for line in out.splitlines():
+        if line.startswith("FILE\t"):
+            cur = line.split("\t")[1]
+            result[cur] = []
+            continue
+        _x, _y, conf, text = line.split("\t", 3)
+        if float(conf) >= MIN_CONFIDENCE:
+            result[cur].append(text)
+    return result
+
+
+def names_in(text: str, names_longest_first):
+    """Catalog names contained in an OCR string, longest first so that e.g.
+    'Anti-CRIT Rate' is not also counted as 'CRIT Rate'."""
+    found = []
+    for n in names_longest_first:
+        if n in text:
+            found.append(n)
+            text = text.replace(n, " ")
+    return found
+
+
+def main():
+    files = sorted(glob.glob(os.path.join(SRC, "*.png")))
+    if not files:
+        sys.exit(f"no screenshots in {SRC}")
+    names = list(CATALOG)
+    longest_first = sorted(names, key=len, reverse=True)
+
+    pools = {}
+    for f, lines in ocr(files).items():
+        is_popup = any("Possible Attributes" in l for l in lines)
+        found = set()
+        for l in lines:
+            found.update(names_in(l, longest_first))
+        if not is_popup:
+            print(f"skip (not a popup): {os.path.basename(f)}")
+            continue
+        if not found:
+            sys.exit(f"popup with no recognised attributes: {f}")
+        pools[f] = found
+
+    seen = collections.Counter()
+    for found in pools.values():
+        seen.update(found)
+    unused = [n for n in names if n not in seen]
+    if unused:
+        sys.exit(f"CATALOG names never seen in a popup: {unused}")
+
+    distinct = collections.defaultdict(list)
+    for f, found in pools.items():
+        distinct[tuple(n for n in names if n in found)].append(os.path.basename(f))
+    print(f"{len(pools)} popups, {len(distinct)} distinct attribute pools:")
+    for pool, fs in sorted(distinct.items(), key=lambda kv: -len(kv[1])):
+        print(f"  x{len(fs):<2} {len(pool):2d} attrs: {', '.join(pool)}")
+
+    rows = [dict(slug=slugify(n), name=n, n=seen[n], sort=i)
+            for i, n in enumerate(CATALOG)]
+    print(f"\n{len(rows)} weapon attributes:")
+    for r in rows:
+        print(f"  {r['slug']:24s} seen in {r['n']:2d} popups")
+
+    with open(TS, "w") as f:
+        f.write("/**\n * Weapon attribute catalog: every random additional attribute a weapon can\n"
+                " * roll, read from the owner's \"Possible Attributes\" popups (gameplay/weapons).\n"
+                " * Generated by scripts/import-weapon-attributes.py — edit CATALOG there, not\n"
+                " * this file.\n */\n")
+        f.write("export type WeaponAttributeSeed = {\n  slug: string;\n  name: string;\n"
+                "  sortOrder: number;\n};\n\n")
+        f.write("export const weaponAttributeSeeds: WeaponAttributeSeed[] = [\n")
+        for r in rows:
+            f.write(f'  {{ slug: "{r["slug"]}", name: "{r["name"]}", sortOrder: {r["sort"]} }},\n')
+        f.write("];\n")
+
+    with open(SQL, "w") as f:
+        f.write("-- Generated by scripts/import-weapon-attributes.py. Run against Supabase to sync weapon attributes.\n")
+        f.write("INSERT INTO weapon_attributes (slug, name, sort_order) VALUES\n")
+        def sql_row(r):
+            return f"('{r['slug']}','{r['name']}',{r['sort']})"
+        f.write(",\n".join(sql_row(r) for r in rows))
+        f.write("\nON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name,"
+                " sort_order = EXCLUDED.sort_order;\n")
+
+
+if __name__ == "__main__":
+    main()

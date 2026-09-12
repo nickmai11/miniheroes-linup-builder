@@ -50,6 +50,34 @@
       "when": 1789230296485,
       "tag": "0006_lean_mimic",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1789230980698,
+      "tag": "0007_minor_paibok",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1789231970982,
+      "tag": "0008_tense_night_thrasher",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1789232232124,
+      "tag": "0009_panoramic_the_watchers",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1789232668342,
+      "tag": "0010_clever_weapon_omega",
+      "breakpoints": true
     }
   ]
 }

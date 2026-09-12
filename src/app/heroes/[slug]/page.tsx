@@ -6,16 +6,14 @@ import Image from "next/image";
 import { DivinityIcon } from "@/components/divinity-icon";
 import { HeroPortrait, RoleBadge } from "@/components/hero-portrait";
 import { buttonVariants } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { ArtifactTier } from "@/db/schema";
 import { versioned } from "@/lib/asset-version";
+import { getHeroBuilds } from "@/lib/builds";
 import { getHeroDetail } from "@/lib/heroes";
+import { getAllRuneAttributes } from "@/lib/runes";
+import { getAllWeaponAttributes } from "@/lib/weapons";
+import { HeroBuilds } from "./hero-builds";
 import {
   ARTIFACT_TIER_LABELS,
   ROLE_LABELS,
@@ -36,6 +34,11 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
   const { slug } = await props.params;
   const hero = await getHeroDetail(slug);
   if (!hero) notFound();
+  const [builds, runeAttributes, weaponAttributes] = await Promise.all([
+    getHeroBuilds(hero.id),
+    getAllRuneAttributes(),
+    getAllWeaponAttributes(),
+  ]);
 
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-8 sm:px-6">
@@ -80,9 +83,6 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
           <Card>
             <CardHeader>
               <CardTitle>Talents</CardTitle>
-              <CardDescription>
-                The Talent tab: unlock stars, artifact bonuses and core bonuses.
-              </CardDescription>
             </CardHeader>
             <CardContent>
               {hero.skills.length === 0 ? (
@@ -182,10 +182,6 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
           <Card>
             <CardHeader>
               <CardTitle>Artifacts</CardTitle>
-              <CardDescription>
-                {hero.name}&apos;s divine weapon and the ability each quality
-                tier unlocks.
-              </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
               {!hero.artifactName ? (
@@ -245,9 +241,6 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
           <Card>
             <CardHeader>
               <CardTitle>Divinities</CardTitle>
-              <CardDescription>
-                Mythic divinities from {hero.name}&apos;s artifact.
-              </CardDescription>
             </CardHeader>
             <CardContent>
               {hero.divinities.length === 0 ? (
@@ -272,10 +265,22 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
 
           <Card>
             <CardHeader>
+              <CardTitle>Builds</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <HeroBuilds
+                heroId={hero.id}
+                heroName={hero.name}
+                builds={builds}
+                runeAttributes={runeAttributes}
+                weaponAttributes={weaponAttributes}
+              />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
               <CardTitle>Lineups</CardTitle>
-              <CardDescription>
-                Saved lineups that use {hero.name}.
-              </CardDescription>
             </CardHeader>
             <CardContent>
               {hero.lineups.length === 0 ? (

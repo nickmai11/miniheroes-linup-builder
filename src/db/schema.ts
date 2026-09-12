@@ -1,7 +1,9 @@
 import {
+  boolean,
   index,
   integer,
   pgTable,
+  real,
   text,
   timestamp,
   unique,
@@ -181,6 +183,119 @@ export const heroDivinities = pgTable(
 );
 
 export type HeroDivinity = typeof heroDivinities.$inferSelect;
+
+/**
+ * Weapon attributes: the catalog of random "Additional Attributes" a weapon can
+ * roll, as listed in the in-game "Possible Attributes" popup. Each weapon draws
+ * from its own subset of this catalog (not recorded yet). Weapons are their own
+ * system, unrelated to divinities (owner), even where names look alike.
+ */
+export const weaponAttributes = pgTable("weapon_attributes", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  slug: text("slug").notNull().unique(),
+  // Exactly as printed in the popup, e.g. "Melee DMG Reduct".
+  name: text("name").notNull(),
+  // Display order (popup reading order, grouped by stat family).
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+export type WeaponAttribute = typeof weaponAttributes.$inferSelect;
+export type NewWeaponAttribute = typeof weaponAttributes.$inferInsert;
+
+/** The four rune types of the hero's Rune tab. */
+export const RUNE_TYPES = ["attack", "effect", "energy", "survival"] as const;
+export type RuneType = (typeof RUNE_TYPES)[number];
+
+/**
+ * Rune attributes: every stat a rune of a given type can roll, with the highest
+ * value it can reach (`maxValue`, a percentage when `isPercent`, otherwise a
+ * flat amount such as energy points), the in-game description and the owner's
+ * analysis of how useful it is. Read from the owner's sheets in gameplay/runes.
+ */
+export const runeAttributes = pgTable(
+  "rune_attributes",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    runeType: text("rune_type", { enum: RUNE_TYPES }).notNull(),
+    slug: text("slug").notNull().unique(),
+    name: text("name").notNull(),
+    maxValue: real("max_value").notNull(),
+    isPercent: boolean("is_percent").notNull().default(true),
+    description: text("description").notNull().default(""),
+    analysis: text("analysis").notNull().default(""),
+    // Display order within the rune type (the sheet's row order).
+    sortOrder: integer("sort_order").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [index("rune_attributes_rune_type_idx").on(t.runeType)],
+);
+
+export type RuneAttribute = typeof runeAttributes.$inferSelect;
+export type NewRuneAttribute = typeof runeAttributes.$inferInsert;
+
+/**
+ * A hero build: the owner's recommended rune attributes and weapon attributes
+ * for one hero, picked by hand from the two catalogs. A hero can have several
+ * (e.g. per mode or per role in the lineup).
+ */
+export const heroBuilds = pgTable(
+  "hero_builds",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    heroId: integer("hero_id")
+      .notNull()
+      .references(() => heroes.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    notes: text("notes").notNull().default(""),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [index("hero_builds_hero_id_idx").on(t.heroId)],
+);
+
+export type HeroBuildRow = typeof heroBuilds.$inferSelect;
+
+/** Rune attributes chosen for a build (any rune type). */
+export const heroBuildRunes = pgTable(
+  "hero_build_runes",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    buildId: integer("build_id")
+      .notNull()
+      .references(() => heroBuilds.id, { onDelete: "cascade" }),
+    runeAttributeId: integer("rune_attribute_id")
+      .notNull()
+      .references(() => runeAttributes.id, { onDelete: "cascade" }),
+  },
+  (t) => [
+    unique().on(t.buildId, t.runeAttributeId),
+    index("hero_build_runes_rune_attribute_id_idx").on(t.runeAttributeId),
+  ],
+);
+
+/** Weapon attributes chosen for a build. */
+export const heroBuildWeapons = pgTable(
+  "hero_build_weapons",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    buildId: integer("build_id")
+      .notNull()
+      .references(() => heroBuilds.id, { onDelete: "cascade" }),
+    weaponAttributeId: integer("weapon_attribute_id")
+      .notNull()
+      .references(() => weaponAttributes.id, { onDelete: "cascade" }),
+  },
+  (t) => [
+    unique().on(t.buildId, t.weaponAttributeId),
+    index("hero_build_weapons_weapon_attribute_id_idx").on(t.weaponAttributeId),
+  ],
+);
 
 export const LINEUP_SIZE = 5;
 

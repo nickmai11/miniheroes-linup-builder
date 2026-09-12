@@ -223,6 +223,13 @@ is said. These override anything marked (web).
 - 2026-09-12 — The five ring talents unlock by **star progress: 2★, 5★, 8★, 12★, 16★, going clockwise** around the ring (the Ultimate in the centre is available from the start).
 - 2026-09-12 — Each talent's **icon image** must be shown in the app (cut from the owner's talent screenshots).
 - 2026-09-12 — The hero page gets a separate **Artifacts** section. An artifact bonus that is attached to a talent is listed in both the Talents and the Artifacts sections; one that is not attached to any talent (e.g. Sea Captain's rainbow-tier "Ship Raid") is listed only under Artifacts, never under Talents.
+- 2026-09-12 — **Runes** come in four types: **Attack, Effect, Energy, Survival**. The owner's sheets in `gameplay/runes/Runes - <Type> Runes.csv` list every attribute a rune of that type can roll, its **max value** (a percentage, or flat energy points for Energy runes), the in-game description and the owner's analysis. Each sheet also has a per-role priority table (required / optional / not needed), but that is colour-coded and the colours are lost in the CSV export, so it is not imported yet. Attribute count: 10 attack, 11 effect, 8 energy, 10 survival.
+- 2026-09-12 — **Weapon attributes.** A weapon's screen (Lv. 50 items seen) has **Base Attributes** (e.g. Support ATK + HP, or DEF + Support HP) and three **Random Additional Attributes**; the (!) next to "Additional Attributes" opens a **Possible Attributes** popup listing the pool that weapon can roll from. Screenshots of those popups live in `gameplay/weapons/` (many are duplicates of the same popup). Across all of them there are **24 distinct attributes**; names are the popup's abbreviations, e.g. "Melee DMG Reduct", "Heavy Injury Effect", "CRIT DMG RES" (some look like divinity names, but weapons are a separate system — see 2026-09-13). Pools differ per weapon (11–14 attributes each) but the popup does not name the weapon, so per-weapon pools are not recorded.
+- 2026-09-12 — The hero details page gets a **Builds** section. A **build** is a hand-picked set of **rune attributes** and **weapon attributes** for that hero, chosen by the owner from the two catalogs (no automatic suggestions). A hero can have several builds.
+- 2026-09-12 — The rune sheet's **"Severe Wound (Anti-Heal)"** is the game's **Heavy Injury Effect** (the same stat as the weapon attribute and the Heavy Injury divinity). The app uses the in-game name.
+- 2026-09-13 — More rune sheet → in-game names: **"Healing Done"** is **Heal**, **"Received Healing"** is **Receive Healing** (same as the weapon attribute / divinity), **"Control Avoidance Chance"** is **Anti-Control**.
+- 2026-09-13 — **Energy Rune popups** (owner screenshots, `gameplay/runes/energy-rune-popup-*.png`): a rune popup shows the rune type ("Energy Rune"), its quality (**Eternal**), an **Embedded** tag, a **Score**, and **five attribute lines**, each with a grade letter (**S / A / B / C**) and a value (e.g. "ATK Energy Regen +9.7"). The same attribute can appear on two lines of one rune. Buttons: Remove, Swap, and sometimes Refine. In-game energy attribute names, mapped to the sheet: **ATK Energy Regen** = Energy from Attacking, **Energy Regen** = Energy Regeneration, **Energy Increase** = Energy Increase, **ATK Energy Reduction** = Energy Drain on Attack, **Energy Regen when attacked** = Energy from Damage Taken, **Energy Regen upon Defeat** = Energy on Kill, **Energy Surplus** = Energy Remainder. "Energy Reduction on Death" was not seen in any popup. Observed values sit at or just under the sheet's max (Energy Surplus +30.1 slightly exceeds the sheet's 30).
+- 2026-09-13 — **Weapons are not divinities.** Weapon attributes are their own system; do not link them to divinities or reuse divinity icons for them, even where the names match.
 
 ## How the app models it
 
@@ -231,6 +238,15 @@ is said. These override anything marked (web).
 - `divinities` table: `slug`, `name` (stat without "All"), `kind` (popup title without
   "Divinity"), `iconUrl` (`/divinities/<slug>.png`). Seeded from `src/data/divinities.ts`
   by `ensureDivinitiesSeeded()` in `src/lib/divinities.ts`; no hero link yet.
+- `weapon_attributes` table: `slug`, `name` (as printed in the Possible Attributes
+  popup), `sortOrder`. Seeded from `src/data/weapon-attributes.ts` by
+  `ensureWeaponAttributesSeeded()` in `src/lib/weapons.ts`; no per-weapon pools and
+  no page yet. Not linked to divinities.
+- `rune_attributes` table: `runeType` (attack | effect | energy | survival), `slug`,
+  `name`, `maxValue` + `isPercent` (e.g. 7 / true = "7.0%", 50 / false = 50 energy),
+  `description`, `analysis` (owner's verdict), `sortOrder` (sheet row order). Seeded
+  from `src/data/rune-attributes.ts` by `ensureRuneAttributesSeeded()` in
+  `src/lib/runes.ts`; no hero link and no page yet.
 - `hero_skills` table: `heroId`, `kind` (ultimate | battle | special | attribute |
   enhance | passive), `name`, `description`, `unlockStars`, `iconUrl`, `sortOrder` —
   the six talents.
@@ -327,6 +343,28 @@ finds the badge by the red title bar and the blue circle, groups duplicates by b
   `scripts/upsert-divinities.sql`. Unmatched screenshots are listed and fail the run:
   add a CATALOG row for each and rerun. Screenshots that are not popups (e.g. the
   divine weapon screen itself) are ignored.
+
+### Rune attribute pipeline
+
+`scripts/import-rune-attributes.py` parses the four sheet exports in `gameplay/runes/`
+(the `Category | Max Value | Description | Analysis` table under each type's heading;
+the priority table below it is skipped) and writes `src/data/rune-attributes.ts` and
+`scripts/upsert-rune-attributes.sql`. Sheet typos are corrected in the script's
+`NAME_FIXES` / `ANALYSIS_FIXES`, not in the CSVs, so a fresh export can be dropped in
+verbatim. After re-running it, run the upsert SQL against Supabase (or let
+`ensureRuneAttributesSeeded()` insert new rows on next read — it never updates
+existing ones).
+
+### Weapon attribute pipeline
+
+`scripts/import-weapon-attributes.py` OCRs every screenshot in `gameplay/weapons/`
+with macOS Vision (`scripts/ocr-text.swift`, compiled on first run into
+`scripts/__pycache__/`), keeps the "Possible Attributes" popups, and matches the text
+against its hard-coded `CATALOG` of names. Duplicate screenshots
+collapse naturally because only the union of names is written, once each. It writes
+`src/data/weapon-attributes.ts` and `scripts/upsert-weapon-attributes.sql`, and
+prints the distinct pools it saw for reference. A popup with no recognised name, or
+a CATALOG name never seen, fails the run: add the row (or the screenshot) and rerun.
 
 ## Roster
 
