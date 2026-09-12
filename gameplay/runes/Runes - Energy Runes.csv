@@ -1,0 +1,26 @@
+,,,,,
+,Energy Runes,,,,
+,Category,Max Value,Description,,Analysis
+,Energy Increase,50,Increases starting energy,,Strategically stronger than numeric stats. Allows early ult usage for control and burst heroes.
+,Energy from Damage Taken,10,Gain energy when receiving a basic attack,,Excellent for frontline tanks.
+,Energy Regeneration,3,Regenerates energy per second,,Universal stat.
+,Energy from Attacking,10,Gain energy when performing a basic attack,,Best for heroes with high attack speed.
+,Energy Drain on Attack,10,Reduces enemy energy when attacking,,Best for heroes with high attack speed.
+,Energy Remainder,30,Remaining energy after using ultimate,,Effective in long fights. Weak in short fights.
+,Enery on Kill,12,Gain energy when any hero dies,,Usually not worth selecting.
+,Energy Reduction on Death,50,Reduces energy of the hero who kills you,,Usually not worth selecting.
+,,,,,
+,Заключение по Рунам Энергии (приоритет по ролям),,,,
+,Frontline,Control Hero,Strong Ultimate Hero,Fast-Attacking Hero,
+,Energy Increase,Energy Increase,Energy Increase,Energy Increase,
+,Energy from Damage Taken,Energy from Damage Taken,Energy from Damage Taken,Energy from Damage Taken,
+,Energy Regeneration,Energy Regeneration,Energy Regeneration,Energy Regeneration,
+,Energy from Attacking,Energy from Attacking,Energy from Attacking,Energy from Attacking,
+,Energy Drain on Attack,Energy Drain on Attack,Energy Drain on Attack,Energy Drain on Attack,
+,Energy Remainder,Energy Remainder,Energy Remainder,Energy Remainder,
+,Energy on Kill,Energy on Kill (Not needed),Energy on Kill (Not needed),Energy on Kill,
+,Energy Reduction on Death,Energy Reduction on Death (Not needed),Energy Reduction on Death (Not needed),Energy Reduction on Death,
+,,,,,
+,, - Required,,,
+,, - Optional,,,
+,, - Not needed,,,

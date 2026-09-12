@@ -15,6 +15,20 @@
       "when": 1789224004159,
       "tag": "0001_illegal_sleeper",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1789225426929,
+      "tag": "0002_silky_mordo",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1789228501430,
+      "tag": "0003_cooing_the_twelve",
+      "breakpoints": true
     }
   ]
 }

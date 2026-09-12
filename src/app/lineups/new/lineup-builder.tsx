@@ -15,10 +15,22 @@ import { saveLineup } from "../actions";
 
 const SLOT_LABELS = ["Slot 1", "Slot 2", "Slot 3", "Slot 4", "Slot 5"];
 
-export function LineupBuilder({ heroes }: { heroes: Hero[] }) {
-  const [slots, setSlots] = useState<(number | null)[]>(
-    Array.from({ length: LINEUP_SIZE }, () => null),
-  );
+export function LineupBuilder({
+  heroes,
+  preselectSlug,
+}: {
+  heroes: Hero[];
+  preselectSlug?: string;
+}) {
+  const [slots, setSlots] = useState<(number | null)[]>(() => {
+    const initial: (number | null)[] = Array.from(
+      { length: LINEUP_SIZE },
+      () => null,
+    );
+    const pre = preselectSlug && heroes.find((h) => h.slug === preselectSlug);
+    if (pre) initial[0] = pre.id;
+    return initial;
+  });
   const [activeSlot, setActiveSlot] = useState<number | null>(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -119,8 +131,7 @@ export function LineupBuilder({ heroes }: { heroes: Hero[] }) {
                   />
                   <HeroName
                     hero={hero}
-                    className="min-h-9 text-xs font-medium"
-                    badgeSize={16}
+                    className="flex min-h-9 w-full items-center justify-center text-center text-xs font-medium"
                   />
                 </button>
               </li>

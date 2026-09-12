@@ -82,20 +82,17 @@ export function RoleBadge({
   );
 }
 
-/** "{badge} {name}" as used everywhere a hero is named. */
+/** Hero name as used everywhere a hero is named. */
 export function HeroName({
   hero,
   className = "",
-  badgeSize = 18,
 }: {
-  hero: Pick<Hero, "name" | "role">;
+  hero: Pick<Hero, "name">;
   className?: string;
-  badgeSize?: number;
 }) {
   return (
-    <span className={`inline-flex min-w-0 items-start gap-1.5 ${className}`}>
-      <RoleBadge role={hero.role} size={badgeSize} className="mt-px" />
-      <span className="leading-snug break-words">{hero.name}</span>
+    <span className={`min-w-0 leading-snug break-words ${className}`}>
+      {hero.name}
     </span>
   );
 }

@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 
 const LINKS = [
   { href: "/heroes", label: "Heroes" },
+  { href: "/divinities", label: "Divinities" },
   { href: "/lineups", label: "Lineups" },
   { href: "/lineups/new", label: "Build" },
 ] as const;
@@ -13,7 +14,7 @@ const LINKS = [
 export function NavLinks() {
   const pathname = usePathname();
   return (
-    <nav className="flex items-center gap-1 text-sm">
+    <nav className="flex min-w-0 items-center gap-0.5 text-sm sm:gap-1">
       {LINKS.map(({ href, label }) => {
         const active =
           href === "/lineups"
@@ -24,7 +25,7 @@ export function NavLinks() {
             key={href}
             href={href}
             className={cn(
-              "text-muted-foreground hover:bg-muted hover:text-foreground rounded-md px-2.5 py-1.5 font-medium transition-colors",
+              "text-muted-foreground hover:bg-muted hover:text-foreground rounded-md px-2 py-1.5 font-medium whitespace-nowrap transition-colors sm:px-2.5",
               active && "bg-accent text-accent-foreground",
             )}
           >

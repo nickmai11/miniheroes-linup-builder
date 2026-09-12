@@ -1,0 +1,32 @@
+,,,,,
+,Effect Runes,,,,
+,Category,Max Value,Description,,Analysis
+,Health Regeneration,1.0%,Increases health regeneration per second,,Best attribute. Mandatory for almost all roles.
+,Knockback Resistance,7.0%,Reduces knockback distance,,Core mechanic. Mandatory for frontline heroes.
+,Movement Speed,7.0%,Increases movement speed,,Good for returning to position after knockback. Worse than knockback resistance.
+,Attack Speed,3.5%,Increases basic attack speed,,Useful for heroes whose basic attacks activate skills.
+,Control Resistance,10.0%,Reduces duration of control effects,,Useful for control heroes or heroes with cleanse abilities.
+,Damage Reflection,5.0%,Reflects received damage,,Cannot be effectively stacked. Weak.
+,Slow Resistance,5.0%,Reduces slow effects,,Better than nothing.
+,Dodge,3.5%,Chance to fully evade damage,,Cannot be effectively stacked. Weak.
+,Control Avoidance Chance,7.0%,Reduces chance of being affected by control,,Cannot be effectively stacked. Weak.
+,Recieved Healing,10.0%,Increases effectiveness of healing received,,Slightly weaker than regeneration but important when healers are present.
+,Healing Done,3.5%,Increases healing done,,Slightly weaker than regeneration but useful for healers.
+,,,,,
+,Effect Rune Conclusions (Priority by Role),,,,
+,Frontline,Ranged,Damage-over-Time Heroes,Control/Cleanse Heroes,
+,Health Regeneration,Health Regeneration,Health Regeneration,Health Regeneration,
+,Knockback Resistance,Knockback Resistance,Knockback Resistance,Knockback Resistance,
+,Movement Speed,Movement Speed,Movement Speed,Movement Speed,
+,Attack Speed,Attack Speed,Attack Speed,Attack Speed,
+,Control Resistance,Control Resistance,Control Resistance,Control Resistance,
+,Damage Reflection,Damage Reflection,Damage Reflection,Damage Reflection,
+,Slow Resistance,Slow Resistance,Slow Resistance,Slow Resistance,
+,Dodge,Dodge,Dodge,Dodge,
+,Cntrol Avoidance Chance,Cntrol Avoidance Chance,Cntrol Avoidance Chance,Cntrol Avoidance Chance,
+,Received Healing,Received Healing,Received Healing,Received Healing,
+,Healing Done,Healing Done,Healing Done,Healing Done,
+,,,,,
+,, - Required,,,
+,, - Optional,,,
+,, - Not needed,,,

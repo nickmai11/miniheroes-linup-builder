@@ -40,6 +40,94 @@ the hero art. It is removed from the portraits in this app.
 Roster as of 2026-09-12 (65 heroes) — see the table at the end of this file. The
 seed data lives in `src/data/heroes.ts`.
 
+### Hero details (owner-defined, 2026-09-12)
+
+The hero detail page must show exactly these things about a hero:
+
+1. **Name**
+2. **Class** (Warrior / Marksman / Mage / Support)
+3. **Portrait** (owner screenshot only, see Portrait pipeline)
+4. **Divinities**
+5. **Talents**
+6. **Awakening skills**
+7. **Cores**
+
+Rule (game): a hero has four awakening skills, I–IV. **Awakening skills II and IV
+are identical for every hero of the same class**; only I and III are hero-specific.
+The app should store the class-wide II/IV once per class, not per hero.
+
+Not part of the hero page: Level / ATK / HP / DEF / power (they depend on the
+player's investment), skins, and the fan "Tank / DPS" label.
+
+Open questions for the owner: what "divinities" and "cores" look like in-game and
+how they map to the compendium's "Divine Weapon" panel (a named weapon ringed by six
+unlabelled stat icons), and whether "talents" means the six skill tiles below.
+
+### Divinities (game, 2026-09-12)
+
+Each hero's **divine weapon** screen shows a named weapon ringed by six round
+badges. Each badge is a **divinity**: a single stat that is levelled with divinity
+gems (red gem icon) plus gold; the popup shows the level, the stat, and Enhance /
+Reset buttons. Level 150 has been seen with no further upgrade arrow. The same
+divinity appears on many heroes' weapons. The screen also shows an
+**Ascension Bonus** line "Artifact and Divinity ATK/DEF/HP: 5%/5%/5%".
+
+The popup is titled "<Kind> Divinity" and the stat row starts with "All" for
+account-wide stats or a class name for class-specific ones. **Naming rule
+(owner):** the app names a divinity by its stat row without "All" and never with
+the "Divinity" suffix. So "DMG Reduction Divinity" whose row reads
+"All DMG Reduction" is **DMG Reduction**, and the same-titled popup whose row reads
+"All Physical RES" is **Physical RES**. The popup title (minus "Divinity") is kept
+as `kind`.
+
+30 divinities read from the owner's popups (`gameplay/divinities/`, 131 shots with
+duplicates; produced by `scripts/slice-divinities.py`):
+
+| Kind          | Divinities (stat rows)                                                                                      |
+| ------------- | ----------------------------------------------------------------------------------------------------------- |
+| ATK           | ATK, Mage ATK, Support ATK, Warrior ATK (flat numbers)                                                      |
+| DEF           | DEF, Marksman DEF (flat)                                                                                    |
+| HP            | HP (flat)                                                                                                   |
+| DMG Increase  | DMG Increase, Physical DMG Boost, Magic DMG Boost, Melee DMG Boost, Ranged DMG Boost (%)                    |
+| DMG Reduction | DMG Reduction, Physical RES, Magic RES, Melee DMG Reduction*, Ranged DMG Reduction (%)                      |
+| CRIT          | CRIT Rate, CRIT Damage (%)                                                                                  |
+| RES           | Anti-Control Rate, Control RES, SPD Reduction RES, CRIT DMG Reduction, Anti-CRIT Rate, Knockback Resist (%) |
+| Knockback     | Knockback Effect (%)                                                                                        |
+| Weakness      | Heavy Injury (%)                                                                                            |
+| SPD Boost     | ATK SPD (%)                                                                                                 |
+| Cleansing     | Healing Effect, Receive Healing (%)                                                                         |
+
+\* The in-game row is truncated to "All Melee DMG Reduct"; expanded to match
+"Ranged DMG Reduction".
+
+Marksman ATK, Warrior/Mage/Support DEF and per-class HP have not been seen in the
+screenshots yet; add them to CATALOG in the script when they turn up. Which six
+divinities each hero has is not recorded yet (the popups don't show the hero).
+
+#### Third-party reference: MR-UK hero compendium (web, unverified)
+
+The official Discord server (guild `1214861046125166603`) has a forum channel
+`📚｜hero-compendium` (`1528702745714888796`) where the user **MR-UK**
+(`hunter.no1`) posts one infographic per hero. 14 posted between 2026-07-20 and
+2026-08-28: Shadow Fiend, Silence, Dark Knight, Foxy Spirit, Thrall, Gunslinger,
+Necromancer, Nezha, Sea Captain, Arcane Saint, Swordevil, Templar, Darkin Hunter,
+Radiant Paladin. Each card shows:
+
+- Basic info: class, rarity, Lv. 100 base ATK / HP / DEF, a "Talent Bonus" label
+  (e.g. Damage Reduction, Damage Increase) and sometimes a "Talent Effects" line.
+- A "Mythic · Tank" / "Mythic · DPS" position tag (fan label, not confirmed in-game).
+- **Heavenly Talent Skills**: six tiles in fixed order with unlock thresholds
+  Unlock / 2 Star / 5 Star / 8 Star / 12 Star / 16 Star. Each has a name, a type
+  (Ultimate Skill, Battle Skill, Special Skill, Enhance, Attribute, Passive) and a
+  description. Same six slots as the in-game hero card.
+- **Awakening Skills**: four, I–IV, each with a name, description and either an
+  unlock cost in two currencies (e.g. 360 / 60 for I) or "Lv. N Unlock".
+- **Divine Weapon**: a named item (Sacred Book, sword, cloak) ringed by six icons.
+- **Skin Showcase**: two skins with a bonus effect (HP / ATK / DEF).
+
+These cards are fan-made and may lag game updates. Use them to pre-fill data, but
+the owner's screenshots and statements override them.
+
 ### Lineups (game)
 
 A battle lineup is **5 heroes**. Conventional wisdom (web) is one of each role plus a
@@ -77,13 +165,26 @@ is said. These override anything marked (web).
 - 2026-09-12 — The hero pool is read-only: no add/edit/upload of heroes in the app. Roster changes go through the screenshots + `scripts/slice-hero-cards.py`.
 - 2026-09-12 — There is nothing like "Front 1 / Front 2" in the game. Lineup slots must not be labelled front/back; use plain Slot 1–5 until the owner explains the formation.
 - 2026-09-12 — Roles and rarities in the app were read from the owner's Archive screenshots: badge = role, card colour = rarity (red mythic, gold legend, purple epic). 65 heroes at this date.
+- 2026-09-12 — A hero's detail page needs exactly: **name, class, portrait, divinities, talents, awakening skills, cores**.
+- 2026-09-12 — A hero has awakening skills I–IV. **Awakening skills II and IV are the same for all heroes of the same class**; I and III are per hero.
+- 2026-09-12 — The owner pointed at MR-UK's hero compendium posts on the official Discord (`📚｜hero-compendium` forum) as the reference for what a hero's info looks like.
+- 2026-09-12 — Divinity screenshots live in `gameplay/divinities/` (with duplicates). Divinities go in the DB with their icon and what they do. Name = the stat without "All" and without "Divinity", e.g. **DMG Reduction** (not "DMG Reduction Divinity", not "All DMG Reduction").
 
 ## How the app models it
 
 - `heroes` table: `slug`, `name`, `role` (warrior | marksman | mage | support),
   `rarity` (mythic | legend | epic), `imageUrl`, `notes`.
+- `divinities` table: `slug`, `name` (stat without "All"), `kind` (popup title without
+  "Divinity"), `iconUrl` (`/divinities/<slug>.png`). Seeded from `src/data/divinities.ts`
+  by `ensureDivinitiesSeeded()` in `src/lib/divinities.ts`; no hero link yet.
+- `hero_skills` table: `heroId`, `kind` (ultimate | battle | special | attribute |
+  enhance), `name`, `description`, `sortOrder` — the six skill slots of the in-game card.
+- `/heroes/[slug]` — hero detail: large portrait, badge + name, class, notes, skills
+  (empty until recorded), and every saved lineup the hero appears in. "Start a lineup
+  with X" opens the builder with that hero pre-placed in slot 1.
 - `lineups` + `lineup_heroes`: a named lineup with a free-text write-up and up to 5
   `(position, hero)` rows, position 0–4. Deleting a hero or lineup cascades.
+- `/divinities` — read-only list of all divinities, grouped by kind, icon + name.
 - `/heroes` — the pool: read-only portrait grid with search and class filter. Each
   hero is shown as `{class badge} {name}`; badges live in `public/badges/<role>.png`.
 - `/lineups/new` — click heroes into slots, add name + notes, save.
@@ -92,6 +193,14 @@ is said. These override anything marked (web).
   accessed directly through Drizzle + postgres.js as the least-privilege role
   `lineup_app`. RLS is enabled on every table with an allow-all policy for that role
   only, so nothing leaks through the Supabase REST API.
+- Migrations: `pnpm db:generate` then `pnpm db:migrate`. RLS + the `lineup_app`
+  policy/grant are not tracked by Drizzle, so append them to each new migration file
+  by hand (see `drizzle/0003_cooing_the_twelve.sql`). On 2026-09-12 `db:migrate`
+  through the transaction pooler (port 6543) failed with "relation does not exist"
+  even though the SQL was valid; 0003 was applied by running its statements in one
+  transaction with `postgres` and inserting the row into
+  `drizzle.__drizzle_migrations` (hash = sha256 of the file, created_at = journal
+  `when`). If it happens again, do the same or migrate over the direct 5432 URL.
 
 ### UI theme
 
@@ -126,6 +235,18 @@ Because portrait files are replaced in place, the URL carries a cache-busting
 `next.config.ts` allows exactly that query string for `/heroes/**`.
 
 The portrait tile keeps the card's 81:100 aspect ratio so the whole panel shows.
+
+### Divinity icon pipeline
+
+`scripts/slice-divinities.py` reads every popup screenshot in `gameplay/divinities/`,
+finds the badge by the red title bar and the blue circle, groups duplicates by badge
+
+- title + stat text, and matches each group to its hard-coded `CATALOG`
+  (representative screenshot → name, kind). It writes `public/divinities/<slug>.png`
+  (badge with transparent background, ~98 px), `src/data/divinities.ts` and
+  `scripts/upsert-divinities.sql`. Unmatched screenshots are listed and fail the run:
+  add a CATALOG row for each and rerun. Screenshots that are not popups (e.g. the
+  divine weapon screen itself) are ignored.
 
 ## Roster
 

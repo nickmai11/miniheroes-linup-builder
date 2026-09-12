@@ -64,11 +64,7 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
                   hero={hero}
                   sizes="(max-width: 640px) 18vw, 160px"
                 />
-                <HeroName
-                  hero={hero}
-                  className="text-base font-medium"
-                  badgeSize={20}
-                />
+                <HeroName hero={hero} className="text-base font-medium" />
               </>
             ) : (
               <div className="aspect-[81/100] w-full rounded-md border border-dashed" />
@@ -101,11 +97,7 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
               (hero, i) =>
                 hero?.notes && (
                   <p key={i} className="text-sm">
-                    <HeroName
-                      hero={hero}
-                      className="font-medium"
-                      badgeSize={16}
-                    />
+                    <HeroName hero={hero} className="font-medium" />
                     {": "}
                     <span className="text-muted-foreground">{hero.notes}</span>
                   </p>

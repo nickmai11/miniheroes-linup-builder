@@ -1,8 +1,14 @@
 import "server-only";
-import { asc, eq, inArray } from "drizzle-orm";
+import { asc, desc, eq, inArray } from "drizzle-orm";
 import { db, schema } from "@/db";
 import { heroSeeds } from "@/data/heroes";
-import type { Hero, HeroRarity, HeroRole } from "@/db/schema";
+import type {
+  Hero,
+  HeroRarity,
+  HeroRole,
+  HeroSkill,
+  Lineup,
+} from "@/db/schema";
 
 export { RARITY_LABELS, ROLE_LABELS } from "./hero-labels";
 
@@ -54,4 +60,37 @@ export function slugify(name: string): string {
     .normalize("NFKD")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
+}
+
+export type HeroDetail = Hero & {
+  skills: HeroSkill[];
+  /** Saved lineups this hero appears in, newest first. */
+  lineups: Lineup[];
+};
+
+export async function getHeroDetail(
+  slug: string,
+): Promise<HeroDetail | undefined> {
+  const [hero] = await db
+    .select()
+    .from(schema.heroes)
+    .where(eq(schema.heroes.slug, slug));
+  if (!hero) return undefined;
+  const [skills, lineupRows] = await Promise.all([
+    db
+      .select()
+      .from(schema.heroSkills)
+      .where(eq(schema.heroSkills.heroId, hero.id))
+      .orderBy(asc(schema.heroSkills.sortOrder)),
+    db
+      .select({ lineup: schema.lineups })
+      .from(schema.lineupHeroes)
+      .innerJoin(
+        schema.lineups,
+        eq(schema.lineupHeroes.lineupId, schema.lineups.id),
+      )
+      .where(eq(schema.lineupHeroes.heroId, hero.id))
+      .orderBy(desc(schema.lineups.createdAt)),
+  ]);
+  return { ...hero, skills, lineups: lineupRows.map((r) => r.lineup) };
 }

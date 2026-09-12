@@ -1,0 +1,30 @@
+,,,,,
+,Survival Runes,,,,
+,Category,Max Value,Description,,Analysis
+,Damage Reduction,3.5%,Reduces final damage taken,,"Best survival effect. Universal (works vs physical, magic, and true damage)."
+,Ranged Damage Reduction,5.0%,Reduces damage from ranged attacks,,Universal and higher value than Damage Reduction. High priority.
+,Physical Damage Resistance,5.0%,Reduces physical damage,,"Strong against physical attackers such as Shadow Demon, Shadow Master, Ranger, Dagger."
+,Magic Damage Resistance,5.0%,Reduces magic damage,,Useful for frontline against mage-heavy teams.
+,Melee Damage Reduction,7.0%,Reduces damage from melee attacks,,Needed if the server has many melee heroes.
+,HP,3.5%,Increases base health,,Needs to be stacked on all runes to be effective. Weak otherwise.
+,Defense,5.0%,Increases base defense,,Worse than direct damage reduction.
+,Block,3.5%,Increases block chance,,Cannot be effectively stacked. Low value.
+,Crit Avoidance,5.0%,Reduces chance to receive a critical hit,,Useful only if the server has many snipers.
+,Critical Damage Resistance,25.0%,Reduces damage taken from critical hits,,Only relevant against sniper-heavy servers.
+,,,,,
+,Survival Rune Conclusions (Priority by Role),,,,
+,Frontline,Backline,Anti-Sniper,,
+,Damage Reduction,Damage Reduction (Locked),Damage Reduction (Locked),,
+,Ranged Damage Reduction,Ranged Damage Reduction,Ranged Damage Reduction,,
+,Physical Damage Resistance,Physical Damage Resistance,Physical Damage Resistance,,
+,Magic Damage Resistance,Magic Damage Resistance,Magic Damage Resistance,,
+,Melee Damage Reduction,Melee Damage Reduction,Melee Damage Reduction,,
+,Health,Health,Health,,
+,Defense,Defense,Defense,,
+,Block,Block,Block,,
+,Crit Avoidance,Crit Avoidance,Crit Avoidance,,
+,Critical Damage Resistance,Critical Damage Resistance,Critical Damage Resistance,,
+,,,,,
+,, - Required,,,
+,, - Optional,,,
+,, - Not needed,,,

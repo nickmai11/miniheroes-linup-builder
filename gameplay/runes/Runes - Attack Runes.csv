@@ -1,0 +1,30 @@
+,,,,,
+,Attack Runes,,,,
+,Category,Max Value,Description,,Analysis
+,Knockback,7.0%,Increases the knockback distance from basic attacks and skills,,"Core game mechanic. Mandatory for frontliners, can be used on backline."
+,Attack,3.5%,Increases base attack,,Damage-dealing skills scale from attack. Increases percentage-based damage. Main source of damag
+,Damage Increase,3.5%,Increases dealt damage,,"Attack ≈ Damage Increase. Attack is more universal, so it is slightly preferred."
+,Magic Damage Increase,5.0%,Increases magic damage dealt,,"Slightly weaker than Attack and Damage Increase, but usable."
+,Physical Damage Increase,5.0%,Increases physical damage dealt,,"Slightly weaker than Attack and Damage Increase, but usable."
+,Armor Penetration,5.0%,Reduces the target’s defense,,Reduces defense but does not increase percentage damage of skills. Worse than Attack.
+,Critical Chance,5.0%,Chance to deal critical damage,,High priority for heroes built around crit.
+,Critical Damage,25.0%,Damage dealt on critical hit,,Only needed for crit-based heroes.
+,Severe Wound (Anti-Heal),3.5%,Reduces target’s healing effectiveness,,"Relatively weak attribute, max value only 3.5%."
+,Lifesteal,3.5%,Converts damage from basic attacks into health,,Healing only works from basic attacks. Useless.
+,,,,,
+,Attack Rune Conclusions (Priority by Role),,,,
+,Frontline,Ranged,Mage,Crit Hero,
+,Knockback (locked),Knockback,Knockback,Knockback,
+,Attack (Locked),Attack (Locked),Attack,Attack,
+,Damage Increase,Damage Increase,Damage Increase,Damage Increase,
+,Magic Damage Increase,Magic Damage Increase,Magic Damage Increase,Magic Damage Increase,
+,Physical Damage Increase,Physical Damage Increase,Physical Damage Increase,Physical Damage Increase,
+,Armor Penetration,Armor Penetration,Armor Penetration,Armor Penetration,
+,Critcal Chance (locked),Critcal Chance (locked),Critcal Chance (locked),Critcal Chance (locked),
+,Critical Damage,Critical Damage,Critical Damage,Critical Damage,
+,Severe Wound,Severe Wound,Severe Wound,Severe Wound,
+,Lifesteal,Lifesteal,Lifesteal,Lifesteal,
+,,,,,
+,, - Required,,,
+,, - Optional,,,
+,, - Not needed,,,

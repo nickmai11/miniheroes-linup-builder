@@ -1,6 +1,7 @@
 "use client";
 
 import { Search } from "lucide-react";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { Hero } from "@/db/schema";
 import { HeroName, HeroPortrait } from "@/components/hero-portrait";
@@ -40,21 +41,22 @@ export function HeroPool({ heroes }: { heroes: Hero[] }) {
       ) : (
         <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
           {visible.map((hero, i) => (
-            <li
-              key={hero.id}
-              className="bg-card flex flex-col gap-1.5 rounded-lg border p-1.5 shadow-xs"
-              title={hero.notes || hero.name}
-            >
-              <HeroPortrait
-                hero={hero}
-                sizes="(max-width: 640px) 50vw, 200px"
-                priority={i < 8}
-              />
-              <HeroName
-                hero={hero}
-                className="min-h-10 px-0.5 text-sm font-medium"
-                badgeSize={20}
-              />
+            <li key={hero.id}>
+              <Link
+                href={`/heroes/${hero.slug}`}
+                title={hero.notes || hero.name}
+                className="bg-card hover:border-primary/60 flex flex-col gap-1.5 rounded-lg border p-1.5 shadow-xs transition-colors"
+              >
+                <HeroPortrait
+                  hero={hero}
+                  sizes="(max-width: 640px) 50vw, 200px"
+                  priority={i < 8}
+                />
+                <HeroName
+                  hero={hero}
+                  className="flex min-h-10 w-full items-center justify-center px-0.5 text-center text-sm font-medium"
+                />
+              </Link>
             </li>
           ))}
         </ul>
