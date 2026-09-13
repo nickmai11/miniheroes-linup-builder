@@ -20,6 +20,11 @@ and core bonuses beneath talents; use recorded `skillId` links, never name guess
 The lineup editor can assign a hero one of its own saved builds and uses these
 same previews without expanding the hero card.
 
+Build popovers are up to 40rem wide, constrained to the viewport and available
+space around their trigger. All info popovers use fixed positioning and reserve
+scrollbar space inside the popup; the page also reserves its scrollbar gutter so
+opening a preview does not shift the page or rewrap its contents.
+
 In this order, top to bottom of the right column (portrait + "Start a lineup"
 button in the left column):
 
@@ -31,7 +36,7 @@ button in the left column):
 | **Awakening skills** | I (18★) and III (22★): stage, unlock stars, skill name and description, without icons; an unrecorded stage has an empty state | `HERO_AWAKENING_STAGES` and `heroDetailSeeds[slug].awakeningSkills` in `src/data/hero-details.ts` |
 | **Artifacts**  | artifact image + name; one row per quality tier (purple, gold, red, rainbow) with the diamond, the talent it modifies or the artifact's own skill, and the description                                                                           | `heroes.artifactName/IconUrl`, `hero_artifact_bonuses`  |
 | **Divinities** | the hero's mythic (red) divinities as equal-width badge cards, each linking to `/divinities/<slug>` (the heroes that share it)                                                                                                                   | `hero_divinities` → `divinities`                        |
-| **Builds**     | the owner's builds for the hero: name, notes, chosen rune attributes grouped by rune type, weapon attributes, and hero cores, with priority tiers (including Important for runes); editable in place (new / edit / delete) | `hero_builds`, `hero_build_runes`, `hero_build_weapons`, `hero_build_cores` |
+| **Builds**     | the owner's builds for the hero: name, notes, chosen rune attributes grouped by rune type, weapon attributes, and hero cores, all with Important / Should have / OK to have priority tiers; editable in place (new / edit / delete) | `hero_builds`, `hero_build_runes`, `hero_build_weapons`, `hero_build_cores` |
 | Lineups        | saved lineups that use the hero                                                                                                                                                                                                                  | `lineup_heroes`                                         |
 
 Awakening I and III are recorded for **Sea Captain**, **Nezha**, **Shadow Fiend**,
@@ -65,16 +70,23 @@ and keeps the results in a scrollable panel. Select a build, then choose **Impor
 build** to copy its name, notes, attribute priorities, and matching core priorities.
 Searching or changing pages clears the selection; Cancel or Escape closes the picker.
 
-Rune attributes use three priority tiers: **Important** (one red diamond),
+Rune attributes, weapon attributes, and cores use three priority tiers:
+**Important** (one red diamond),
 **Should have** (gold diamond), and **OK to have** (blue dot and chip tint).
-Weapons and cores use Should have and OK to have. The label is exactly **Important**,
-with no rune-only suffix. A shared legend explains
+The label is exactly **Important**. A shared legend explains
 the markers; accessible names and tooltips also spell out the tier. In the editor,
-clicking a chip cycles through its available tiers and then removes it. Saved selections
+clicking a chip cycles through its available tiers and then removes it.
+Chips keep a fixed icon slot for the unselected plus and all priority markers,
+so toggling items does not change their widths or row wrapping. Saved selections
 are grouped by tier within each rune type, Weapons, and Cores, preserving pick
 order within a tier. The stored `must` value displays as **Should have**;
 the former middle tier remains **OK to have**, which is also the default when no
 priority is supplied.
+
+Saved builds and build previews always show Runes (Attack, Effect, Energy, and
+Survival), Weapons, and Cores. Empty groups show a muted placeholder instead of
+disappearing. Build editor groups also show a placeholder if their catalog has
+no available attributes or recorded cores.
 
 The build editor has a **Reset** button for Runes, Weapons, Cores, and each rune
 type. Reset clears only that group's selections and priority assignments in the
@@ -217,8 +229,8 @@ write, or an additional database query on page load.
 - `divinities`: `slug`, `name`, `kind`, `iconUrl` (catalog of mythic divinities).
 - `hero_builds`: `name`, `notes`; `hero_build_runes` → `rune_attributes`,
   `hero_build_weapons` → `weapon_attributes`, both with `sortOrder` = pick order
-  and `priority` = important | must | optional (the `build_priority` enum;
-  important is accepted only for runes). The only
+  and `priority` = important | must | optional (the `build_priority` enum,
+  shared by runes, weapons, and cores). The only
   hero data edited in the app (the rest is seeded from files).
   Attributes are picked from the catalogs, never typed.
 - `hero_build_cores`: `buildId` → `hero_builds`, `coreId` → `hero_cores`,

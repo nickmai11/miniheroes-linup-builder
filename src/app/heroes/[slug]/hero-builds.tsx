@@ -14,7 +14,6 @@ import {
 import type { CoreWithSkill, HeroBuild } from "@/lib/build-types";
 import {
   DEFAULT_BUILD_PRIORITY,
-  RUNE_BUILD_PRIORITIES,
   nextBuildPriority,
   type BuildPriority,
 } from "@/lib/build-priorities";
@@ -25,6 +24,7 @@ import {
 } from "./build-actions";
 import {
   AttributeGroup,
+  BuildPlaceholder,
   BuildSection,
   BuildStats,
   Chip,
@@ -139,7 +139,6 @@ export function HeroBuilds({
       const selected = d[key].includes(id);
       const next = nextBuildPriority(
         selected ? (d[field][id] ?? DEFAULT_BUILD_PRIORITY) : undefined,
-        key === "runeIds" ? RUNE_BUILD_PRIORITIES : undefined,
       );
       const priorities = { ...d[field] };
       if (next) priorities[id] = next;
@@ -351,11 +350,15 @@ export function HeroBuilds({
                       !attributes.some((r) => draft.runeIds.includes(r.id))
                     }
                   >
+                    {attributes.length === 0 && (
+                      <BuildPlaceholder>
+                        No attributes available.
+                      </BuildPlaceholder>
+                    )}
                     {attributes.map((r) => (
                       <Chip
                         key={r.id}
                         priority={draft.runePriorities[r.id]}
-                        priorities={RUNE_BUILD_PRIORITIES}
                         onClick={() => cyclePriority("runeIds", r.id)}
                         title={[r.description, r.analysis]
                           .filter(Boolean)
@@ -373,6 +376,11 @@ export function HeroBuilds({
               onReset={() => resetSelections("weaponIds")}
               resetDisabled={pending || draft.weaponIds.length === 0}
             >
+              {weaponAttributes.length === 0 && (
+                <BuildPlaceholder>
+                  No weapon attributes available.
+                </BuildPlaceholder>
+              )}
               <div className="flex flex-wrap gap-1.5">
                 {weaponAttributes.map((w) => (
                   <Chip
@@ -405,9 +413,9 @@ export function HeroBuilds({
                   ))}
                 </div>
               ) : (
-                <p className="text-muted-foreground text-sm">
+                <BuildPlaceholder>
                   No cores recorded for {heroName} yet.
-                </p>
+                </BuildPlaceholder>
               )}
             </BuildSection>
 

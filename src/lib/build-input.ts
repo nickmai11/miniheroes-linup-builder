@@ -1,14 +1,10 @@
 import { z } from "zod";
-import { RUNE_BUILD_PRIORITIES } from "@/lib/build-priorities";
+import { BUILD_PRIORITIES } from "@/lib/build-priorities";
 
 const idList = z.array(z.number().int().positive()).max(200);
 const priorityMap = z.record(
   z.string().regex(/^[1-9]\d*$/),
-  z.enum(RUNE_BUILD_PRIORITIES),
-);
-const weaponCorePriorityMap = priorityMap.refine(
-  (priorities) => !Object.values(priorities).includes("important"),
-  "Important is only available for rune attributes",
+  z.enum(BUILD_PRIORITIES),
 );
 
 export const buildSchema = z
@@ -21,8 +17,8 @@ export const buildSchema = z
     weaponAttributeIds: idList,
     coreIds: idList.default([]),
     runePriorities: priorityMap.default({}),
-    weaponPriorities: weaponCorePriorityMap.default({}),
-    corePriorities: weaponCorePriorityMap.default({}),
+    weaponPriorities: priorityMap.default({}),
+    corePriorities: priorityMap.default({}),
   })
   .refine(
     (b) =>

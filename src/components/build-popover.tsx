@@ -22,6 +22,7 @@ export function BuildPopover({
       label={`${build.name} build stats`}
       nativeButton={nativeButton}
       triggerRole={triggerRole}
+      popupClassName="w-[min(40rem,calc(100vw-2rem))]"
       trigger={
         trigger ?? (
           <button

@@ -114,6 +114,11 @@ registration unless a page is explicitly made public as described below.
 Framework CSS, JavaScript, fonts, and the favicon remain accessible
 to render the invitation screen. Images use their original authenticated URLs;
 the shared Next.js image optimizer is disabled to avoid caching private artwork.
+Authorized PNG responses are cached privately in the browser: current `?v=` URLs
+for one year, and unversioned or older URLs with revalidation on every use. Bump
+`ASSET_VERSION` in `src/lib/asset-version.ts` whenever artwork is replaced. Image
+caches vary by cookie and referrer; shared caches cannot store them. Pages, APIs,
+redirects, and access-denied responses remain `private, no-store`.
 
 `pnpm test` includes invitation routing, input validation, and access checks.
 To exercise concurrent claims and transaction rollback, migrate a disposable local
@@ -144,9 +149,10 @@ register a browser or grant access to actions or private pages.
 
 Public pages include their artwork. Image requests are allowed only when their
 same-origin referrer is a currently public page and the image belongs to that
-page's content. Other image URLs remain protected. Responses stay uncached so
-removing a rule affects subsequent page, navigation and image requests; content
-already loaded in a browser cannot be withdrawn.
+page's content. Other image URLs remain protected. Page responses stay uncached,
+so removing a rule affects subsequent page and navigation requests, and image
+requests that reach the server. Previously cached artwork can remain available
+in that browser until its cache expires or is cleared.
 
 Apply `drizzle/0023_public_urls.sql` before running this feature. It creates the
 empty `public_urls` table with the existing app-only RLS policy. No pages are

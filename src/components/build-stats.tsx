@@ -7,7 +7,6 @@ import type { HeroBuild } from "@/lib/build-types";
 import {
   BUILD_PRIORITIES,
   BUILD_PRIORITY_LABELS,
-  RUNE_BUILD_PRIORITIES,
   nextBuildPriority,
   sortByBuildPriority,
   type BuildPriority,
@@ -23,30 +22,32 @@ export function runeTypeShort(type: RuneType) {
 }
 
 function groupRunes<T extends RuneAttribute>(runes: T[]): [RuneType, T[]][] {
-  return RUNE_TYPES.flatMap((t) => {
-    const list = runes.filter((r) => r.runeType === t);
-    return list.length > 0 ? [[t, list] as [RuneType, T[]]] : [];
-  });
+  return RUNE_TYPES.map((type) => [
+    type,
+    runes.filter((rune) => rune.runeType === type),
+  ]);
 }
 
 export function BuildStats({ build }: { build: HeroBuild }) {
   return (
     <div className="flex flex-col gap-4">
-      {build.runes.length > 0 && (
-        <BuildSection title="Runes">
-          {groupRunes(sortByBuildPriority(build.runes)).map(([type, list]) => (
-            <AttributeGroup key={type} title={runeTypeShort(type)}>
-              {list.map((r) => (
+      <BuildSection title="Runes">
+        {groupRunes(sortByBuildPriority(build.runes)).map(([type, list]) => (
+          <AttributeGroup key={type} title={runeTypeShort(type)}>
+            {list.length > 0 ? (
+              list.map((r) => (
                 <Chip key={r.id} title={r.description} priority={r.priority}>
                   {r.name}
                 </Chip>
-              ))}
-            </AttributeGroup>
-          ))}
-        </BuildSection>
-      )}
-      {build.weapons.length > 0 && (
-        <BuildSection title="Weapons">
+              ))
+            ) : (
+              <BuildPlaceholder>No attributes selected.</BuildPlaceholder>
+            )}
+          </AttributeGroup>
+        ))}
+      </BuildSection>
+      <BuildSection title="Weapons">
+        {build.weapons.length > 0 ? (
           <div className="flex flex-wrap gap-1.5">
             {sortByBuildPriority(build.weapons).map((w) => (
               <Chip key={w.id} priority={w.priority}>
@@ -54,10 +55,12 @@ export function BuildStats({ build }: { build: HeroBuild }) {
               </Chip>
             ))}
           </div>
-        </BuildSection>
-      )}
-      {build.cores.length > 0 && (
-        <BuildSection title="Cores">
+        ) : (
+          <BuildPlaceholder>No weapon attributes selected.</BuildPlaceholder>
+        )}
+      </BuildSection>
+      <BuildSection title="Cores">
+        {build.cores.length > 0 ? (
           <div className="flex flex-wrap gap-1.5">
             {sortByBuildPriority(build.cores).map((core) => (
               <Chip
@@ -69,9 +72,19 @@ export function BuildStats({ build }: { build: HeroBuild }) {
               </Chip>
             ))}
           </div>
-        </BuildSection>
-      )}
+        ) : (
+          <BuildPlaceholder>No cores selected.</BuildPlaceholder>
+        )}
+      </BuildSection>
     </div>
+  );
+}
+
+export function BuildPlaceholder({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="text-muted-foreground flex min-h-7 items-center text-xs">
+      {children}
+    </p>
   );
 }
 
@@ -188,7 +201,7 @@ export function PriorityLegend() {
       aria-label="Attribute priority"
       className="text-muted-foreground flex flex-wrap gap-x-4 gap-y-2 text-xs"
     >
-      {RUNE_BUILD_PRIORITIES.map((priority) => (
+      {BUILD_PRIORITIES.map((priority) => (
         <li key={priority} className="flex items-center gap-2">
           <PriorityMarker priority={priority} />
           {BUILD_PRIORITY_LABELS[priority]}
@@ -202,14 +215,12 @@ export function PriorityLegend() {
 export function Chip({
   children,
   priority,
-  priorities = BUILD_PRIORITIES,
   onClick,
   title,
   popover,
 }: {
   children: string;
   priority?: BuildPriority;
-  priorities?: readonly BuildPriority[];
   onClick?: () => void;
   title?: string;
   popover?: React.ReactNode;
@@ -217,18 +228,24 @@ export function Chip({
   const base =
     "inline-flex min-h-7 max-w-full items-center gap-2 rounded-md border px-2 py-1 text-left text-xs leading-4 font-medium";
   const label = priority ? BUILD_PRIORITY_LABELS[priority] : "Not selected";
-  const next = nextBuildPriority(priority, priorities);
+  const next = nextBuildPriority(priority);
   const action = next ? `Set to ${BUILD_PRIORITY_LABELS[next]}` : "Remove";
   const description = [`${children} — ${label}`, title, onClick ? action : null]
     .filter(Boolean)
     .join("\n");
   const content = (
     <>
-      {priority ? (
-        <PriorityMarker priority={priority} />
-      ) : (
-        <Plus className="size-3 shrink-0" aria-hidden />
-      )}
+      {/* Keep chip width and row wrapping stable across every selection state. */}
+      <span
+        aria-hidden
+        className="inline-flex size-3 shrink-0 items-center justify-center"
+      >
+        {priority ? (
+          <PriorityMarker priority={priority} />
+        ) : (
+          <Plus className="size-3" />
+        )}
+      </span>
       <span className="min-w-0 break-words">{children}</span>
     </>
   );

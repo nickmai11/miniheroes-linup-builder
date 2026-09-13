@@ -11,7 +11,7 @@ import {
   unique,
 } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
-import { RUNE_BUILD_PRIORITIES } from "@/lib/build-priorities";
+import { BUILD_PRIORITIES } from "@/lib/build-priorities";
 import { MAX_FISH_QUANTITY } from "@/lib/fish-selection";
 
 export const notes = pgTable("notes", {
@@ -345,7 +345,7 @@ export const heroBuilds = pgTable(
 
 export type HeroBuildRow = typeof heroBuilds.$inferSelect;
 
-export const buildPriority = pgEnum("build_priority", RUNE_BUILD_PRIORITIES);
+export const buildPriority = pgEnum("build_priority", BUILD_PRIORITIES);
 
 /** Rune attributes with an explicit tier; sortOrder preserves pick order within it. */
 export const heroBuildRunes = pgTable(

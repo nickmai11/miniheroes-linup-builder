@@ -2,7 +2,6 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   DEFAULT_BUILD_PRIORITY,
-  RUNE_BUILD_PRIORITIES,
   nextBuildPriority,
   sortByBuildPriority,
 } from "../src/lib/build-priorities.ts";
@@ -17,21 +16,11 @@ const input = {
   coreIds: [9],
 };
 
-test("chips cycle through both tiers and then remove the selection", () => {
-  let priority;
-  const steps = [];
-  for (let i = 0; i < 4; i++) {
-    priority = nextBuildPriority(priority);
-    steps.push(priority);
-  }
-  assert.deepEqual(steps, ["must", "optional", undefined, "must"]);
-});
-
-test("rune chips cycle from Important through existing tiers and removal", () => {
+test("all build chips cycle from Important through existing tiers and removal", () => {
   let priority;
   const steps = [];
   for (let i = 0; i < 5; i++) {
-    priority = nextBuildPriority(priority, RUNE_BUILD_PRIORITIES);
+    priority = nextBuildPriority(priority);
     steps.push(priority);
   }
   assert.deepEqual(steps, [
@@ -76,16 +65,21 @@ test("accepts separate tiers for rune attributes, weapon attributes and cores", 
   }
 });
 
-test("Important is accepted for runes only", () => {
-  const parsed = buildSchema.parse({
+test("Important is accepted for rune attributes, weapon attributes, and cores", () => {
+  const data = {
     ...input,
     runePriorities: { 3: "important", 8: "must" },
-  });
-  assert.deepEqual(parsed.runePriorities, { 3: "important", 8: "must" });
+    weaponPriorities: { 5: "important" },
+    corePriorities: { 9: "important" },
+  };
+  const parsed = buildSchema.parse(data);
+  for (const key of ["runePriorities", "weaponPriorities", "corePriorities"]) {
+    assert.deepEqual(parsed[key], data[key]);
+  }
   for (const priorities of [
-    { weaponPriorities: { 5: "important" } },
-    { corePriorities: { 9: "important" } },
     { runePriorities: { 99: "important" } },
+    { weaponPriorities: { 99: "important" } },
+    { corePriorities: { 99: "important" } },
   ]) {
     assert.equal(
       buildSchema.safeParse({ ...input, ...priorities }).success,

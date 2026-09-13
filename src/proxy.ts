@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { ASSET_VERSION } from "@/lib/asset-version";
 import { findRegisteredDevice, newDeviceToken } from "@/lib/invitations";
 import { isLocalEditingAllowed } from "@/lib/local-edit-policy";
 import { isPublicPage } from "@/lib/public-urls";
@@ -32,7 +33,25 @@ export async function proxy(request: NextRequest) {
   requestHeaders.set("x-app-method", request.method);
   const next = () =>
     NextResponse.next({ request: { headers: requestHeaders } });
-  const finish = privateInvitationResponse;
+  const finish = (response: NextResponse) => {
+    privateInvitationResponse(response);
+    if (
+      isPublicRead(request.method, request.headers) &&
+      /\.png$/.test(path) &&
+      response.headers.get("x-middleware-next") === "1"
+    ) {
+      // Cache authorized artwork only in this browser. Replaced images get a
+      // new versioned URL; unversioned or older URLs must revalidate.
+      response.headers.set(
+        "Cache-Control",
+        url.searchParams.get("v") === ASSET_VERSION
+          ? "private, max-age=31536000, immutable"
+          : "private, max-age=0, must-revalidate",
+      );
+      response.headers.append("Vary", "Cookie, Referer");
+    }
+    return response;
+  };
 
   if (
     [

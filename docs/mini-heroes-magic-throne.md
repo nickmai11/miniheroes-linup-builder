@@ -631,24 +631,43 @@ is said. These override anything marked (web).
   red and applies only to runes.
 - 2026-09-13 — **Important** uses **one red diamond** and exactly that label.
   Its rune-only scope is implicit; do not add a scope suffix to the label.
+- 2026-09-13 — The owner clarified that **Important applies to every build
+  area: rune attributes, weapon attributes, and cores**, superseding the earlier
+  rune-only restriction. The label and one red diamond remain the same.
+- 2026-09-13 — The owner reported layout shifts when toggling build items and
+  requested stable layout across selection and priority changes.
+- 2026-09-13 — The owner requested that sections with no data remain visible
+  with a placeholder. Build displays keep Runes, every rune type, Weapons, and
+  Cores visible even when no items are selected.
+- 2026-09-13 — The owner reported layout shifts when a popover opens, suspected
+  scrollbar appearance as the cause, and requested a fix. The owner also requested
+  wider build popovers.
 
 ## How the app models it
 
-- Rune attributes have three owner-assigned priority tiers: **Important**,
+- Rune attributes, weapon attributes, and cores have three owner-assigned
+  priority tiers: **Important**,
   **Should have**, and **OK to have**, shown as one red diamond, gold diamond,
-  and blue dot, with a shared legend. Weapons and cores use Should have and OK to have.
+  and blue dot, with a shared legend.
   Rune attributes, weapon attributes, and cores each store a `priority`
-  (`build_priority`: important | must | optional); `important` is accepted only
-  for runes, and `must` displays as **Should have**.
+  (`build_priority`: important | must | optional); all three tiers are accepted
+  in every build area, and `must` displays as **Should have**.
   Former middle-tier selections remain OK to have, which is also the default.
   Editing cycles through the tiers and then
   removes the selection; imports preserve tiers. Pick order is retained within
-  each tier. In the editor, Reset clears the draft selections and priorities for
+  each tier. Chips reserve the same space for the unselected plus and all priority
+  markers so toggling does not change chip widths or row wrapping.
+  Saved builds and previews retain every section and rune type, with a placeholder
+  for empty selections. Editors also show placeholders for empty catalogs.
+  Build popovers are up to 40rem wide and stay within the viewport. Info popovers
+  use fixed positioning, with stable scrollbar gutters on the page and popup to
+  prevent width changes when previews open or their content needs scrolling.
+  In the editor, Reset clears the draft selections and priorities for
   Runes, Weapons, Cores, or one rune type; the owner saves the build to apply it.
 
 - Hero builds include hand-picked **cores** from that hero's recorded talent
   bonuses, alongside rune and weapon attributes. Core selections have the same
-  two tiers. A build may contain only cores.
+  three tiers. A build may contain only cores.
 - `hero_build_cores` links each build to its hero's cores with `priority` for the
   tier and `sortOrder` within it. Hero detail synchronization matches cores by name, keeping IDs and
   build selections stable. Imports map matching gear names to the destination

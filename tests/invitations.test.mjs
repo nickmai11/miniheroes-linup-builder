@@ -14,6 +14,7 @@ function loadTypeScript(path, overrides = {}) {
 }
 
 const policy = loadTypeScript("src/lib/invitation-policy.ts");
+const { ASSET_VERSION } = loadTypeScript("src/lib/asset-version.ts");
 const token = "a".repeat(43);
 const code = "ABCD-1234-EFAB-5678-CDEF-9012";
 
@@ -259,7 +260,53 @@ test("APIs, RSC, actions, and original artwork are gated; the image optimizer is
     }),
   );
   assert.equal(file.headers.get("x-middleware-next"), "1");
-  assert.match(file.headers.get("cache-control"), /private, no-store/);
+  assert.equal(
+    file.headers.get("cache-control"),
+    "private, max-age=0, must-revalidate",
+  );
+});
+
+test("authorized image reads cache privately by version, cookie, and referrer", async () => {
+  const proxy = routing(true);
+  const headers = { cookie: `${policy.DEVICE_COOKIE}=${token}` };
+  for (const method of ["GET", "HEAD"]) {
+    for (const path of [
+      "/heroes/sea-captain.png",
+      "/talents/sea-captain/ghost-ship.png",
+      "/icons/core.png",
+    ]) {
+      const response = await proxy(
+        request(`${path}?v=${ASSET_VERSION}`, { method, headers }),
+      );
+      assert.equal(response.headers.get("x-middleware-next"), "1");
+      assert.equal(
+        response.headers.get("cache-control"),
+        "private, max-age=31536000, immutable",
+      );
+      assert.equal(response.headers.get("vary"), "Cookie, Referer");
+    }
+  }
+  const oldVersion = await proxy(
+    request("/heroes/sea-captain.png?v=outdated", { headers }),
+  );
+  assert.equal(
+    oldVersion.headers.get("cache-control"),
+    "private, max-age=0, must-revalidate",
+  );
+  for (const [path, options] of [
+    [`/heroes/sea-captain.png?v=${ASSET_VERSION}`, {}],
+    [`/heroes/sea-captain.png?v=${ASSET_VERSION}&ic=USED`, { headers }],
+    [`/heroes/sea-captain.png?v=${ASSET_VERSION}`, { method: "POST", headers }],
+    [
+      `/heroes/sea-captain.png?v=${ASSET_VERSION}`,
+      { headers: { ...headers, "next-action": "test" } },
+    ],
+    [`/heroes?v=${ASSET_VERSION}`, { headers }],
+    [`/api/notes?v=${ASSET_VERSION}`, { headers }],
+  ]) {
+    const response = await proxy(request(path, options));
+    assert.equal(response.headers.get("cache-control"), "private, no-store");
+  }
 });
 
 test("database failures fail closed without exposing internal errors", async () => {

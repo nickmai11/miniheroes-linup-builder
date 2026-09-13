@@ -5,6 +5,7 @@ import { loadTypeScript } from "./load-typescript.mjs";
 
 const { normalizePublicUrl, publicPagePath, publicAssetReferrer } =
   loadTypeScript("src/lib/public-url-policy.ts");
+const { ASSET_VERSION } = loadTypeScript("src/lib/asset-version.ts");
 
 test("public URL input accepts app links and normalizes exact page paths", () => {
   for (const value of [
@@ -155,17 +156,23 @@ test("public pages never unlock actions, APIs, admin routes, or forged public co
 });
 
 test("only a public page's own artwork loads through its same-origin referrer", async () => {
-  const proxy = routing();
+  const paths = new Set(["/heroes/sea-captain"]);
+  const proxy = routing(paths);
   const headers = {
     referer: "http://localhost:3000/heroes/sea-captain",
     host: "localhost:3000",
   };
-  assert.equal(
-    (
-      await proxy(request("/heroes/sea-captain.png?v=5", { headers }))
-    ).headers.get("x-middleware-next"),
-    "1",
-  );
+  const imagePath = `/heroes/sea-captain.png?v=${ASSET_VERSION}`;
+  for (const method of ["GET", "HEAD"]) {
+    const image = await proxy(request(imagePath, { method, headers }));
+    assert.equal(image.headers.get("x-middleware-next"), "1");
+    assert.equal(
+      image.headers.get("cache-control"),
+      "private, max-age=31536000, immutable",
+    );
+    assert.equal(image.headers.get("vary"), "Cookie, Referer");
+    assert.equal(image.headers.has("set-cookie"), false);
+  }
   assert.equal(
     (await proxy(request("/heroes/nezha.png", { headers }))).status,
     401,
@@ -191,6 +198,10 @@ test("only a public page's own artwork loads through its same-origin referrer", 
     publicAssetReferrer(request("/heroes/sea-captain.png", { headers })),
     "/heroes/sea-captain",
   );
+  paths.clear();
+  const revoked = await proxy(request(imagePath, { headers }));
+  assert.equal(revoked.status, 401);
+  assert.equal(revoked.headers.get("cache-control"), "private, no-store");
 });
 
 test("the real artwork policy limits hero and divinity assets without database writes", async () => {
