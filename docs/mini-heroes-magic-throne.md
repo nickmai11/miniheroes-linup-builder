@@ -390,13 +390,18 @@ is said. These override anything marked (web).
 ## How the app models it
 
 - Build attributes have three owner-assigned priority tiers: **Must have**,
-  **Should have**, and **OK to have**, shown with visual markers and a legend.
+  **Should have**, and **OK to have**, shown as a gold diamond, blue dot, and gray
+  ring, with a shared legend. Rune attributes, weapon attributes, and cores each
+  store a `priority` (`build_priority`: must | should | optional). Existing
+  selections default to Should have. Editing cycles through the tiers and then
+  removes the selection; imports preserve tiers. Pick order is retained within
+  each tier.
 
 - Hero builds include hand-picked **cores** from that hero's recorded talent
-  bonuses, alongside rune and weapon attributes. Core selections use pick order
-  as priority. A build may contain only cores.
-- `hero_build_cores` links each build to its hero's cores with `sortOrder` for
-  priority. Hero detail synchronization matches cores by name, keeping IDs and
+  bonuses, alongside rune and weapon attributes. Core selections have the same
+  three tiers. A build may contain only cores.
+- `hero_build_cores` links each build to its hero's cores with `priority` for the
+  tier and `sortOrder` within it. Hero detail synchronization matches cores by name, keeping IDs and
   build selections stable. Imports map matching gear names to the destination
   hero's own effects; unavailable names are reported instead of copied.
 

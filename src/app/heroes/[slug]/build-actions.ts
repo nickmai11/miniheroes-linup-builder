@@ -6,6 +6,7 @@ import { z } from "zod";
 import { db, schema } from "@/db";
 import { matchBuildCores } from "@/lib/build-cores";
 import { buildSchema, type BuildInput } from "@/lib/build-input";
+import { DEFAULT_BUILD_PRIORITY } from "@/lib/build-priorities";
 import { canEditLocally, LOCAL_EDITING_ERROR } from "@/lib/local-editing";
 
 export type BuildActionState = { error?: string; id?: number; notice?: string };
@@ -95,13 +96,16 @@ export async function saveHeroBuild(
         .returning({ id: schema.heroBuilds.id });
       buildId = row.id;
     }
-    // Array order = the order the owner picked them = priority.
+    // Preserve pick order within the independently selected priority tiers.
     if (runeIds.length > 0)
       await tx.insert(schema.heroBuildRunes).values(
         runeIds.map((runeAttributeId, sortOrder) => ({
           buildId,
           runeAttributeId,
           sortOrder,
+          priority:
+            parsed.data.runePriorities[runeAttributeId] ??
+            DEFAULT_BUILD_PRIORITY,
         })),
       );
     if (weaponIds.length > 0)
@@ -110,14 +114,21 @@ export async function saveHeroBuild(
           buildId,
           weaponAttributeId,
           sortOrder,
+          priority:
+            parsed.data.weaponPriorities[weaponAttributeId] ??
+            DEFAULT_BUILD_PRIORITY,
         })),
       );
     if (coreIds.length > 0)
-      await tx
-        .insert(schema.heroBuildCores)
-        .values(
-          coreIds.map((coreId, sortOrder) => ({ buildId, coreId, sortOrder })),
-        );
+      await tx.insert(schema.heroBuildCores).values(
+        coreIds.map((coreId, sortOrder) => ({
+          buildId,
+          coreId,
+          sortOrder,
+          priority:
+            parsed.data.corePriorities[coreId] ?? DEFAULT_BUILD_PRIORITY,
+        })),
+      );
     return buildId;
   });
   if (buildId === null) return { error: "Build not found" };
@@ -160,7 +171,10 @@ export async function importHeroBuild(
 
   const [runeRows, weaponRows, coreRows, targetCores] = await Promise.all([
     db
-      .select({ runeAttributeId: schema.heroBuildRunes.runeAttributeId })
+      .select({
+        runeAttributeId: schema.heroBuildRunes.runeAttributeId,
+        priority: schema.heroBuildRunes.priority,
+      })
       .from(schema.heroBuildRunes)
       .where(eq(schema.heroBuildRunes.buildId, sourceBuildId))
       .orderBy(
@@ -168,7 +182,10 @@ export async function importHeroBuild(
         asc(schema.heroBuildRunes.id),
       ),
     db
-      .select({ weaponAttributeId: schema.heroBuildWeapons.weaponAttributeId })
+      .select({
+        weaponAttributeId: schema.heroBuildWeapons.weaponAttributeId,
+        priority: schema.heroBuildWeapons.priority,
+      })
       .from(schema.heroBuildWeapons)
       .where(eq(schema.heroBuildWeapons.buildId, sourceBuildId))
       .orderBy(
@@ -176,7 +193,10 @@ export async function importHeroBuild(
         asc(schema.heroBuildWeapons.id),
       ),
     db
-      .select({ name: schema.heroCores.name })
+      .select({
+        name: schema.heroCores.name,
+        priority: schema.heroBuildCores.priority,
+      })
       .from(schema.heroBuildCores)
       .innerJoin(
         schema.heroCores,
@@ -198,6 +218,13 @@ export async function importHeroBuild(
       .where(eq(schema.heroCores.heroId, heroId)),
   ]);
   const { coreIds, skippedCoreNames } = matchBuildCores(coreRows, targetCores);
+  const corePriorities = new Map(
+    targetCores.map((core) => [
+      core.id,
+      coreRows.find((sourceCore) => sourceCore.name === core.name)?.priority ??
+        DEFAULT_BUILD_PRIORITY,
+    ]),
+  );
   if (runeRows.length + weaponRows.length + coreIds.length === 0)
     return {
       error:
@@ -214,6 +241,7 @@ export async function importHeroBuild(
         runeRows.map((r, sortOrder) => ({
           buildId: row.id,
           runeAttributeId: r.runeAttributeId,
+          priority: r.priority,
           sortOrder,
         })),
       );
@@ -222,19 +250,19 @@ export async function importHeroBuild(
         weaponRows.map((w, sortOrder) => ({
           buildId: row.id,
           weaponAttributeId: w.weaponAttributeId,
+          priority: w.priority,
           sortOrder,
         })),
       );
     if (coreIds.length > 0)
-      await tx
-        .insert(schema.heroBuildCores)
-        .values(
-          coreIds.map((coreId, sortOrder) => ({
-            buildId: row.id,
-            coreId,
-            sortOrder,
-          })),
-        );
+      await tx.insert(schema.heroBuildCores).values(
+        coreIds.map((coreId, sortOrder) => ({
+          buildId: row.id,
+          coreId,
+          sortOrder,
+          priority: corePriorities.get(coreId) ?? DEFAULT_BUILD_PRIORITY,
+        })),
+      );
     return row.id;
   });
 

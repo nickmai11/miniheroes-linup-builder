@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { buildSchema } from "../src/lib/build-input.ts";
+import { loadTypeScript } from "./load-typescript.mjs";
 import { matchBuildCores } from "../src/lib/build-cores.ts";
+
+const { buildSchema } = loadTypeScript("src/lib/build-input.ts");
 
 const empty = {
   heroId: 1,

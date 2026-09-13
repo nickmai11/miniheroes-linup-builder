@@ -2,12 +2,14 @@ import {
   boolean,
   index,
   integer,
+  pgEnum,
   pgTable,
   real,
   text,
   timestamp,
   unique,
 } from "drizzle-orm/pg-core";
+import { BUILD_PRIORITIES } from "@/lib/build-priorities";
 
 export const notes = pgTable("notes", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
@@ -261,10 +263,9 @@ export const heroBuilds = pgTable(
 
 export type HeroBuildRow = typeof heroBuilds.$inferSelect;
 
-/**
- * Rune attributes chosen for a build (any rune type). `sortOrder` is the order
- * the owner picked them in: first picked = most important = shown first.
- */
+export const buildPriority = pgEnum("build_priority", BUILD_PRIORITIES);
+
+/** Rune attributes with an explicit tier; sortOrder preserves pick order within it. */
 export const heroBuildRunes = pgTable(
   "hero_build_runes",
   {
@@ -275,6 +276,7 @@ export const heroBuildRunes = pgTable(
     runeAttributeId: integer("rune_attribute_id")
       .notNull()
       .references(() => runeAttributes.id, { onDelete: "cascade" }),
+    priority: buildPriority("priority").notNull().default("should"),
     sortOrder: integer("sort_order").notNull().default(0),
   },
   (t) => [
@@ -283,7 +285,7 @@ export const heroBuildRunes = pgTable(
   ],
 );
 
-/** Weapon attributes chosen for a build, `sortOrder` = pick order (priority). */
+/** Weapon attributes with an explicit tier and stable pick order. */
 export const heroBuildWeapons = pgTable(
   "hero_build_weapons",
   {
@@ -294,6 +296,7 @@ export const heroBuildWeapons = pgTable(
     weaponAttributeId: integer("weapon_attribute_id")
       .notNull()
       .references(() => weaponAttributes.id, { onDelete: "cascade" }),
+    priority: buildPriority("priority").notNull().default("should"),
     sortOrder: integer("sort_order").notNull().default(0),
   },
   (t) => [
@@ -302,7 +305,7 @@ export const heroBuildWeapons = pgTable(
   ],
 );
 
-/** Hero-specific cores chosen for a build, in priority order. */
+/** Hero-specific cores with an explicit tier and stable pick order. */
 export const heroBuildCores = pgTable(
   "hero_build_cores",
   {
@@ -313,6 +316,7 @@ export const heroBuildCores = pgTable(
     coreId: integer("core_id")
       .notNull()
       .references(() => heroCores.id, { onDelete: "cascade" }),
+    priority: buildPriority("priority").notNull().default("should"),
     sortOrder: integer("sort_order").notNull().default(0),
   },
   (t) => [

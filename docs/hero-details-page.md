@@ -18,7 +18,7 @@ button in the left column):
 | **Awakening skills** | I (18★) and III (22★): stage, unlock stars, skill name and description, without icons; an unrecorded stage has an empty state | `HERO_AWAKENING_STAGES` and `heroDetailSeeds[slug].awakeningSkills` in `src/data/hero-details.ts` |
 | **Artifacts**  | artifact image + name; one row per quality tier (purple, gold, red, rainbow) with the diamond, the talent it modifies or the artifact's own skill, and the description                                                                           | `heroes.artifactName/IconUrl`, `hero_artifact_bonuses`  |
 | **Divinities** | the hero's mythic (red) divinities as equal-width badge cards, each linking to `/divinities/<slug>` (the heroes that share it)                                                                                                                   | `hero_divinities` → `divinities`                        |
-| **Builds**     | the owner's builds for the hero: name, notes, chosen rune attributes grouped by rune type, weapon attributes, and hero cores, each in pick order with a rank number (first picked = most important); editable in place (new / edit / delete) | `hero_builds`, `hero_build_runes`, `hero_build_weapons`, `hero_build_cores` |
+| **Builds**     | the owner's builds for the hero: name, notes, chosen rune attributes grouped by rune type, weapon attributes, and hero cores, each with a Must have / Should have / OK to have tier; editable in place (new / edit / delete) | `hero_builds`, `hero_build_runes`, `hero_build_weapons`, `hero_build_cores` |
 | Lineups        | saved lineups that use the hero                                                                                                                                                                                                                  | `lineup_heroes`                                         |
 
 Awakening I and III are recorded for **Sea Captain**, **Nezha**, **Shadow Fiend**,
@@ -36,12 +36,20 @@ and keeps the results in a scrollable panel. Select a build, then choose **Impor
 build** to copy its name, notes, attribute priorities, and matching core priorities.
 Searching or changing pages clears the selection; Cancel or Escape closes the picker.
 
-Builds also include **Cores**, picked from this hero's recorded cores with rank
-numbers in pick order, alongside Runes and Weapons. Core descriptions appear on
+Build attributes and cores use three priority tiers: **Must have** (gold diamond),
+**Should have** (blue dot), and **OK to have** (gray ring). A shared legend explains
+the markers; accessible names and tooltips also spell out the tier. In the editor,
+clicking a chip cycles through those tiers and then removes it. Saved selections
+are grouped by tier within each rune type, Weapons, and Cores, preserving pick
+order within a tier. Existing selections start in **Should have**.
+
+Builds also include **Cores**, picked from this hero's recorded cores with the same
+priority tiers as Runes and Weapons. Core descriptions appear on
 hover. A build may contain only cores; heroes without recorded cores show an
 empty state in the picker. Existing builds start with no selected cores.
-Imports match core gear names to the destination hero's own core records and
-effects, preserving priority. Unmatched names are reported after import; an
+Imports preserve every selected attribute's tier and match core gear names to the
+destination hero's own core records and effects, preserving their tiers and order.
+Unmatched names are reported after import; an
 import with no usable attributes or cores is rejected.
 
 Build creation, editing, importing, deletion, and the "Start a lineup" link are
@@ -154,10 +162,11 @@ write, or an additional database query on page load.
 - `divinities`: `slug`, `name`, `kind`, `iconUrl` (catalog of mythic divinities).
 - `hero_builds`: `name`, `notes`; `hero_build_runes` → `rune_attributes`,
   `hero_build_weapons` → `weapon_attributes`, both with `sortOrder` = pick order
-  (priority). The only hero data edited in the app (the rest is seeded from files).
+  and `priority` = must | should | optional (the `build_priority` enum). The only
+  hero data edited in the app (the rest is seeded from files).
   Attributes are picked from the catalogs, never typed.
 - `hero_build_cores`: `buildId` → `hero_builds`, `coreId` → `hero_cores`,
-  `sortOrder` = pick priority. A core must belong to the build's hero; each core
+  `sortOrder` = pick order, `priority` = the same tier enum. A core must belong to the build's hero; each core
   can appear once per build. Deleting a build or core cascades to its selections.
 
 Schema changes need a Drizzle migration; append the RLS policy + grant for

@@ -5,7 +5,7 @@ import type { HeroBuild, ImportableBuildPage } from "@/lib/build-types";
 
 /**
  * A hero's builds, oldest first, each with its chosen rune attributes, weapon
- * attributes and cores in the order the owner picked them (first = most important).
+ * attributes and cores in pick order, with each selection's saved priority tier.
  */
 export async function getHeroBuilds(heroId: number): Promise<HeroBuild[]> {
   const builds = await db
@@ -21,6 +21,7 @@ export async function getHeroBuilds(heroId: number): Promise<HeroBuild[]> {
       .select({
         buildId: schema.heroBuildRunes.buildId,
         rune: schema.runeAttributes,
+        priority: schema.heroBuildRunes.priority,
       })
       .from(schema.heroBuildRunes)
       .innerJoin(
@@ -36,6 +37,7 @@ export async function getHeroBuilds(heroId: number): Promise<HeroBuild[]> {
       .select({
         buildId: schema.heroBuildWeapons.buildId,
         weapon: schema.weaponAttributes,
+        priority: schema.heroBuildWeapons.priority,
       })
       .from(schema.heroBuildWeapons)
       .innerJoin(
@@ -54,6 +56,7 @@ export async function getHeroBuilds(heroId: number): Promise<HeroBuild[]> {
       .select({
         buildId: schema.heroBuildCores.buildId,
         core: schema.heroCores,
+        priority: schema.heroBuildCores.priority,
       })
       .from(schema.heroBuildCores)
       .innerJoin(
@@ -74,9 +77,15 @@ export async function getHeroBuilds(heroId: number): Promise<HeroBuild[]> {
 
   return builds.map((b) => ({
     ...b,
-    runes: runeRows.filter((r) => r.buildId === b.id).map((r) => r.rune),
-    weapons: weaponRows.filter((w) => w.buildId === b.id).map((w) => w.weapon),
-    cores: coreRows.filter((c) => c.buildId === b.id).map((c) => c.core),
+    runes: runeRows
+      .filter((r) => r.buildId === b.id)
+      .map((r) => ({ ...r.rune, priority: r.priority })),
+    weapons: weaponRows
+      .filter((w) => w.buildId === b.id)
+      .map((w) => ({ ...w.weapon, priority: w.priority })),
+    cores: coreRows
+      .filter((c) => c.buildId === b.id)
+      .map((c) => ({ ...c.core, priority: c.priority })),
   }));
 }
 

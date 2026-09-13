@@ -14,6 +14,14 @@ import {
   type WeaponAttribute,
 } from "@/db/schema";
 import type { HeroBuild } from "@/lib/build-types";
+import {
+  BUILD_PRIORITIES,
+  BUILD_PRIORITY_LABELS,
+  DEFAULT_BUILD_PRIORITY,
+  nextBuildPriority,
+  sortByBuildPriority,
+  type BuildPriority,
+} from "@/lib/build-priorities";
 import { RUNE_TYPE_LABELS } from "@/lib/hero-labels";
 import { cn } from "@/lib/utils";
 import {
@@ -38,7 +46,7 @@ function runeTypeShort(type: RuneType) {
   return RUNE_TYPE_LABELS[type].replace(/ Runes$/, "");
 }
 
-/** Ids are kept in pick order: first picked = most important = shown first. */
+/** Pick order remains stable within each separately assigned tier. */
 type Draft = {
   id?: number;
   name: string;
@@ -46,6 +54,9 @@ type Draft = {
   runeIds: number[];
   weaponIds: number[];
   coreIds: number[];
+  runePriorities: Record<number, BuildPriority>;
+  weaponPriorities: Record<number, BuildPriority>;
+  corePriorities: Record<number, BuildPriority>;
 };
 
 function draftFrom(build?: HeroBuild): Draft {
@@ -56,13 +67,22 @@ function draftFrom(build?: HeroBuild): Draft {
     runeIds: build?.runes.map((r) => r.id) ?? [],
     weaponIds: build?.weapons.map((w) => w.id) ?? [],
     coreIds: build?.cores.map((c) => c.id) ?? [],
+    runePriorities: Object.fromEntries(
+      build?.runes.map((r) => [r.id, r.priority]) ?? [],
+    ),
+    weaponPriorities: Object.fromEntries(
+      build?.weapons.map((w) => [w.id, w.priority]) ?? [],
+    ),
+    corePriorities: Object.fromEntries(
+      build?.cores.map((c) => [c.id, c.priority]) ?? [],
+    ),
   };
 }
 
-function groupRunes(runes: RuneAttribute[]): [RuneType, RuneAttribute[]][] {
+function groupRunes<T extends RuneAttribute>(runes: T[]): [RuneType, T[]][] {
   return RUNE_TYPES.flatMap((t) => {
     const list = runes.filter((r) => r.runeType === t);
-    return list.length > 0 ? [[t, list] as [RuneType, RuneAttribute[]]] : [];
+    return list.length > 0 ? [[t, list] as [RuneType, T[]]] : [];
   });
 }
 
@@ -113,23 +133,28 @@ export function HeroBuilds({
     setError(null);
   }
 
-  function toggle(key: "runeIds" | "weaponIds" | "coreIds", id: number) {
+  function cyclePriority(key: "runeIds" | "weaponIds" | "coreIds", id: number) {
     setDraft((d) => {
       if (!d) return d;
-      const next = d[key].includes(id)
-        ? d[key].filter((x) => x !== id)
-        : [...d[key], id];
-      return { ...d, [key]: next };
+      const field = {
+        runeIds: "runePriorities",
+        weaponIds: "weaponPriorities",
+        coreIds: "corePriorities",
+      }[key] as "runePriorities" | "weaponPriorities" | "corePriorities";
+      const selected = d[key].includes(id);
+      const next = nextBuildPriority(
+        selected ? (d[field][id] ?? DEFAULT_BUILD_PRIORITY) : undefined,
+      );
+      const priorities = { ...d[field] };
+      if (next) priorities[id] = next;
+      else delete priorities[id];
+      const ids = next
+        ? selected
+          ? d[key]
+          : [...d[key], id]
+        : d[key].filter((value) => value !== id);
+      return { ...d, [key]: ids, [field]: priorities };
     });
-  }
-
-  /** 1-based priority of a picked rune among the picked runes of its type. */
-  function runeRank(d: Draft, rune: RuneAttribute) {
-    const sameType = d.runeIds.filter(
-      (id) => runeById.get(id)?.runeType === rune.runeType,
-    );
-    const i = sameType.indexOf(rune.id);
-    return i === -1 ? null : i + 1;
   }
 
   function doImport(sourceBuildId: number) {
@@ -161,6 +186,9 @@ export function HeroBuilds({
         runeAttributeIds: draft.runeIds,
         weaponAttributeIds: draft.weaponIds,
         coreIds: draft.coreIds,
+        runePriorities: draft.runePriorities,
+        weaponPriorities: draft.weaponPriorities,
+        corePriorities: draft.corePriorities,
       });
       if (result.error) setError(result.error);
       else setDraft(null);
@@ -179,10 +207,10 @@ export function HeroBuilds({
   const picked = draft
     ? draft.runeIds.length + draft.weaponIds.length + draft.coreIds.length
     : 0;
-  const runeById = new Map(runeAttributes.map((r) => [r.id, r]));
 
   return (
     <div className="flex flex-col gap-4">
+      {(builds.length > 0 || draft) && <PriorityLegend />}
       {notice && (
         <p role="status" className="text-muted-foreground text-sm">
           {notice}
@@ -235,22 +263,28 @@ export function HeroBuilds({
 
             {build.runes.length > 0 && (
               <BuildSection title="Runes">
-                {groupRunes(build.runes).map(([type, list]) => (
-                  <AttributeGroup key={type} title={runeTypeShort(type)}>
-                    {list.map((r, i) => (
-                      <Chip key={r.id} title={r.description} rank={i + 1}>
-                        {r.name}
-                      </Chip>
-                    ))}
-                  </AttributeGroup>
-                ))}
+                {groupRunes(sortByBuildPriority(build.runes)).map(
+                  ([type, list]) => (
+                    <AttributeGroup key={type} title={runeTypeShort(type)}>
+                      {list.map((r) => (
+                        <Chip
+                          key={r.id}
+                          title={r.description}
+                          priority={r.priority}
+                        >
+                          {r.name}
+                        </Chip>
+                      ))}
+                    </AttributeGroup>
+                  ),
+                )}
               </BuildSection>
             )}
             {build.weapons.length > 0 && (
               <BuildSection title="Weapons">
                 <div className="flex flex-wrap gap-1.5">
-                  {build.weapons.map((w, i) => (
-                    <Chip key={w.id} rank={i + 1}>
+                  {sortByBuildPriority(build.weapons).map((w) => (
+                    <Chip key={w.id} priority={w.priority}>
                       {w.name}
                     </Chip>
                   ))}
@@ -260,8 +294,12 @@ export function HeroBuilds({
             {build.cores.length > 0 && (
               <BuildSection title="Cores">
                 <div className="flex flex-wrap gap-1.5">
-                  {build.cores.map((core, i) => (
-                    <Chip key={core.id} title={core.description} rank={i + 1}>
+                  {sortByBuildPriority(build.cores).map((core) => (
+                    <Chip
+                      key={core.id}
+                      title={core.description}
+                      priority={core.priority}
+                    >
                       {core.name}
                     </Chip>
                   ))}
@@ -309,8 +347,8 @@ export function HeroBuilds({
             </div>
 
             <p className="text-muted-foreground text-sm">
-              Click attributes and cores in order of importance: the first one
-              you click is shown first. Click again to remove.
+              Click a chip to cycle: Must have → Should have → OK to have →
+              remove.
             </p>
 
             <BuildSection title="Runes">
@@ -321,9 +359,8 @@ export function HeroBuilds({
                     .map((r) => (
                       <Chip
                         key={r.id}
-                        pressed={draft.runeIds.includes(r.id)}
-                        rank={runeRank(draft, r)}
-                        onClick={() => toggle("runeIds", r.id)}
+                        priority={draft.runePriorities[r.id]}
+                        onClick={() => cyclePriority("runeIds", r.id)}
                         title={[r.description, r.analysis]
                           .filter(Boolean)
                           .join("\n")}
@@ -339,13 +376,8 @@ export function HeroBuilds({
                 {weaponAttributes.map((w) => (
                   <Chip
                     key={w.id}
-                    pressed={draft.weaponIds.includes(w.id)}
-                    rank={
-                      draft.weaponIds.includes(w.id)
-                        ? draft.weaponIds.indexOf(w.id) + 1
-                        : null
-                    }
-                    onClick={() => toggle("weaponIds", w.id)}
+                    priority={draft.weaponPriorities[w.id]}
+                    onClick={() => cyclePriority("weaponIds", w.id)}
                   >
                     {w.name}
                   </Chip>
@@ -359,13 +391,8 @@ export function HeroBuilds({
                   {cores.map((core) => (
                     <Chip
                       key={core.id}
-                      pressed={draft.coreIds.includes(core.id)}
-                      rank={
-                        draft.coreIds.includes(core.id)
-                          ? draft.coreIds.indexOf(core.id) + 1
-                          : null
-                      }
-                      onClick={() => toggle("coreIds", core.id)}
+                      priority={draft.corePriorities[core.id]}
+                      onClick={() => cyclePriority("coreIds", core.id)}
                       title={core.description}
                     >
                       {core.name}
@@ -475,35 +502,83 @@ function AttributeGroup({
   );
 }
 
-/**
- * An attribute pill; interactive (toggle) when `onClick` is given. `rank` is
- * the 1-based priority shown as a small number at the front.
- */
+const PRIORITY_STYLES: Record<BuildPriority, string> = {
+  must: "border-amber-500/45 bg-amber-500/10",
+  should: "border-sky-500/40 bg-sky-500/10",
+  optional: "border-foreground/20 bg-muted/40",
+};
+
+function PriorityMarker({ priority }: { priority: BuildPriority }) {
+  return (
+    <span
+      aria-hidden
+      className={cn(
+        "inline-block size-2 shrink-0",
+        priority === "must" &&
+          "rotate-45 rounded-[1px] bg-amber-600 dark:bg-amber-400",
+        priority === "should" && "rounded-full bg-sky-600 dark:bg-sky-400",
+        priority === "optional" &&
+          "border-muted-foreground rounded-full border",
+      )}
+    />
+  );
+}
+
+function PriorityLegend() {
+  return (
+    <ul
+      aria-label="Attribute priority"
+      className="text-muted-foreground flex flex-wrap gap-x-4 gap-y-2 text-xs"
+    >
+      {BUILD_PRIORITIES.map((priority) => (
+        <li key={priority} className="flex items-center gap-2">
+          <PriorityMarker priority={priority} />
+          {BUILD_PRIORITY_LABELS[priority]}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** Colors and marker shapes convey tiers; accessible names also spell them out. */
 function Chip({
   children,
-  pressed,
+  priority,
   onClick,
   title,
-  rank,
 }: {
-  children: React.ReactNode;
-  pressed?: boolean;
+  children: string;
+  priority?: BuildPriority;
   onClick?: () => void;
   title?: string;
-  rank?: number | null;
 }) {
   const base =
-    "inline-flex h-7 items-center gap-1.5 rounded-md border px-2 text-xs font-medium whitespace-nowrap";
-  const badge = rank ? (
-    <span className="bg-primary text-primary-foreground -ml-1 inline-flex size-4 items-center justify-center rounded-full text-[10px] leading-none font-semibold tabular-nums">
-      {rank}
-    </span>
-  ) : null;
+    "inline-flex min-h-7 max-w-full items-center gap-2 rounded-md border px-2 py-1 text-left text-xs leading-4 font-medium";
+  const label = priority ? BUILD_PRIORITY_LABELS[priority] : "Not selected";
+  const next = nextBuildPriority(priority);
+  const action = next ? `Set to ${BUILD_PRIORITY_LABELS[next]}` : "Remove";
+  const description = [`${children} — ${label}`, title, onClick ? action : null]
+    .filter(Boolean)
+    .join("\n");
+  const content = (
+    <>
+      {priority ? (
+        <PriorityMarker priority={priority} />
+      ) : (
+        <Plus className="size-3 shrink-0" aria-hidden />
+      )}
+      <span className="min-w-0 break-words">{children}</span>
+    </>
+  );
   if (!onClick) {
     return (
-      <span className={cn(base, "bg-muted/40")} title={title}>
-        {badge}
-        {children}
+      <span
+        className={cn(base, priority && PRIORITY_STYLES[priority])}
+        title={description}
+        data-priority={priority}
+      >
+        {content}
+        <span className="sr-only">, {label}</span>
       </span>
     );
   }
@@ -511,18 +586,19 @@ function Chip({
     <button
       type="button"
       onClick={onClick}
-      aria-pressed={pressed}
-      title={title}
+      aria-pressed={priority !== undefined}
+      aria-label={`${children}: ${label}. ${action}`}
+      title={description}
+      data-priority={priority}
       className={cn(
         base,
         "focus-visible:ring-ring/50 transition-colors focus-visible:ring-3 focus-visible:outline-none",
-        pressed
-          ? "border-primary bg-primary/15 text-foreground"
-          : "hover:border-primary/60 text-muted-foreground bg-transparent",
+        priority
+          ? PRIORITY_STYLES[priority]
+          : "hover:border-primary/60 text-muted-foreground border-dashed bg-transparent",
       )}
     >
-      {badge}
-      {children}
+      {content}
     </button>
   );
 }
