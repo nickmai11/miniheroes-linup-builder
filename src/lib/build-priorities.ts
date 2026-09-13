@@ -1,14 +1,13 @@
-export const BUILD_PRIORITIES = ["must", "should", "optional"] as const;
+export const BUILD_PRIORITIES = ["must", "optional"] as const;
 export type BuildPriority = (typeof BUILD_PRIORITIES)[number];
-export const DEFAULT_BUILD_PRIORITY: BuildPriority = "should";
+export const DEFAULT_BUILD_PRIORITY: BuildPriority = "optional";
 
 export const BUILD_PRIORITY_LABELS: Record<BuildPriority, string> = {
   must: "Must have",
-  should: "Should have",
   optional: "OK to have",
 };
 
-/** A fourth click removes the selection. */
+/** A third click removes the selection. */
 export function nextBuildPriority(
   priority?: BuildPriority,
 ): BuildPriority | undefined {

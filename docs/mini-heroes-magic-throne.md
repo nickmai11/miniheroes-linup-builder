@@ -469,6 +469,8 @@ is said. These override anything marked (web).
 
 - 2026-09-13 — The owner requested three priority categories for build attributes: **Must have**, **Should have**, and **OK to have**. The categories may be indicated with colors or other visual cues rather than repeated text labels on every attribute.
 - 2026-09-13 — The owner requested a **Reset** button on every build section and subsection.
+- 2026-09-13 — The owner removed **Should have** from build priorities. All previous Should have selections become **OK to have**, leaving only **Must have** and **OK to have**.
+- 2026-09-13 — **OK to have** must use the former Should have blue styling. The owner reiterated that previous Should have data becomes OK to have.
 
 - 2026-09-13 — The owner requested that **hero listing pages show only heroes with recorded details**.
 
@@ -483,18 +485,18 @@ is said. These override anything marked (web).
 
 ## How the app models it
 
-- Build attributes have three owner-assigned priority tiers: **Must have**,
-  **Should have**, and **OK to have**, shown as a gold diamond, blue dot, and gray
-  ring, with a shared legend. Rune attributes, weapon attributes, and cores each
-  store a `priority` (`build_priority`: must | should | optional). Existing
-  selections default to Should have. Editing cycles through the tiers and then
+- Build attributes have two owner-assigned priority tiers: **Must have** and
+  **OK to have**, shown as a gold diamond and blue dot, with a shared legend.
+  Rune attributes, weapon attributes, and cores each store a `priority`
+  (`build_priority`: must | optional). Previous Should have selections become
+  OK to have, which is also the default. Editing cycles through the tiers and then
   removes the selection; imports preserve tiers. Pick order is retained within
   each tier. In the editor, Reset clears the draft selections and priorities for
   Runes, Weapons, Cores, or one rune type; the owner saves the build to apply it.
 
 - Hero builds include hand-picked **cores** from that hero's recorded talent
   bonuses, alongside rune and weapon attributes. Core selections have the same
-  three tiers. A build may contain only cores.
+  two tiers. A build may contain only cores.
 - `hero_build_cores` links each build to its hero's cores with `priority` for the
   tier and `sortOrder` within it. Hero detail synchronization matches cores by name, keeping IDs and
   build selections stable. Imports map matching gear names to the destination

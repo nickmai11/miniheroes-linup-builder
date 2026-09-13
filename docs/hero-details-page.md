@@ -23,7 +23,7 @@ button in the left column):
 | **Awakening skills** | I (18★) and III (22★): stage, unlock stars, skill name and description, without icons; an unrecorded stage has an empty state | `HERO_AWAKENING_STAGES` and `heroDetailSeeds[slug].awakeningSkills` in `src/data/hero-details.ts` |
 | **Artifacts**  | artifact image + name; one row per quality tier (purple, gold, red, rainbow) with the diamond, the talent it modifies or the artifact's own skill, and the description                                                                           | `heroes.artifactName/IconUrl`, `hero_artifact_bonuses`  |
 | **Divinities** | the hero's mythic (red) divinities as equal-width badge cards, each linking to `/divinities/<slug>` (the heroes that share it)                                                                                                                   | `hero_divinities` → `divinities`                        |
-| **Builds**     | the owner's builds for the hero: name, notes, chosen rune attributes grouped by rune type, weapon attributes, and hero cores, each with a Must have / Should have / OK to have tier; editable in place (new / edit / delete) | `hero_builds`, `hero_build_runes`, `hero_build_weapons`, `hero_build_cores` |
+| **Builds**     | the owner's builds for the hero: name, notes, chosen rune attributes grouped by rune type, weapon attributes, and hero cores, each with a Must have / OK to have tier; editable in place (new / edit / delete) | `hero_builds`, `hero_build_runes`, `hero_build_weapons`, `hero_build_cores` |
 | Lineups        | saved lineups that use the hero                                                                                                                                                                                                                  | `lineup_heroes`                                         |
 
 Awakening I and III are recorded for **Sea Captain**, **Nezha**, **Shadow Fiend**,
@@ -46,12 +46,13 @@ and keeps the results in a scrollable panel. Select a build, then choose **Impor
 build** to copy its name, notes, attribute priorities, and matching core priorities.
 Searching or changing pages clears the selection; Cancel or Escape closes the picker.
 
-Build attributes and cores use three priority tiers: **Must have** (gold diamond),
-**Should have** (blue dot), and **OK to have** (gray ring). A shared legend explains
+Build attributes and cores use two priority tiers: **Must have** (gold diamond)
+and **OK to have** (the former Should have blue dot and chip tint). A shared legend explains
 the markers; accessible names and tooltips also spell out the tier. In the editor,
 clicking a chip cycles through those tiers and then removes it. Saved selections
 are grouped by tier within each rune type, Weapons, and Cores, preserving pick
-order within a tier. Existing selections start in **Should have**.
+order within a tier. Previous **Should have** selections become **OK to have**,
+which is also the default when no priority is supplied.
 
 The build editor has a **Reset** button for Runes, Weapons, Cores, and each rune
 type. Reset clears only that group's selections and priority assignments in the
@@ -194,7 +195,7 @@ write, or an additional database query on page load.
 - `divinities`: `slug`, `name`, `kind`, `iconUrl` (catalog of mythic divinities).
 - `hero_builds`: `name`, `notes`; `hero_build_runes` → `rune_attributes`,
   `hero_build_weapons` → `weapon_attributes`, both with `sortOrder` = pick order
-  and `priority` = must | should | optional (the `build_priority` enum). The only
+  and `priority` = must | optional (the `build_priority` enum). The only
   hero data edited in the app (the rest is seeded from files).
   Attributes are picked from the catalogs, never typed.
 - `hero_build_cores`: `buildId` → `hero_builds`, `coreId` → `hero_cores`,

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  DEFAULT_BUILD_PRIORITY,
   nextBuildPriority,
   sortByBuildPriority,
 } from "../src/lib/build-priorities.ts";
@@ -15,27 +16,27 @@ const input = {
   coreIds: [9],
 };
 
-test("chips cycle through all three tiers and then remove the selection", () => {
+test("chips cycle through both tiers and then remove the selection", () => {
   let priority;
   const steps = [];
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 4; i++) {
     priority = nextBuildPriority(priority);
     steps.push(priority);
   }
-  assert.deepEqual(steps, ["must", "should", "optional", undefined, "must"]);
+  assert.deepEqual(steps, ["must", "optional", undefined, "must"]);
 });
 
 test("sorting groups tiers while preserving pick order within each tier", () => {
   const selections = [
     { id: 1, priority: "optional" },
-    { id: 2, priority: "should" },
+    { id: 2, priority: "optional" },
     { id: 3, priority: "must" },
     { id: 4, priority: "must" },
-    { id: 5, priority: "should" },
+    { id: 5, priority: "optional" },
   ];
   assert.deepEqual(
     sortByBuildPriority(selections).map((item) => item.id),
-    [3, 4, 2, 5, 1],
+    [3, 4, 1, 2, 5],
   );
   assert.deepEqual(
     selections.map((item) => item.id),
@@ -47,7 +48,7 @@ test("accepts separate tiers for rune attributes, weapon attributes and cores", 
   const data = {
     ...input,
     runePriorities: { 3: "must", 8: "optional" },
-    weaponPriorities: { 5: "should" },
+    weaponPriorities: { 5: "optional" },
     corePriorities: { 9: "must" },
   };
   const parsed = buildSchema.parse(data);
@@ -57,6 +58,7 @@ test("accepts separate tiers for rune attributes, weapon attributes and cores", 
 });
 
 test("legacy selections remain valid when no explicit tiers are supplied", () => {
+  assert.equal(DEFAULT_BUILD_PRIORITY, "optional");
   const parsed = buildSchema.parse(input);
   assert.deepEqual(parsed.runePriorities, {});
   assert.deepEqual(parsed.weaponPriorities, {});
@@ -65,6 +67,7 @@ test("legacy selections remain valid when no explicit tiers are supplied", () =>
 
 test("rejects invalid tiers and priority assignments to unselected attributes", () => {
   for (const runePriorities of [
+    { 3: "should" },
     { 3: "critical" },
     { 3: null },
     { 99: "must" },

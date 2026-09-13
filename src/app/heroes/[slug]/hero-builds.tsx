@@ -366,8 +366,7 @@ export function HeroBuilds({
             </div>
 
             <p className="text-muted-foreground text-sm">
-              Click a chip to cycle: Must have → Should have → OK to have →
-              remove.
+              Click a chip to cycle: Must have → OK to have → remove.
             </p>
 
             <BuildSection
@@ -603,8 +602,7 @@ function ResetButton({
 
 const PRIORITY_STYLES: Record<BuildPriority, string> = {
   must: "border-amber-500/45 bg-amber-500/10",
-  should: "border-sky-500/40 bg-sky-500/10",
-  optional: "border-foreground/20 bg-muted/40",
+  optional: "border-sky-500/40 bg-sky-500/10",
 };
 
 function PriorityMarker({ priority }: { priority: BuildPriority }) {
@@ -615,9 +613,7 @@ function PriorityMarker({ priority }: { priority: BuildPriority }) {
         "inline-block size-2 shrink-0",
         priority === "must" &&
           "rotate-45 rounded-[1px] bg-amber-600 dark:bg-amber-400",
-        priority === "should" && "rounded-full bg-sky-600 dark:bg-sky-400",
-        priority === "optional" &&
-          "border-muted-foreground rounded-full border",
+        priority === "optional" && "rounded-full bg-sky-600 dark:bg-sky-400",
       )}
     />
   );

@@ -278,7 +278,7 @@ export const heroBuildRunes = pgTable(
     runeAttributeId: integer("rune_attribute_id")
       .notNull()
       .references(() => runeAttributes.id, { onDelete: "cascade" }),
-    priority: buildPriority("priority").notNull().default("should"),
+    priority: buildPriority("priority").notNull().default("optional"),
     sortOrder: integer("sort_order").notNull().default(0),
   },
   (t) => [
@@ -298,7 +298,7 @@ export const heroBuildWeapons = pgTable(
     weaponAttributeId: integer("weapon_attribute_id")
       .notNull()
       .references(() => weaponAttributes.id, { onDelete: "cascade" }),
-    priority: buildPriority("priority").notNull().default("should"),
+    priority: buildPriority("priority").notNull().default("optional"),
     sortOrder: integer("sort_order").notNull().default(0),
   },
   (t) => [
@@ -318,7 +318,7 @@ export const heroBuildCores = pgTable(
     coreId: integer("core_id")
       .notNull()
       .references(() => heroCores.id, { onDelete: "cascade" }),
-    priority: buildPriority("priority").notNull().default("should"),
+    priority: buildPriority("priority").notNull().default("optional"),
     sortOrder: integer("sort_order").notNull().default(0),
   },
   (t) => [
