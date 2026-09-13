@@ -250,12 +250,14 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
               ) : (
                 <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                   {hero.divinities.map((d, i) => (
-                    <li
-                      key={`${d.id}-${i}`}
-                      className="flex items-center gap-2 rounded-lg border border-red-500/50 bg-red-500/10 px-3 py-2"
-                    >
-                      <DivinityIcon divinity={d} size={40} />
-                      <span className="text-sm font-medium">{d.name}</span>
+                    <li key={`${d.id}-${i}`}>
+                      <Link
+                        href={`/divinities/${d.slug}`}
+                        className="flex items-center gap-2 rounded-lg border border-red-500/50 bg-red-500/10 px-3 py-2 transition-colors hover:border-red-500"
+                      >
+                        <DivinityIcon divinity={d} size={40} />
+                        <span className="text-sm font-medium">{d.name}</span>
+                      </Link>
                     </li>
                   ))}
                 </ul>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { DivinityIcon } from "@/components/divinity-icon";
 import { PageShell } from "@/components/page-shell";
 import type { Divinity } from "@/db/schema";
@@ -38,12 +39,14 @@ export default async function DivinitiesPage() {
               </h2>
               <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                 {members.map((d) => (
-                  <li
-                    key={d.id}
-                    className="bg-card flex items-center gap-3 rounded-lg border p-3 shadow-xs"
-                  >
-                    <DivinityIcon divinity={d} size={48} />
-                    <span className="font-medium">{d.name}</span>
+                  <li key={d.id}>
+                    <Link
+                      href={`/divinities/${d.slug}`}
+                      className="bg-card hover:border-primary/60 flex items-center gap-3 rounded-lg border p-3 shadow-xs transition-colors"
+                    >
+                      <DivinityIcon divinity={d} size={48} />
+                      <span className="font-medium">{d.name}</span>
+                    </Link>
                   </li>
                 ))}
               </ul>

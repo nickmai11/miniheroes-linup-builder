@@ -25,12 +25,13 @@ type Props = {
   weaponAttributes: WeaponAttribute[];
 };
 
+/** Ids are kept in pick order: first picked = most important = shown first. */
 type Draft = {
   id?: number;
   name: string;
   notes: string;
-  runeIds: Set<number>;
-  weaponIds: Set<number>;
+  runeIds: number[];
+  weaponIds: number[];
 };
 
 function draftFrom(build?: HeroBuild): Draft {
@@ -38,8 +39,8 @@ function draftFrom(build?: HeroBuild): Draft {
     id: build?.id,
     name: build?.name ?? "",
     notes: build?.notes ?? "",
-    runeIds: new Set(build?.runes.map((r) => r.id) ?? []),
-    weaponIds: new Set(build?.weapons.map((w) => w.id) ?? []),
+    runeIds: build?.runes.map((r) => r.id) ?? [],
+    weaponIds: build?.weapons.map((w) => w.id) ?? [],
   };
 }
 
@@ -77,11 +78,20 @@ export function HeroBuilds({
   function toggle(key: "runeIds" | "weaponIds", id: number) {
     setDraft((d) => {
       if (!d) return d;
-      const next = new Set(d[key]);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      const next = d[key].includes(id)
+        ? d[key].filter((x) => x !== id)
+        : [...d[key], id];
       return { ...d, [key]: next };
     });
+  }
+
+  /** 1-based priority of a picked rune among the picked runes of its type. */
+  function runeRank(d: Draft, rune: RuneAttribute) {
+    const sameType = d.runeIds.filter(
+      (id) => runeById.get(id)?.runeType === rune.runeType,
+    );
+    const i = sameType.indexOf(rune.id);
+    return i === -1 ? null : i + 1;
   }
 
   function submit() {
@@ -93,8 +103,8 @@ export function HeroBuilds({
         heroId,
         name: draft.name,
         notes: draft.notes,
-        runeAttributeIds: [...draft.runeIds],
-        weaponAttributeIds: [...draft.weaponIds],
+        runeAttributeIds: draft.runeIds,
+        weaponAttributeIds: draft.weaponIds,
       });
       if (result.error) setError(result.error);
       else setDraft(null);
@@ -110,7 +120,8 @@ export function HeroBuilds({
     });
   }
 
-  const picked = draft ? draft.runeIds.size + draft.weaponIds.size : 0;
+  const picked = draft ? draft.runeIds.length + draft.weaponIds.length : 0;
+  const runeById = new Map(runeAttributes.map((r) => [r.id, r]));
 
   return (
     <div className="flex flex-col gap-4">
@@ -159,8 +170,8 @@ export function HeroBuilds({
 
             {groupRunes(build.runes).map(([type, list]) => (
               <AttributeGroup key={type} title={RUNE_TYPE_LABELS[type]}>
-                {list.map((r) => (
-                  <Chip key={r.id} title={r.description}>
+                {list.map((r, i) => (
+                  <Chip key={r.id} title={r.description} rank={i + 1}>
                     {r.name}
                     <span className="text-muted-foreground">
                       {formatMaxValue(r)}
@@ -171,8 +182,10 @@ export function HeroBuilds({
             ))}
             {build.weapons.length > 0 && (
               <AttributeGroup title="Weapons">
-                {build.weapons.map((w) => (
-                  <Chip key={w.id}>{w.name}</Chip>
+                {build.weapons.map((w, i) => (
+                  <Chip key={w.id} rank={i + 1}>
+                    {w.name}
+                  </Chip>
                 ))}
               </AttributeGroup>
             )}
@@ -216,7 +229,8 @@ export function HeroBuilds({
           </div>
 
           <p className="text-muted-foreground text-sm">
-            Click an attribute to add it to the build; click again to remove it.
+            Click attributes in order of importance: the first one you click is
+            shown first. Click again to remove.
           </p>
 
           {RUNE_TYPES.map((type) => (
@@ -226,7 +240,8 @@ export function HeroBuilds({
                 .map((r) => (
                   <Chip
                     key={r.id}
-                    pressed={draft.runeIds.has(r.id)}
+                    pressed={draft.runeIds.includes(r.id)}
+                    rank={runeRank(draft, r)}
                     onClick={() => toggle("runeIds", r.id)}
                     title={[r.description, r.analysis]
                       .filter(Boolean)
@@ -244,7 +259,12 @@ export function HeroBuilds({
             {weaponAttributes.map((w) => (
               <Chip
                 key={w.id}
-                pressed={draft.weaponIds.has(w.id)}
+                pressed={draft.weaponIds.includes(w.id)}
+                rank={
+                  draft.weaponIds.includes(w.id)
+                    ? draft.weaponIds.indexOf(w.id) + 1
+                    : null
+                }
                 onClick={() => toggle("weaponIds", w.id)}
               >
                 {w.name}
@@ -304,23 +324,34 @@ function AttributeGroup({
   );
 }
 
-/** An attribute pill; interactive (toggle) when `onClick` is given. */
+/**
+ * An attribute pill; interactive (toggle) when `onClick` is given. `rank` is
+ * the 1-based priority shown as a small number at the front.
+ */
 function Chip({
   children,
   pressed,
   onClick,
   title,
+  rank,
 }: {
   children: React.ReactNode;
   pressed?: boolean;
   onClick?: () => void;
   title?: string;
+  rank?: number | null;
 }) {
   const base =
     "inline-flex h-7 items-center gap-1.5 rounded-md border px-2 text-xs font-medium whitespace-nowrap";
+  const badge = rank ? (
+    <span className="bg-primary text-primary-foreground -ml-1 inline-flex size-4 items-center justify-center rounded-full text-[10px] leading-none font-semibold tabular-nums">
+      {rank}
+    </span>
+  ) : null;
   if (!onClick) {
     return (
       <span className={cn(base, "bg-muted/40")} title={title}>
+        {badge}
         {children}
       </span>
     );
@@ -339,6 +370,7 @@ function Chip({
           : "hover:border-primary/60 text-muted-foreground bg-transparent",
       )}
     >
+      {badge}
       {children}
     </button>
   );

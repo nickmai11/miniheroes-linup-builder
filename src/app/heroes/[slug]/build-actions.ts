@@ -84,17 +84,21 @@ export async function saveHeroBuild(
         .returning({ id: schema.heroBuilds.id });
       buildId = row.id;
     }
+    // Array order = the order the owner picked them = priority.
     if (runeIds.length > 0)
-      await tx
-        .insert(schema.heroBuildRunes)
-        .values(
-          runeIds.map((runeAttributeId) => ({ buildId, runeAttributeId })),
-        );
+      await tx.insert(schema.heroBuildRunes).values(
+        runeIds.map((runeAttributeId, sortOrder) => ({
+          buildId,
+          runeAttributeId,
+          sortOrder,
+        })),
+      );
     if (weaponIds.length > 0)
       await tx.insert(schema.heroBuildWeapons).values(
-        weaponIds.map((weaponAttributeId) => ({
+        weaponIds.map((weaponAttributeId, sortOrder) => ({
           buildId,
           weaponAttributeId,
+          sortOrder,
         })),
       );
     return buildId;

@@ -261,7 +261,10 @@ export const heroBuilds = pgTable(
 
 export type HeroBuildRow = typeof heroBuilds.$inferSelect;
 
-/** Rune attributes chosen for a build (any rune type). */
+/**
+ * Rune attributes chosen for a build (any rune type). `sortOrder` is the order
+ * the owner picked them in: first picked = most important = shown first.
+ */
 export const heroBuildRunes = pgTable(
   "hero_build_runes",
   {
@@ -272,6 +275,7 @@ export const heroBuildRunes = pgTable(
     runeAttributeId: integer("rune_attribute_id")
       .notNull()
       .references(() => runeAttributes.id, { onDelete: "cascade" }),
+    sortOrder: integer("sort_order").notNull().default(0),
   },
   (t) => [
     unique().on(t.buildId, t.runeAttributeId),
@@ -279,7 +283,7 @@ export const heroBuildRunes = pgTable(
   ],
 );
 
-/** Weapon attributes chosen for a build. */
+/** Weapon attributes chosen for a build, `sortOrder` = pick order (priority). */
 export const heroBuildWeapons = pgTable(
   "hero_build_weapons",
   {
@@ -290,6 +294,7 @@ export const heroBuildWeapons = pgTable(
     weaponAttributeId: integer("weapon_attribute_id")
       .notNull()
       .references(() => weaponAttributes.id, { onDelete: "cascade" }),
+    sortOrder: integer("sort_order").notNull().default(0),
   },
   (t) => [
     unique().on(t.buildId, t.weaponAttributeId),

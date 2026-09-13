@@ -268,6 +268,10 @@ is said. These override anything marked (web).
 - `lineups` + `lineup_heroes`: a named lineup with a free-text write-up and up to 5
   `(position, hero)` rows, position 0–4. Deleting a hero or lineup cascades.
 - `/divinities` — read-only list of all divinities, grouped by kind, icon + name.
+- `/divinities/[slug]` — one divinity: icon, name, kind, and the heroes whose mythic
+  divinities include it (portrait grid linking to the hero pages). Divinity badges on
+  `/divinities` and on hero pages link here. All seeded heroes are synced on load so
+  the list is complete regardless of which hero pages were opened.
 - `/heroes` — the pool: read-only portrait grid with search and class filter. Each
   hero is shown as `{class badge} {name}`; badges live in `public/badges/<role>.png`.
 - `/lineups/new` — click heroes into slots, add name + notes, save.

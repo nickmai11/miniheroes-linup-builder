@@ -10,15 +10,15 @@ facts behind these rules are in `mini-heroes-magic-throne.md` (Owner-stated fact
 In this order, top to bottom of the right column (portrait + "Start a lineup"
 button in the left column):
 
-| Section        | Content                                                                                                                                                                   | Source of truth                                         |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
-| Header         | class badge + name, class label                                                                                                                                           | `heroes` row (from Archive slices)                      |
-| Notes          | free text, only if set                                                                                                                                                    | `heroes.notes`                                          |
-| **Talents**    | six cards: icon, kind, unlock stars, name, description; under a card: its Artifact Bonus (tier diamond) and Core bonus (core gem)                                         | `hero_skills`, `hero_artifact_bonuses`, `hero_cores`    |
-| **Artifacts**  | artifact image + name; one row per quality tier (purple, gold, red, rainbow) with the diamond, the talent it modifies or the artifact's own skill, and the description    | `heroes.artifactName/IconUrl`, `hero_artifact_bonuses`  |
-| **Divinities** | the hero's mythic (red) divinities as equal-width badge cards                                                                                                             | `hero_divinities` → `divinities`                        |
-| **Builds**     | the owner's builds for the hero: name, notes, chosen rune attributes grouped by rune type (with max value) and weapon attributes; editable in place (new / edit / delete) | `hero_builds`, `hero_build_runes`, `hero_build_weapons` |
-| Lineups        | saved lineups that use the hero                                                                                                                                           | `lineup_heroes`                                         |
+| Section        | Content                                                                                                                                                                                                                                          | Source of truth                                         |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------- |
+| Header         | class badge + name, class label                                                                                                                                                                                                                  | `heroes` row (from Archive slices)                      |
+| Notes          | free text, only if set                                                                                                                                                                                                                           | `heroes.notes`                                          |
+| **Talents**    | six cards: icon, kind, unlock stars, name, description; under a card: its Artifact Bonus (tier diamond) and Core bonus (core gem)                                                                                                                | `hero_skills`, `hero_artifact_bonuses`, `hero_cores`    |
+| **Artifacts**  | artifact image + name; one row per quality tier (purple, gold, red, rainbow) with the diamond, the talent it modifies or the artifact's own skill, and the description                                                                           | `heroes.artifactName/IconUrl`, `hero_artifact_bonuses`  |
+| **Divinities** | the hero's mythic (red) divinities as equal-width badge cards, each linking to `/divinities/<slug>` (the heroes that share it)                                                                                                                   | `hero_divinities` → `divinities`                        |
+| **Builds**     | the owner's builds for the hero: name, notes, chosen rune attributes grouped by rune type (with max value) and weapon attributes, each in pick order with a rank number (first picked = most important); editable in place (new / edit / delete) | `hero_builds`, `hero_build_runes`, `hero_build_weapons` |
+| Lineups        | saved lineups that use the hero                                                                                                                                                                                                                  | `lineup_heroes`                                         |
 
 Still to build: **Awakening skills** (I–IV; II and IV are shared per class, so store
 those once per class). No screenshots yet.
@@ -101,9 +101,9 @@ up to date; there is no separate seed command.
 - `hero_divinities`: `divinityId`, `position` (0 = bottom-left, 1 = bottom-right).
 - `divinities`: `slug`, `name`, `kind`, `iconUrl` (catalog of mythic divinities).
 - `hero_builds`: `name`, `notes`; `hero_build_runes` → `rune_attributes`,
-  `hero_build_weapons` → `weapon_attributes`. The only hero data edited in the app
-  (the rest is seeded from files). Attributes are picked from the catalogs, never
-  typed.
+  `hero_build_weapons` → `weapon_attributes`, both with `sortOrder` = pick order
+  (priority). The only hero data edited in the app (the rest is seeded from files).
+  Attributes are picked from the catalogs, never typed.
 
 Schema changes need a Drizzle migration; append the RLS policy + grant for
 `lineup_app` to any new table by hand and apply as described in the game doc

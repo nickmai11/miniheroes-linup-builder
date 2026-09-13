@@ -2,9 +2,11 @@ import "server-only";
 import { asc, eq, inArray } from "drizzle-orm";
 import { db, schema } from "@/db";
 import type { HeroBuild } from "@/lib/build-types";
-import { RUNE_TYPES } from "@/db/schema";
 
-/** A hero's builds, oldest first, each with its chosen rune and weapon attributes. */
+/**
+ * A hero's builds, oldest first, each with its chosen rune and weapon
+ * attributes in the order the owner picked them (first = most important).
+ */
 export async function getHeroBuilds(heroId: number): Promise<HeroBuild[]> {
   const builds = await db
     .select()
@@ -25,7 +27,11 @@ export async function getHeroBuilds(heroId: number): Promise<HeroBuild[]> {
         schema.runeAttributes,
         eq(schema.heroBuildRunes.runeAttributeId, schema.runeAttributes.id),
       )
-      .where(inArray(schema.heroBuildRunes.buildId, ids)),
+      .where(inArray(schema.heroBuildRunes.buildId, ids))
+      .orderBy(
+        asc(schema.heroBuildRunes.sortOrder),
+        asc(schema.heroBuildRunes.id),
+      ),
     db
       .select({
         buildId: schema.heroBuildWeapons.buildId,
@@ -40,20 +46,15 @@ export async function getHeroBuilds(heroId: number): Promise<HeroBuild[]> {
         ),
       )
       .where(inArray(schema.heroBuildWeapons.buildId, ids))
-      .orderBy(asc(schema.weaponAttributes.sortOrder)),
+      .orderBy(
+        asc(schema.heroBuildWeapons.sortOrder),
+        asc(schema.heroBuildWeapons.id),
+      ),
   ]);
 
-  const typeOrder = new Map(RUNE_TYPES.map((t, i) => [t, i]));
   return builds.map((b) => ({
     ...b,
-    runes: runeRows
-      .filter((r) => r.buildId === b.id)
-      .map((r) => r.rune)
-      .sort(
-        (a, c) =>
-          typeOrder.get(a.runeType)! - typeOrder.get(c.runeType)! ||
-          a.sortOrder - c.sortOrder,
-      ),
+    runes: runeRows.filter((r) => r.buildId === b.id).map((r) => r.rune),
     weapons: weaponRows.filter((w) => w.buildId === b.id).map((w) => w.weapon),
   }));
 }
