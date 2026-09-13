@@ -128,7 +128,6 @@ export function LineupBuilder({
                 >
                   <HeroPortrait
                     hero={hero}
-                    divinities={hero.divinities}
                     sizes="(max-width: 640px) 33vw, 160px"
                   />
                   <HeroName
@@ -172,7 +171,6 @@ export function LineupBuilder({
                     {hero ? (
                       <HeroPortrait
                         hero={hero}
-                        divinities={hero.divinities}
                         className="ring-0"
                         sizes="110px"
                       />

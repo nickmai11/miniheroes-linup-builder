@@ -40,6 +40,17 @@ yet and must not be copied into hero-specific I/III data.
 The owner confirmed I unlocks at **18★** and III at **22★**. The shared thresholds
 live in `HERO_AWAKENING_STAGES`; show them beside the stage, including empty states.
 
+**Radiant Envoy** has six screenshot-backed talents, four cores, all four Wand
+of Light artifact tiers, and two mythic divinities from the owner's
+12.47.59–12.48.15 PM batch. The 12.48.06 PM scroll completes Mage Robe, and
+12.48.15 PM completes the standalone rainbow **Lucent Singularity**. Preserve
+Spell Tome's **27% (80%)** reduction to **Melee DMG Reduction** exactly.
+Awakening I **Radiant Glow** and III **Holy Light Field** use the MR-UK excerpt
+`gameplay/talents/image.png`, explicitly approved as their source by the owner
+on 2026-09-13. Additional awakening screenshots are not required for this update.
+The source remains identified as a guide. Its Mage common skills are documented
+separately and are not part of this hero's awakening data.
+
 Build imports use an outline button matching **New build**. The picker searches
 hero and build names on the server, loads twelve results per page only when opened,
 and keeps the results in a scrollable panel. Select a build, then choose **Import
@@ -230,7 +241,9 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
   is cut off after "upon entering", the rainbow ability is unrecorded, and only
   three core panels are visible. The rest of the supplied hero details are recorded.
 - Awakening II and IV: class-wide skills are not displayed yet; Support IV is
-  recorded in the game reference, while II and other classes' IV are unrecorded.
+  recorded in the game reference. Mage Spell Barrier / Psychic Surge appear only
+  in the unverified MR-UK excerpt and need in-game confirmation; the other
+  class-wide skills remain unrecorded.
 - The rainbow-tier artifact skill has no icon (the game shows it as text only).
 - Divinity growth values per level are not stored (only name, kind, icon).
 - "Tank / DPS" position and "Eternal" quality tags are real in-game labels but are

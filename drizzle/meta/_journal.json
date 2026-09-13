@@ -113,6 +113,20 @@
       "when": 1789277807966,
       "tag": "0015_red_scrambler",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1789279331374,
+      "tag": "0016_relic_catalog",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1789279462564,
+      "tag": "0017_pets",
+      "breakpoints": true
     }
   ]
 }

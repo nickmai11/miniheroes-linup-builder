@@ -261,6 +261,27 @@ exact core-to-talent links are in `src/data/hero-details.ts`.
   Forbidden Land"; links use **Darkness Land**. Gold and red both modify Meteor
   Falls. Rainbow **Starry Salvation** is standalone.
 
+#### Radiant Envoy (game, 2026-09-13)
+
+**Radiant Envoy** is a Mage with artifact **Wand of Light**. The two red
+Artifact-tab badges match **DMG Increase** (left) and **Magic DMG Boost** (right).
+Sources: the owner's 12.47.59–12.48.15 PM captures in `gameplay/talents/`.
+
+| Talent | Kind | Unlock | Artifact Bonus | Core |
+| ------ | ---- | ------ | -------------- | ---- |
+| Final Spark | Ultimate Skill | Start | red: full-screen beam plus 55% of Attack as True DMG | Wizard's Wand: additional Magic DMG equal to 30% (90%) of Attack |
+| Light Binding | Battle Skill | 2★ | purple: binding duration +1s | Arcane Hat: light orb launch chance +10% (30%) |
+| Enhanced Flash | Enhance | 5★ | — | — |
+| Prismatic Barrier | Special Skill | 8★ | gold: first cast at 5s; subsequent cooldowns −3s | Mage Robe: additionally reduces enemies' Attack Speed by 12% (36%) for 6s |
+| Light Body | Passive | 12★ | — | — |
+| Beam Charge | Enhance | 16★ | — | Spell Tome: enemies' Melee DMG Reduction reduced by 27% (80%) for 6s |
+| Lucent Singularity | Artifact | Rainbow tier | At 8s, creates a zone at the farthest enemy, reduces ATK SPD by 25%, silences Supports, then detonates after 3s for 300% of Attack as Magic DMG; 15s cooldown | — |
+
+**Lucent Singularity** is standalone. The scrolled 12.48.15 PM artifact popup
+completes its description, and 12.48.06 PM completes the Mage Robe core. Preserve
+Spell Tome's exact **27% (80%)** and **Melee DMG Reduction** wording; do not
+normalize it to 81% or to another stat. The existing Archive portrait is retained.
+
 ### Awakening skills (game, 2026-09-13)
 
 Hero-specific I and III are read from the Hero Awaken screenshots in
@@ -311,6 +332,31 @@ class-wide II/IV rule; it is not a hero-specific I skill. Shared class awakening
 data/display is not implemented yet. II and other classes' IV remain unrecorded.
 Thrall's III is inactive in the screenshot, but its full description is visible.
 The game spells his name "Thal" in that description; the transcription preserves it.
+
+#### Radiant Envoy awakening reference (owner-approved MR-UK guide)
+
+`gameplay/talents/image.png` is an MR-UK compendium excerpt, not a Hero Awaken
+screen. Its first and third entries are marked **Unique Skill**; the second and
+fourth are **Mage Common Skill**. On 2026-09-13, the owner explicitly chose to
+use this guide for the two unique skills as I/III in that order, with `image.png`
+retained as their source. Additional awakening screenshots are not required for
+this update. These entries are guide-sourced, not independently checked in-game;
+any later owner corrections or in-game screenshots override the guide.
+
+- **Radiant Glow (I, 18★):** Final Spark, Light Binding, or Prismatic Barrier
+  dealing damage marks an enemy for 4s; marked targets take 11% increased damage
+  from Radiant Envoy, and the mark cannot be dispelled.
+- **Holy Light Field (III, 22★):** 3s after entry, dispels all negative status
+  effects from the ally with the lowest HP percentage and grants status immunity
+  for 20s. It can trigger again when self HP drops below 50%.
+- **Spell Barrier (Mage Common Skill, second entry):** a single hit exceeding
+  17% Max HP reduces damage taken by 10% for a short duration (7s cooldown).
+- **Psychic Surge (Mage Common Skill, fourth entry):** the first HP drop below
+  40% immediately restores 90 Energy and grants immunity to most negative status
+  and control effects for 3s.
+
+The two common skills remain here as unverified class references and are not
+copied into Radiant Envoy's hero-specific awakening data.
 
 ### Divinities (game, 2026-09-12)
 
@@ -380,6 +426,24 @@ Radiant Paladin. Each card shows:
 These cards are fan-made and may lag game updates. Use them to pre-fill data, but
 the owner's screenshots and statements override them.
 
+### Pets (owner-defined, 2026-09-13)
+
+The pet catalog records **only each pet's name and icon**. Icons come from the
+owner's `gameplay/pets/` screenshots. Pet stats, skills, companion bonuses,
+levels, and equipped heroes are outside the requested scope.
+
+### Relics (owner-defined, 2026-09-13)
+
+The relic catalog records **only each relic's name and icon**, as requested by
+the owner. Names and icons come from `gameplay/relics/`; enhancement levels,
+attributes, star effects and equipped heroes are not part of this catalog.
+
+The eight supplied Relic Archive popups identify **Night Twinblades**, **Charge
+Shield**, **Spiked Armor**, **Soulcalm Gem**, **Boots of Haste**, **Silverblade**,
+**Pendant of Purity**, and **Arcane Cloak**. The displayed `+15` is omitted from
+their catalog names. `gameplay/relics/image.png` supplies the eight clean icon
+tiles, matched to the 12.57.40–12.58.16 PM popups.
+
 ### Lineups (game)
 
 A battle lineup is **5 heroes**. Conventional wisdom (web) is one of each role plus a
@@ -387,6 +451,10 @@ flex pick, but the whole point of this app is to record the owner's better answe
 
 There is **no "Front 1 / Front 2 / Back" slot naming** in the game (owner, 2026-09-12).
 The app labels slots plainly _Slot 1–5_ until the owner describes the real formation.
+
+Hero cards in saved lineup lists, lineup detail pages, and the lineup builder
+(both the hero picker and selected slots) must not display divinities
+(owner, 2026-09-13).
 
 ### Progression systems (web, unverified)
 
@@ -483,6 +551,16 @@ is said. These override anything marked (web).
 
 - 2026-09-13 — Divinity categories: move **Knockback Resist** (owner wrote "knockback reset") and **SPD Reduction RES** into **Knockback**; group **Heavy Injury**, **Healing Effect** ("headling effect"), and **Receive Healing** under **Healing** (owner allowed "healing/heal"). These category choices override the popup-derived RES, Weakness, and Cleansing groups.
 
+- 2026-09-13 — The owner requested that hero cards **not display divinities in lineups or the lineup builder**, including the hero picker and selected slots.
+
+- 2026-09-13 — The owner's 12.47.59–12.48.15 PM screenshots establish **Radiant Envoy / Mage**, six talents (**Final Spark, Light Binding, Enhanced Flash, Prismatic Barrier, Light Body, Beam Charge**), four cores, and **Wand of Light** with all four artifact tiers. Red divinities match **DMG Increase** (left) and **Magic DMG Boost** (right). The 12.48.06 PM scroll completes Mage Robe; 12.48.15 PM completes the standalone rainbow skill **Lucent Singularity**. Spell Tome's Beam Charge effect explicitly reduces **Melee DMG Reduction by 27% (80%) for 6s**.
+- 2026-09-13 — The owner supplied `gameplay/talents/image.png`, an **MR-UK awakening guide excerpt for Radiant Envoy**. It lists the unique skills **Radiant Glow** and **Holy Light Field**, interleaved with Mage common skills **Spell Barrier** and **Psychic Surge**. This is a third-party reference, not owner-confirmed game wording; I/III are prefilled in the guide's order pending in-game verification. Shared Mage skills remain documented separately.
+- 2026-09-13 — The owner explicitly chose **"Use the supplied guide"** for Radiant Envoy's Awakening I **Radiant Glow** and III **Holy Light Field**, with `image.png` recorded as their source. This resolves the pending source decision; additional in-game awakening screenshots are not required for this update. The source remains attributed to MR-UK, and the choice does not add the guide's common Mage skills to hero-specific data.
+
+- 2026-09-13 — The owner requested pets in the database, then clarified: **"just add icon and pet name"**. Record only names and screenshot-derived icons.
+
+- 2026-09-13 — The owner requested relics in the database: **"just icons and names"**. Use the supplied `gameplay/relics/` screenshots for both.
+
 ## How the app models it
 
 - Build attributes have two owner-assigned priority tiers: **Must have** and
@@ -504,6 +582,10 @@ is said. These override anything marked (web).
 
 - `heroes` table: `slug`, `name`, `role` (warrior | marksman | mage | support),
   `rarity` (mythic | legend | epic), `imageUrl`, `notes`.
+- `pets` table: `slug`, `name`, `iconUrl` (`/pets/<slug>.png`), plus the standard
+  ID and creation timestamp. The 20 names/icons in `src/data/pets.ts` are seeded
+  by `ensurePetsSeeded()` in `src/lib/pets.ts`; `getAllPets()` reads them by name.
+  No pet skills, stats, bonuses, or hero/lineup links are stored.
 - `divinities` table: `slug`, `name` (stat without "All"), `kind` (display category,
   with owner corrections taking precedence over popup titles), `iconUrl`
   (`/divinities/<slug>.png`). Seeded from `src/data/divinities.ts`
@@ -512,6 +594,12 @@ is said. These override anything marked (web).
   popup), `sortOrder`. Seeded from `src/data/weapon-attributes.ts` by
   `ensureWeaponAttributesSeeded()` in `src/lib/weapons.ts`; no per-weapon pools and
   no page yet. Not linked to divinities.
+- `relics` table: `slug`, `name`, `iconUrl` (`/relics/<slug>.png`), plus an ID and
+  creation timestamp. Regenerate icons, `src/data/relics.ts`, and
+  `scripts/upsert-relics.sql` with `python3 scripts/slice-relics.py`; apply the SQL
+  to import the catalog while preserving existing IDs. `getAllRelics()` in
+  `src/lib/relics.ts` reads the catalog without writes. Relics have no page or
+  hero/build links yet.
 - `rune_attributes` table: `runeType` (attack | effect | energy | survival), `slug`,
   `name`, `maxValue` + `isPercent` (e.g. 7 / true = "7.0%", 50 / false = 50 energy),
   `description`, `analysis` (owner's verdict), `sortOrder` (sheet row order). Seeded
@@ -632,6 +720,17 @@ For category-only changes, edit `CATALOG` and run
 upsert SQL. This updates seed metadata without replacing icons or requiring an
 asset-version bump. `kind` follows the owner's categories even when they differ
 from the original popup titles.
+
+### Pet icon pipeline
+
+`scripts/slice-pets.py` reads the 20 Activated Pets popups in `gameplay/pets/`.
+Its `CATALOG` maps each source screenshot to the pet name and popup-art bounds.
+It extracts the art above the pet name, removes the surrounding popup background
+and shared border, and keeps detached body parts on a transparent square canvas.
+It writes `public/pets/<slug>.png`, `src/data/pets.ts`, and
+`scripts/upsert-pets.sql`. Run the SQL against Supabase after regenerating.
+`--catalog-only` regenerates names/paths without replacing icons. Bump
+`ASSET_VERSION` when replacing existing icons.
 
 ### Rune attribute pipeline
 

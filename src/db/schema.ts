@@ -209,6 +209,34 @@ export const weaponAttributes = pgTable("weapon_attributes", {
 export type WeaponAttribute = typeof weaponAttributes.$inferSelect;
 export type NewWeaponAttribute = typeof weaponAttributes.$inferInsert;
 
+/** Relic names and icons from the owner's Relic Archive screenshots. */
+export const relics = pgTable("relics", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  slug: text("slug").notNull().unique(),
+  name: text("name").notNull(),
+  iconUrl: text("icon_url").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+export type Relic = typeof relics.$inferSelect;
+export type NewRelic = typeof relics.$inferInsert;
+
+/** Pets recorded from the owner's Activated Pets popups. */
+export const pets = pgTable("pets", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  slug: text("slug").notNull().unique(),
+  name: text("name").notNull(),
+  iconUrl: text("icon_url").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+export type Pet = typeof pets.$inferSelect;
+export type NewPet = typeof pets.$inferInsert;
+
 /** The four rune types of the hero's Rune tab. */
 export const RUNE_TYPES = ["attack", "effect", "energy", "survival"] as const;
 export type RuneType = (typeof RUNE_TYPES)[number];

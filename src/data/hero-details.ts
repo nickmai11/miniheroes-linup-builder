@@ -61,6 +61,134 @@ export type HeroDetailSeed = {
 const talent = (hero: string, slug: string) => `/talents/${hero}/${slug}.png`;
 
 export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
+  // Owner's 2026-09-13 12.47.59–12.48.15 PM gameplay captures.
+  "radiant-envoy": {
+    // Owner-approved MR-UK excerpt (2026-09-13): unique skills in I/III order.
+    // Source is the supplied guide, not an in-game awakening capture.
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Radiant Glow",
+        description:
+          "When [Final Spark], [Light Binding], or [Prismatic Barrier] deals damage to an enemy, it applies a mark for 4s. Marked targets take 11% increased damage from Radiant Envoy (cannot be dispelled).",
+        sourceScreenshot: "image.png",
+      },
+      {
+        stage: "III",
+        name: "Holy Light Field",
+        description:
+          "3s after entering battle, dispels all negative status effects from the 1 ally with the lowest HP percentage and grants status immunity for 20s. This state can trigger again when self HP drops below 50%.",
+        sourceScreenshot: "image.png",
+      },
+    ],
+    artifact: {
+      name: "Wand of Light",
+      iconUrl: "/artifacts/radiant-envoy.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Light Binding",
+          description:
+            'Increases the binding duration of "Light Binding" by 1s.',
+        },
+        {
+          tier: "gold",
+          skill: "Prismatic Barrier",
+          description:
+            '"Prismatic Barrier" is first cast 5 s after entering battle. Subsequent skill cooldowns are reduced by 3s.',
+        },
+        {
+          tier: "red",
+          skill: "Final Spark",
+          description:
+            'The beam range of "Final Spark" becomes full-screen. The beam additionally deals True DMG equal to 55% of Attack.',
+        },
+        {
+          tier: "rainbow",
+          name: "Lucent Singularity",
+          description:
+            "8 s after entering battle, conjures a zone of light at the feet of the farthest enemy. Enemies within the zone have their ATK SPD reduced by 25%. If an enemy is a Support, they are Silenced. The zone detonates after 3 s, dealing Magic DMG equal to 300% of Attack to enemies inside. Cooldown: 15s.",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Final Spark",
+        unlockStars: 0,
+        iconUrl: talent("radiant-envoy", "final-spark"),
+        description:
+          "Unleashes a brilliant beam of light, dealing Magic DMG equal to 300% of Attack to enemies in a forward area and knocking them back.",
+      },
+      {
+        kind: "battle",
+        name: "Light Binding",
+        unlockStars: 2,
+        iconUrl: talent("radiant-envoy", "light-binding"),
+        description:
+          "Basic Attacks have a 35% chance to fire an orb of light, dealing Magic DMG equal to 200% of Attack to up to 2 forward enemies and binding them for 1 s.",
+      },
+      {
+        kind: "enhance",
+        name: "Enhanced Flash",
+        unlockStars: 5,
+        iconUrl: talent("radiant-envoy", "enhanced-flash"),
+        description: "Increases Magic DMG dealt by Final Spark by 75%.",
+      },
+      {
+        kind: "special",
+        name: "Prismatic Barrier",
+        unlockStars: 8,
+        iconUrl: talent("radiant-envoy", "prismatic-barrier"),
+        description:
+          "Every 12s, hurls the wand forward. The wand grants allies in its path a Shield equal to 150% of Radiant Envoy's Attack for 6 s; and reduces Energy Regen speed of enemies in its path by 10% for 6 s. Repeatedly applied Bonuses or Bonus Reductions refresh their duration and do not stack.",
+      },
+      {
+        kind: "passive",
+        name: "Light Body",
+        unlockStars: 12,
+        iconUrl: talent("radiant-envoy", "light-body"),
+        description: "ATK increased by 10%, HP increased by 15%.",
+      },
+      {
+        kind: "enhance",
+        name: "Beam Charge",
+        unlockStars: 16,
+        iconUrl: talent("radiant-envoy", "beam-charge"),
+        description:
+          "Energy cost to cast Final Spark is reduced by 15%. Enemies struck by the beam have their Damage dealt reduced by 15% for 6s.",
+      },
+    ],
+    cores: [
+      {
+        name: "Wizard's Wand",
+        skill: "Final Spark",
+        description:
+          '"Final Spark" beam inflicts additional Magic DMG equal to 30% (90%) of Attack.',
+      },
+      {
+        name: "Arcane Hat",
+        skill: "Light Binding",
+        description:
+          '"Light Binding" light orb launch chance increases by 10% (30%).',
+      },
+      {
+        name: "Mage Robe",
+        skill: "Prismatic Barrier",
+        // The 12.48.06 PM scroll completes the lower core panel.
+        description:
+          '"Prismatic Barrier" wand additionally reduces the Attack Speed of enemies in its path by 12% (36%) for 6s.',
+      },
+      {
+        name: "Spell Tome",
+        skill: "Beam Charge",
+        // Preserve both the displayed 27% (80%) and "Melee DMG Reduction" wording.
+        description:
+          '"Beam Charge" enemies struck by the beam suffer an additional 27% (80%) reduction to their Melee DMG Reduction for 6s.',
+      },
+    ],
+    divinities: ["dmg-increase", "magic-dmg-boost"],
+  },
   "jungle-envoy": {
     awakeningSkills: [
       {

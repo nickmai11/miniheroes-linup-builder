@@ -33,10 +33,27 @@ SRC = os.path.join(ROOT, "gameplay/talents")
 NB = "\u202f"
 S = lambda t: f"Screenshot 2026-09-12 at {t}{NB}PM.png"
 S13AM = lambda t: f"Screenshot 2026-09-13 at {t}{NB}AM.png"
+S13PM = lambda t: f"Screenshot 2026-09-13 at {t}{NB}PM.png"
 
 # hero slug -> {"popups": [(file, talent name), ...],
 #               "artifact": Artifact tab, "artifact_popup": the artifact's ability list}
 LAYOUT = {
+    "radiant-envoy": {
+        "popups": [
+            (S13PM("12.48.10"), "Final Spark"),
+            (S13PM("12.48.01"), "Light Binding"),
+            (S13PM("12.48.03"), "Enhanced Flash"),
+            (S13PM("12.48.05"), "Prismatic Barrier"),
+            (S13PM("12.48.07"), "Light Body"),
+            (S13PM("12.48.09"), "Beam Charge"),
+        ],
+        "artifact": S13PM("12.48.12"),
+        # Preserve the diagonal wand tips below the player's star row.
+        "artifact_box": (225, 250, 485, 520),
+        "artifact_corner_radius": 12,
+        # 12.48.15 completes the rainbow text; reuse existing shared tier icons.
+        "artifact_popup": None,
+    },
     "jungle-envoy": {
         "popups": [
             (S13AM("11.50.02"), "Pulse Nova"),
