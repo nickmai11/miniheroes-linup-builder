@@ -1,6 +1,6 @@
 "use server";
 
-import { eq, inArray } from "drizzle-orm";
+import { asc, eq, inArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { db, schema } from "@/db";
@@ -107,6 +107,84 @@ export async function saveHeroBuild(
 
   revalidatePath(`/heroes/${hero.slug}`);
   return { id: buildId };
+}
+
+const importSchema = z.object({
+  heroId: z.number().int().positive(),
+  sourceBuildId: z.number().int().positive(),
+});
+
+export type ImportBuildInput = z.input<typeof importSchema>;
+
+/** Copy another hero's build (name, notes, runes, weapons) onto this hero. */
+export async function importHeroBuild(
+  input: ImportBuildInput,
+): Promise<BuildActionState> {
+  const parsed = importSchema.safeParse(input);
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message ?? "Invalid request" };
+  }
+  const { heroId, sourceBuildId } = parsed.data;
+
+  const [hero] = await db
+    .select({ slug: schema.heroes.slug })
+    .from(schema.heroes)
+    .where(eq(schema.heroes.id, heroId));
+  if (!hero) return { error: "Hero not found" };
+
+  const [source] = await db
+    .select()
+    .from(schema.heroBuilds)
+    .where(eq(schema.heroBuilds.id, sourceBuildId));
+  if (!source) return { error: "That build no longer exists" };
+  if (source.heroId === heroId)
+    return { error: "That build already belongs to this hero" };
+
+  const [runeRows, weaponRows] = await Promise.all([
+    db
+      .select({ runeAttributeId: schema.heroBuildRunes.runeAttributeId })
+      .from(schema.heroBuildRunes)
+      .where(eq(schema.heroBuildRunes.buildId, sourceBuildId))
+      .orderBy(
+        asc(schema.heroBuildRunes.sortOrder),
+        asc(schema.heroBuildRunes.id),
+      ),
+    db
+      .select({ weaponAttributeId: schema.heroBuildWeapons.weaponAttributeId })
+      .from(schema.heroBuildWeapons)
+      .where(eq(schema.heroBuildWeapons.buildId, sourceBuildId))
+      .orderBy(
+        asc(schema.heroBuildWeapons.sortOrder),
+        asc(schema.heroBuildWeapons.id),
+      ),
+  ]);
+
+  const newId = await db.transaction(async (tx) => {
+    const [row] = await tx
+      .insert(schema.heroBuilds)
+      .values({ heroId, name: source.name, notes: source.notes })
+      .returning({ id: schema.heroBuilds.id });
+    if (runeRows.length > 0)
+      await tx.insert(schema.heroBuildRunes).values(
+        runeRows.map((r, sortOrder) => ({
+          buildId: row.id,
+          runeAttributeId: r.runeAttributeId,
+          sortOrder,
+        })),
+      );
+    if (weaponRows.length > 0)
+      await tx.insert(schema.heroBuildWeapons).values(
+        weaponRows.map((w, sortOrder) => ({
+          buildId: row.id,
+          weaponAttributeId: w.weaponAttributeId,
+          sortOrder,
+        })),
+      );
+    return row.id;
+  });
+
+  revalidatePath(`/heroes/${hero.slug}`);
+  return { id: newId };
 }
 
 export async function deleteHeroBuild(id: number): Promise<BuildActionState> {

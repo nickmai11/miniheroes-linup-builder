@@ -32,6 +32,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "gameplay/talents")
 NB = "\u202f"
 S = lambda t: f"Screenshot 2026-09-12 at {t}{NB}PM.png"
+S13AM = lambda t: f"Screenshot 2026-09-13 at {t}{NB}AM.png"
 
 # hero slug -> {"popups": [(file, talent name), ...],
 #               "artifact": Artifact tab, "artifact_popup": the artifact's ability list}
@@ -47,6 +48,18 @@ LAYOUT = {
         ],
         "artifact": S("11.06.30"),
         "artifact_popup": S("11.06.28"),
+    },
+    "nezha": {
+        "popups": [
+            (S13AM("7.30.32"), "Fire-Tipped Spear"),
+            (S13AM("7.30.44"), "Windfire"),
+            (S13AM("7.30.45"), "Armillary Sash"),
+            (S13AM("7.30.47"), "Threefold Arms"),
+            (S13AM("7.30.49"), "Scorching Ember"),
+            (S13AM("7.30.51"), "Wind Fire Wheels"),
+        ],
+        "artifact": S13AM("7.30.59"),
+        "artifact_popup": S13AM("7.31.05"),
     },
 }
 
@@ -168,12 +181,14 @@ def main():
     os.makedirs(icons_dir, exist_ok=True)
     tier_written = set(os.listdir(icons_dir))
     for hero, cfg in LAYOUT.items():
+        needed = [f for f, _ in cfg["popups"]] + [cfg["artifact"], cfg["artifact_popup"]]
+        if any(not os.path.exists(os.path.join(SRC, f)) for f in needed):
+            print(f"{hero:14s} skipped (source screenshots not present)")
+            continue
         out = os.path.join(ROOT, "public/talents", hero)
         os.makedirs(out, exist_ok=True)
         for file, name in cfg["popups"]:
             path = os.path.join(SRC, file)
-            if not os.path.exists(path):
-                sys.exit(f"missing {path}")
             im = Image.open(path).convert("RGB")
             a = np.asarray(im).astype(int)
             circle(im.crop(TALENT_ICON_BOX)).save(os.path.join(out, f"{slugify(name)}.png"))

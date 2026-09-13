@@ -1,7 +1,7 @@
 import "server-only";
-import { asc, eq, inArray } from "drizzle-orm";
+import { and, asc, eq, ilike, inArray, ne, or } from "drizzle-orm";
 import { db, schema } from "@/db";
-import type { HeroBuild } from "@/lib/build-types";
+import type { HeroBuild, ImportableBuildPage } from "@/lib/build-types";
 
 /**
  * A hero's builds, oldest first, each with its chosen rune and weapon
@@ -57,4 +57,47 @@ export async function getHeroBuilds(heroId: number): Promise<HeroBuild[]> {
     runes: runeRows.filter((r) => r.buildId === b.id).map((r) => r.rune),
     weapons: weaponRows.filter((w) => w.buildId === b.id).map((w) => w.weapon),
   }));
+}
+
+/**
+ * Search other heroes' builds on demand. Fetch one extra row to detect another
+ * page without counting or loading the entire build library.
+ */
+export async function getOtherHeroBuilds(
+  excludeHeroId: number,
+  query = "",
+  page = 0,
+): Promise<ImportableBuildPage> {
+  const pageSize = 12;
+  const terms = query.trim().split(/\s+/).filter(Boolean);
+  const matches = terms.map((term) => {
+    // Search literal text: SQL LIKE wildcards in a name aren't search operators.
+    const pattern = `%${term.replace(/[\\%_]/g, "\\$&")}%`;
+    return or(
+      ilike(schema.heroBuilds.name, pattern),
+      ilike(schema.heroes.name, pattern),
+    );
+  });
+  const rows = await db
+    .select({
+      id: schema.heroBuilds.id,
+      name: schema.heroBuilds.name,
+      heroName: schema.heroes.name,
+      heroSlug: schema.heroes.slug,
+    })
+    .from(schema.heroBuilds)
+    .innerJoin(schema.heroes, eq(schema.heroBuilds.heroId, schema.heroes.id))
+    .where(and(ne(schema.heroBuilds.heroId, excludeHeroId), ...matches))
+    .orderBy(
+      asc(schema.heroes.name),
+      asc(schema.heroes.id),
+      asc(schema.heroBuilds.createdAt),
+      asc(schema.heroBuilds.id),
+    )
+    .limit(pageSize + 1)
+    .offset(page * pageSize);
+  return {
+    builds: rows.slice(0, pageSize),
+    hasNextPage: rows.length > pageSize,
+  };
 }

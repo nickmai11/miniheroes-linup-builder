@@ -57,38 +57,65 @@ export async function syncSeededHeroDetails() {
   }
 }
 
-export async function getAllHeroes(): Promise<HeroWithDivinities[]> {
-  await syncSeededHeroDetails();
-  const [rows, divinityRows] = await Promise.all([
-    db.select().from(schema.heroes).orderBy(asc(schema.heroes.name)),
-    db
-      .select({
-        heroId: schema.heroDivinities.heroId,
-        divinity: schema.divinities,
-      })
-      .from(schema.heroDivinities)
-      .innerJoin(
-        schema.divinities,
-        eq(schema.heroDivinities.divinityId, schema.divinities.id),
-      )
-      .orderBy(asc(schema.heroDivinities.position)),
-  ]);
+/** Mythic divinities per hero id, in slot order (bottom-left, bottom-right). */
+export async function divinitiesByHeroIds(
+  ids: number[],
+): Promise<Map<number, Divinity[]>> {
   const byHero = new Map<number, Divinity[]>();
-  for (const { heroId, divinity } of divinityRows) {
+  if (ids.length === 0) return byHero;
+  const rows = await db
+    .select({
+      heroId: schema.heroDivinities.heroId,
+      divinity: schema.divinities,
+    })
+    .from(schema.heroDivinities)
+    .innerJoin(
+      schema.divinities,
+      eq(schema.heroDivinities.divinityId, schema.divinities.id),
+    )
+    .where(inArray(schema.heroDivinities.heroId, ids))
+    .orderBy(asc(schema.heroDivinities.position));
+  for (const { heroId, divinity } of rows) {
     const list = byHero.get(heroId);
     if (list) list.push(divinity);
     else byHero.set(heroId, [divinity]);
   }
-  const withDivinities = rows.map((hero) => ({
+  return byHero;
+}
+
+/**
+ * Attach each hero's mythic divinities for portrait overlays. Callers that may
+ * run against an unsynced DB should `syncSeededHeroDetails()` first.
+ */
+export async function attachDivinities(
+  heroes: Hero[],
+): Promise<HeroWithDivinities[]> {
+  const byHero = await divinitiesByHeroIds(heroes.map((h) => h.id));
+  return heroes.map((hero) => ({
     ...hero,
     divinities: byHero.get(hero.id) ?? [],
   }));
-  return sortHeroes(withDivinities);
 }
 
-export async function getHeroesByIds(ids: number[]): Promise<Hero[]> {
+export async function getAllHeroes(): Promise<HeroWithDivinities[]> {
+  await syncSeededHeroDetails();
+  const rows = await db
+    .select()
+    .from(schema.heroes)
+    .orderBy(asc(schema.heroes.name));
+  return sortHeroes(await attachDivinities(rows));
+}
+
+export async function getHeroesByIds(
+  ids: number[],
+): Promise<HeroWithDivinities[]> {
   if (ids.length === 0) return [];
-  return db.select().from(schema.heroes).where(inArray(schema.heroes.id, ids));
+  await syncSeededHeroDetails();
+  const rows = await db
+    .select()
+    .from(schema.heroes)
+    .where(inArray(schema.heroes.id, ids));
+  return attachDivinities(rows);
 }
 
 export async function getHeroById(id: number): Promise<Hero | undefined> {

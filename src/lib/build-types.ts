@@ -7,3 +7,16 @@ export type HeroBuild = HeroBuildRow & {
   /** Chosen weapon attributes in pick order (first = most important). */
   weapons: WeaponAttribute[];
 };
+
+/** A build on another hero, offered for copying into the current hero. */
+export type ImportableBuild = {
+  id: number;
+  name: string;
+  heroName: string;
+  heroSlug: string;
+};
+
+export type ImportableBuildPage = {
+  builds: ImportableBuild[];
+  hasNextPage: boolean;
+};

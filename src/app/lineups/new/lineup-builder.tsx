@@ -2,7 +2,8 @@
 
 import { Plus, Search, X } from "lucide-react";
 import { useMemo, useState, useTransition } from "react";
-import { LINEUP_SIZE, type Hero } from "@/db/schema";
+import { LINEUP_SIZE } from "@/db/schema";
+import type { HeroWithDivinities } from "@/lib/heroes";
 import { HeroName, HeroPortrait } from "@/components/hero-portrait";
 import { RoleFilterGroup, type RoleFilter } from "@/components/role-filter";
 import { Button } from "@/components/ui/button";
@@ -19,7 +20,7 @@ export function LineupBuilder({
   heroes,
   preselectSlug,
 }: {
-  heroes: Hero[];
+  heroes: HeroWithDivinities[];
   preselectSlug?: string;
 }) {
   const [slots, setSlots] = useState<(number | null)[]>(() => {
@@ -127,6 +128,7 @@ export function LineupBuilder({
                 >
                   <HeroPortrait
                     hero={hero}
+                    divinities={hero.divinities}
                     sizes="(max-width: 640px) 33vw, 160px"
                   />
                   <HeroName
@@ -170,6 +172,7 @@ export function LineupBuilder({
                     {hero ? (
                       <HeroPortrait
                         hero={hero}
+                        divinities={hero.divinities}
                         className="ring-0"
                         sizes="110px"
                       />

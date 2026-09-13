@@ -63,6 +63,7 @@ export default async function DivinityPage(
                 >
                   <HeroPortrait
                     hero={hero}
+                    divinities={hero.divinities}
                     sizes="(max-width: 640px) 50vw, 200px"
                     priority={i < 6}
                   />

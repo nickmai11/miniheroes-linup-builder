@@ -1,9 +1,14 @@
 import "server-only";
 import { asc, eq } from "drizzle-orm";
 import { db, schema } from "@/db";
-import type { Divinity, Hero } from "@/db/schema";
+import type { Divinity } from "@/db/schema";
 import { ensureDivinitiesSeeded } from "./divinities";
-import { sortHeroes, syncSeededHeroDetails } from "./heroes";
+import {
+  attachDivinities,
+  sortHeroes,
+  syncSeededHeroDetails,
+  type HeroWithDivinities,
+} from "./heroes";
 
 export async function getDivinityBySlug(
   slug: string,
@@ -23,7 +28,7 @@ export async function getDivinityBySlug(
  */
 export async function getHeroesWithDivinity(
   divinityId: number,
-): Promise<Hero[]> {
+): Promise<HeroWithDivinities[]> {
   await syncSeededHeroDetails();
   const rows = await db
     .select({ hero: schema.heroes })
@@ -35,5 +40,5 @@ export async function getHeroesWithDivinity(
     .where(eq(schema.heroDivinities.divinityId, divinityId))
     .orderBy(asc(schema.heroDivinities.position));
   const unique = new Map(rows.map((r) => [r.hero.id, r.hero]));
-  return sortHeroes([...unique.values()]);
+  return attachDivinities(sortHeroes([...unique.values()]));
 }

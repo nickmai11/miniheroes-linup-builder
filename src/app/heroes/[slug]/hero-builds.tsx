@@ -1,7 +1,7 @@
 "use client";
 
-import { Pencil, Plus, Trash2 } from "lucide-react";
-import { useState, useTransition } from "react";
+import { Download, Pencil, Plus, Trash2 } from "lucide-react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,9 +13,14 @@ import {
   type WeaponAttribute,
 } from "@/db/schema";
 import type { HeroBuild } from "@/lib/build-types";
-import { RUNE_TYPE_LABELS, formatMaxValue } from "@/lib/hero-labels";
+import { RUNE_TYPE_LABELS } from "@/lib/hero-labels";
 import { cn } from "@/lib/utils";
-import { deleteHeroBuild, saveHeroBuild } from "./build-actions";
+import {
+  deleteHeroBuild,
+  importHeroBuild,
+  saveHeroBuild,
+} from "./build-actions";
+import { HeroBuildImport } from "./hero-build-import";
 
 type Props = {
   heroId: number;
@@ -24,6 +29,11 @@ type Props = {
   runeAttributes: RuneAttribute[];
   weaponAttributes: WeaponAttribute[];
 };
+
+/** Rune-type label without the trailing " Runes" (shown under a Runes section). */
+function runeTypeShort(type: RuneType) {
+  return RUNE_TYPE_LABELS[type].replace(/ Runes$/, "");
+}
 
 /** Ids are kept in pick order: first picked = most important = shown first. */
 type Draft = {
@@ -59,15 +69,33 @@ export function HeroBuilds({
   weaponAttributes,
 }: Props) {
   const [draft, setDraft] = useState<Draft | null>(null);
+  const [importing, setImporting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
+  const importButton = useRef<HTMLButtonElement>(null);
+  const restoreImportFocus = useRef(false);
+
+  useEffect(() => {
+    if (!importing && !pending && restoreImportFocus.current) {
+      importButton.current?.focus();
+      restoreImportFocus.current = false;
+    }
+  }, [importing, pending]);
+
+  function closeImport() {
+    restoreImportFocus.current = true;
+    setImporting(false);
+    setError(null);
+  }
 
   function startNew() {
     setError(null);
+    setImporting(false);
     setDraft(draftFrom());
   }
   function startEdit(build: HeroBuild) {
     setError(null);
+    setImporting(false);
     setDraft(draftFrom(build));
   }
   function cancel() {
@@ -92,6 +120,19 @@ export function HeroBuilds({
     );
     const i = sameType.indexOf(rune.id);
     return i === -1 ? null : i + 1;
+  }
+
+  function doImport(sourceBuildId: number) {
+    setError(null);
+    startTransition(async () => {
+      try {
+        const result = await importHeroBuild({ heroId, sourceBuildId });
+        if (result.error) setError(result.error);
+        else closeImport();
+      } catch {
+        setError("Could not import the build. Please try again.");
+      }
+    });
   }
 
   function submit() {
@@ -168,26 +209,29 @@ export function HeroBuilds({
               </div>
             </div>
 
-            {groupRunes(build.runes).map(([type, list]) => (
-              <AttributeGroup key={type} title={RUNE_TYPE_LABELS[type]}>
-                {list.map((r, i) => (
-                  <Chip key={r.id} title={r.description} rank={i + 1}>
-                    {r.name}
-                    <span className="text-muted-foreground">
-                      {formatMaxValue(r)}
-                    </span>
-                  </Chip>
+            {build.runes.length > 0 && (
+              <BuildSection title="Runes">
+                {groupRunes(build.runes).map(([type, list]) => (
+                  <AttributeGroup key={type} title={runeTypeShort(type)}>
+                    {list.map((r, i) => (
+                      <Chip key={r.id} title={r.description} rank={i + 1}>
+                        {r.name}
+                      </Chip>
+                    ))}
+                  </AttributeGroup>
                 ))}
-              </AttributeGroup>
-            ))}
+              </BuildSection>
+            )}
             {build.weapons.length > 0 && (
-              <AttributeGroup title="Weapons">
-                {build.weapons.map((w, i) => (
-                  <Chip key={w.id} rank={i + 1}>
-                    {w.name}
-                  </Chip>
-                ))}
-              </AttributeGroup>
+              <BuildSection title="Weapons">
+                <div className="flex flex-wrap gap-1.5">
+                  {build.weapons.map((w, i) => (
+                    <Chip key={w.id} rank={i + 1}>
+                      {w.name}
+                    </Chip>
+                  ))}
+                </div>
+              </BuildSection>
             )}
           </article>
         ),
@@ -233,44 +277,45 @@ export function HeroBuilds({
             shown first. Click again to remove.
           </p>
 
-          {RUNE_TYPES.map((type) => (
-            <AttributeGroup key={type} title={RUNE_TYPE_LABELS[type]}>
-              {runeAttributes
-                .filter((r) => r.runeType === type)
-                .map((r) => (
-                  <Chip
-                    key={r.id}
-                    pressed={draft.runeIds.includes(r.id)}
-                    rank={runeRank(draft, r)}
-                    onClick={() => toggle("runeIds", r.id)}
-                    title={[r.description, r.analysis]
-                      .filter(Boolean)
-                      .join("\n")}
-                  >
-                    {r.name}
-                    <span className="text-muted-foreground">
-                      {formatMaxValue(r)}
-                    </span>
-                  </Chip>
-                ))}
-            </AttributeGroup>
-          ))}
-          <AttributeGroup title="Weapons">
-            {weaponAttributes.map((w) => (
-              <Chip
-                key={w.id}
-                pressed={draft.weaponIds.includes(w.id)}
-                rank={
-                  draft.weaponIds.includes(w.id)
-                    ? draft.weaponIds.indexOf(w.id) + 1
-                    : null
-                }
-                onClick={() => toggle("weaponIds", w.id)}
-              >
-                {w.name}
-              </Chip>
+          <BuildSection title="Runes">
+            {RUNE_TYPES.map((type) => (
+              <AttributeGroup key={type} title={runeTypeShort(type)}>
+                {runeAttributes
+                  .filter((r) => r.runeType === type)
+                  .map((r) => (
+                    <Chip
+                      key={r.id}
+                      pressed={draft.runeIds.includes(r.id)}
+                      rank={runeRank(draft, r)}
+                      onClick={() => toggle("runeIds", r.id)}
+                      title={[r.description, r.analysis]
+                        .filter(Boolean)
+                        .join("\n")}
+                    >
+                      {r.name}
+                    </Chip>
+                  ))}
+              </AttributeGroup>
             ))}
-          </AttributeGroup>
+          </BuildSection>
+          <BuildSection title="Weapons">
+            <div className="flex flex-wrap gap-1.5">
+              {weaponAttributes.map((w) => (
+                <Chip
+                  key={w.id}
+                  pressed={draft.weaponIds.includes(w.id)}
+                  rank={
+                    draft.weaponIds.includes(w.id)
+                      ? draft.weaponIds.indexOf(w.id) + 1
+                      : null
+                  }
+                  onClick={() => toggle("weaponIds", w.id)}
+                >
+                  {w.name}
+                </Chip>
+              ))}
+            </div>
+          </BuildSection>
 
           {error && <p className="text-destructive text-sm">{error}</p>}
           <div className="flex items-center gap-2">
@@ -291,18 +336,62 @@ export function HeroBuilds({
           </div>
         </form>
       ) : (
-        <div className="flex flex-col gap-2">
-          {error && <p className="text-destructive text-sm">{error}</p>}
-          <Button
-            variant="outline"
-            onClick={startNew}
-            disabled={pending}
-            className="w-fit"
-          >
-            <Plus data-icon="inline-start" /> New build
-          </Button>
+        <div className="flex flex-col gap-3">
+          {error && !importing && (
+            <p className="text-destructive text-sm">{error}</p>
+          )}
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              variant="outline"
+              onClick={startNew}
+              disabled={pending}
+              className="w-fit"
+            >
+              <Plus data-icon="inline-start" /> New build
+            </Button>
+            <Button
+              ref={importButton}
+              variant="outline"
+              onClick={() => {
+                setError(null);
+                setImporting((v) => !v);
+              }}
+              disabled={pending}
+              aria-expanded={importing}
+              aria-controls="hero-build-import"
+              className="w-fit"
+            >
+              <Download data-icon="inline-start" /> Import build
+            </Button>
+          </div>
+
+          {importing && (
+            <HeroBuildImport
+              heroId={heroId}
+              pending={pending}
+              error={error}
+              onImport={doImport}
+              onCancel={closeImport}
+            />
+          )}
         </div>
       )}
+    </div>
+  );
+}
+
+/** Top-level "Runes" / "Weapons" heading for a build's contents. */
+function BuildSection({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-col gap-2">
+      <span className="text-sm font-semibold">{title}</span>
+      <div className="flex flex-col gap-2">{children}</div>
     </div>
   );
 }

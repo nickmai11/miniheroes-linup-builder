@@ -106,6 +106,25 @@ Steadfast Body 12★, Undying 16★; Ghost Ship (ultimate) is available from the
 Siren Blade's rainbow-tier skill **Ship Raid** is not attached to any talent.
 Full descriptions are in `src/data/hero-details.ts`.
 
+**Nezha** (Warrior · DPS · Eternal; artifact Fire-Tipped Spear, 4★ — the divine
+weapon shares its name with the Battle Skill talent):
+
+| Talent               | Kind           | Artifact Bonus                              | Core                                                 |
+| -------------------- | -------------- | ------------------------------------------- | ---------------------------------------------------- |
+| Wind Fire Wheels     | Ultimate Skill | red: releases 2 wheels per cast             | Blade of Valor: +35%(105%) Physical DMG from attacks |
+| Fire-Tipped Spear    | Battle Skill   | purple: trigger chance +10%                 | Cavalier Helm: True DMG chance +6%(18%)              |
+| Windfire             | Enhance        | —                                           | Brawler's Armor: +2.5%(7.5%) Magic RES per stack     |
+| Armillary Sash       | Special Skill  | gold: +15% DEF for 4 s after each cast      | Brawler's Boots: enemy Energy Regen −10%(30%) more   |
+| Threefold Arms       | Passive        | —                                           | —                                                    |
+| Scorching Ember      | Enhance        | —                                           | —                                                    |
+| Immortal Divine Body | Artifact       | rainbow tier ability of Fire-Tipped Spear   | —                                                    |
+
+Unlock order (clockwise from lower-left): Fire-Tipped Spear 2★, Windfire 5★,
+Armillary Sash 8★, Threefold Arms 12★, Scorching Ember 16★; Wind Fire Wheels
+(ultimate) from the start. The rainbow-tier skill **Immortal Divine Body** (a
+once-per-battle revive) is not attached to any talent. Full descriptions are in
+`src/data/hero-details.ts`.
+
 ### Divinities (game, 2026-09-12)
 
 Each hero's **divine weapon** screen shows a named weapon ringed by six round
@@ -230,6 +249,9 @@ is said. These override anything marked (web).
 - 2026-09-13 — More rune sheet → in-game names: **"Healing Done"** is **Heal**, **"Received Healing"** is **Receive Healing** (same as the weapon attribute / divinity), **"Control Avoidance Chance"** is **Anti-Control**.
 - 2026-09-13 — **Energy Rune popups** (owner screenshots, `gameplay/runes/energy-rune-popup-*.png`): a rune popup shows the rune type ("Energy Rune"), its quality (**Eternal**), an **Embedded** tag, a **Score**, and **five attribute lines**, each with a grade letter (**S / A / B / C**) and a value (e.g. "ATK Energy Regen +9.7"). The same attribute can appear on two lines of one rune. Buttons: Remove, Swap, and sometimes Refine. In-game energy attribute names, mapped to the sheet: **ATK Energy Regen** = Energy from Attacking, **Energy Regen** = Energy Regeneration, **Energy Increase** = Energy Increase, **ATK Energy Reduction** = Energy Drain on Attack, **Energy Regen when attacked** = Energy from Damage Taken, **Energy Regen upon Defeat** = Energy on Kill, **Energy Surplus** = Energy Remainder. "Energy Reduction on Death" was not seen in any popup. Observed values sit at or just under the sheet's max (Energy Surplus +30.1 slightly exceeds the sheet's 30).
 - 2026-09-13 — **Weapons are not divinities.** Weapon attributes are their own system; do not link them to divinities or reuse divinity icons for them, even where the names match.
+- 2026-09-13 — **Nezha** (Warrior · DPS · Eternal). Talents: **Wind Fire Wheels** (Ultimate), **Fire-Tipped Spear** (Battle, 2★), **Windfire** (Enhance, 5★), **Armillary Sash** (Special, 8★), **Threefold Arms** (Passive, 12★), **Scorching Ember** (Enhance, 16★). Fire-Tipped Spear grants a chance for **True DMG** on Basic ATK; Scorching Ember and Windfire are stacking debuffs/buffs riding on Wind Fire Wheels. The divine weapon is itself named **Fire-Tipped Spear** (4★) — same name as the talent.
+- 2026-09-13 — Nezha's mythic divinities (Artifact screenshot): **ATK** (left) and **Melee DMG Boost** (right) — both already in the catalog.
+- 2026-09-13 — Nezha's rainbow-tier artifact skill is **Immortal Divine Body**: on taking fatal damage, instantly restore 55% of max HP and gain 30% DEF and 100% Energy Regen SPD per second for 8s, once per battle. A revive effect, not attached to any talent (like Sea Captain's Ship Raid).
 
 ## How the app models it
 

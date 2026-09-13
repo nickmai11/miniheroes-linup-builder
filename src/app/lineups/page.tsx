@@ -51,7 +51,11 @@ export default async function LineupsPage() {
                       {lineup.slots.map((hero, i) => (
                         <div key={i} className="w-16">
                           {hero ? (
-                            <HeroPortrait hero={hero} sizes="64px" />
+                            <HeroPortrait
+                              hero={hero}
+                              divinities={hero.divinities}
+                              sizes="64px"
+                            />
                           ) : (
                             <div className="aspect-[81/100] rounded-md border border-dashed" />
                           )}

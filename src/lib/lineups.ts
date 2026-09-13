@@ -1,24 +1,35 @@
 import { asc, desc, eq, inArray } from "drizzle-orm";
 import { db, schema } from "@/db";
 import type { Hero, Lineup } from "@/db/schema";
+import {
+  divinitiesByHeroIds,
+  syncSeededHeroDetails,
+  type HeroWithDivinities,
+} from "./heroes";
 
 export type LineupWithHeroes = Lineup & {
   /** Slot index -> hero (missing slots are null). */
-  slots: (Hero | null)[];
+  slots: (HeroWithDivinities | null)[];
 };
 
-function assemble(
+async function assemble(
   lineupRows: Lineup[],
   slotRows: { lineupId: number; position: number; hero: Hero }[],
-): LineupWithHeroes[] {
+): Promise<LineupWithHeroes[]> {
+  const byHero = await divinitiesByHeroIds([
+    ...new Set(slotRows.map((s) => s.hero.id)),
+  ]);
   return lineupRows.map((l) => {
-    const slots: (Hero | null)[] = Array.from(
+    const slots: (HeroWithDivinities | null)[] = Array.from(
       { length: schema.LINEUP_SIZE },
       () => null,
     );
     for (const s of slotRows) {
       if (s.lineupId === l.id && s.position < schema.LINEUP_SIZE) {
-        slots[s.position] = s.hero;
+        slots[s.position] = {
+          ...s.hero,
+          divinities: byHero.get(s.hero.id) ?? [],
+        };
       }
     }
     return { ...l, slots };
@@ -40,6 +51,7 @@ async function loadSlots(lineupIds: number[]) {
 }
 
 export async function getAllLineups(): Promise<LineupWithHeroes[]> {
+  await syncSeededHeroDetails();
   const lineupRows = await db
     .select()
     .from(schema.lineups)
@@ -51,11 +63,12 @@ export async function getAllLineups(): Promise<LineupWithHeroes[]> {
 export async function getLineup(
   id: number,
 ): Promise<LineupWithHeroes | undefined> {
+  await syncSeededHeroDetails();
   const lineupRows = await db
     .select()
     .from(schema.lineups)
     .where(eq(schema.lineups.id, id));
   if (lineupRows.length === 0) return undefined;
   const slotRows = await loadSlots([id]);
-  return assemble(lineupRows, slotRows)[0];
+  return (await assemble(lineupRows, slotRows))[0];
 }

@@ -151,4 +151,110 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
     ],
     divinities: ["warrior-atk", "atk"],
   },
+  nezha: {
+    artifact: {
+      name: "Fire-Tipped Spear",
+      iconUrl: "/artifacts/nezha.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Fire-Tipped Spear",
+          description: '"Fire-Tipped Spear" trigger chance increased by 10%',
+        },
+        {
+          tier: "gold",
+          skill: "Armillary Sash",
+          description:
+            '"Armillary Sash" increases own defense by 15% for 4 s after each cast',
+        },
+        {
+          tier: "red",
+          skill: "Wind Fire Wheels",
+          description: '"Wind Fire Wheels" releases 2 wheels per cast',
+        },
+        {
+          tier: "rainbow",
+          name: "Immortal Divine Body",
+          description:
+            "Upon taking fatal damage, instantly restore 55% of max HP and gain 30% DEF and 100% Energy Regen SPD per second for 8s. (Triggers once per battle)",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Wind Fire Wheels",
+        unlockStars: 0,
+        iconUrl: talent("nezha", "wind-fire-wheels"),
+        description:
+          "Throw a Wind Fire Wheel towards the front of the battlefield, dealing 450% physical damage to all enemies in its path.",
+      },
+      {
+        kind: "battle",
+        name: "Fire-Tipped Spear",
+        unlockStars: 2,
+        iconUrl: talent("nezha", "fire-tipped-spear"),
+        description:
+          "30% chance to deal True DMG to enemies in front on Basic ATK.",
+      },
+      {
+        kind: "enhance",
+        name: "Windfire",
+        unlockStars: 5,
+        iconUrl: talent("nezha", "windfire"),
+        description:
+          "Wind Fire Wheels increases MOV SPD by 8% per cast, lasting until battle ends (max stacks: 3).",
+      },
+      {
+        kind: "special",
+        name: "Armillary Sash",
+        unlockStars: 8,
+        iconUrl: talent("nezha", "armillary-sash"),
+        description:
+          "When taking damage exceeding 10% of max HP in a single hit, releases Armillary Sash on the attacker, reducing their Energy Regen SPD by 40% per second and ATK by 25% for 5s (CD: 8 s).",
+      },
+      {
+        kind: "passive",
+        name: "Threefold Arms",
+        unlockStars: 12,
+        iconUrl: talent("nezha", "threefold-arms"),
+        description: "Attack increased by 15%, HP increased by 10%.",
+      },
+      {
+        kind: "enhance",
+        name: "Scorching Ember",
+        unlockStars: 16,
+        iconUrl: talent("nezha", "scorching-ember"),
+        description:
+          "Wind Fire Wheels applies Scorching Ember to enemies hit, lasting 9 seconds. Enemies with Scorching Ember have their crit rate reduced by 12% and HP regeneration per second reduced by 1% (max stacks: 3).",
+      },
+    ],
+    cores: [
+      {
+        name: "Blade of Valor",
+        skill: "Wind Fire Wheels",
+        description:
+          "Wind Fire Wheels increases Physical DMG from attacks by 35%(105%).",
+      },
+      {
+        name: "Brawler's Armor",
+        skill: "Windfire",
+        description:
+          "Windfire additionally boosts own Magic Resistance by 2.5%(7.5%) each time.",
+      },
+      {
+        name: "Cavalier Helm",
+        skill: "Fire-Tipped Spear",
+        description:
+          "Fire-Tipped Spear raises the chance to inflict True DMG by 6%(18%).",
+      },
+      {
+        name: "Brawler's Boots",
+        skill: "Armillary Sash",
+        description:
+          "Armillary Sash further slows Energy Regeneration speed by 10%(30%).",
+      },
+    ],
+    divinities: ["atk", "melee-dmg-boost"],
+  },
 };

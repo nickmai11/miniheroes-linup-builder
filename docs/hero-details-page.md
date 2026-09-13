@@ -23,6 +23,12 @@ button in the left column):
 Still to build: **Awakening skills** (I–IV; II and IV are shared per class, so store
 those once per class). No screenshots yet.
 
+Build imports use an outline button matching **New build**. The picker searches
+hero and build names on the server, loads twelve results per page only when opened,
+and keeps the results in a scrollable panel. Select a build, then choose **Import
+build** to copy its name, notes, and attribute priorities. Searching or changing
+pages clears the selection; Cancel or Escape closes the picker.
+
 Rules that shape the page:
 
 - **No counts** anywhere ("6 talents", "30 divinities"). Empty states are fine.
