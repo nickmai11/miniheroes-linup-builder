@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { findRegisteredDevice, newDeviceToken } from "@/lib/invitations";
 import { isLocalEditingAllowed } from "@/lib/local-edit-policy";
+import { isPublicPage } from "@/lib/public-urls";
+import { isPublicPageAsset } from "@/lib/public-url-assets";
+import {
+  isPublicRead,
+  publicAssetReferrer,
+  publicPagePath,
+} from "@/lib/public-url-policy";
 import {
   DEVICE_COOKIE,
   INVITATION_REQUIRED,
@@ -22,11 +29,19 @@ export async function proxy(request: NextRequest) {
     "x-app-destination",
     invitationDestination(`${path}${url.search}`),
   );
+  requestHeaders.set("x-app-method", request.method);
   const next = () =>
     NextResponse.next({ request: { headers: requestHeaders } });
   const finish = privateInvitationResponse;
 
-  if (path === "/invitations/new" || path === "/api/invitations/generate") {
+  if (
+    [
+      "/invitations/new",
+      "/api/invitations/generate",
+      "/public-urls",
+      "/api/public-urls",
+    ].includes(path)
+  ) {
     return finish(
       isLocalEditingAllowed(request.headers, process.env.NODE_ENV)
         ? next()
@@ -57,6 +72,26 @@ export async function proxy(request: NextRequest) {
       } else response = next();
       setDeviceCookie(response, token);
       return finish(response);
+    }
+
+    if (isPublicRead(request.method, request.headers)) {
+      const page = publicPagePath(`${path}${url.search}`);
+      if (page && (await isPublicPage(page))) {
+        const response = finish(next());
+        // Images may use this same-origin page as their public access context.
+        response.headers.set("Referrer-Policy", "same-origin");
+        return response;
+      }
+      if (/\.png$/.test(path)) {
+        const referringPage = publicAssetReferrer(request);
+        if (
+          referringPage &&
+          (await isPublicPage(referringPage)) &&
+          (await isPublicPageAsset(referringPage, path))
+        ) {
+          return finish(next());
+        }
+      }
     }
 
     if (path === "/invite") {

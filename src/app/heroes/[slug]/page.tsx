@@ -1,4 +1,4 @@
-import { requireAppAccess } from "@/lib/app-access";
+import { getRegisteredDevice, requirePageAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -30,18 +30,19 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata(
   props: PageProps<"/heroes/[slug]">,
 ): Promise<Metadata> {
-  await requireAppAccess();
+  await requirePageAccess();
   const { slug } = await props.params;
   const hero = await getHeroDetail(slug);
   return { title: hero?.name ?? "Hero" };
 }
 
 export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
-  await requireAppAccess();
+  await requirePageAccess();
   const { slug } = await props.params;
   const hero = await getHeroDetail(slug);
   if (!hero) notFound();
-  const canEdit = await canEditLocally();
+  const canEdit =
+    (await canEditLocally()) && Boolean(await getRegisteredDevice());
   const [builds, runeAttributes, weaponAttributes] = await Promise.all([
     getHeroBuilds(hero.id),
     canEdit ? getAllRuneAttributes() : [],

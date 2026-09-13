@@ -1,5 +1,6 @@
 import {
   boolean,
+  check,
   index,
   integer,
   pgEnum,
@@ -9,7 +10,9 @@ import {
   timestamp,
   unique,
 } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 import { BUILD_PRIORITIES } from "@/lib/build-priorities";
+import { MAX_FISH_QUANTITY } from "@/lib/fish-selection";
 
 export const notes = pgTable("notes", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
@@ -22,6 +25,15 @@ export const notes = pgTable("notes", {
 
 export type Note = typeof notes.$inferSelect;
 export type NewNote = typeof notes.$inferInsert;
+
+/** Exact page paths the owner has made readable without an invitation. */
+export const publicUrls = pgTable("public_urls", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  path: text("path").notNull().unique(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
 
 export const invitationCodes = pgTable("invitation_codes", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
@@ -419,11 +431,16 @@ export const lineupFishes = pgTable(
     fishId: integer("fish_id")
       .notNull()
       .references(() => fishes.id, { onDelete: "cascade" }),
+    quantity: integer("quantity").notNull().default(1),
     sortOrder: integer("sort_order").notNull().default(0),
   },
   (t) => [
     unique().on(t.lineupId, t.fishId),
     index("lineup_fishes_fish_id_idx").on(t.fishId),
+    check(
+      "lineup_fishes_quantity_range",
+      sql`${t.quantity} between 1 and ${MAX_FISH_QUANTITY}`.inlineParams(),
+    ),
   ],
 );
 

@@ -457,7 +457,11 @@ Desert Beach (17), Frost Land (19), Jungle Lakes (19), and Idyllic Paradise (20)
 Each row records a name, type (Small / Medium / Large / Aquatic), collection,
 up to three stat names, and optional bait. Area comes from the sheet filename.
 Preserve the sheet's names and stat wording, trimming whitespace and treating
-`-` as unrecorded. No stat values or fish count limit have been specified.
+`-` as unrecorded. No stat values have been specified.
+Fish selection is grouped into **Small, Medium, Large, and Aquatic**. Each category
+can contain multiple distinct fishes, and each selected fish has a quantity of
+**1–4** (owner, 2026-09-13). The limit is per fish, not per category. Existing fish
+selections start at quantity 1; editing and cloning preserve quantities.
 The owner confirmed that fish selections use this **separate fish list**;
 the earlier fishing collectibles sheet must not be imported as fishes.
 
@@ -514,6 +518,8 @@ daily/weekly missions, limited events, redemption codes.
 
 Everything the owner says about the game gets appended here, dated, the moment it
 is said. These override anything marked (web).
+
+- 2026-09-13 — Fishes must be categorized as **Small, Medium, Large, and Aquatic**. Each category can contain more than one fish, and each fish can have multiple copies, up to **4**.
 
 - 2026-09-13 — Lineups should have **fishes**. Add fishes to the database and to the lineup builder.
 - 2026-09-13 — Use a **separate fish list** for the fish catalog, not the fishing collectibles in `Fish Guide - Collectibles.csv`.
@@ -653,10 +659,20 @@ is said. These override anything marked (web).
   seven area sheets, excludes collectibles, and rejects duplicate fish slugs or
   malformed input. No fish icons are supplied in these CSVs.
 - `lineup_fishes`: ordered, unique fish selections linked to the whole lineup.
+  Each selection stores a `quantity` of **1–4**, enforced by input validation
+  and a database check. Migration `0024_lineup_fish_quantities.sql` gives existing
+  selections quantity 1. Edit and clone drafts preserve every fish's quantity.
   Saving or editing replaces these links in the same transaction as the formation
   and hero assignments. Deleting a lineup or fish cascades its links. The builder
-  uses a fixed-height multi-select dropdown; saved lineup lists and detail pages
-  show the selected fish names.
+  has one fixed-height multi-select dropdown per category (**Small, Medium,
+  Large, Aquatic**), with a quantity selector for each fish. Multiple distinct
+  fishes are allowed in every category; the quantity limit applies to each fish.
+  Saved lineup lists and detail pages group fish names and quantities by category.
+  Each dropdown includes a fish-name search; filtering preserves selections and
+  quantities. The search resets when a category dropdown is opened.
+  While migration 0024 is pending, reads treat existing selections as quantity 1
+  and saves with one copy per fish still work. Saving multiple copies returns a
+  form error before changing the lineup, instead of crashing or losing quantities.
 - `divinities` table: `slug`, `name` (stat without "All"), `kind` (display category,
   with owner corrections taking precedence over popup titles), `iconUrl`
   (`/divinities/<slug>.png`). Seeded from `src/data/divinities.ts`

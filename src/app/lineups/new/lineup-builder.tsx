@@ -8,6 +8,7 @@ import { LINEUP_SIZE, type Fish } from "@/db/schema";
 import type { HeroWithDivinities } from "@/lib/heroes";
 import type { LineupWithHeroes } from "@/lib/lineups";
 import type { LineupSlotInput } from "@/lib/lineup-input";
+import type { FishSelection } from "@/lib/fish-selection";
 import { createLineupDraft } from "@/lib/lineup-draft";
 import type { AssignmentItem } from "@/components/lineup-assignments";
 import { HeroName, HeroPortrait } from "@/components/hero-portrait";
@@ -65,8 +66,8 @@ export function LineupBuilder({
   });
   const [activeSlot, setActiveSlot] = useState<number | null>(null);
   const [name, setName] = useState(initialDraft?.name ?? "");
-  const [fishIds, setFishIds] = useState<number[]>(
-    () => initialDraft?.fishIds ?? [],
+  const [fishSelections, setFishSelections] = useState<FishSelection[]>(
+    () => initialDraft?.fishSelections ?? [],
   );
   const [description, setDescription] = useState(
     initialDraft?.description ?? "",
@@ -145,7 +146,7 @@ export function LineupBuilder({
           id: initialDraft?.id,
           name,
           description,
-          fishIds,
+          fishSelections,
           slots,
         });
         if (result?.error) setError(result.error);
@@ -271,9 +272,9 @@ export function LineupBuilder({
 
       <FishPicker
         fishes={fishes}
-        selectedIds={fishIds}
-        onChange={(ids) => {
-          setFishIds(ids);
+        selections={fishSelections}
+        onChange={(selections) => {
+          setFishSelections(selections);
           setError(null);
         }}
         disabled={pending}

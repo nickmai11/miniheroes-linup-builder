@@ -76,15 +76,64 @@ test("rejects invalid edit IDs, empty formations, and assignments without a hero
   assert.equal(lineupSchema.safeParse(input).success, false);
 });
 
-test("lineup fishes are optional, ordered, and unique positive catalog IDs", () => {
-  assert.deepEqual(lineupSchema.parse(valid()).fishIds, []);
+test("legacy fish IDs default to one copy and preserve selection order", () => {
+  assert.deepEqual(lineupSchema.parse(valid()).fishSelections, []);
   assert.deepEqual(
-    lineupSchema.parse({ ...valid(), fishIds: [3, 1, 2] }).fishIds,
-    [3, 1, 2],
+    lineupSchema.parse({ ...valid(), fishIds: [3, 1, 2] }).fishSelections,
+    [
+      { fishId: 3, quantity: 1 },
+      { fishId: 1, quantity: 1 },
+      { fishId: 2, quantity: 1 },
+    ],
   );
   for (const fishIds of [[2, 2], [-1], [0], [1.5], ["1"], null]) {
     assert.equal(
       lineupSchema.safeParse({ ...valid(), fishIds }).success,
+      false,
+    );
+  }
+});
+
+test("each selected fish allows 1–4 copies without a total selection limit", () => {
+  const fishSelections = [
+    { fishId: 5, quantity: 4 },
+    { fishId: 2, quantity: 3 },
+    { fishId: 4, quantity: 2 },
+    { fishId: 1, quantity: 1 },
+    { fishId: 3, quantity: 4 },
+  ];
+  assert.deepEqual(
+    lineupSchema.parse({ ...valid(), fishSelections }).fishSelections,
+    fishSelections,
+  );
+  assert.deepEqual(
+    lineupSchema.parse({ ...valid(), fishSelections: [{ fishId: 1 }] })
+      .fishSelections,
+    [{ fishId: 1, quantity: 1 }],
+  );
+  assert.deepEqual(
+    lineupSchema.parse({ ...valid(), fishIds: [1], fishSelections: [] })
+      .fishSelections,
+    [],
+    "Clearing current selections takes precedence over legacy IDs",
+  );
+});
+
+test("rejects invalid quantities, invalid fish IDs, and duplicate fish selections", () => {
+  const invalidSelections = [
+    ...[0, -1, 5, 1.5, "2", null, NaN, Infinity].map((quantity) => [
+      { fishId: 1, quantity },
+    ]),
+    ...[0, -1, 1.5, "1", null].map((fishId) => [{ fishId, quantity: 1 }]),
+    [
+      { fishId: 1, quantity: 1 },
+      { fishId: 1, quantity: 2 },
+    ],
+    null,
+  ];
+  for (const fishSelections of invalidSelections) {
+    assert.equal(
+      lineupSchema.safeParse({ ...valid(), fishSelections }).success,
       false,
     );
   }
@@ -95,7 +144,10 @@ const savedLineup = () => ({
   name: "Arena",
   description: "Keep the formation and notes.",
   createdAt: new Date("2026-09-13T00:00:00Z"),
-  fishes: [{ id: 9 }, { id: 3 }],
+  fishes: [
+    { id: 9, quantity: 4 },
+    { id: 3, quantity: 2 },
+  ],
   slots: [
     {
       id: 7,
@@ -116,7 +168,10 @@ test("cloning preserves all ordered assignments and notes without the source sav
   assert.equal(Object.hasOwn(draft, "id"), false);
   assert.equal(draft.name, "Arena (copy)");
   assert.equal(draft.description, source.description);
-  assert.deepEqual(draft.fishIds, [9, 3]);
+  assert.deepEqual(draft.fishSelections, [
+    { fishId: 9, quantity: 4 },
+    { fishId: 3, quantity: 2 },
+  ]);
   assert.deepEqual(draft.slots, [
     { heroId: 7, buildId: 12, petIds: [4, 2], relicIds: [6] },
     null,
@@ -131,7 +186,8 @@ test("cloning preserves all ordered assignments and notes without the source sav
   draft.slots[0].relicIds.push(8);
   draft.slots[0].buildId = null;
   draft.slots[2] = null;
-  draft.fishIds.pop();
+  draft.fishSelections[0].quantity = 1;
+  draft.fishSelections.pop();
   assert.deepEqual(source, original);
 });
 
@@ -141,6 +197,10 @@ test("edit drafts retain their save target while clone names fit the name limit"
   const edit = createLineupDraft(source);
   assert.equal(edit.id, source.id);
   assert.equal(edit.name, source.name);
+  assert.deepEqual(edit.fishSelections, [
+    { fishId: 9, quantity: 4 },
+    { fishId: 3, quantity: 2 },
+  ]);
   const clone = createLineupDraft(source, true);
   assert.equal(clone.name.length, 120);
   assert.ok(clone.name.endsWith(" (copy)"));

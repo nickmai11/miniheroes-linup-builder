@@ -4,6 +4,20 @@ import test from "node:test";
 import { loadTypeScript } from "./load-typescript.mjs";
 
 const { fishSeeds } = loadTypeScript("src/data/fishes.ts");
+const { FISH_CATEGORIES } = loadTypeScript("src/lib/fish-selection.ts");
+
+test("all catalog fishes belong to the four owner-defined categories", () => {
+  assert.deepEqual(FISH_CATEGORIES, ["Small", "Medium", "Large", "Aquatic"]);
+  assert.deepEqual(
+    [...new Set(fishSeeds.map((fish) => fish.fishType))].sort(),
+    [...FISH_CATEGORIES].sort(),
+  );
+  for (const category of FISH_CATEGORIES) {
+    assert.ok(
+      fishSeeds.filter((fish) => fish.fishType === category).length > 1,
+    );
+  }
+});
 
 test("fish catalog includes all seven areas and preserves recorded details", () => {
   assert.equal(fishSeeds.length, 130);

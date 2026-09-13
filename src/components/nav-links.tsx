@@ -11,9 +11,16 @@ const LINKS = [
   { href: "/lineups/new", label: "Build" },
   { href: "/about", label: "About" },
   { href: "/invitations/new", label: "Invitations" },
+  { href: "/public-urls", label: "Public URLs" },
 ] as const;
 
-export function NavLinks({ canEdit }: { canEdit: boolean }) {
+export function NavLinks({
+  canEdit,
+  allowedPaths,
+}: {
+  canEdit: boolean;
+  allowedPaths?: string[];
+}) {
   const pathname = usePathname();
   return (
     <nav
@@ -21,11 +28,15 @@ export function NavLinks({ canEdit }: { canEdit: boolean }) {
       className="flex min-w-0 items-center gap-0.5 overflow-x-auto text-sm sm:gap-1"
     >
       {LINKS.map(({ href, label }) => {
+        const localAdmin =
+          href === "/invitations/new" || href === "/public-urls";
         if (
-          (href === "/lineups/new" || href === "/invitations/new") &&
-          !canEdit
+          allowedPaths &&
+          !allowedPaths.includes(href) &&
+          !(canEdit && localAdmin)
         )
           return null;
+        if ((href === "/lineups/new" || localAdmin) && !canEdit) return null;
         const active =
           href === "/lineups"
             ? pathname === "/lineups" || /^\/lineups\/\d+/.test(pathname)

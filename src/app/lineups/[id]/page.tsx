@@ -1,4 +1,4 @@
-import { requireAppAccess } from "@/lib/app-access";
+import { getRegisteredDevice, requirePageAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -22,7 +22,7 @@ const SLOT_LABELS = ["Slot 1", "Slot 2", "Slot 3", "Slot 4", "Slot 5"];
 export async function generateMetadata(
   props: PageProps<"/lineups/[id]">,
 ): Promise<Metadata> {
-  await requireAppAccess();
+  await requirePageAccess();
   const { id } = await props.params;
   const lineup = Number.isInteger(Number(id))
     ? await getLineup(Number(id))
@@ -31,14 +31,16 @@ export async function generateMetadata(
 }
 
 export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
-  await requireAppAccess();
+  await requirePageAccess();
   const { id } = await props.params;
   const numericId = Number(id);
   if (!Number.isInteger(numericId)) notFound();
 
   const [lineup, canEdit] = await Promise.all([
     getLineup(numericId),
-    canEditLocally(),
+    canEditLocally().then(
+      async (local) => local && Boolean(await getRegisteredDevice()),
+    ),
   ]);
   if (!lineup) notFound();
 
@@ -47,39 +49,38 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
       title={lineup.name}
       description={`Saved ${lineup.createdAt.toLocaleString()}`}
       width="max-w-4xl"
-      actions={
-        <div className="flex flex-wrap items-start gap-2">
-          <LineupShare lineupId={lineup.id} canInvite={canEdit} />
-          {canEdit && (
-            <>
-              <Link
-                href={`/lineups/${lineup.id}/edit`}
-                className={buttonVariants()}
-              >
-                <Pencil data-icon="inline-start" /> Edit lineup
-              </Link>
-              <Link
-                href={`/lineups/new?clone=${lineup.id}`}
-                className={buttonVariants({ variant: "outline" })}
-              >
-                <Copy data-icon="inline-start" /> Clone lineup
-              </Link>
-              <Link
-                href="/lineups/new"
-                className={buttonVariants({ variant: "outline" })}
-              >
-                <Plus data-icon="inline-start" /> New lineup
-              </Link>
-              <form action={deleteLineup.bind(null, lineup.id)}>
-                <Button type="submit" variant="destructive">
-                  <Trash2 data-icon="inline-start" /> Delete
-                </Button>
-              </form>
-            </>
-          )}
-        </div>
-      }
     >
+      <div className="flex flex-wrap items-start gap-2">
+        <LineupShare lineupId={lineup.id} canInvite={canEdit} />
+        {canEdit && (
+          <>
+            <Link
+              href={`/lineups/${lineup.id}/edit`}
+              className={buttonVariants()}
+            >
+              <Pencil data-icon="inline-start" /> Edit lineup
+            </Link>
+            <Link
+              href={`/lineups/new?clone=${lineup.id}`}
+              className={buttonVariants({ variant: "outline" })}
+            >
+              <Copy data-icon="inline-start" /> Clone lineup
+            </Link>
+            <Link
+              href="/lineups/new"
+              className={buttonVariants({ variant: "outline" })}
+            >
+              <Plus data-icon="inline-start" /> New lineup
+            </Link>
+            <form action={deleteLineup.bind(null, lineup.id)}>
+              <Button type="submit" variant="destructive">
+                <Trash2 data-icon="inline-start" /> Delete
+              </Button>
+            </form>
+          </>
+        )}
+      </div>
+
       <ul className="grid grid-cols-2 items-start gap-3 sm:grid-cols-3 md:grid-cols-5">
         {lineup.slots.map((hero, i) => (
           <li

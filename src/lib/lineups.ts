@@ -1,5 +1,5 @@
 import { cache } from "react";
-import { asc, desc, eq, inArray } from "drizzle-orm";
+import { asc, desc, eq, inArray, sql } from "drizzle-orm";
 import { db, schema } from "@/db";
 import type { Fish, Hero, Lineup, Pet, Relic } from "@/db/schema";
 import type { HeroBuild } from "@/lib/build-types";
@@ -16,8 +16,10 @@ export type LineupHeroWithAssignments = HeroWithDivinities & {
   build: HeroBuild | null;
 };
 
+export type LineupFish = Fish & { quantity: number };
+
 export type LineupWithHeroes = Lineup & {
-  fishes: Fish[];
+  fishes: LineupFish[];
   /** Slot index -> hero (missing slots are null). */
   slots: (LineupHeroWithAssignments | null)[];
 };
@@ -75,6 +77,8 @@ async function assemble(
           .select({
             lineupId: schema.lineupFishes.lineupId,
             fish: schema.fishes,
+            // A missing JSON key also supports databases awaiting migration 0024.
+            quantity: sql<number>`coalesce((to_jsonb(${schema.lineupFishes})->>'quantity')::integer, 1)`,
           })
           .from(schema.lineupFishes)
           .innerJoin(
@@ -90,10 +94,10 @@ async function assemble(
           .orderBy(asc(schema.lineupFishes.sortOrder))
       : [],
   ]);
-  const fishesByLineup = new Map<number, Fish[]>();
-  for (const { lineupId, fish } of fishRows) {
+  const fishesByLineup = new Map<number, LineupFish[]>();
+  for (const { lineupId, fish, quantity } of fishRows) {
     const fishes = fishesByLineup.get(lineupId) ?? [];
-    fishes.push(fish);
+    fishes.push({ ...fish, quantity });
     fishesByLineup.set(lineupId, fishes);
   }
   const buildsById = new Map(builds.map((build) => [build.id, build]));

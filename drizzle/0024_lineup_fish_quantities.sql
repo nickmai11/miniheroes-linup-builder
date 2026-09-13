@@ -1,0 +1,2 @@
+ALTER TABLE "lineup_fishes" ADD COLUMN "quantity" integer DEFAULT 1 NOT NULL;--> statement-breakpoint
+ALTER TABLE "lineup_fishes" ADD CONSTRAINT "lineup_fishes_quantity_range" CHECK ("lineup_fishes"."quantity" between 1 and 4);

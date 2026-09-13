@@ -92,6 +92,7 @@ test(
                     slug: `${prefix}-${i}`,
                     name: `Item ${i}`,
                     iconUrl: "/test.png",
+                    ...(table === schema.fishes ? { fishType: "Small" } : {}),
                   },
             ),
           )
@@ -139,7 +140,10 @@ test(
       };
       const original = {
         name: "Original",
-        fishIds: [fishes[1].id, fishes[0].id],
+        fishSelections: [
+          { fishId: fishes[1].id, quantity: 4 },
+          { fishId: fishes[0].id, quantity: 3 },
+        ],
         description: "Keep notes",
         slots: [selection, null, { heroId: heroes[1].id }, null, null],
       };
@@ -147,9 +151,13 @@ test(
       const first = await getLineup(id);
       assert.equal(first.name, "Original");
       assert.deepEqual(
-        first.fishes.map((fish) => fish.id),
-        original.fishIds,
+        first.fishes.map((fish) => ({
+          fishId: fish.id,
+          quantity: fish.quantity,
+        })),
+        original.fishSelections,
       );
+      assert.ok(first.fishes.every((fish) => fish.fishType === "Small"));
       assert.equal(first.slots[1], null);
       assert.deepEqual(
         first.slots[0].pets.map((pet) => pet.id),
@@ -179,10 +187,11 @@ test(
       await save({
         ...createLineupDraft(clone),
         name: "Changed copy",
-        fishIds: [],
+        fishSelections: [],
         slots: [null, null, { heroId: heroes[1].id }, null, null],
       });
       assert.deepEqual(await getLineup(id), first);
+      assert.deepEqual((await getLineup(cloneId)).fishes, []);
 
       const otherId = await save({
         name: "Other lineup",
@@ -191,7 +200,10 @@ test(
       const edited = {
         id,
         name: "Edited",
-        fishIds: [fishes[2].id, fishes[1].id],
+        fishSelections: [
+          { fishId: fishes[2].id, quantity: 2 },
+          { fishId: fishes[1].id, quantity: 1 },
+        ],
         description: "Changed notes",
         slots: [
           null,
@@ -206,8 +218,11 @@ test(
       assert.equal(after.createdAt.getTime(), first.createdAt.getTime());
       assert.equal(after.name, "Edited");
       assert.deepEqual(
-        after.fishes.map((fish) => fish.id),
-        edited.fishIds,
+        after.fishes.map((fish) => ({
+          fishId: fish.id,
+          quantity: fish.quantity,
+        })),
+        edited.fishSelections,
       );
       assert.deepEqual((await getLineup(otherId)).fishes, []);
       assert.deepEqual(
@@ -260,16 +275,51 @@ test(
       );
 
       assert.match(
-        (await actions.saveLineup({ ...edited, fishIds: [2147483647] })).error,
+        (
+          await actions.saveLineup({
+            ...edited,
+            fishSelections: [{ fishId: 2147483647, quantity: 1 }],
+          })
+        ).error,
         /fishes no longer exists/,
       );
       assert.deepEqual(await getLineup(id), after);
+      for (const quantity of [0, 5, 1.5]) {
+        assert.ok(
+          (
+            await actions.saveLineup({
+              ...edited,
+              fishSelections: [{ fishId: fishes[0].id, quantity }],
+            })
+          ).error,
+        );
+        assert.deepEqual(await getLineup(id), after);
+      }
+      for (const quantity of [0, 5]) {
+        await assert.rejects(
+          db
+            .update(schema.lineupFishes)
+            .set({ quantity })
+            .where(eq(schema.lineupFishes.lineupId, id)),
+          (error) => error.cause?.code === "23514",
+          "The database also enforces the per-fish quantity limit",
+        );
+      }
+      assert.deepEqual(await getLineup(id), after);
+      const [defaultFish] = await db
+        .insert(schema.lineupFishes)
+        .values({ lineupId: otherId, fishId: fishes[0].id })
+        .returning();
+      assert.equal(defaultFish.quantity, 1);
+      await db
+        .delete(schema.lineupFishes)
+        .where(eq(schema.lineupFishes.id, defaultFish.id));
       failFishInsert = true;
       await assert.rejects(
         actions.saveLineup({
           ...edited,
           name: "Fish failure",
-          fishIds: [fishes[0].id],
+          fishSelections: [{ fishId: fishes[0].id, quantity: 4 }],
         }),
       );
       assert.deepEqual(
@@ -278,7 +328,7 @@ test(
         "Fish insert failure rolls back the whole lineup",
       );
       failFishInsert = false;
-      await save({ ...edited, fishIds: [] });
+      await save({ ...edited, fishSelections: [] });
       assert.deepEqual((await getLineup(id)).fishes, []);
       await save(edited);
 

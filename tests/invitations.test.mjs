@@ -3,7 +3,15 @@ import test from "node:test";
 import { AsyncLocalStorage } from "node:async_hooks";
 import { createRequire } from "node:module";
 import { NextRequest } from "next/server.js";
-import { loadTypeScript } from "./load-typescript.mjs";
+import { loadTypeScript as loadAppTypeScript } from "./load-typescript.mjs";
+
+function loadTypeScript(path, overrides = {}) {
+  return loadAppTypeScript(path, {
+    "@/lib/public-urls": { isPublicPage: async () => false },
+    "@/lib/public-url-assets": { isPublicPageAsset: async () => false },
+    ...overrides,
+  });
+}
 
 const policy = loadTypeScript("src/lib/invitation-policy.ts");
 const token = "a".repeat(43);

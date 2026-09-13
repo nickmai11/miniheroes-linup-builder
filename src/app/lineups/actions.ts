@@ -2,7 +2,7 @@
 
 import { requireAppAccess } from "@/lib/app-access";
 
-import { eq, inArray } from "drizzle-orm";
+import { eq, inArray, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db, schema } from "@/db";
@@ -24,7 +24,8 @@ export async function saveLineup(
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Invalid lineup" };
   }
-  const { id, name, description, slots, fishIds } = parsed.data;
+  const { id, name, description, slots, fishSelections } = parsed.data;
+  const fishIds = fishSelections.map((selection) => selection.fishId);
   const buildIds = slots.flatMap((slot) =>
     slot?.buildId ? [slot.buildId] : [],
   );
@@ -78,6 +79,26 @@ export async function saveLineup(
     )
   ) {
     return { error: "One of the selected relics no longer exists" };
+  }
+
+  // Check on each save so applying migration 0024 enables quantities immediately.
+  const [fishStorage] = fishIds.length
+    ? await db.execute<{ supportsQuantities: boolean }>(sql`
+        select exists (
+          select 1 from information_schema.columns
+          where table_schema = current_schema()
+            and table_name = 'lineup_fishes' and column_name = 'quantity'
+        ) as "supportsQuantities"
+      `)
+    : [];
+  if (
+    !fishStorage?.supportsQuantities &&
+    fishSelections.some(({ quantity }) => quantity > 1)
+  ) {
+    return {
+      error:
+        "Multiple copies of a fish aren't available yet. Choose one copy per fish to save; your lineup hasn't been changed.",
+    };
   }
 
   const lineup = await db.transaction(async (tx) => {
@@ -137,15 +158,28 @@ export async function saveLineup(
     if (pets.length) await tx.insert(schema.lineupHeroPets).values(pets);
     if (relics.length) await tx.insert(schema.lineupHeroRelics).values(relics);
     if (fishIds.length) {
-      await tx
-        .insert(schema.lineupFishes)
-        .values(
-          fishIds.map((fishId, sortOrder) => ({
+      if (fishStorage?.supportsQuantities) {
+        await tx.insert(schema.lineupFishes).values(
+          fishSelections.map(({ fishId, quantity }, sortOrder) => ({
             lineupId: saved.id,
             fishId,
+            quantity,
             sortOrder,
           })),
         );
+      } else {
+        // Omit the quantity column entirely until migration 0024 is applied.
+        await tx.execute(sql`
+          insert into ${schema.lineupFishes} (lineup_id, fish_id, sort_order)
+          values ${sql.join(
+            fishSelections.map(
+              ({ fishId }, sortOrder) =>
+                sql`(${saved.id}, ${fishId}, ${sortOrder})`,
+            ),
+            sql`, `,
+          )}
+        `);
+      }
     }
     return saved;
   });

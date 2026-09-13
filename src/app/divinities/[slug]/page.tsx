@@ -1,4 +1,4 @@
-import { requireAppAccess } from "@/lib/app-access";
+import { requirePageAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -15,7 +15,7 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata(
   props: PageProps<"/divinities/[slug]">,
 ): Promise<Metadata> {
-  await requireAppAccess();
+  await requirePageAccess();
   const { slug } = await props.params;
   const divinity = await getDivinityBySlug(slug);
   return { title: divinity?.name ?? "Divinity" };
@@ -24,7 +24,7 @@ export async function generateMetadata(
 export default async function DivinityPage(
   props: PageProps<"/divinities/[slug]">,
 ) {
-  await requireAppAccess();
+  await requirePageAccess();
   const { slug } = await props.params;
   const divinity = await getDivinityBySlug(slug);
   if (!divinity) notFound();

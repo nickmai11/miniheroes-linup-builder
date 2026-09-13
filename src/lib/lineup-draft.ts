@@ -1,11 +1,12 @@
 import type { LineupSlotInput } from "@/lib/lineup-input";
 import type { LineupWithHeroes } from "@/lib/lineups";
+import type { FishSelection } from "@/lib/fish-selection";
 
 export type LineupDraft = {
   id?: number;
   name: string;
   description: string;
-  fishIds: number[];
+  fishSelections: FishSelection[];
   slots: LineupSlotInput[];
 };
 
@@ -21,7 +22,10 @@ export function createLineupDraft(
       ? `${lineup.name.slice(0, 120 - suffix.length)}${suffix}`
       : lineup.name,
     description: lineup.description,
-    fishIds: lineup.fishes.map((fish) => fish.id),
+    fishSelections: lineup.fishes.map((fish) => ({
+      fishId: fish.id,
+      quantity: fish.quantity,
+    })),
     slots: lineup.slots.map((hero) =>
       hero
         ? {

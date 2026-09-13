@@ -110,7 +110,8 @@ before running the updated app. It includes RLS policies and grants for
 if needed. Local generation and the deployed app must use the same `DATABASE_URL`.
 
 Pages, metadata, APIs (including health), actions, and original game images require
-registration. Framework CSS, JavaScript, fonts, and the favicon remain accessible
+registration unless a page is explicitly made public as described below.
+Framework CSS, JavaScript, fonts, and the favicon remain accessible
 to render the invitation screen. Images use their original authenticated URLs;
 the shared Next.js image optimizer is disabled to avoid caching private artwork.
 
@@ -125,3 +126,31 @@ INVITATION_TEST_DATABASE_URL=postgres://invitation_test@127.0.0.1:55441/invitati
 
 The integration test requires this isolated host, port, user, and database name;
 it never uses the app's `DATABASE_URL`.
+
+## Public URLs
+
+Open **http://localhost:3000/public-urls** while running `pnpm dev`, or choose
+**Public URLs** in the local navigation. This settings page works without an
+invitation and is available only on localhost in development. Paste an app link
+or a path such as `/lineups/123`, then click **Add public URL**. The list provides
+**Copy link** for the production URL and **Remove** to restore invitation access.
+
+Each entry publishes one exact page path, including its query variations;
+`/lineups` does not publish `/lineups/123`. Query strings, fragments and invitation
+codes are omitted from stored URLs. Supported pages are Home, About, Notes,
+Heroes, Divinities, Lineups and their existing detail routes. Editing routes,
+invitation/settings pages and APIs cannot be published. Public viewing does not
+register a browser or grant access to actions or private pages.
+
+Public pages include their artwork. Image requests are allowed only when their
+same-origin referrer is a currently public page and the image belongs to that
+page's content. Other image URLs remain protected. Responses stay uncached so
+removing a rule affects subsequent page, navigation and image requests; content
+already loaded in a browser cannot be withdrawn.
+
+Apply `drizzle/0023_public_urls.sql` before running this feature. It creates the
+empty `public_urls` table with the existing app-only RLS policy. No pages are
+public by default. Localhost and production use the same database settings;
+production must run the updated code to honor the rules. Changes require no
+redeploy once that code is running. The settings page and its mutation endpoint
+return 404 in production, including with forged localhost headers.
