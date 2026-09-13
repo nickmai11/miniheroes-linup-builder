@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   DEFAULT_BUILD_PRIORITY,
+  RUNE_BUILD_PRIORITIES,
   nextBuildPriority,
   sortByBuildPriority,
 } from "../src/lib/build-priorities.ts";
@@ -26,6 +27,22 @@ test("chips cycle through both tiers and then remove the selection", () => {
   assert.deepEqual(steps, ["must", "optional", undefined, "must"]);
 });
 
+test("rune chips cycle from Important through existing tiers and removal", () => {
+  let priority;
+  const steps = [];
+  for (let i = 0; i < 5; i++) {
+    priority = nextBuildPriority(priority, RUNE_BUILD_PRIORITIES);
+    steps.push(priority);
+  }
+  assert.deepEqual(steps, [
+    "important",
+    "must",
+    "optional",
+    undefined,
+    "important",
+  ]);
+});
+
 test("sorting groups tiers while preserving pick order within each tier", () => {
   const selections = [
     { id: 1, priority: "optional" },
@@ -33,14 +50,16 @@ test("sorting groups tiers while preserving pick order within each tier", () => 
     { id: 3, priority: "must" },
     { id: 4, priority: "must" },
     { id: 5, priority: "optional" },
+    { id: 6, priority: "important" },
+    { id: 7, priority: "important" },
   ];
   assert.deepEqual(
     sortByBuildPriority(selections).map((item) => item.id),
-    [3, 4, 1, 2, 5],
+    [6, 7, 3, 4, 1, 2, 5],
   );
   assert.deepEqual(
     selections.map((item) => item.id),
-    [1, 2, 3, 4, 5],
+    [1, 2, 3, 4, 5, 6, 7],
   );
 });
 
@@ -54,6 +73,24 @@ test("accepts separate tiers for rune attributes, weapon attributes and cores", 
   const parsed = buildSchema.parse(data);
   for (const key of ["runePriorities", "weaponPriorities", "corePriorities"]) {
     assert.deepEqual(parsed[key], data[key]);
+  }
+});
+
+test("Important is accepted for runes only", () => {
+  const parsed = buildSchema.parse({
+    ...input,
+    runePriorities: { 3: "important", 8: "must" },
+  });
+  assert.deepEqual(parsed.runePriorities, { 3: "important", 8: "must" });
+  for (const priorities of [
+    { weaponPriorities: { 5: "important" } },
+    { corePriorities: { 9: "important" } },
+    { runePriorities: { 99: "important" } },
+  ]) {
+    assert.equal(
+      buildSchema.safeParse({ ...input, ...priorities }).success,
+      false,
+    );
   }
 });
 

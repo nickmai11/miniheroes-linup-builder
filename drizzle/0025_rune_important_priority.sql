@@ -1,0 +1,1 @@
+ALTER TYPE "public"."build_priority" ADD VALUE 'important' BEFORE 'must';

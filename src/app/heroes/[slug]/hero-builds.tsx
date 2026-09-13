@@ -14,6 +14,7 @@ import {
 import type { CoreWithSkill, HeroBuild } from "@/lib/build-types";
 import {
   DEFAULT_BUILD_PRIORITY,
+  RUNE_BUILD_PRIORITIES,
   nextBuildPriority,
   type BuildPriority,
 } from "@/lib/build-priorities";
@@ -138,6 +139,7 @@ export function HeroBuilds({
       const selected = d[key].includes(id);
       const next = nextBuildPriority(
         selected ? (d[field][id] ?? DEFAULT_BUILD_PRIORITY) : undefined,
+        key === "runeIds" ? RUNE_BUILD_PRIORITIES : undefined,
       );
       const priorities = { ...d[field] };
       if (next) priorities[id] = next;
@@ -322,7 +324,7 @@ export function HeroBuilds({
             </div>
 
             <p className="text-muted-foreground text-sm">
-              Click a chip to cycle: Should have → OK to have → remove.
+              Click a chip to change its priority or remove it.
             </p>
 
             <BuildSection
@@ -353,6 +355,7 @@ export function HeroBuilds({
                       <Chip
                         key={r.id}
                         priority={draft.runePriorities[r.id]}
+                        priorities={RUNE_BUILD_PRIORITIES}
                         onClick={() => cyclePriority("runeIds", r.id)}
                         title={[r.description, r.analysis]
                           .filter(Boolean)

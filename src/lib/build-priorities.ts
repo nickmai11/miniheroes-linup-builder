@@ -1,18 +1,24 @@
 export const BUILD_PRIORITIES = ["must", "optional"] as const;
-export type BuildPriority = (typeof BUILD_PRIORITIES)[number];
+export const RUNE_BUILD_PRIORITIES = [
+  "important",
+  ...BUILD_PRIORITIES,
+] as const;
+export type BuildPriority = (typeof RUNE_BUILD_PRIORITIES)[number];
 export const DEFAULT_BUILD_PRIORITY: BuildPriority = "optional";
 
 export const BUILD_PRIORITY_LABELS: Record<BuildPriority, string> = {
+  important: "Important",
   must: "Should have",
   optional: "OK to have",
 };
 
-/** A third click removes the selection. */
+/** Cycle through the available tiers, then remove the selection. */
 export function nextBuildPriority(
   priority?: BuildPriority,
+  priorities: readonly BuildPriority[] = BUILD_PRIORITIES,
 ): BuildPriority | undefined {
-  if (priority === undefined) return "must";
-  return BUILD_PRIORITIES[BUILD_PRIORITIES.indexOf(priority) + 1];
+  if (priority === undefined) return priorities[0];
+  return priorities[priorities.indexOf(priority) + 1];
 }
 
 /** Keep pick order within each tier. */
@@ -21,7 +27,7 @@ export function sortByBuildPriority<T extends { priority: BuildPriority }>(
 ): T[] {
   return [...items].sort(
     (a, b) =>
-      BUILD_PRIORITIES.indexOf(a.priority) -
-      BUILD_PRIORITIES.indexOf(b.priority),
+      RUNE_BUILD_PRIORITIES.indexOf(a.priority) -
+      RUNE_BUILD_PRIORITIES.indexOf(b.priority),
   );
 }

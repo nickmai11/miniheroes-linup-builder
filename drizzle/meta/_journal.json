@@ -176,6 +176,13 @@
       "when": 1789290185270,
       "tag": "0024_lineup_fish_quantities",
       "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1789292171189,
+      "tag": "0025_rune_important_priority",
+      "breakpoints": true
     }
   ]
 }

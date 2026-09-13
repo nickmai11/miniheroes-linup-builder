@@ -623,12 +623,23 @@ is said. These override anything marked (web).
 
 - 2026-09-13 — The owner requested an option to **clone a lineup**.
 
+- 2026-09-13 — The owner requested an additional rune-attribute category named
+  **Important (x2)**.
+- 2026-09-13 — The owner clarified: **Important (x2)** is **red** and applies
+  **only to runes**.
+- 2026-09-13 — The owner renamed **Important (x2)** to **Important**. It remains
+  red and applies only to runes.
+- 2026-09-13 — **Important** uses **one red diamond** and exactly that label.
+  Its rune-only scope is implicit; do not add a scope suffix to the label.
+
 ## How the app models it
 
-- Build attributes have two owner-assigned priority tiers: **Should have** and
-  **OK to have**, shown as a gold diamond and blue dot, with a shared legend.
+- Rune attributes have three owner-assigned priority tiers: **Important**,
+  **Should have**, and **OK to have**, shown as one red diamond, gold diamond,
+  and blue dot, with a shared legend. Weapons and cores use Should have and OK to have.
   Rune attributes, weapon attributes, and cores each store a `priority`
-  (`build_priority`: must | optional); `must` displays as **Should have**.
+  (`build_priority`: important | must | optional); `important` is accepted only
+  for runes, and `must` displays as **Should have**.
   Former middle-tier selections remain OK to have, which is also the default.
   Editing cycles through the tiers and then
   removes the selection; imports preserve tiers. Pick order is retained within

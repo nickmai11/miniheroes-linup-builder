@@ -7,6 +7,7 @@ import type { HeroBuild } from "@/lib/build-types";
 import {
   BUILD_PRIORITIES,
   BUILD_PRIORITY_LABELS,
+  RUNE_BUILD_PRIORITIES,
   nextBuildPriority,
   sortByBuildPriority,
   type BuildPriority,
@@ -160,6 +161,7 @@ function ResetButton({
 }
 
 const PRIORITY_STYLES: Record<BuildPriority, string> = {
+  important: "border-red-500/45 bg-red-500/10",
   must: "border-amber-500/45 bg-amber-500/10",
   optional: "border-sky-500/40 bg-sky-500/10",
 };
@@ -170,6 +172,8 @@ function PriorityMarker({ priority }: { priority: BuildPriority }) {
       aria-hidden
       className={cn(
         "inline-block size-2 shrink-0",
+        priority === "important" &&
+          "rotate-45 rounded-[1px] bg-red-600 dark:bg-red-400",
         priority === "must" &&
           "rotate-45 rounded-[1px] bg-amber-600 dark:bg-amber-400",
         priority === "optional" && "rounded-full bg-sky-600 dark:bg-sky-400",
@@ -184,7 +188,7 @@ export function PriorityLegend() {
       aria-label="Attribute priority"
       className="text-muted-foreground flex flex-wrap gap-x-4 gap-y-2 text-xs"
     >
-      {BUILD_PRIORITIES.map((priority) => (
+      {RUNE_BUILD_PRIORITIES.map((priority) => (
         <li key={priority} className="flex items-center gap-2">
           <PriorityMarker priority={priority} />
           {BUILD_PRIORITY_LABELS[priority]}
@@ -198,12 +202,14 @@ export function PriorityLegend() {
 export function Chip({
   children,
   priority,
+  priorities = BUILD_PRIORITIES,
   onClick,
   title,
   popover,
 }: {
   children: string;
   priority?: BuildPriority;
+  priorities?: readonly BuildPriority[];
   onClick?: () => void;
   title?: string;
   popover?: React.ReactNode;
@@ -211,7 +217,7 @@ export function Chip({
   const base =
     "inline-flex min-h-7 max-w-full items-center gap-2 rounded-md border px-2 py-1 text-left text-xs leading-4 font-medium";
   const label = priority ? BUILD_PRIORITY_LABELS[priority] : "Not selected";
-  const next = nextBuildPriority(priority);
+  const next = nextBuildPriority(priority, priorities);
   const action = next ? `Set to ${BUILD_PRIORITY_LABELS[next]}` : "Remove";
   const description = [`${children} — ${label}`, title, onClick ? action : null]
     .filter(Boolean)
