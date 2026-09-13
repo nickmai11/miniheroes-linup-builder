@@ -300,10 +300,10 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
                       <Link
                         href={`/divinities/${d.slug}`}
                         title={d.name}
-                        className="flex h-12 items-center gap-2 rounded-lg border border-red-500/50 bg-red-500/10 px-3 py-2 transition-colors hover:border-red-500"
+                        className="flex h-12 items-center gap-2 rounded-lg border border-red-500/50 bg-red-500/10 px-3 py-1 transition-colors hover:border-red-500"
                       >
-                        <DivinityIcon divinity={d} size={40} />
-                        <span className="line-clamp-3 min-w-0 text-sm leading-5 font-medium break-words">
+                        <DivinityIcon divinity={d} size={32} />
+                        <span className="line-clamp-2 min-w-0 text-sm leading-4 font-medium break-words">
                           {d.name}
                         </span>
                       </Link>

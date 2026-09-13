@@ -385,7 +385,12 @@ is said. These override anything marked (web).
 
 - 2026-09-13 — The owner reported that Necromancer is missing one core in the app. The 9.31.17 AM screenshot in `gameplay/talents/` shows **Crystal Staff·Core**: **Death Pulse enhances its DMG and Heal by 30% of Attack**. This completes Necromancer's four recorded cores; the app stores the gear name as **Crystal Staff** and links it to **Death Pulse**.
 
+- 2026-09-13 — The owner requested three priority categories for build attributes: **Must have**, **Should have**, and **OK to have**. The categories may be indicated with colors or other visual cues rather than repeated text labels on every attribute.
+
 ## How the app models it
+
+- Build attributes have three owner-assigned priority tiers: **Must have**,
+  **Should have**, and **OK to have**, shown with visual markers and a legend.
 
 - Hero builds include hand-picked **cores** from that hero's recorded talent
   bonuses, alongside rune and weapon attributes. Core selections use pick order
