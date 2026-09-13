@@ -18,12 +18,14 @@ button in the left column):
 | **Awakening skills** | I (18★) and III (22★): stage, unlock stars, skill name and description, without icons; an unrecorded stage has an empty state | `HERO_AWAKENING_STAGES` and `heroDetailSeeds[slug].awakeningSkills` in `src/data/hero-details.ts` |
 | **Artifacts**  | artifact image + name; one row per quality tier (purple, gold, red, rainbow) with the diamond, the talent it modifies or the artifact's own skill, and the description                                                                           | `heroes.artifactName/IconUrl`, `hero_artifact_bonuses`  |
 | **Divinities** | the hero's mythic (red) divinities as equal-width badge cards, each linking to `/divinities/<slug>` (the heroes that share it)                                                                                                                   | `hero_divinities` → `divinities`                        |
-| **Builds**     | the owner's builds for the hero: name, notes, chosen rune attributes grouped by rune type (with max value) and weapon attributes, each in pick order with a rank number (first picked = most important); editable in place (new / edit / delete) | `hero_builds`, `hero_build_runes`, `hero_build_weapons` |
+| **Builds**     | the owner's builds for the hero: name, notes, chosen rune attributes grouped by rune type, weapon attributes, and hero cores, each in pick order with a rank number (first picked = most important); editable in place (new / edit / delete) | `hero_builds`, `hero_build_runes`, `hero_build_weapons`, `hero_build_cores` |
 | Lineups        | saved lineups that use the hero                                                                                                                                                                                                                  | `lineup_heroes`                                         |
 
-Awakening I and III are recorded for **Sea Captain**, **Nezha**, and **Shadow Fiend**. II and IV
-remain unrecorded; they are shared per class and must be stored once per class
-when their screenshots are supplied.
+Awakening I and III are recorded for **Sea Captain**, **Nezha**, **Shadow Fiend**,
+and **Necromancer**. Necromancer's III preserves the screenshot's exact ending,
+"lasts until the end". Its other awakening capture shows **Support IV: Emergency
+Healing**, recorded once in the game reference. Class-wide II/IV are not displayed
+yet and must not be copied into hero-specific I/III data.
 
 The owner confirmed I unlocks at **18★** and III at **22★**. The shared thresholds
 live in `HERO_AWAKENING_STAGES`; show them beside the stage, including empty states.
@@ -31,8 +33,21 @@ live in `HERO_AWAKENING_STAGES`; show them beside the stage, including empty sta
 Build imports use an outline button matching **New build**. The picker searches
 hero and build names on the server, loads twelve results per page only when opened,
 and keeps the results in a scrollable panel. Select a build, then choose **Import
-build** to copy its name, notes, and attribute priorities. Searching or changing
-pages clears the selection; Cancel or Escape closes the picker.
+build** to copy its name, notes, attribute priorities, and matching core priorities.
+Searching or changing pages clears the selection; Cancel or Escape closes the picker.
+
+Builds also include **Cores**, picked from this hero's recorded cores with rank
+numbers in pick order, alongside Runes and Weapons. Core descriptions appear on
+hover. A build may contain only cores; heroes without recorded cores show an
+empty state in the picker. Existing builds start with no selected cores.
+Imports match core gear names to the destination hero's own core records and
+effects, preserving priority. Unmatched names are reported after import; an
+import with no usable attributes or cores is rejected.
+
+Build creation, editing, importing, deletion, and the "Start a lineup" link are
+available only in local development, as described in the README's Local editing
+section. Public visitors can read saved builds and lineups; every build write
+action also enforces this restriction on the server.
 
 Rules that shape the page:
 
@@ -107,8 +122,9 @@ the screenshot positions; the compendium cards list the same order.
    `ASSET_VERSION` in `src/lib/asset-version.ts`.
 
 No migration is needed for a new hero. The page calls `syncHeroDetail()` on view,
-which upserts the seed (skills matched by name, cores / bonuses / divinities
-replaced, artifact name and icon set). Open `/heroes/<slug>` once and the DB is
+which upserts the seed (skills and cores matched by name, bonuses / divinities
+replaced, artifact name and icon set). Core IDs remain stable so saved build
+selections survive page loads. Open `/heroes/<slug>` once and the DB is
 up to date; there is no separate seed command.
 The sync locks the target hero before reading its existing talents, so concurrent
 first loads cannot create competing seed rows. Metadata and page rendering share
@@ -136,6 +152,9 @@ write, or an additional database query on page load.
   `hero_build_weapons` → `weapon_attributes`, both with `sortOrder` = pick order
   (priority). The only hero data edited in the app (the rest is seeded from files).
   Attributes are picked from the catalogs, never typed.
+- `hero_build_cores`: `buildId` → `hero_builds`, `coreId` → `hero_cores`,
+  `sortOrder` = pick priority. A core must belong to the build's hero; each core
+  can appear once per build. Deleting a build or core cascades to its selections.
 
 Schema changes need a Drizzle migration; append the RLS policy + grant for
 `lineup_app` to any new table by hand and apply as described in the game doc
@@ -155,10 +174,15 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
 
 ## 6. Known gaps
 
+- Necromancer: Ghostlight Bone's rainbow skill **Exhaustion Aura** is partly
+  hidden behind the artifact popup's Max Quality footer; its Energy Regen
+  reduction value and any following text are not visible. Only three core panels
+  have been supplied. Awakening I and the full Luminous Visor core are now recorded.
 - Shadow Fiend: the full Soul Mask ability popup is missing, its red description
   is cut off after "upon entering", the rainbow ability is unrecorded, and only
   three core panels are visible. The rest of the supplied hero details are recorded.
-- Awakening II and IV: class-wide skills are not recorded or displayed yet.
+- Awakening II and IV: class-wide skills are not displayed yet; Support IV is
+  recorded in the game reference, while II and other classes' IV are unrecorded.
 - The rainbow-tier artifact skill has no icon (the game shows it as text only).
 - Divinity growth values per level are not stored (only name, kind, icon).
 - "Tank / DPS" position and "Eternal" quality tags are real in-game labels but are

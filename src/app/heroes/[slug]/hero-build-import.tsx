@@ -94,7 +94,9 @@ export function HeroBuildImport({
       }}
     >
       <p className="text-muted-foreground text-sm">
-        Copy a build from another hero. You can edit your copy after importing.
+        Copy a build from another hero. Matching cores use this hero&apos;s own
+        bonuses; cores not recorded for this hero are skipped. You can edit your
+        copy after importing.
       </p>
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="import-build-search">Search builds</Label>

@@ -4,6 +4,7 @@ import { Crown } from "lucide-react";
 import { PageShell } from "@/components/page-shell";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { canEditLocally } from "@/lib/local-editing";
 
 export const metadata: Metadata = {
   title: "About",
@@ -11,7 +12,8 @@ export const metadata: Metadata = {
     "Mini Heroes Lineups is a place to explore heroes, build teams, and share lineup ideas for Mini Heroes: Magic Throne. Created by Cmajor.",
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const canEdit = await canEditLocally();
   return (
     <PageShell
       title="About Mini Heroes Lineups"
@@ -40,8 +42,11 @@ export default function AboutPage() {
       </Card>
 
       <div className="flex flex-wrap gap-3">
-        <Link href="/lineups/new" className={buttonVariants()}>
-          Build a lineup
+        <Link
+          href={canEdit ? "/lineups/new" : "/lineups"}
+          className={buttonVariants()}
+        >
+          {canEdit ? "Build a lineup" : "Browse lineups"}
         </Link>
         <Link href="/heroes" className={buttonVariants({ variant: "outline" })}>
           Explore heroes

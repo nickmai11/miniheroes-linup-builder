@@ -7,6 +7,7 @@ import { PageShell } from "@/components/page-shell";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getLineup } from "@/lib/lineups";
+import { canEditLocally } from "@/lib/local-editing";
 import { deleteLineup } from "../actions";
 
 export const dynamic = "force-dynamic";
@@ -28,7 +29,10 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
   const numericId = Number(id);
   if (!Number.isInteger(numericId)) notFound();
 
-  const lineup = await getLineup(numericId);
+  const [lineup, canEdit] = await Promise.all([
+    getLineup(numericId),
+    canEditLocally(),
+  ]);
   if (!lineup) notFound();
 
   return (
@@ -37,19 +41,21 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
       description={`Saved ${lineup.createdAt.toLocaleString()}`}
       width="max-w-4xl"
       actions={
-        <>
-          <Link
-            href="/lineups/new"
-            className={buttonVariants({ variant: "outline" })}
-          >
-            <Plus data-icon="inline-start" /> New lineup
-          </Link>
-          <form action={deleteLineup.bind(null, lineup.id)}>
-            <Button type="submit" variant="destructive">
-              <Trash2 data-icon="inline-start" /> Delete
-            </Button>
-          </form>
-        </>
+        canEdit && (
+          <>
+            <Link
+              href="/lineups/new"
+              className={buttonVariants({ variant: "outline" })}
+            >
+              <Plus data-icon="inline-start" /> New lineup
+            </Link>
+            <form action={deleteLineup.bind(null, lineup.id)}>
+              <Button type="submit" variant="destructive">
+                <Trash2 data-icon="inline-start" /> Delete
+              </Button>
+            </form>
+          </>
+        )
       }
     >
       <ul className="grid grid-cols-5 gap-3">

@@ -6,30 +6,41 @@ import { PageShell } from "@/components/page-shell";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAllLineups } from "@/lib/lineups";
+import { canEditLocally } from "@/lib/local-editing";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Lineups" };
 
 export default async function LineupsPage() {
-  const lineups = await getAllLineups();
+  const [lineups, canEdit] = await Promise.all([
+    getAllLineups(),
+    canEditLocally(),
+  ]);
 
   return (
     <PageShell
       title="Lineups"
       width="max-w-4xl"
       actions={
-        <Link href="/lineups/new" className={buttonVariants()}>
-          <Plus data-icon="inline-start" /> New lineup
-        </Link>
+        canEdit && (
+          <Link href="/lineups/new" className={buttonVariants()}>
+            <Plus data-icon="inline-start" /> New lineup
+          </Link>
+        )
       }
     >
       {lineups.length === 0 ? (
         <Card>
           <CardContent className="text-muted-foreground py-10 text-center">
-            No lineups yet.{" "}
-            <Link href="/lineups/new" className="text-primary underline">
-              Build the first one.
-            </Link>
+            No lineups yet.
+            {canEdit && (
+              <>
+                {" "}
+                <Link href="/lineups/new" className="text-primary underline">
+                  Build the first one.
+                </Link>
+              </>
+            )}
           </CardContent>
         </Card>
       ) : (

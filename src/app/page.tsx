@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Hammer, ListOrdered, Users } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
+import { canEditLocally } from "@/lib/local-editing";
 import {
   Card,
   CardDescription,
@@ -29,7 +30,11 @@ const SECTIONS = [
   },
 ] as const;
 
-export default function Home() {
+export default async function Home() {
+  const canEdit = await canEditLocally();
+  const sections = SECTIONS.filter(
+    ({ href }) => canEdit || href !== "/lineups/new",
+  );
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-10 px-4 py-12 sm:px-6">
       <section className="flex flex-col gap-4">
@@ -44,13 +49,19 @@ export default function Home() {
           counter. Portraits and class badges come from the game itself.
         </p>
         <div>
-          <Link href="/lineups/new" className={buttonVariants({ size: "lg" })}>
-            Build a lineup <ArrowRight data-icon="inline-end" />
+          <Link
+            href={canEdit ? "/lineups/new" : "/lineups"}
+            className={buttonVariants({ size: "lg" })}
+          >
+            {canEdit ? "Build a lineup" : "Browse lineups"}{" "}
+            <ArrowRight data-icon="inline-end" />
           </Link>
         </div>
       </section>
-      <section className="grid gap-4 sm:grid-cols-3">
-        {SECTIONS.map(({ href, icon: Icon, title, description }) => (
+      <section
+        className={`grid gap-4 ${canEdit ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}
+      >
+        {sections.map(({ href, icon: Icon, title, description }) => (
           <Link key={href} href={href} className="group">
             <Card className="group-hover:border-primary/60 h-full transition-colors">
               <CardHeader>

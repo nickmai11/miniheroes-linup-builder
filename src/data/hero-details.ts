@@ -61,6 +61,126 @@ export type HeroDetailSeed = {
 const talent = (hero: string, slug: string) => `/talents/${hero}/${slug}.png`;
 
 export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
+  necromancer: {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Sadist's Heart",
+        description:
+          "For every enemy killed (excluding summons), gain 3% Ranged DMG Reduction and 0.3% HP Regen per second, stacking up to 5 times.",
+        sourceScreenshot: "Screenshot 2026-09-13 at 9.19.39\u202fAM.png",
+      },
+      {
+        stage: "III",
+        name: "Necro Possession",
+        // Repeated captures end with "until the end"; preserve that wording.
+        description:
+          "Upon entering battle, grants the ally with the highest ATK (excluding self) 25% Ranged DMG Reduction. This effect decays to 10% after 15 s and lasts until the end",
+        sourceScreenshot: "Screenshot 2026-09-13 at 9.22.05\u202fAM.png",
+      },
+    ],
+    artifact: {
+      name: "Ghostlight Bone",
+      iconUrl: "/artifacts/necromancer.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Reaper Scythe",
+          description: "Enemies hit have their ATK reduced by 10% for 8s.",
+        },
+        {
+          tier: "gold",
+          skill: "Ghost Shield",
+          description:
+            "Ghost Shield is cast once immediately upon entering battle; when cast for the first time, an additional Ghost Shield is applied to the frontmost allied hero.",
+        },
+        {
+          tier: "red",
+          skill: "Death Pulse",
+          description:
+            "Number of pulses +1. When any ally or self HP drops below 35% for the first time, automatically casts Death Pulse without consuming Energy (triggers once per battle).",
+        },
+        {
+          tier: "rainbow",
+          name: "Exhaustion Aura",
+          // The 9.19.54 popup's Max Quality footer obscures the remaining text.
+          description:
+            "Releases Exhaustion Aura upon entering battle, reducing all enemies' DMG by 12% and Energy Regen by…",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Death Pulse",
+        unlockStars: 0,
+        iconUrl: talent("necromancer", "death-pulse"),
+        description:
+          "Continuously releases 2 pulse waves around self. Each pulse attacks and heals in both the front and rear directions, dealing 65% ATK as magic DMG to all enemies in front with a knockback effect, while restoring HP equal to 65% of Necromancer's ATK to all allies along the path.",
+      },
+      {
+        kind: "battle",
+        name: "Reaper Scythe",
+        unlockStars: 2,
+        iconUrl: talent("necromancer", "reaper-scythe"),
+        description:
+          "After 3s in battle, throws the Reaper Scythe to strike the enemy with the highest physical ATK, dealing 375% ATK as magic DMG and stunning for 2.5s. CD: 12s.",
+      },
+      {
+        kind: "enhance",
+        name: "Dark Pulse",
+        unlockStars: 5,
+        iconUrl: talent("necromancer", "dark-pulse"),
+        description: "Death Pulse DMG increased by 45%.",
+      },
+      {
+        kind: "special",
+        name: "Ghost Shield",
+        unlockStars: 8,
+        iconUrl: talent("necromancer", "ghost-shield"),
+        description:
+          "Every 13s, grants self a Ghost Shield, increasing HP Regen by 1% per second and Energy Regen SPD per second by 10% for 8s.",
+      },
+      {
+        kind: "passive",
+        name: "Soul Offering",
+        unlockStars: 12,
+        iconUrl: talent("necromancer", "soul-offering"),
+        description: "ATK increased by 10%, HP increased by 15%.",
+      },
+      {
+        kind: "enhance",
+        name: "Necro Arts",
+        unlockStars: 16,
+        iconUrl: talent("necromancer", "necro-arts"),
+        description:
+          "Death Pulse healing effect on allies increased by 25%, enemies hit by the pulse lose 40 Energy.",
+      },
+    ],
+    cores: [
+      {
+        name: "Tome of Radiance",
+        skill: "Reaper Scythe",
+        // The core's text calls the talent "Reaper's Scythe".
+        description:
+          "Reaper's Scythe inflicts additional Magic DMG equal to 80%(240%) of Attack.",
+      },
+      {
+        name: "Luminous Visor",
+        skill: "Ghost Shield",
+        // Full core panel: Screenshot 2026-09-13 at 9.21.52 AM.
+        description:
+          "Ghost Shield further boosts HP Regen by 0.2%(0.6%) and Energy Regen by 2%(6%).",
+      },
+      {
+        name: "Resonance Pendant",
+        skill: "Necro Arts",
+        description:
+          "Necro Arts further amplifies ally recovery effects by 10%(30%).",
+      },
+    ],
+    divinities: ["healing-effect", "crit-dmg-reduction"],
+  },
   "shadow-fiend": {
     awakeningSkills: [
       {

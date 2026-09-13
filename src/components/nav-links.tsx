@@ -12,7 +12,7 @@ const LINKS = [
   { href: "/about", label: "About" },
 ] as const;
 
-export function NavLinks() {
+export function NavLinks({ canEdit }: { canEdit: boolean }) {
   const pathname = usePathname();
   return (
     <nav
@@ -20,6 +20,7 @@ export function NavLinks() {
       className="flex min-w-0 items-center gap-0.5 overflow-x-auto text-sm sm:gap-1"
     >
       {LINKS.map(({ href, label }) => {
+        if (href === "/lineups/new" && !canEdit) return null;
         const active =
           href === "/lineups"
             ? pathname === "/lineups" || /^\/lineups\/\d+/.test(pathname)

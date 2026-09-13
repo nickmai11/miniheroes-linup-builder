@@ -1,30 +1,15 @@
 "use server";
 
-import { asc, eq, inArray } from "drizzle-orm";
+import { and, asc, eq, inArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { db, schema } from "@/db";
+import { matchBuildCores } from "@/lib/build-cores";
+import { buildSchema, type BuildInput } from "@/lib/build-input";
+import { canEditLocally, LOCAL_EDITING_ERROR } from "@/lib/local-editing";
 
-export type BuildActionState = { error?: string; id?: number };
-
-const idList = z.array(z.number().int().positive()).max(200);
-
-const buildSchema = z
-  .object({
-    // Present when editing an existing build.
-    id: z.number().int().positive().optional(),
-    heroId: z.number().int().positive(),
-    name: z.string().trim().min(1, "Give the build a name").max(120),
-    notes: z.string().trim().max(5000).default(""),
-    runeAttributeIds: idList,
-    weaponAttributeIds: idList,
-  })
-  .refine(
-    (b) => b.runeAttributeIds.length + b.weaponAttributeIds.length > 0,
-    "Pick at least one rune or weapon attribute",
-  );
-
-export type BuildInput = z.input<typeof buildSchema>;
+export type BuildActionState = { error?: string; id?: number; notice?: string };
+export type { BuildInput } from "@/lib/build-input";
 
 async function allKnown(
   ids: number[],
@@ -41,6 +26,7 @@ async function allKnown(
 export async function saveHeroBuild(
   input: BuildInput,
 ): Promise<BuildActionState> {
+  if (!(await canEditLocally())) return { error: LOCAL_EDITING_ERROR };
   const parsed = buildSchema.safeParse(input);
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Invalid build" };
@@ -48,6 +34,7 @@ export async function saveHeroBuild(
   const { id, heroId, name, notes } = parsed.data;
   const runeIds = [...new Set(parsed.data.runeAttributeIds)];
   const weaponIds = [...new Set(parsed.data.weaponAttributeIds)];
+  const coreIds = [...new Set(parsed.data.coreIds)];
 
   const [hero] = await db
     .select({ slug: schema.heroes.slug })
@@ -58,6 +45,22 @@ export async function saveHeroBuild(
     return { error: "One of the rune attributes no longer exists" };
   if (!(await allKnown(weaponIds, schema.weaponAttributes)))
     return { error: "One of the weapon attributes no longer exists" };
+  if (coreIds.length > 0) {
+    const cores = await db
+      .select({ id: schema.heroCores.id })
+      .from(schema.heroCores)
+      .where(
+        and(
+          eq(schema.heroCores.heroId, heroId),
+          inArray(schema.heroCores.id, coreIds),
+        ),
+      );
+    if (cores.length !== coreIds.length)
+      return {
+        error:
+          "Choose cores recorded for this hero. Refresh the page if a core has changed.",
+      };
+  }
 
   const buildId = await db.transaction(async (tx) => {
     let buildId = id;
@@ -65,7 +68,12 @@ export async function saveHeroBuild(
       const updated = await tx
         .update(schema.heroBuilds)
         .set({ name, notes })
-        .where(eq(schema.heroBuilds.id, buildId))
+        .where(
+          and(
+            eq(schema.heroBuilds.id, buildId),
+            eq(schema.heroBuilds.heroId, heroId),
+          ),
+        )
         .returning({
           id: schema.heroBuilds.id,
           heroId: schema.heroBuilds.heroId,
@@ -77,6 +85,9 @@ export async function saveHeroBuild(
       await tx
         .delete(schema.heroBuildWeapons)
         .where(eq(schema.heroBuildWeapons.buildId, buildId));
+      await tx
+        .delete(schema.heroBuildCores)
+        .where(eq(schema.heroBuildCores.buildId, buildId));
     } else {
       const [row] = await tx
         .insert(schema.heroBuilds)
@@ -101,6 +112,12 @@ export async function saveHeroBuild(
           sortOrder,
         })),
       );
+    if (coreIds.length > 0)
+      await tx
+        .insert(schema.heroBuildCores)
+        .values(
+          coreIds.map((coreId, sortOrder) => ({ buildId, coreId, sortOrder })),
+        );
     return buildId;
   });
   if (buildId === null) return { error: "Build not found" };
@@ -116,10 +133,11 @@ const importSchema = z.object({
 
 export type ImportBuildInput = z.input<typeof importSchema>;
 
-/** Copy another hero's build (name, notes, runes, weapons) onto this hero. */
+/** Copy a build and map its cores by gear name to this hero's own bonuses. */
 export async function importHeroBuild(
   input: ImportBuildInput,
 ): Promise<BuildActionState> {
+  if (!(await canEditLocally())) return { error: LOCAL_EDITING_ERROR };
   const parsed = importSchema.safeParse(input);
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Invalid request" };
@@ -140,7 +158,7 @@ export async function importHeroBuild(
   if (source.heroId === heroId)
     return { error: "That build already belongs to this hero" };
 
-  const [runeRows, weaponRows] = await Promise.all([
+  const [runeRows, weaponRows, coreRows, targetCores] = await Promise.all([
     db
       .select({ runeAttributeId: schema.heroBuildRunes.runeAttributeId })
       .from(schema.heroBuildRunes)
@@ -157,7 +175,34 @@ export async function importHeroBuild(
         asc(schema.heroBuildWeapons.sortOrder),
         asc(schema.heroBuildWeapons.id),
       ),
+    db
+      .select({ name: schema.heroCores.name })
+      .from(schema.heroBuildCores)
+      .innerJoin(
+        schema.heroCores,
+        eq(schema.heroBuildCores.coreId, schema.heroCores.id),
+      )
+      .where(
+        and(
+          eq(schema.heroBuildCores.buildId, sourceBuildId),
+          eq(schema.heroCores.heroId, source.heroId),
+        ),
+      )
+      .orderBy(
+        asc(schema.heroBuildCores.sortOrder),
+        asc(schema.heroBuildCores.id),
+      ),
+    db
+      .select({ id: schema.heroCores.id, name: schema.heroCores.name })
+      .from(schema.heroCores)
+      .where(eq(schema.heroCores.heroId, heroId)),
   ]);
+  const { coreIds, skippedCoreNames } = matchBuildCores(coreRows, targetCores);
+  if (runeRows.length + weaponRows.length + coreIds.length === 0)
+    return {
+      error:
+        "This build has no rune or weapon attributes, and none of its cores are recorded for this hero.",
+    };
 
   const newId = await db.transaction(async (tx) => {
     const [row] = await tx
@@ -180,14 +225,31 @@ export async function importHeroBuild(
           sortOrder,
         })),
       );
+    if (coreIds.length > 0)
+      await tx
+        .insert(schema.heroBuildCores)
+        .values(
+          coreIds.map((coreId, sortOrder) => ({
+            buildId: row.id,
+            coreId,
+            sortOrder,
+          })),
+        );
     return row.id;
   });
 
   revalidatePath(`/heroes/${hero.slug}`);
-  return { id: newId };
+  return {
+    id: newId,
+    notice:
+      skippedCoreNames.length > 0
+        ? `Build imported. Cores not recorded for this hero were skipped: ${skippedCoreNames.join(", ")}.`
+        : undefined,
+  };
 }
 
 export async function deleteHeroBuild(id: number): Promise<BuildActionState> {
+  if (!(await canEditLocally())) return { error: LOCAL_EDITING_ERROR };
   const [deleted] = await db
     .delete(schema.heroBuilds)
     .where(eq(schema.heroBuilds.id, id))

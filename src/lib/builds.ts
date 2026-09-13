@@ -4,8 +4,8 @@ import { db, schema } from "@/db";
 import type { HeroBuild, ImportableBuildPage } from "@/lib/build-types";
 
 /**
- * A hero's builds, oldest first, each with its chosen rune and weapon
- * attributes in the order the owner picked them (first = most important).
+ * A hero's builds, oldest first, each with its chosen rune attributes, weapon
+ * attributes and cores in the order the owner picked them (first = most important).
  */
 export async function getHeroBuilds(heroId: number): Promise<HeroBuild[]> {
   const builds = await db
@@ -16,7 +16,7 @@ export async function getHeroBuilds(heroId: number): Promise<HeroBuild[]> {
   if (builds.length === 0) return [];
   const ids = builds.map((b) => b.id);
 
-  const [runeRows, weaponRows] = await Promise.all([
+  const [runeRows, weaponRows, coreRows] = await Promise.all([
     db
       .select({
         buildId: schema.heroBuildRunes.buildId,
@@ -50,12 +50,33 @@ export async function getHeroBuilds(heroId: number): Promise<HeroBuild[]> {
         asc(schema.heroBuildWeapons.sortOrder),
         asc(schema.heroBuildWeapons.id),
       ),
+    db
+      .select({
+        buildId: schema.heroBuildCores.buildId,
+        core: schema.heroCores,
+      })
+      .from(schema.heroBuildCores)
+      .innerJoin(
+        schema.heroCores,
+        eq(schema.heroBuildCores.coreId, schema.heroCores.id),
+      )
+      .where(
+        and(
+          inArray(schema.heroBuildCores.buildId, ids),
+          eq(schema.heroCores.heroId, heroId),
+        ),
+      )
+      .orderBy(
+        asc(schema.heroBuildCores.sortOrder),
+        asc(schema.heroBuildCores.id),
+      ),
   ]);
 
   return builds.map((b) => ({
     ...b,
     runes: runeRows.filter((r) => r.buildId === b.id).map((r) => r.rune),
     weapons: weaponRows.filter((w) => w.buildId === b.id).map((w) => w.weapon),
+    cores: coreRows.filter((c) => c.buildId === b.id).map((c) => c.core),
   }));
 }
 

@@ -152,6 +152,28 @@ Only three core panels are visible; do not invent a fourth. The popup names
 **Arrow Core·Core**; removing only the final UI suffix gives **Arrow Core**.
 Full visible descriptions are transcribed in `src/data/hero-details.ts`.
 
+**Necromancer** (Support · Heal · Eternal; artifact **Ghostlight Bone**):
+
+| Talent | Kind | Unlock | Artifact Bonus | Core |
+| ------ | ---- | ------ | -------------- | ---- |
+| Death Pulse | Ultimate Skill | Start | red: +1 pulse; free cast the first time any ally or self falls below 35% HP, once per battle | not visible in supplied popup |
+| Reaper Scythe | Battle Skill | 2★ | purple: enemy ATK −10% for 8s on hit | Tome of Radiance: additional Magic DMG equal to 80%(240%) of Attack |
+| Dark Pulse | Enhance | 5★ | — | — |
+| Ghost Shield | Special Skill | 8★ | gold: immediately casts upon entering battle; first cast also shields the frontmost ally | Luminous Visor: HP Regen +0.2%(0.6%) and Energy Regen +2%(6%) |
+| Soul Offering | Passive | 12★ | — | — |
+| Necro Arts | Enhance | 16★ | — | Resonance Pendant: ally recovery effects +10%(30%) |
+| Exhaustion Aura | Artifact | Rainbow tier | On entering battle, reduces all enemies' DMG by 12% and Energy Regen by… (remaining text obscured) | — |
+
+The Artifact tab's red badges match **Healing Effect** (left) and **CRIT DMG
+Reduction** (right) in the screenshot-derived catalog. The 9.19.54 AM artifact
+popup confirms all four tiers, but its Max Quality footer hides the rest of
+**Exhaustion Aura** after "and Energy Regen by". This rainbow skill is not attached
+to a talent. Only three core panels are visible; Luminous Visor's full description
+is now recorded from the scrolled 9.21.52 AM capture. The Tome of
+Radiance description calls its talent **Reaper's Scythe**, but the talent title
+is **Reaper Scythe**; link the core to that title. Sources: the owner's
+2026-09-13 9.07.31–9.07.41 AM captures in `gameplay/talents/`.
+
 ### Awakening skills (game, 2026-09-13)
 
 Hero-specific I and III are read from the Hero Awaken screenshots in
@@ -167,10 +189,19 @@ and padlock overlays are not part of the recorded hero skill.
 | Nezha | III | Lotus Ward | For every 10% max HP lost, increases own energy recovery upon taking damage by 10%. | 8.42.37 |
 | Shadow Fiend | I | Soul Reaping | Every hero death instantly restores 100 Energy and grants 30% ATK SPD for 6s; the buff refreshes instead of stacking. | 8.54.42 |
 | Shadow Fiend | III | Soul Borrowing | Gains an additional 2.5% ATK SPD and 2.5% ATK for every enemy on the battlefield. | 8.54.44 |
+| Necromancer | I | Sadist's Heart | Every enemy killed (excluding summons) grants 3% Ranged DMG Reduction and 0.3% HP Regen per second, up to 5 stacks. | 9.19.39 |
+| Necromancer | III | Necro Possession | On entering battle, grants the highest-ATK ally (excluding self) 25% Ranged DMG Reduction, decaying to 10% after 15s; the screenshot says it "lasts until the end". | 9.22.05 |
 
 Awakening I unlocks at **18★** and III at **22★** (owner-confirmed).
-Only I and III have been screenshotted. II and IV remain class-wide skills and
-must not be copied into each hero's data when recorded later.
+Necromancer's Awakening I is recorded from the follow-up 9.19.39 AM screenshot.
+The repeated III captures (9.07.47, 9.20.08, 9.22.05 AM) all end with "until the
+end"; preserve that wording rather than adding an inferred continuation or an
+ellipsis. Its earlier 9.07.45 AM capture has the
+**IV** tab selected, not I: **Emergency Healing** — "When self or an ally's HP
+drops below 30%, immediately restores HP equal to 120% of ATK. (CD: 13s)"
+This is recorded here once as **Support Awakening IV**, following the owner's
+class-wide II/IV rule; it is not a hero-specific I skill. Shared class awakening
+data/display is not implemented yet. II and other classes' IV remain unrecorded.
 
 ### Divinities (game, 2026-09-12)
 
@@ -310,7 +341,24 @@ is said. These override anything marked (web).
 - 2026-09-13 — Shadow Fiend's **Soul Reaping** (Awakening I) restores 100 Energy and grants 30% ATK SPD for 6s whenever any hero dies; the buff does not stack but its duration refreshes on each trigger. **Soul Borrowing** (Awakening III) grants 2.5% ATK SPD and 2.5% ATK per enemy on the battlefield.
 - 2026-09-13 — Shadow Fiend's talent popups show a purple artifact bonus on **Soul Burn**, and both gold and red bonuses on **Destructive Gloom**. The visible cores are **Arrow Core** (Soul Burn), **Hunter's Cloak** (Ghost Curse), and **Swift Longbow** (Soul Requiem). The red bonus description is cut off after "upon entering"; the full artifact popup, rainbow ability, and any further core panel are not in this screenshot batch.
 
+- 2026-09-13 — The owner requested **cores in hero builds**, alongside rune and weapon attributes.
+- 2026-09-13 — The owner's new screenshots show **Necromancer** (Support · Heal · Eternal): **Death Pulse** (Ultimate), **Reaper Scythe** (Battle, 2★), **Dark Pulse** (Enhance, 5★), **Ghost Shield** (Special, 8★), **Soul Offering** (Passive, 12★), **Necro Arts** (Enhance, 16★). Its artifact is **Ghostlight Bone**; the red divinity badges match **Healing Effect** (left) and **CRIT DMG Reduction** (right).
+- 2026-09-13 — Necromancer's visible cores are **Tome of Radiance** (Reaper Scythe), **Luminous Visor** (Ghost Shield), and **Resonance Pendant** (Necro Arts). Luminous Visor's description cuts off after "and Energy Regen"; no fourth core or full artifact ability popup is supplied.
+- 2026-09-13 — Necromancer's **Necro Possession** (Awakening III, 9.07.47 AM) grants the highest-ATK ally other than self 25% Ranged DMG Reduction on entering battle, decaying to 10% after 15s; its duration text cuts off after "until the end". The 9.07.45 AM screenshot shows **Awakening IV: Emergency Healing**, not I: self or an ally falling below 30% HP triggers healing equal to 120% of ATK (13s cooldown). Under the owner's class-wide rule, this belongs to Support IV, not Necromancer I. Awakening I is not in this batch.
+
+- 2026-09-13 — The owner's follow-up Necromancer screenshots confirm **Awakening I: Sadist's Heart** (9.19.39 AM): every enemy killed, excluding summons, grants 3% Ranged DMG Reduction and 0.3% HP Regen per second, stacking up to 5 times. The repeated **Necro Possession** III captures (latest 9.22.05 AM) all show the ending "lasts until the end"; the app preserves those exact words.
+- 2026-09-13 — The scrolled **Luminous Visor** core panel (9.21.52 AM) completes its Ghost Shield bonus: HP Regen +0.2%(0.6%) and Energy Regen +2%(6%).
+- 2026-09-13 — Ghostlight Bone's artifact popup (9.19.54 AM) confirms the purple, gold, and red bonuses and names its rainbow skill **Exhaustion Aura**: it releases upon entering battle, reducing all enemies' DMG by 12% and Energy Regen by an obscured value. The Max Quality footer covers the remaining description; it must not be invented.
+
 ## How the app models it
+
+- Hero builds include hand-picked **cores** from that hero's recorded talent
+  bonuses, alongside rune and weapon attributes. Core selections use pick order
+  as priority. A build may contain only cores.
+- `hero_build_cores` links each build to its hero's cores with `sortOrder` for
+  priority. Hero detail synchronization matches cores by name, keeping IDs and
+  build selections stable. Imports map matching gear names to the destination
+  hero's own effects; unavailable names are reported instead of copied.
 
 - `heroes` table: `slug`, `name`, `role` (warrior | marksman | mage | support),
   `rarity` (mythic | legend | epic), `imageUrl`, `notes`.

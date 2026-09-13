@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
   RUNE_TYPES,
+  type HeroCore,
   type RuneAttribute,
   type RuneType,
   type WeaponAttribute,
@@ -23,11 +24,13 @@ import {
 import { HeroBuildImport } from "./hero-build-import";
 
 type Props = {
+  canEdit: boolean;
   heroId: number;
   heroName: string;
   builds: HeroBuild[];
   runeAttributes: RuneAttribute[];
   weaponAttributes: WeaponAttribute[];
+  cores: HeroCore[];
 };
 
 /** Rune-type label without the trailing " Runes" (shown under a Runes section). */
@@ -42,6 +45,7 @@ type Draft = {
   notes: string;
   runeIds: number[];
   weaponIds: number[];
+  coreIds: number[];
 };
 
 function draftFrom(build?: HeroBuild): Draft {
@@ -51,6 +55,7 @@ function draftFrom(build?: HeroBuild): Draft {
     notes: build?.notes ?? "",
     runeIds: build?.runes.map((r) => r.id) ?? [],
     weaponIds: build?.weapons.map((w) => w.id) ?? [],
+    coreIds: build?.cores.map((c) => c.id) ?? [],
   };
 }
 
@@ -62,15 +67,18 @@ function groupRunes(runes: RuneAttribute[]): [RuneType, RuneAttribute[]][] {
 }
 
 export function HeroBuilds({
+  canEdit,
   heroId,
   heroName,
   builds,
   runeAttributes,
   weaponAttributes,
+  cores,
 }: Props) {
   const [draft, setDraft] = useState<Draft | null>(null);
   const [importing, setImporting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
   const importButton = useRef<HTMLButtonElement>(null);
   const restoreImportFocus = useRef(false);
@@ -89,11 +97,13 @@ export function HeroBuilds({
   }
 
   function startNew() {
+    setNotice(null);
     setError(null);
     setImporting(false);
     setDraft(draftFrom());
   }
   function startEdit(build: HeroBuild) {
+    setNotice(null);
     setError(null);
     setImporting(false);
     setDraft(draftFrom(build));
@@ -103,7 +113,7 @@ export function HeroBuilds({
     setError(null);
   }
 
-  function toggle(key: "runeIds" | "weaponIds", id: number) {
+  function toggle(key: "runeIds" | "weaponIds" | "coreIds", id: number) {
     setDraft((d) => {
       if (!d) return d;
       const next = d[key].includes(id)
@@ -124,11 +134,15 @@ export function HeroBuilds({
 
   function doImport(sourceBuildId: number) {
     setError(null);
+    setNotice(null);
     startTransition(async () => {
       try {
         const result = await importHeroBuild({ heroId, sourceBuildId });
         if (result.error) setError(result.error);
-        else closeImport();
+        else {
+          closeImport();
+          setNotice(result.notice ?? null);
+        }
       } catch {
         setError("Could not import the build. Please try again.");
       }
@@ -146,6 +160,7 @@ export function HeroBuilds({
         notes: draft.notes,
         runeAttributeIds: draft.runeIds,
         weaponAttributeIds: draft.weaponIds,
+        coreIds: draft.coreIds,
       });
       if (result.error) setError(result.error);
       else setDraft(null);
@@ -161,11 +176,18 @@ export function HeroBuilds({
     });
   }
 
-  const picked = draft ? draft.runeIds.length + draft.weaponIds.length : 0;
+  const picked = draft
+    ? draft.runeIds.length + draft.weaponIds.length + draft.coreIds.length
+    : 0;
   const runeById = new Map(runeAttributes.map((r) => [r.id, r]));
 
   return (
     <div className="flex flex-col gap-4">
+      {notice && (
+        <p role="status" className="text-muted-foreground text-sm">
+          {notice}
+        </p>
+      )}
       {builds.length === 0 && !draft && (
         <p className="text-muted-foreground text-sm">
           No builds recorded for {heroName} yet.
@@ -187,26 +209,28 @@ export function HeroBuilds({
                   </p>
                 )}
               </div>
-              <div className="flex shrink-0 gap-1">
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  onClick={() => startEdit(build)}
-                  disabled={pending}
-                  aria-label={`Edit ${build.name}`}
-                >
-                  <Pencil />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  onClick={() => remove(build)}
-                  disabled={pending}
-                  aria-label={`Delete ${build.name}`}
-                >
-                  <Trash2 />
-                </Button>
-              </div>
+              {canEdit && (
+                <div className="flex shrink-0 gap-1">
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    onClick={() => startEdit(build)}
+                    disabled={pending}
+                    aria-label={`Edit ${build.name}`}
+                  >
+                    <Pencil />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    onClick={() => remove(build)}
+                    disabled={pending}
+                    aria-label={`Delete ${build.name}`}
+                  >
+                    <Trash2 />
+                  </Button>
+                </div>
+              )}
             </div>
 
             {build.runes.length > 0 && (
@@ -233,154 +257,192 @@ export function HeroBuilds({
                 </div>
               </BuildSection>
             )}
+            {build.cores.length > 0 && (
+              <BuildSection title="Cores">
+                <div className="flex flex-wrap gap-1.5">
+                  {build.cores.map((core, i) => (
+                    <Chip key={core.id} title={core.description} rank={i + 1}>
+                      {core.name}
+                    </Chip>
+                  ))}
+                </div>
+              </BuildSection>
+            )}
           </article>
         ),
       )}
 
-      {draft ? (
-        <form
-          className="bg-background flex flex-col gap-4 rounded-lg border p-3"
-          onSubmit={(e) => {
-            e.preventDefault();
-            submit();
-          }}
-        >
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="build-name">Name</Label>
-              <Input
-                id="build-name"
-                value={draft.name}
-                onChange={(e) =>
-                  setDraft((d) => d && { ...d, name: e.target.value })
-                }
-                placeholder="e.g. Arena frontline"
-                autoFocus
-              />
+      {canEdit &&
+        (draft ? (
+          <form
+            className="bg-background flex flex-col gap-4 rounded-lg border p-3"
+            onSubmit={(e) => {
+              e.preventDefault();
+              submit();
+            }}
+          >
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="build-name">Name</Label>
+                <Input
+                  id="build-name"
+                  value={draft.name}
+                  onChange={(e) =>
+                    setDraft((d) => d && { ...d, name: e.target.value })
+                  }
+                  placeholder="e.g. Arena frontline"
+                  autoFocus
+                />
+              </div>
+              <div className="flex flex-col gap-1.5 sm:row-span-2">
+                <Label htmlFor="build-notes">Notes</Label>
+                <Textarea
+                  id="build-notes"
+                  value={draft.notes}
+                  onChange={(e) =>
+                    setDraft((d) => d && { ...d, notes: e.target.value })
+                  }
+                  placeholder="Priorities, what to lock first, trade-offs…"
+                  rows={4}
+                />
+              </div>
             </div>
-            <div className="flex flex-col gap-1.5 sm:row-span-2">
-              <Label htmlFor="build-notes">Notes</Label>
-              <Textarea
-                id="build-notes"
-                value={draft.notes}
-                onChange={(e) =>
-                  setDraft((d) => d && { ...d, notes: e.target.value })
-                }
-                placeholder="Priorities, what to lock first, trade-offs…"
-                rows={4}
-              />
-            </div>
-          </div>
 
-          <p className="text-muted-foreground text-sm">
-            Click attributes in order of importance: the first one you click is
-            shown first. Click again to remove.
-          </p>
+            <p className="text-muted-foreground text-sm">
+              Click attributes and cores in order of importance: the first one
+              you click is shown first. Click again to remove.
+            </p>
 
-          <BuildSection title="Runes">
-            {RUNE_TYPES.map((type) => (
-              <AttributeGroup key={type} title={runeTypeShort(type)}>
-                {runeAttributes
-                  .filter((r) => r.runeType === type)
-                  .map((r) => (
+            <BuildSection title="Runes">
+              {RUNE_TYPES.map((type) => (
+                <AttributeGroup key={type} title={runeTypeShort(type)}>
+                  {runeAttributes
+                    .filter((r) => r.runeType === type)
+                    .map((r) => (
+                      <Chip
+                        key={r.id}
+                        pressed={draft.runeIds.includes(r.id)}
+                        rank={runeRank(draft, r)}
+                        onClick={() => toggle("runeIds", r.id)}
+                        title={[r.description, r.analysis]
+                          .filter(Boolean)
+                          .join("\n")}
+                      >
+                        {r.name}
+                      </Chip>
+                    ))}
+                </AttributeGroup>
+              ))}
+            </BuildSection>
+            <BuildSection title="Weapons">
+              <div className="flex flex-wrap gap-1.5">
+                {weaponAttributes.map((w) => (
+                  <Chip
+                    key={w.id}
+                    pressed={draft.weaponIds.includes(w.id)}
+                    rank={
+                      draft.weaponIds.includes(w.id)
+                        ? draft.weaponIds.indexOf(w.id) + 1
+                        : null
+                    }
+                    onClick={() => toggle("weaponIds", w.id)}
+                  >
+                    {w.name}
+                  </Chip>
+                ))}
+              </div>
+            </BuildSection>
+
+            <BuildSection title="Cores">
+              {cores.length > 0 ? (
+                <div className="flex flex-wrap gap-1.5">
+                  {cores.map((core) => (
                     <Chip
-                      key={r.id}
-                      pressed={draft.runeIds.includes(r.id)}
-                      rank={runeRank(draft, r)}
-                      onClick={() => toggle("runeIds", r.id)}
-                      title={[r.description, r.analysis]
-                        .filter(Boolean)
-                        .join("\n")}
+                      key={core.id}
+                      pressed={draft.coreIds.includes(core.id)}
+                      rank={
+                        draft.coreIds.includes(core.id)
+                          ? draft.coreIds.indexOf(core.id) + 1
+                          : null
+                      }
+                      onClick={() => toggle("coreIds", core.id)}
+                      title={core.description}
                     >
-                      {r.name}
+                      {core.name}
                     </Chip>
                   ))}
-              </AttributeGroup>
-            ))}
-          </BuildSection>
-          <BuildSection title="Weapons">
-            <div className="flex flex-wrap gap-1.5">
-              {weaponAttributes.map((w) => (
-                <Chip
-                  key={w.id}
-                  pressed={draft.weaponIds.includes(w.id)}
-                  rank={
-                    draft.weaponIds.includes(w.id)
-                      ? draft.weaponIds.indexOf(w.id) + 1
-                      : null
-                  }
-                  onClick={() => toggle("weaponIds", w.id)}
-                >
-                  {w.name}
-                </Chip>
-              ))}
+                </div>
+              ) : (
+                <p className="text-muted-foreground text-sm">
+                  No cores recorded for {heroName} yet.
+                </p>
+              )}
+            </BuildSection>
+
+            {error && <p className="text-destructive text-sm">{error}</p>}
+            <div className="flex items-center gap-2">
+              <Button
+                type="submit"
+                disabled={pending || !draft.name.trim() || picked === 0}
+              >
+                {pending ? "Saving…" : draft.id ? "Save changes" : "Save build"}
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={cancel}
+                disabled={pending}
+              >
+                Cancel
+              </Button>
             </div>
-          </BuildSection>
+          </form>
+        ) : (
+          <div className="flex flex-col gap-3">
+            {error && !importing && (
+              <p className="text-destructive text-sm">{error}</p>
+            )}
+            <div className="flex flex-wrap items-center gap-2">
+              <Button
+                variant="outline"
+                onClick={startNew}
+                disabled={pending}
+                className="w-fit"
+              >
+                <Plus data-icon="inline-start" /> New build
+              </Button>
+              <Button
+                ref={importButton}
+                variant="outline"
+                onClick={() => {
+                  setError(null);
+                  setImporting((v) => !v);
+                }}
+                disabled={pending}
+                aria-expanded={importing}
+                aria-controls="hero-build-import"
+                className="w-fit"
+              >
+                <Download data-icon="inline-start" /> Import build
+              </Button>
+            </div>
 
-          {error && <p className="text-destructive text-sm">{error}</p>}
-          <div className="flex items-center gap-2">
-            <Button
-              type="submit"
-              disabled={pending || !draft.name.trim() || picked === 0}
-            >
-              {pending ? "Saving…" : draft.id ? "Save changes" : "Save build"}
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={cancel}
-              disabled={pending}
-            >
-              Cancel
-            </Button>
+            {importing && (
+              <HeroBuildImport
+                heroId={heroId}
+                pending={pending}
+                error={error}
+                onImport={doImport}
+                onCancel={closeImport}
+              />
+            )}
           </div>
-        </form>
-      ) : (
-        <div className="flex flex-col gap-3">
-          {error && !importing && (
-            <p className="text-destructive text-sm">{error}</p>
-          )}
-          <div className="flex flex-wrap items-center gap-2">
-            <Button
-              variant="outline"
-              onClick={startNew}
-              disabled={pending}
-              className="w-fit"
-            >
-              <Plus data-icon="inline-start" /> New build
-            </Button>
-            <Button
-              ref={importButton}
-              variant="outline"
-              onClick={() => {
-                setError(null);
-                setImporting((v) => !v);
-              }}
-              disabled={pending}
-              aria-expanded={importing}
-              aria-controls="hero-build-import"
-              className="w-fit"
-            >
-              <Download data-icon="inline-start" /> Import build
-            </Button>
-          </div>
-
-          {importing && (
-            <HeroBuildImport
-              heroId={heroId}
-              pending={pending}
-              error={error}
-              onImport={doImport}
-              onCancel={closeImport}
-            />
-          )}
-        </div>
-      )}
+        ))}
     </div>
   );
 }
 
-/** Top-level "Runes" / "Weapons" heading for a build's contents. */
+/** Top-level "Runes" / "Weapons" / "Cores" heading for a build's contents. */
 function BuildSection({
   title,
   children,

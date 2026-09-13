@@ -37,6 +37,21 @@ S13AM = lambda t: f"Screenshot 2026-09-13 at {t}{NB}AM.png"
 # hero slug -> {"popups": [(file, talent name), ...],
 #               "artifact": Artifact tab, "artifact_popup": the artifact's ability list}
 LAYOUT = {
+    "necromancer": {
+        "popups": [
+            (S13AM("9.07.32"), "Reaper Scythe"),
+            (S13AM("9.07.34"), "Dark Pulse"),
+            (S13AM("9.07.35"), "Ghost Shield"),
+            (S13AM("9.07.36"), "Soul Offering"),
+            (S13AM("9.07.37"), "Necro Arts"),
+            (S13AM("9.07.39"), "Death Pulse"),
+        ],
+        "artifact": S13AM("9.07.41"),
+        # Include the lantern handle and ghosts, but not the player's stars.
+        "artifact_box": (190, 243, 520, 573),
+        # 9.19.54 clips the rainbow badge; keep using the existing shared icons.
+        "artifact_popup": None,
+    },
     "sea-captain": {
         "popups": [
             (S("11.06.07"), "Water Blade"),

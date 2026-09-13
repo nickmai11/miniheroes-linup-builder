@@ -12,6 +12,7 @@ import { HERO_AWAKENING_STAGES } from "@/data/hero-details";
 import { versioned } from "@/lib/asset-version";
 import { getHeroBuilds } from "@/lib/builds";
 import { getHeroDetail } from "@/lib/heroes";
+import { canEditLocally } from "@/lib/local-editing";
 import { getAllRuneAttributes } from "@/lib/runes";
 import { getAllWeaponAttributes } from "@/lib/weapons";
 import { HeroBuilds } from "./hero-builds";
@@ -35,10 +36,11 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
   const { slug } = await props.params;
   const hero = await getHeroDetail(slug);
   if (!hero) notFound();
+  const canEdit = await canEditLocally();
   const [builds, runeAttributes, weaponAttributes] = await Promise.all([
     getHeroBuilds(hero.id),
-    getAllRuneAttributes(),
-    getAllWeaponAttributes(),
+    canEdit ? getAllRuneAttributes() : [],
+    canEdit ? getAllWeaponAttributes() : [],
   ]);
 
   return (
@@ -59,12 +61,15 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
             sizes="260px"
             priority
           />
-          <Link
-            href={`/lineups/new?hero=${hero.slug}`}
-            className={buttonVariants({ variant: "outline" })}
-          >
-            <Hammer data-icon="inline-start" /> Start a lineup with {hero.name}
-          </Link>
+          {canEdit && (
+            <Link
+              href={`/lineups/new?hero=${hero.slug}`}
+              className={buttonVariants({ variant: "outline" })}
+            >
+              <Hammer data-icon="inline-start" /> Start a lineup with{" "}
+              {hero.name}
+            </Link>
+          )}
         </div>
 
         <div className="flex flex-col gap-6">
@@ -312,11 +317,13 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
             </CardHeader>
             <CardContent>
               <HeroBuilds
+                canEdit={canEdit}
                 heroId={hero.id}
                 heroName={hero.name}
                 builds={builds}
                 runeAttributes={runeAttributes}
                 weaponAttributes={weaponAttributes}
+                cores={canEdit ? hero.cores : []}
               />
             </CardContent>
           </Card>

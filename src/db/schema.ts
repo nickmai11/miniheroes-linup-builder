@@ -239,8 +239,8 @@ export type RuneAttribute = typeof runeAttributes.$inferSelect;
 export type NewRuneAttribute = typeof runeAttributes.$inferInsert;
 
 /**
- * A hero build: the owner's recommended rune attributes and weapon attributes
- * for one hero, picked by hand from the two catalogs. A hero can have several
+ * A hero build: the owner's recommended rune attributes, weapon attributes and
+ * cores for one hero, picked by hand. A hero can have several
  * (e.g. per mode or per role in the lineup).
  */
 export const heroBuilds = pgTable(
@@ -299,6 +299,25 @@ export const heroBuildWeapons = pgTable(
   (t) => [
     unique().on(t.buildId, t.weaponAttributeId),
     index("hero_build_weapons_weapon_attribute_id_idx").on(t.weaponAttributeId),
+  ],
+);
+
+/** Hero-specific cores chosen for a build, in priority order. */
+export const heroBuildCores = pgTable(
+  "hero_build_cores",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    buildId: integer("build_id")
+      .notNull()
+      .references(() => heroBuilds.id, { onDelete: "cascade" }),
+    coreId: integer("core_id")
+      .notNull()
+      .references(() => heroCores.id, { onDelete: "cascade" }),
+    sortOrder: integer("sort_order").notNull().default(0),
+  },
+  (t) => [
+    unique().on(t.buildId, t.coreId),
+    index("hero_build_cores_core_id_idx").on(t.coreId),
   ],
 );
 

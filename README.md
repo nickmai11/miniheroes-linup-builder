@@ -51,3 +51,21 @@ Schema changes: edit `src/db/schema.ts`, run `pnpm db:generate`, then `pnpm db:m
 ## Going to production
 
 Set `DATABASE_URL` to the Supabase pooler string on the host (Vercel or any Node host) and deploy. Uploaded hero portraits are written to `public/heroes/`, which only persists on a host with a writable disk.
+
+## Local editing
+
+Create, edit, import, and delete controls are available only through `pnpm dev`
+at `http://localhost:3000` (or `http://127.0.0.1:3000`). The development server binds
+to `127.0.0.1`; restart any already-running dev server after this change. Keep it
+bound to loopback and do not expose it through a tunnel or reverse proxy.
+
+Production (`pnpm build` / `pnpm start`, including on localhost) is read-only for
+visitors. Every write action and the notes POST API check access on the server;
+request headers cannot enable editing in production. The policy also rejects
+non-local hosts, remote forwarded addresses, proxy chains, and cross-origin
+requests in development. The lineup builder route is unavailable outside local
+development, and saved lineups and builds remain publicly readable. Automatic
+synchronization of the versioned game reference data is unchanged.
+
+Run `pnpm test` (Node 22.6+), `pnpm typecheck`, and `pnpm lint` to check the policy
+and its protected entry points.

@@ -6,6 +6,11 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { db, schema } from "@/db";
 import { LINEUP_SIZE } from "@/db/schema";
+import {
+  canEditLocally,
+  LOCAL_EDITING_ERROR,
+  requireLocalEditing,
+} from "@/lib/local-editing";
 
 export type LineupActionState = { error?: string };
 
@@ -28,6 +33,7 @@ export type LineupInput = z.input<typeof lineupSchema>;
 export async function saveLineup(
   input: LineupInput,
 ): Promise<LineupActionState> {
+  if (!(await canEditLocally())) return { error: LOCAL_EDITING_ERROR };
   const parsed = lineupSchema.safeParse(input);
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Invalid lineup" };
@@ -59,6 +65,7 @@ export async function saveLineup(
 }
 
 export async function deleteLineup(id: number) {
+  await requireLocalEditing();
   await db.delete(schema.lineups).where(eq(schema.lineups.id, id));
   revalidatePath("/lineups");
   redirect("/lineups");

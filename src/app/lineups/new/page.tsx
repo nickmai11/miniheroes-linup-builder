@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { PageShell } from "@/components/page-shell";
 import { getAllHeroes } from "@/lib/heroes";
+import { canEditLocally } from "@/lib/local-editing";
 import { LineupBuilder } from "./lineup-builder";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Build a lineup" };
 
 export default async function NewLineupPage(props: PageProps<"/lineups/new">) {
+  if (!(await canEditLocally())) notFound();
   const [heroes, searchParams] = await Promise.all([
     getAllHeroes(),
     props.searchParams,

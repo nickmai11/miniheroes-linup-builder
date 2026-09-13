@@ -2,8 +2,10 @@ import Link from "next/link";
 import { Crown } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { NavLinks } from "@/components/nav-links";
+import { canEditLocally } from "@/lib/local-editing";
 
-export function SiteHeader() {
+export async function SiteHeader() {
+  const canEdit = await canEditLocally();
   return (
     <header className="bg-background/85 supports-[backdrop-filter]:bg-background/70 sticky top-0 z-40 border-b backdrop-blur">
       <div className="mx-auto flex h-14 w-full max-w-6xl items-center gap-3 px-3 sm:gap-6 sm:px-6">
@@ -15,7 +17,7 @@ export function SiteHeader() {
           <span className="hidden sm:inline">Mini Heroes Lineups</span>
           <span className="sr-only sm:hidden">Mini Heroes Lineups</span>
         </Link>
-        <NavLinks />
+        <NavLinks canEdit={canEdit} />
         <div className="ml-auto shrink-0">
           <ThemeToggle />
         </div>

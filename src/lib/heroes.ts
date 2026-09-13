@@ -192,9 +192,6 @@ export async function syncHeroDetail(hero: Pick<Hero, "id" | "slug">) {
         .where(inArray(schema.heroSkills.id, stale));
 
     await tx
-      .delete(schema.heroCores)
-      .where(eq(schema.heroCores.heroId, hero.id));
-    await tx
       .delete(schema.heroArtifactBonuses)
       .where(eq(schema.heroArtifactBonuses.heroId, hero.id));
     if (seed.artifact && seed.artifact.bonuses.length > 0)
@@ -208,16 +205,38 @@ export async function syncHeroDetail(hero: Pick<Hero, "id" | "slug">) {
           sortOrder,
         })),
       );
-    if (seed.cores.length > 0)
-      await tx.insert(schema.heroCores).values(
-        seed.cores.map((c, sortOrder) => ({
-          heroId: hero.id,
-          skillId: skillId.get(c.skill) ?? null,
-          name: c.name,
-          description: c.description,
-          sortOrder,
-        })),
-      );
+    // Keep core ids stable: saved builds reference these rows across page loads.
+    const existingCores = await tx
+      .select({ id: schema.heroCores.id, name: schema.heroCores.name })
+      .from(schema.heroCores)
+      .where(eq(schema.heroCores.heroId, hero.id));
+    const coreId = new Map(existingCores.map((c) => [c.name, c.id]));
+    for (const [sortOrder, c] of seed.cores.entries()) {
+      const values = {
+        heroId: hero.id,
+        skillId: skillId.get(c.skill) ?? null,
+        name: c.name,
+        description: c.description,
+        sortOrder,
+      };
+      const id = coreId.get(c.name);
+      if (id) {
+        await tx
+          .update(schema.heroCores)
+          .set(values)
+          .where(eq(schema.heroCores.id, id));
+      } else {
+        await tx.insert(schema.heroCores).values(values);
+      }
+    }
+    const keepCores = new Set(seed.cores.map((c) => c.name));
+    const staleCores = existingCores
+      .filter((c) => !keepCores.has(c.name))
+      .map((c) => c.id);
+    if (staleCores.length > 0)
+      await tx
+        .delete(schema.heroCores)
+        .where(inArray(schema.heroCores.id, staleCores));
 
     const divinityRows = await tx
       .select({ id: schema.divinities.id, slug: schema.divinities.slug })
