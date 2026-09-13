@@ -24,25 +24,35 @@ export async function saveLineup(
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Invalid lineup" };
   }
-  const { id, name, description, slots } = parsed.data;
+  const { id, name, description, slots, fishIds } = parsed.data;
   const buildIds = slots.flatMap((slot) =>
     slot?.buildId ? [slot.buildId] : [],
   );
 
-  const [knownHeroes, knownPets, knownRelics, knownBuilds] = await Promise.all([
-    db.select({ id: schema.heroes.id }).from(schema.heroes),
-    db.select({ id: schema.pets.id }).from(schema.pets),
-    db.select({ id: schema.relics.id }).from(schema.relics),
-    buildIds.length
-      ? db
-          .select({
-            id: schema.heroBuilds.id,
-            heroId: schema.heroBuilds.heroId,
-          })
-          .from(schema.heroBuilds)
-          .where(inArray(schema.heroBuilds.id, buildIds))
-      : [],
-  ]);
+  const [knownHeroes, knownPets, knownRelics, knownBuilds, knownFishes] =
+    await Promise.all([
+      db.select({ id: schema.heroes.id }).from(schema.heroes),
+      db.select({ id: schema.pets.id }).from(schema.pets),
+      db.select({ id: schema.relics.id }).from(schema.relics),
+      buildIds.length
+        ? db
+            .select({
+              id: schema.heroBuilds.id,
+              heroId: schema.heroBuilds.heroId,
+            })
+            .from(schema.heroBuilds)
+            .where(inArray(schema.heroBuilds.id, buildIds))
+        : [],
+      fishIds.length
+        ? db
+            .select({ id: schema.fishes.id })
+            .from(schema.fishes)
+            .where(inArray(schema.fishes.id, fishIds))
+        : [],
+    ]);
+  if (knownFishes.length !== fishIds.length) {
+    return { error: "One of the selected fishes no longer exists" };
+  }
   const heroIds = new Set(knownHeroes.map((hero) => hero.id));
   const petIds = new Set(knownPets.map((pet) => pet.id));
   const relicIds = new Set(knownRelics.map((relic) => relic.id));
@@ -87,6 +97,9 @@ export async function saveLineup(
 
     if (id !== undefined) {
       await tx
+        .delete(schema.lineupFishes)
+        .where(eq(schema.lineupFishes.lineupId, id));
+      await tx
         .delete(schema.lineupHeroes)
         .where(eq(schema.lineupHeroes.lineupId, id));
     }
@@ -123,6 +136,17 @@ export async function saveLineup(
     );
     if (pets.length) await tx.insert(schema.lineupHeroPets).values(pets);
     if (relics.length) await tx.insert(schema.lineupHeroRelics).values(relics);
+    if (fishIds.length) {
+      await tx
+        .insert(schema.lineupFishes)
+        .values(
+          fishIds.map((fishId, sortOrder) => ({
+            lineupId: saved.id,
+            fishId,
+            sortOrder,
+          })),
+        );
+    }
     return saved;
   });
   if (!lineup) return { error: "This lineup no longer exists" };

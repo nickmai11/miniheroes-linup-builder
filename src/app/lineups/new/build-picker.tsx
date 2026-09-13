@@ -1,7 +1,7 @@
 "use client";
 
 import { Select } from "@base-ui/react/select";
-import { Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, Eye } from "lucide-react";
 import { BuildPopover } from "@/components/build-popover";
 import type { HeroBuild } from "@/lib/build-types";
 
@@ -37,9 +37,11 @@ export function BuildPicker({
                 <button
                   type="button"
                   disabled={disabled}
-                  className="text-primary focus-visible:ring-ring/50 h-full min-w-0 flex-1 truncate rounded-l-md px-2 text-left text-xs focus-visible:ring-3"
+                  aria-label={`Preview ${selected.name} build stats`}
+                  className="text-primary focus-visible:ring-ring/50 flex h-full min-w-0 flex-1 items-center gap-1.5 rounded-l-md px-2 text-left text-xs focus-visible:ring-3"
                 >
-                  {selected.name}
+                  <span className="truncate">{selected.name}</span>
+                  <Eye aria-hidden="true" className="size-3.5 shrink-0" />
                 </button>
               }
             />
@@ -98,7 +100,10 @@ export function BuildPicker({
                           <Check className="size-4" />
                         </Select.ItemIndicator>
                       </span>
-                      <Select.ItemText>{build.name}</Select.ItemText>
+                      <Select.ItemText className="min-w-0 flex-1">
+                        {build.name}
+                      </Select.ItemText>
+                      <Eye aria-hidden="true" className="size-3.5 shrink-0" />
                     </Select.Item>
                   }
                 />

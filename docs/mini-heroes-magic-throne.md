@@ -447,6 +447,20 @@ Shield**, **Spiked Armor**, **Soulcalm Gem**, **Boots of Haste**, **Silverblade*
 their catalog names. `gameplay/relics/image.png` supplies the eight clean icon
 tiles, matched to the 12.57.40–12.58.16 PM popups.
 
+### Fishes (owner-defined, 2026-09-13)
+
+Lineups include fishes. The owner requested a fish catalog in the database and
+fish selection in the lineup builder. Fish selections belong to the lineup.
+The owner supplied seven `gameplay/fishes/Fish Guide - <Area>.csv` sheets with
+**130 fishes**: Gold Coast (21), Moonlight Canyon (16), Snowy Mountain (18),
+Desert Beach (17), Frost Land (19), Jungle Lakes (19), and Idyllic Paradise (20).
+Each row records a name, type (Small / Medium / Large / Aquatic), collection,
+up to three stat names, and optional bait. Area comes from the sheet filename.
+Preserve the sheet's names and stat wording, trimming whitespace and treating
+`-` as unrecorded. No stat values or fish count limit have been specified.
+The owner confirmed that fish selections use this **separate fish list**;
+the earlier fishing collectibles sheet must not be imported as fishes.
+
 ### Lineups (game)
 
 A battle lineup is **5 heroes**. Conventional wisdom (web) is one of each role plus a
@@ -471,6 +485,14 @@ Each lineup hero may also be assigned one of that hero's saved builds. Hovering
 over a build shows its recorded rune/weapon attributes, priorities, and cores in
 a popover; hovering over a core shows its linked skill in a popover (owner,
 2026-09-13). Build selection uses a floating dropdown without shifting cards.
+Build names in lineup cards and the editor show an **eye icon** beside the name
+to make their hover/tap stats preview discoverable (owner, 2026-09-13).
+Lineups also include fishes, selected from a database catalog in the builder
+(owner, 2026-09-13).
+The owner also requested a **Clone** option. It opens an editable copy with the
+same formation, build references, pets, relics, fishes, and notes. The name gets
+a ` (copy)` suffix; saving creates a new lineup, and Cancel returns to the source.
+Clone uses the same local editing access rules as creating and editing lineups.
 
 ### Progression systems (web, unverified)
 
@@ -492,6 +514,10 @@ daily/weekly missions, limited events, redemption codes.
 
 Everything the owner says about the game gets appended here, dated, the moment it
 is said. These override anything marked (web).
+
+- 2026-09-13 — Lineups should have **fishes**. Add fishes to the database and to the lineup builder.
+- 2026-09-13 — Use a **separate fish list** for the fish catalog, not the fishing collectibles in `Fish Guide - Collectibles.csv`.
+- 2026-09-13 — The owner supplied the separate fish list: seven area CSVs in `gameplay/fishes/`, containing 130 fishes with their types, collections, stat names, and bait.
 
 - 2026-09-12 — The owner is a veteran player and wants to share lineup-building knowledge; that is the purpose of this app.
 - 2026-09-12 — Hero portraits must come only from the owner's own screenshots, never from the internet.
@@ -587,6 +613,10 @@ is said. These override anything marked (web).
 
 - 2026-09-13 — The owner flagged Shadow Fiend's missing fourth core. The recent `gameplay/talents/image copy.png` confirms **Crystal Pendant·Core** for **Destructive Gloom**: after each cast, gain **6% DMG Reduction for 10s**, with a **100% chance to purge all negative effects from self**. The same screenshot completes the red artifact bonus: immediately cast Destructive Gloom on entering battle, and increase Physical DMG from Shadow by **90%**. All four cores are now recorded; the Soul Mask rainbow ability remains unrecorded.
 
+- 2026-09-13 — The owner requested an **eye icon beside a hero's build in a lineup** so users know they can hover to preview it. Show the cue in saved lineup cards and the lineup editor, including build options with previews.
+
+- 2026-09-13 — The owner requested an option to **clone a lineup**.
+
 ## How the app models it
 
 - Build attributes have two owner-assigned priority tiers: **Should have** and
@@ -613,6 +643,20 @@ is said. These override anything marked (web).
   ID and creation timestamp. The 20 names/icons in `src/data/pets.ts` are seeded
   by `ensurePetsSeeded()` in `src/lib/pets.ts`; `getAllPets()` reads them by name.
   No pet skills, stats, or bonuses are stored; lineup assignments use separate links.
+- `fishes` table: `slug`, `name`, optional `iconUrl`, `area`, `fishType`,
+  `collection`, ordered `stats` (names only), optional `bait`, ID, and creation
+  timestamp. `getAllFishes()` in `src/lib/fishes.ts` inserts missing catalog rows
+  once per process from `src/data/fishes.ts` and reads them by name.
+  Regenerate that seed and `scripts/upsert-fishes.sql` with
+  `python3 scripts/import-fishes.py`. The SQL refreshes recorded details while
+  preserving IDs, lineup selections, and any icons. The importer reads only the
+  seven area sheets, excludes collectibles, and rejects duplicate fish slugs or
+  malformed input. No fish icons are supplied in these CSVs.
+- `lineup_fishes`: ordered, unique fish selections linked to the whole lineup.
+  Saving or editing replaces these links in the same transaction as the formation
+  and hero assignments. Deleting a lineup or fish cascades its links. The builder
+  uses a fixed-height multi-select dropdown; saved lineup lists and detail pages
+  show the selected fish names.
 - `divinities` table: `slug`, `name` (stat without "All"), `kind` (display category,
   with owner corrections taking precedence over popup titles), `iconUrl`
   (`/divinities/<slug>.png`). Seeded from `src/data/divinities.ts`
@@ -676,6 +720,11 @@ is said. These override anything marked (web).
   and divinity hero lists, using `getRecordedHeroSlugs()` on the server.
 - `/lineups/new` — pick heroes with recorded details into slots, add name + notes,
   save. Existing saved lineups still show their complete recorded formation.
+- `/lineups/new?clone=<id>` — initialize a new draft from a saved lineup, including
+  heroes that are no longer in the picker. The draft omits the source lineup ID
+  and saves through the existing create action. Build and catalog references are
+  reused; the lineup and assignment rows are new. Invalid or missing sources
+  return not found. Clone links appear on the lineup list and detail page.
 - `/lineups`, `/lineups/[id]` — browse and view saved lineups.
 - `/lineups/[id]/edit` — edit a saved lineup, with pet/relic multi-select controls
   inside each selected hero card. Editing preserves the lineup ID and share URL.

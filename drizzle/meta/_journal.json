@@ -148,6 +148,20 @@
       "when": 1789286219063,
       "tag": "0020_lineup_hero_builds",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1789288138917,
+      "tag": "0021_lineup_fishes",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1789288794207,
+      "tag": "0022_fish_catalog_details",
+      "breakpoints": true
     }
   ]
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactElement } from "react";
+import { Eye } from "lucide-react";
 import { InfoPopover } from "@/components/info-popover";
 import { BuildStats, PriorityLegend } from "@/components/build-stats";
 import type { HeroBuild } from "@/lib/build-types";
@@ -25,9 +26,11 @@ export function BuildPopover({
         trigger ?? (
           <button
             type="button"
-            className="text-primary focus-visible:ring-ring/50 w-full truncate rounded text-left text-xs font-medium underline decoration-dotted underline-offset-4 focus-visible:ring-3"
+            aria-label={`Preview ${build.name} build stats`}
+            className="text-primary focus-visible:ring-ring/50 flex w-full min-w-0 items-center gap-1.5 rounded text-left text-xs font-medium underline decoration-dotted underline-offset-4 focus-visible:ring-3"
           >
-            {build.name}
+            <span className="truncate">{build.name}</span>
+            <Eye aria-hidden="true" className="size-3.5 shrink-0" />
           </button>
         )
       }

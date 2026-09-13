@@ -258,6 +258,25 @@ export const pets = pgTable("pets", {
 export type Pet = typeof pets.$inferSelect;
 export type NewPet = typeof pets.$inferInsert;
 
+/** Fish catalog from the owner's area sheets, used by lineup selections. */
+export const fishes = pgTable("fishes", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  slug: text("slug").notNull().unique(),
+  name: text("name").notNull(),
+  iconUrl: text("icon_url"),
+  area: text("area").notNull().default(""),
+  fishType: text("fish_type").notNull().default(""),
+  collection: text("collection").notNull().default(""),
+  stats: text("stats").array().notNull().default([]),
+  bait: text("bait"),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+export type Fish = typeof fishes.$inferSelect;
+export type NewFish = typeof fishes.$inferInsert;
+
 /** The four rune types of the hero's Rune tab. */
 export const RUNE_TYPES = ["attack", "effect", "energy", "survival"] as const;
 export type RuneType = (typeof RUNE_TYPES)[number];
@@ -388,6 +407,25 @@ export const lineups = pgTable("lineups", {
 });
 
 export type Lineup = typeof lineups.$inferSelect;
+
+/** Fish selections belong to the whole lineup and preserve selection order. */
+export const lineupFishes = pgTable(
+  "lineup_fishes",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    lineupId: integer("lineup_id")
+      .notNull()
+      .references(() => lineups.id, { onDelete: "cascade" }),
+    fishId: integer("fish_id")
+      .notNull()
+      .references(() => fishes.id, { onDelete: "cascade" }),
+    sortOrder: integer("sort_order").notNull().default(0),
+  },
+  (t) => [
+    unique().on(t.lineupId, t.fishId),
+    index("lineup_fishes_fish_id_idx").on(t.fishId),
+  ],
+);
 
 export const lineupHeroes = pgTable(
   "lineup_heroes",

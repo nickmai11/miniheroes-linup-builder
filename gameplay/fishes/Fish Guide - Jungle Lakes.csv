@@ -1,0 +1,20 @@
+Fish Name,Type,Collection,Stat 1,Stat 2,Stat 3,Bait
+Butterfly Tail,Small,Aesthetic Match,Mage HP,DEF,-,-
+Rose Fish,Small,Aesthetic Match,Mage ATK,DEF,Receive Healing,-
+Color Swallow Fish,Small,Aesthetic Match,Mage ATK,DEF,Magic RES,-
+Yellow Crest Fish,Small,Feverish Speed,Mage HP,DEF,-,-
+Blue Scale Fish,Medium,Feverish Speed,Marksman ATK,HP,-,-
+Sea Flatworm,Aquatic,Shiny Bling,Warrior HP,DMG Reduction,-,-
+Scallop,Aquatic,Shiny Bling,Warrior HP,DMG Reduction,-,-
+Sea Star,Aquatic,Shiny Bling,Warrior ATK,ATK SPD,DMG Increase,-
+Green Crab,Aquatic,Juicy Meat,Warrior HP,DMG Reduction,Melee DMG Boost,Mayfly
+Abalone,Aquatic,Juicy Meat,Warrior ATK,DMG Increase,-,-
+Musselback Sculpin,Small,Juicy Meat,Mage ATK,DEF,-,-
+Ironback Fish,Medium,Sword Forger,Marksman HP,HP,-,-
+Spiked Flounder,Large,Sword Forger,ATK,Support HP,Crit DMG,-
+Great White Shark,Large,Danger!,Support HP,ATK,Range DMG Boost,Mudskipper
+Mahimahi,Medium,Strange Shape,Marksman ATK,HP,Melee DMG Reduct,-
+Arapaima,Medium,Strange Shape,Marksman HP,HP,Lifesteal,-
+Kissing Fish,Small,Strange Shape,Mage HP,DEF,DMG Reduction,-
+White Dolphin,Large,Black and White,Support ATK,ATK,Crit Rate,-
+Blackmouth Fish,Medium,Black and White,Marksman HP,HP,-,-

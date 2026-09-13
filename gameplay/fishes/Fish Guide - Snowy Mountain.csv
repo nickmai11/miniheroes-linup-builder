@@ -1,0 +1,19 @@
+Fish Name,Type,Collection,Stat 1,Stat 2,Stat 3,Bait
+Sea Snail,Aquatic,Island Blue,Warrior HP,DMG Reduction,-,-
+Island Red Crab,Aquatic,Island Blue,Warrior HP,DMG Increase,DMG Reduction,-
+Blue Funnel Fish,Small,Island Blue,Mage HP,DEF,-,-
+Mary Fish,Small,Mary Sue,Mage ATK,DEF,-,-
+Jellyfish,Aquatic,Mary Sue,Warrior ATK,DMG Increase,-,-
+Sand Shifter,Small,72 Changes,Mage HP,DEF,-,-
+Neon Fish,Small,72 Changes,Mage HP,DEF,-,-
+Ice Crystal Arhat Fish,Medium,72 Changes,Marksman ATK,HP            ,-,-
+Big Eye Squid,Aquatic,Greasy,Warrior HP,DMG Reduction,-,-
+Fins Fish,Medium,Greasy,Marksman HP,HP            ,Knockback Resist,-
+Flag Fish,Large,Ship Breaker,Support ATK,ATK,Range DMG Boost,-
+Tiger Shark,Large,Ship Breaker,ATK,Support HP,Melee DMG Boost,-
+Plateau Salmon,Small,I'm Not Ugly!,Mage ATK,DEF,MOV SPD,Mealworm
+Phantom Fugu,Medium,It's Toxic,Marksman HP,HP,-,-
+Zanga Octopus,Aquatic,It's Toxic,Warrior ATK,ATK SPD,DMG Increase,-
+Yellow Sparrow Fish,Medium,Three Primary Colors,Marksman ATK,HP,Melee DMG Reduct,Beetle Bait
+Redface Fish,Small,Three Primary Colors,Mage ATK,DEF,-,-
+Big Bluefish,Large,Three Primary Colors,ATK,Support HP,Crit Rate,-

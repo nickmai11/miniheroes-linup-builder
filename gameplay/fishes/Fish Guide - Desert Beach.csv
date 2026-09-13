@@ -1,0 +1,18 @@
+Fish Name,Type,Collection,Stat 1,Stat 2,Stat 3,Bait
+Icescale Carp,Small,Scale-armored Fighter,Mage HP,DEF,-,-
+Scale Fish,Medium,Scale-armored Fighter,Marksman HP,HP,Range DMG Reduction,-
+Pufferfish,Medium,Scale-armored Fighter,Marksman HP,HP,-,-
+Electric Eel,Large,Lightning Speed,Support ATK,ATK,ATK SPD,-
+Batoids,Large,Lightning Speed,ATK,Support HP,DMG Increase,-
+Blue Silver Fish,Medium,Rare Species,Marksman HP,HP,-,-
+White Sturgeon,Large,Rare Species,Support ATK,ATK,Healing Effect,Locust Bait
+Current Snapper,Medium,Rare Species,Marksman ATK,HP,-,-
+Fin Squid,Aquatic,Slippery,Warrior ATK,DMG Increase,Magic DMG Boost,-
+Slitherskin Fish,Medium,Slippery,Marksman ATK,HP,Anti-Crit Rate,-
+Sea Catfish,Small,Slippery,Mage HP,DEF,Melee DMG Reductoin,-
+Pearl Shell,Aquatic,Pearl Rainbow,Warrior ATK,DMG Increase,-,-
+Rainbow Snail,Aquatic,Pearl Rainbow,Warrior HP,Crit DMG,DMG Reduction,-
+Panda Fish,Small,National Treasure,Mage ATK,DEF,HP Regen,Mealworm
+Shallow Funnel Fish,Small,Delicate Petite,Mage ATK,DEF,-,-
+Hermit Crab,Aquatic,Delicate Petite,Warrior HP,DMG Reduction,Physical DMG Boost,-
+Oyster,Aquatic,Delicate Petite,Warrior HP,DMG Reduction,-,-

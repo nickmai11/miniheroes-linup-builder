@@ -12,6 +12,13 @@ export const lineupSchema = z.object({
   id: z.number().int().positive().optional(),
   name: z.string().trim().min(1, "Give the lineup a name").max(120),
   description: z.string().trim().max(5000).default(""),
+  fishIds: z
+    .array(z.number().int().positive())
+    .refine(
+      (ids) => new Set(ids).size === ids.length,
+      "Each fish can only be selected once per lineup",
+    )
+    .default([]),
   slots: z
     .array(
       z

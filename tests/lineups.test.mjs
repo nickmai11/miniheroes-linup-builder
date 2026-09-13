@@ -3,6 +3,7 @@ import test from "node:test";
 import { loadTypeScript } from "./load-typescript.mjs";
 
 const { lineupSchema } = loadTypeScript("src/lib/lineup-input.ts");
+const { createLineupDraft } = loadTypeScript("src/lib/lineup-draft.ts");
 const valid = () => ({
   name: "Arena",
   slots: [
@@ -73,4 +74,75 @@ test("rejects invalid edit IDs, empty formations, and assignments without a hero
   const input = valid();
   delete input.slots[0].heroId;
   assert.equal(lineupSchema.safeParse(input).success, false);
+});
+
+test("lineup fishes are optional, ordered, and unique positive catalog IDs", () => {
+  assert.deepEqual(lineupSchema.parse(valid()).fishIds, []);
+  assert.deepEqual(
+    lineupSchema.parse({ ...valid(), fishIds: [3, 1, 2] }).fishIds,
+    [3, 1, 2],
+  );
+  for (const fishIds of [[2, 2], [-1], [0], [1.5], ["1"], null]) {
+    assert.equal(
+      lineupSchema.safeParse({ ...valid(), fishIds }).success,
+      false,
+    );
+  }
+});
+
+const savedLineup = () => ({
+  id: 42,
+  name: "Arena",
+  description: "Keep the formation and notes.",
+  createdAt: new Date("2026-09-13T00:00:00Z"),
+  fishes: [{ id: 9 }, { id: 3 }],
+  slots: [
+    {
+      id: 7,
+      build: { id: 12 },
+      pets: [{ id: 4 }, { id: 2 }],
+      relics: [{ id: 6 }],
+    },
+    null,
+    { id: 1, build: null, pets: [], relics: [] },
+    null,
+    null,
+  ],
+});
+
+test("cloning preserves all ordered assignments and notes without the source save target", () => {
+  const source = savedLineup();
+  const draft = createLineupDraft(source, true);
+  assert.equal(Object.hasOwn(draft, "id"), false);
+  assert.equal(draft.name, "Arena (copy)");
+  assert.equal(draft.description, source.description);
+  assert.deepEqual(draft.fishIds, [9, 3]);
+  assert.deepEqual(draft.slots, [
+    { heroId: 7, buildId: 12, petIds: [4, 2], relicIds: [6] },
+    null,
+    { heroId: 1, buildId: null, petIds: [], relicIds: [] },
+    null,
+    null,
+  ]);
+  assert.equal(lineupSchema.safeParse(draft).success, true);
+  const original = structuredClone(source);
+  draft.name = "Different lineup";
+  draft.slots[0].petIds.reverse();
+  draft.slots[0].relicIds.push(8);
+  draft.slots[0].buildId = null;
+  draft.slots[2] = null;
+  draft.fishIds.pop();
+  assert.deepEqual(source, original);
+});
+
+test("edit drafts retain their save target while clone names fit the name limit", () => {
+  const source = savedLineup();
+  source.name = "A".repeat(120);
+  const edit = createLineupDraft(source);
+  assert.equal(edit.id, source.id);
+  assert.equal(edit.name, source.name);
+  const clone = createLineupDraft(source, true);
+  assert.equal(clone.name.length, 120);
+  assert.ok(clone.name.endsWith(" (copy)"));
+  assert.equal(lineupSchema.safeParse(clone).success, true);
 });

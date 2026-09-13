@@ -5,6 +5,8 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import { eq } from "drizzle-orm";
 import { loadTypeScript } from "./load-typescript.mjs";
 
+const { createLineupDraft } = loadTypeScript("src/lib/lineup-draft.ts");
+
 // Opt-in, disposable local database only; never uses the app's DATABASE_URL.
 const testUrl = process.env.LINEUP_TEST_DATABASE_URL;
 
@@ -20,10 +22,13 @@ test(
     const sql = postgres(testUrl, { prepare: false, max: 4 });
     const schema = loadTypeScript("src/db/schema.ts");
     let failRelicInsert = false;
+    let failFishInsert = false;
     const db = drizzle(sql, {
       schema,
       logger: {
         logQuery(query) {
+          if (failFishInsert && query.startsWith('insert into "lineup_fishes"'))
+            throw new Error("Simulated fish selection failure");
           if (
             failRelicInsert &&
             query.startsWith('insert into "lineup_hero_relics"')
@@ -70,6 +75,7 @@ test(
         [schema.heroes, 3],
         [schema.pets, 2],
         [schema.relics, 2],
+        [schema.fishes, 3],
       ]) {
         const rows = await db
           .insert(table)
@@ -92,7 +98,9 @@ test(
           .returning();
         fixtures.push({ table, rows });
       }
-      const [heroes, pets, relics] = fixtures.map((fixture) => fixture.rows);
+      const [heroes, pets, relics, fishes] = fixtures.map(
+        (fixture) => fixture.rows,
+      );
       const heroId = heroes[0].id;
       const [build, otherBuild] = await db
         .insert(schema.heroBuilds)
@@ -131,12 +139,17 @@ test(
       };
       const original = {
         name: "Original",
+        fishIds: [fishes[1].id, fishes[0].id],
         description: "Keep notes",
         slots: [selection, null, { heroId: heroes[1].id }, null, null],
       };
       const id = await save(original);
       const first = await getLineup(id);
       assert.equal(first.name, "Original");
+      assert.deepEqual(
+        first.fishes.map((fish) => fish.id),
+        original.fishIds,
+      );
       assert.equal(first.slots[1], null);
       assert.deepEqual(
         first.slots[0].pets.map((pet) => pet.id),
@@ -156,6 +169,21 @@ test(
       assert.equal(first.slots[0].build.cores[0].priority, "must");
       assert.equal(first.slots[2].build, null);
 
+      const cloneId = await save(createLineupDraft(first, true));
+      assert.notEqual(cloneId, id);
+      const clone = await getLineup(cloneId);
+      assert.equal(clone.name, "Original (copy)");
+      assert.deepEqual(clone.slots, first.slots);
+      assert.deepEqual(clone.fishes, first.fishes);
+      assert.equal(clone.description, first.description);
+      await save({
+        ...createLineupDraft(clone),
+        name: "Changed copy",
+        fishIds: [],
+        slots: [null, null, { heroId: heroes[1].id }, null, null],
+      });
+      assert.deepEqual(await getLineup(id), first);
+
       const otherId = await save({
         name: "Other lineup",
         slots: [{ heroId }, null, null, null, null],
@@ -163,6 +191,7 @@ test(
       const edited = {
         id,
         name: "Edited",
+        fishIds: [fishes[2].id, fishes[1].id],
         description: "Changed notes",
         slots: [
           null,
@@ -176,6 +205,15 @@ test(
       const after = await getLineup(id);
       assert.equal(after.createdAt.getTime(), first.createdAt.getTime());
       assert.equal(after.name, "Edited");
+      assert.deepEqual(
+        after.fishes.map((fish) => fish.id),
+        edited.fishIds,
+      );
+      assert.deepEqual((await getLineup(otherId)).fishes, []);
+      assert.deepEqual(
+        (await getAllLineups()).find((lineup) => lineup.id === id).fishes,
+        after.fishes,
+      );
       assert.equal(after.description, "Changed notes");
       assert.equal(after.slots[0], null);
       assert.equal(after.slots[2], null);
@@ -197,7 +235,7 @@ test(
       assert.equal(
         (await getAllLineups()).filter((lineup) => savedIds.includes(lineup.id))
           .length,
-        2,
+        3,
       );
       assert.ok(invalidated.some(([path]) => path === `/lineups/${id}/edit`));
 
@@ -220,6 +258,29 @@ test(
         (await actions.saveLineup({ ...edited, id: 2147483647 })).error,
         /no longer exists/,
       );
+
+      assert.match(
+        (await actions.saveLineup({ ...edited, fishIds: [2147483647] })).error,
+        /fishes no longer exists/,
+      );
+      assert.deepEqual(await getLineup(id), after);
+      failFishInsert = true;
+      await assert.rejects(
+        actions.saveLineup({
+          ...edited,
+          name: "Fish failure",
+          fishIds: [fishes[0].id],
+        }),
+      );
+      assert.deepEqual(
+        await getLineup(id),
+        after,
+        "Fish insert failure rolls back the whole lineup",
+      );
+      failFishInsert = false;
+      await save({ ...edited, fishIds: [] });
+      assert.deepEqual((await getLineup(id)).fishes, []);
+      await save(edited);
 
       failRelicInsert = true;
       await assert.rejects(
@@ -254,6 +315,11 @@ test(
         "Deleting a build clears the assignment without deleting the hero",
       );
       assert.equal((await getLineup(id)).slots[1].id, heroId);
+      await db.delete(schema.fishes).where(eq(schema.fishes.id, fishes[2].id));
+      assert.deepEqual(
+        (await getLineup(id)).fishes.map((fish) => fish.id),
+        [fishes[1].id],
+      );
       const slotIds = (
         await db
           .select()
@@ -265,6 +331,13 @@ test(
         (error) => error.path === "/lineups",
       );
       assert.equal(await getLineup(id), undefined);
+      assert.deepEqual(
+        await db
+          .select()
+          .from(schema.lineupFishes)
+          .where(eq(schema.lineupFishes.lineupId, id)),
+        [],
+      );
       assert.ok(
         (await db.select().from(schema.lineupHeroPets)).every(
           (row) => !slotIds.includes(row.lineupHeroId),

@@ -74,8 +74,9 @@ and its protected entry points.
 
 Run `pnpm dev` and open **http://localhost:3000/invitations/new**. Click
 **Generate**, then **Copy code**. No input is required. Each randomly generated
-code can register one browser and does not expire before use. Optionally enter
-the deployed app URL to copy a link containing `?ic=CODE`.
+code can register one browser and does not expire before use. An invitation link
+containing `?ic=CODE` is also ready to copy and opens the production app at
+`https://miniheroes-linup-builder.vercel.app/`.
 
 The generator page and its POST endpoint are available only in local development,
 using the same loopback policy as editing. They work before that browser is
@@ -83,7 +84,7 @@ registered, so you can generate the first invitation. Production builds do not
 expose the generator, including when run on localhost.
 
 Saved lineup cards and detail pages have a **Share** menu. **Copy link** copies
-the lineup URL on the current domain without invitation codes or other query
+the production lineup URL without invitation codes or other query
 parameters. **Copy link with IC** generates a fresh, single-use code and copies
 the lineup URL with `?ic=CODE`; this option is available only on localhost.
 If clipboard access is blocked, the link is shown for manual copying, and

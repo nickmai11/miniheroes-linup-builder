@@ -4,10 +4,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Plus, Search, X } from "lucide-react";
 import { useMemo, useState, useTransition } from "react";
-import { LINEUP_SIZE } from "@/db/schema";
+import { LINEUP_SIZE, type Fish } from "@/db/schema";
 import type { HeroWithDivinities } from "@/lib/heroes";
 import type { LineupWithHeroes } from "@/lib/lineups";
 import type { LineupSlotInput } from "@/lib/lineup-input";
+import { createLineupDraft } from "@/lib/lineup-draft";
 import type { AssignmentItem } from "@/components/lineup-assignments";
 import { HeroName, HeroPortrait } from "@/components/hero-portrait";
 import { RoleFilterGroup, type RoleFilter } from "@/components/role-filter";
@@ -20,6 +21,7 @@ import { cn } from "@/lib/utils";
 import { saveLineup } from "../actions";
 import { AssignmentPicker } from "./assignment-picker";
 import { BuildPicker } from "./build-picker";
+import { FishPicker } from "./fish-picker";
 import type { HeroBuild } from "@/lib/build-types";
 
 const SLOT_LABELS = ["Slot 1", "Slot 2", "Slot 3", "Slot 4", "Slot 5"];
@@ -29,29 +31,28 @@ export function LineupBuilder({
   pets,
   relics,
   builds,
+  fishes,
   preselectSlug,
   lineup,
+  cloneFrom,
 }: {
   heroes: HeroWithDivinities[];
   pets: AssignmentItem[];
   relics: AssignmentItem[];
   builds: HeroBuild[];
+  fishes: Fish[];
   preselectSlug?: string;
   lineup?: LineupWithHeroes;
+  cloneFrom?: LineupWithHeroes;
 }) {
   const router = useRouter();
+  const sourceLineup = lineup ?? cloneFrom;
+  const initialDraft = useMemo(
+    () => sourceLineup && createLineupDraft(sourceLineup, !lineup),
+    [sourceLineup, lineup],
+  );
   const [slots, setSlots] = useState<LineupSlotInput[]>(() => {
-    if (lineup)
-      return lineup.slots.map((hero) =>
-        hero
-          ? {
-              heroId: hero.id,
-              buildId: hero.build?.id ?? null,
-              petIds: hero.pets.map((pet) => pet.id),
-              relicIds: hero.relics.map((relic) => relic.id),
-            }
-          : null,
-      );
+    if (initialDraft) return initialDraft.slots;
     const initial: LineupSlotInput[] = Array.from(
       { length: LINEUP_SIZE },
       () => null,
@@ -63,8 +64,13 @@ export function LineupBuilder({
     return initial;
   });
   const [activeSlot, setActiveSlot] = useState<number | null>(null);
-  const [name, setName] = useState(lineup?.name ?? "");
-  const [description, setDescription] = useState(lineup?.description ?? "");
+  const [name, setName] = useState(initialDraft?.name ?? "");
+  const [fishIds, setFishIds] = useState<number[]>(
+    () => initialDraft?.fishIds ?? [],
+  );
+  const [description, setDescription] = useState(
+    initialDraft?.description ?? "",
+  );
   const [query, setQuery] = useState("");
   const [role, setRole] = useState<RoleFilter>("all");
   const [error, setError] = useState<string | null>(null);
@@ -75,10 +81,10 @@ export function LineupBuilder({
       new Map(
         [
           ...heroes,
-          ...(lineup?.slots.filter((hero) => hero !== null) ?? []),
+          ...(sourceLineup?.slots.filter((hero) => hero !== null) ?? []),
         ].map((hero) => [hero.id, hero]),
       ),
-    [heroes, lineup],
+    [heroes, sourceLineup],
   );
   const selected = new Set(
     slots.flatMap((slot) => (slot ? [slot.heroId] : [])),
@@ -136,9 +142,10 @@ export function LineupBuilder({
     startTransition(async () => {
       try {
         const result = await saveLineup({
-          id: lineup?.id,
+          id: initialDraft?.id,
           name,
           description,
+          fishIds,
           slots,
         });
         if (result?.error) setError(result.error);
@@ -262,6 +269,16 @@ export function LineupBuilder({
         </p>
       </section>
 
+      <FishPicker
+        fishes={fishes}
+        selectedIds={fishIds}
+        onChange={(ids) => {
+          setFishIds(ids);
+          setError(null);
+        }}
+        disabled={pending}
+      />
+
       <div className="grid items-start gap-8 lg:grid-cols-[1fr_300px]">
         <section
           className="flex min-w-0 flex-col gap-4"
@@ -368,7 +385,7 @@ export function LineupBuilder({
               {pending ? "Saving…" : lineup ? "Save changes" : "Save lineup"}
             </Button>
             <Link
-              href={lineup ? `/lineups/${lineup.id}` : "/lineups"}
+              href={sourceLineup ? `/lineups/${sourceLineup.id}` : "/lineups"}
               className={cn(
                 buttonVariants({ variant: "outline" }),
                 pending && "pointer-events-none",

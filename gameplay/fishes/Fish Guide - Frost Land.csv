@@ -1,0 +1,20 @@
+Fish Name,Type,Collection,Stat 1,Stat 2,Stat 3,Bait
+Peacook Fish,Small,Animal,Mage HP,DEF,Range DMG Reduct,-
+Zebrafish,Small,Animal,Mage ATK,DEF,Anti-Crit Rate,-
+Blue Parrot Fish,Medium,Animal,Marksman HP,HP,-,-
+Lophiomus,Medium,Dark Warrior,Marksman ATK,HP,MOV SPD,-
+Ancient Black Fish,Large,Dark Warrior,ATK,Support HP,Physical DMG Boost,-
+Giant Isopod,Aquatic,Living Fossil,Warrior HP,Knockback Effet,DMG Reduction,Seaweed Bait
+Horned Salamander,Aquatic,Sea Snail,Warrior HP,DMG Reduction,-,-
+Flower Shell,Aquatic,Sea Snail,Warrior HP,DMG Reduction,-,-
+Loach,Large,Devil Fish,Support ATK,ATK,Reflect DMG,-
+Highhill Salmon,Medium,Tasty Meat,Marksman HP,HP,-,-
+Yellow Cross Fish,Small,Tasty Meat,Mage HP,DEF,-,-
+Striped Knifefish,Medium,Weapon Lover,Marksman HP,HP,Physical RES,-
+Cobra Brass,Small,Weapon Lover,Mage ATK,DEF,-,-
+Shallow Eel,Medium,Weapon Lover,Marksman ATK,HP,-,-
+Sea Cucumber,Aquatic,Nutritional Riches,Warrior ATK,DMG Increase,-,-
+Hairy Crab,Aquatic,Nutritional Riches,Warrior ATK,Healing Effect,DMG Increase,-
+Whale Shark,Large,Ocean Lord,Support ATK,ATK,Magic DMG Boost,Locust Bait
+Purple Tiger Fish,Medium,Ocean Lord,Marksman ATK,HP,-,-
+Oarfish,Large,Ocean Lord,ATK,Support HP,Knockback Effect,-

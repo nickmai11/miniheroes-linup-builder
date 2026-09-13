@@ -1,8 +1,9 @@
 import { requireAppAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { Copy, Plus } from "lucide-react";
 import { HeroPortrait } from "@/components/hero-portrait";
+import { LineupFishes } from "@/components/lineup-fishes";
 import { LineupAssignments } from "@/components/lineup-assignments";
 import { LineupShare } from "@/components/lineup-share";
 import { BuildPopover } from "@/components/build-popover";
@@ -98,13 +99,23 @@ export default async function LineupsPage() {
                       </div>
                     ))}
                   </div>
+                  <LineupFishes fishes={lineup.fishes} />
                   {lineup.description && (
                     <p className="text-muted-foreground line-clamp-2 text-sm">
                       {lineup.description}
                     </p>
                   )}
                 </CardContent>
-                <CardFooter className="justify-end py-2">
+                <CardFooter className="flex-wrap justify-end gap-2 py-2">
+                  {canEdit && (
+                    <Link
+                      href={`/lineups/new?clone=${lineup.id}`}
+                      aria-label={`Clone ${lineup.name}`}
+                      className={buttonVariants({ variant: "outline" })}
+                    >
+                      <Copy data-icon="inline-start" /> Clone
+                    </Link>
+                  )}
                   <LineupShare lineupId={lineup.id} canInvite={canEdit} />
                 </CardFooter>
               </Card>

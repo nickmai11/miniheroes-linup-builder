@@ -5,6 +5,7 @@ import { PageShell } from "@/components/page-shell";
 import { getHeroesWithDetails } from "@/lib/heroes";
 import { getLineup } from "@/lib/lineups";
 import { canEditLocally } from "@/lib/local-editing";
+import { getAllFishes } from "@/lib/fishes";
 import { getAllPets } from "@/lib/pets";
 import { getAllRelics } from "@/lib/relics";
 import { getBuildsForHeroes } from "@/lib/builds";
@@ -22,11 +23,12 @@ export default async function EditLineupPage(
   const numericId = Number(id);
   if (!Number.isSafeInteger(numericId) || numericId <= 0) notFound();
 
-  const [lineup, heroes, pets, relics] = await Promise.all([
+  const [lineup, heroes, pets, relics, fishes] = await Promise.all([
     getLineup(numericId),
     getHeroesWithDetails(),
     getAllPets(),
     getAllRelics(),
+    getAllFishes(),
   ]);
   if (!lineup) notFound();
   const builds = await getBuildsForHeroes([
@@ -39,7 +41,7 @@ export default async function EditLineupPage(
   return (
     <PageShell
       title={`Edit ${lineup.name}`}
-      description="Update the formation, pets, relics, and notes for this lineup."
+      description="Update the formation, pets, relics, fishes, and notes for this lineup."
     >
       <LineupBuilder
         key={lineup.id}
@@ -47,6 +49,7 @@ export default async function EditLineupPage(
         pets={pets}
         relics={relics}
         builds={builds}
+        fishes={fishes}
         lineup={lineup}
       />
     </PageShell>

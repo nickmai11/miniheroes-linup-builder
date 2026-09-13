@@ -1,0 +1,21 @@
+Fish Name,Type,Collection,Stat 1,Stat 2,Stat 3,Bait
+Pacific Barreleye Fish,Small,Window of the Soul,Mage HP,DEF,-,-
+Red-eyed Carp,Small,Window of the Soul,Mage ATK,DEF,Magic RES,-
+Immortal Fish,Small,Window of the Soul,Mage ATK,DEF,-,-
+Mutant Blackfish,Large,Rivulet Nail,Support ATK,ATk,-,-
+Pond Loach,Small,Rivulet Nail,Mage HP,DEF,Melee DMG Reduction,-
+Lionfish,Medium,King's Talent,Marksman HP,HP,-,-
+Golden River Tigerfish,Large,King's Talent,Support ATK,ATK,Crit DMG,-
+Starry Pearl Trio Fish,Large,Sweetie Sweetie,Support ATK,ATK,Melee DMG Boost,-
+Marten's Pearl Oyster,Aquatic,Sweetie Sweetie,Warrior HP,DMG Reduction,Heavy Injury Effect,-
+Far East Taimen,Large,Smart Lad,ATK,Support HP,Crit Rate,-
+Flat-Faced Shell,Aquatic,Smart Lad,Warrior HP,DMG Reduction,-,-
+Dragon Crystal Goldfish,Small,Celebration,Mage HP,DEF,Receive Healing,Mealworm
+Dolly Varden Trout,Medium,Celebration,Marksman ATK,HP,SPD Redction RES,-
+Plaice,Medium,Lively Elf,Marksman ATK,HP,-,-
+Sea Bream,Medium,Lively Elf,Marksman HP,HP,Crit DMG RES,-
+Sea Pig,Aquatic,Slow Advance,Warrior ATK,DMG Increase,-,-
+Sea Anemone,Aquatic,Slow Advance,Warrior ATK,DMG Increase,-,-
+Piranha,Medium,Reckless,Marksman HP,HP,MOV SPD,Pupa Bait
+White-Spotted Dogfish,Large,Reckless,ATK,Support HP,Magic DMG Boost,-
+Mock Crocodile Turtle,Aquatic,Reckless,Warrior ATK,Knockback Effect,DMG Increase,Mayfly

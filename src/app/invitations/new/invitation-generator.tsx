@@ -5,6 +5,7 @@ import { Check, Copy, KeyRound, LoaderCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PRODUCTION_APP_URL } from "@/lib/site-url";
 import {
   Card,
   CardContent,
@@ -15,25 +16,12 @@ import {
 
 export function InvitationGenerator() {
   const [code, setCode] = useState("");
-  const [appUrl, setAppUrl] = useState("");
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState("");
-  let link = "";
-  try {
-    const url = new URL(appUrl);
-    if (
-      code &&
-      ["https:", "http:"].includes(url.protocol) &&
-      !url.username &&
-      !url.password
-    ) {
-      url.searchParams.set("ic", code);
-      link = url.toString();
-    }
-  } catch {
-    /* A share link is optional; generating a code needs no input. */
-  }
+  const invitationUrl = new URL(PRODUCTION_APP_URL);
+  invitationUrl.searchParams.set("ic", code);
+  const link = code ? invitationUrl.toString() : "";
 
   async function generate() {
     if (pending) return;
@@ -121,29 +109,14 @@ export function InvitationGenerator() {
               </Button>
             </div>
             <div className="flex flex-col gap-2 border-t pt-5">
-              <Label htmlFor="invitation-app-url">
-                App URL{" "}
-                <span className="text-muted-foreground font-normal">
-                  (optional)
-                </span>
-              </Label>
-              <Input
-                id="invitation-app-url"
-                type="url"
-                placeholder="https://your-app.com/heroes"
-                value={appUrl}
-                onChange={(event) => {
-                  setAppUrl(event.target.value);
-                  setCopied("");
-                }}
-              />
+              <Label htmlFor="invitation-link">Invitation link</Label>
               <p className="text-muted-foreground text-xs">
-                Add your app’s address to create a link that enters the code
-                automatically.
+                This link opens the app and enters the code automatically.
               </p>
               {link && (
                 <>
                   <Input
+                    id="invitation-link"
                     aria-label="Invitation link"
                     value={link}
                     readOnly

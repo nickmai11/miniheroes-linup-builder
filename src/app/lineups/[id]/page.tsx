@@ -2,8 +2,9 @@ import { requireAppAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { Copy, Pencil, Plus, Trash2 } from "lucide-react";
 import { HeroName, HeroPortrait } from "@/components/hero-portrait";
+import { LineupFishes } from "@/components/lineup-fishes";
 import { LineupAssignments } from "@/components/lineup-assignments";
 import { BuildPopover } from "@/components/build-popover";
 import { LineupShare } from "@/components/lineup-share";
@@ -56,6 +57,12 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
                 className={buttonVariants()}
               >
                 <Pencil data-icon="inline-start" /> Edit lineup
+              </Link>
+              <Link
+                href={`/lineups/new?clone=${lineup.id}`}
+                className={buttonVariants({ variant: "outline" })}
+              >
+                <Copy data-icon="inline-start" /> Clone lineup
               </Link>
               <Link
                 href="/lineups/new"
@@ -113,6 +120,8 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
           </li>
         ))}
       </ul>
+
+      <LineupFishes fishes={lineup.fishes} />
 
       {lineup.description ? (
         <Card>

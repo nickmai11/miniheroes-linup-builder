@@ -1,7 +1,7 @@
 import { cache } from "react";
 import { asc, desc, eq, inArray } from "drizzle-orm";
 import { db, schema } from "@/db";
-import type { Hero, Lineup, Pet, Relic } from "@/db/schema";
+import type { Fish, Hero, Lineup, Pet, Relic } from "@/db/schema";
 import type { HeroBuild } from "@/lib/build-types";
 import { getBuildsByIds } from "@/lib/builds";
 import {
@@ -17,6 +17,7 @@ export type LineupHeroWithAssignments = HeroWithDivinities & {
 };
 
 export type LineupWithHeroes = Lineup & {
+  fishes: Fish[];
   /** Slot index -> hero (missing slots are null). */
   slots: (LineupHeroWithAssignments | null)[];
 };
@@ -32,7 +33,7 @@ async function assemble(
   }[],
 ): Promise<LineupWithHeroes[]> {
   const slotIds = slotRows.map((slot) => slot.id);
-  const [byHero, petRows, relicRows, builds] = await Promise.all([
+  const [byHero, petRows, relicRows, builds, fishRows] = await Promise.all([
     divinitiesByHeroIds([...new Set(slotRows.map((s) => s.hero.id))]),
     slotIds.length
       ? db
@@ -69,7 +70,32 @@ async function assemble(
         ),
       ),
     ]),
+    lineupRows.length
+      ? db
+          .select({
+            lineupId: schema.lineupFishes.lineupId,
+            fish: schema.fishes,
+          })
+          .from(schema.lineupFishes)
+          .innerJoin(
+            schema.fishes,
+            eq(schema.lineupFishes.fishId, schema.fishes.id),
+          )
+          .where(
+            inArray(
+              schema.lineupFishes.lineupId,
+              lineupRows.map((lineup) => lineup.id),
+            ),
+          )
+          .orderBy(asc(schema.lineupFishes.sortOrder))
+      : [],
   ]);
+  const fishesByLineup = new Map<number, Fish[]>();
+  for (const { lineupId, fish } of fishRows) {
+    const fishes = fishesByLineup.get(lineupId) ?? [];
+    fishes.push(fish);
+    fishesByLineup.set(lineupId, fishes);
+  }
   const buildsById = new Map(builds.map((build) => [build.id, build]));
   const petsBySlot = new Map<number, Pet[]>();
   const relicsBySlot = new Map<number, Relic[]>();
@@ -103,7 +129,7 @@ async function assemble(
         };
       }
     }
-    return { ...l, slots };
+    return { ...l, slots, fishes: fishesByLineup.get(l.id) ?? [] };
   });
 }
 
