@@ -49,8 +49,8 @@ export type Hero = typeof heroes.$inferSelect;
 export type NewHero = typeof heroes.$inferInsert;
 
 /**
- * Artifact quality tiers in unlock order. Purple / gold / red each unlock a
- * bonus attached to one talent; rainbow adds the artifact's own skill.
+ * Artifact quality tiers in unlock order. Bonuses can modify a talent or add
+ * a standalone artifact skill; rainbow is not necessarily standalone.
  */
 export const ARTIFACT_TIERS = ["purple", "gold", "red", "rainbow"] as const;
 export type ArtifactTier = (typeof ARTIFACT_TIERS)[number];
@@ -93,9 +93,9 @@ export const heroSkills = pgTable(
 export type HeroSkill = typeof heroSkills.$inferSelect;
 
 /**
- * The abilities of a hero's artifact, one per quality tier. Purple / gold / red
- * bonuses modify a talent (`skillId`); the rainbow one is the artifact's own
- * skill and has no talent.
+ * The abilities of a hero's artifact, one per quality tier. Talent bonuses use
+ * `skillId`; standalone abilities have a `name` and no talent. Rainbow can be
+ * either (Thrall's rainbow bonus modifies Thunder Strike).
  */
 export const heroArtifactBonuses = pgTable(
   "hero_artifact_bonuses",
@@ -108,7 +108,7 @@ export const heroArtifactBonuses = pgTable(
       onDelete: "set null",
     }),
     tier: text("tier", { enum: ARTIFACT_TIERS }).notNull(),
-    // Skill name for the rainbow tier; null when attached to a talent.
+    // Standalone ability name; null when attached to a talent.
     name: text("name"),
     description: text("description").notNull().default(""),
     sortOrder: integer("sort_order").notNull().default(0),

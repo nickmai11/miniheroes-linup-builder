@@ -37,6 +37,20 @@ S13AM = lambda t: f"Screenshot 2026-09-13 at {t}{NB}AM.png"
 # hero slug -> {"popups": [(file, talent name), ...],
 #               "artifact": Artifact tab, "artifact_popup": the artifact's ability list}
 LAYOUT = {
+    "thrall": {
+        "popups": [
+            (S13AM("9.27.07"), "Thunder Strike"),
+            (S13AM("9.27.12"), "Enhanced Storm"),
+            (S13AM("9.27.14"), "Guardian Rune"),
+            (S13AM("9.27.17"), "Orc Soul"),
+            (S13AM("9.27.19"), "Electric Overload"),
+            (S13AM("9.27.21"), "Electric storm"),
+        ],
+        "artifact": S13AM("9.27.32"),
+        # Keep the whole hammer and lightning, excluding the player's stars.
+        "artifact_box": (205, 243, 505, 543),
+        "artifact_popup": S13AM("9.27.35"),
+    },
     "necromancer": {
         "popups": [
             (S13AM("9.07.32"), "Reaper Scythe"),

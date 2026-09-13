@@ -42,10 +42,13 @@ export default async function DivinitiesPage() {
                   <li key={d.id}>
                     <Link
                       href={`/divinities/${d.slug}`}
-                      className="bg-card hover:border-primary/60 flex items-center gap-3 rounded-lg border p-3 shadow-xs transition-colors"
+                      title={d.name}
+                      className="bg-card hover:border-primary/60 flex h-12 items-center gap-3 rounded-lg border p-3 shadow-xs transition-colors"
                     >
                       <DivinityIcon divinity={d} size={48} />
-                      <span className="font-medium">{d.name}</span>
+                      <span className="line-clamp-3 min-w-0 leading-5 font-medium break-words">
+                        {d.name}
+                      </span>
                     </Link>
                   </li>
                 ))}

@@ -93,8 +93,9 @@ tracks talent levels. Tapping a talent opens up to three panels:
 ATK/DEF/HP (player-dependent, not stored), an "Ascension Bonus" line, and the six
 divinity badges around it. The artifact popup lists one ability per quality tier:
 purple / gold / red are the three talents' Artifact Bonuses, and a fourth
-rainbow tier adds a new skill (Sea Captain: **Ship Raid**). The app stores all four
-in `hero_artifact_bonuses`; the rainbow one has no talent.
+rainbow tier may add a new skill (Sea Captain: **Ship Raid**) or further modify a
+talent (Thrall: **Thunder Strike**). The app stores all four in
+`hero_artifact_bonuses`; only standalone abilities have no talent link.
 
 **Sea Captain** (Warrior · DPS · Eternal; artifact Siren Blade):
 
@@ -156,7 +157,7 @@ Full visible descriptions are transcribed in `src/data/hero-details.ts`.
 
 | Talent | Kind | Unlock | Artifact Bonus | Core |
 | ------ | ---- | ------ | -------------- | ---- |
-| Death Pulse | Ultimate Skill | Start | red: +1 pulse; free cast the first time any ally or self falls below 35% HP, once per battle | not visible in supplied popup |
+| Death Pulse | Ultimate Skill | Start | red: +1 pulse; free cast the first time any ally or self falls below 35% HP, once per battle | Crystal Staff: DMG and Heal +30% of Attack |
 | Reaper Scythe | Battle Skill | 2★ | purple: enemy ATK −10% for 8s on hit | Tome of Radiance: additional Magic DMG equal to 80%(240%) of Attack |
 | Dark Pulse | Enhance | 5★ | — | — |
 | Ghost Shield | Special Skill | 8★ | gold: immediately casts upon entering battle; first cast also shields the frontmost ally | Luminous Visor: HP Regen +0.2%(0.6%) and Energy Regen +2%(6%) |
@@ -168,11 +169,35 @@ The Artifact tab's red badges match **Healing Effect** (left) and **CRIT DMG
 Reduction** (right) in the screenshot-derived catalog. The 9.19.54 AM artifact
 popup confirms all four tiers, but its Max Quality footer hides the rest of
 **Exhaustion Aura** after "and Energy Regen by". This rainbow skill is not attached
-to a talent. Only three core panels are visible; Luminous Visor's full description
-is now recorded from the scrolled 9.21.52 AM capture. The Tome of
+to a talent. All four cores are now recorded: the scrolled 9.31.17 AM capture
+shows **Crystal Staff·Core**, which enhances **Death Pulse** DMG and Heal by
+**30% of Attack**. Luminous Visor's full description is recorded from the
+scrolled 9.21.52 AM capture. The Tome of
 Radiance description calls its talent **Reaper's Scythe**, but the talent title
 is **Reaper Scythe**; link the core to that title. Sources: the owner's
 2026-09-13 9.07.31–9.07.41 AM captures in `gameplay/talents/`.
+
+**Thrall** (Support · Heal · Eternal; artifact **Hammer of Destruction**):
+
+| Talent | Kind | Unlock | Artifact Bonus | Core |
+| ------ | ---- | ------ | -------------- | ---- |
+| Electric storm | Ultimate Skill | Start | purple: storm knockback reduction +8% | Crystal Staff: enemy HP Regen per second −1.2%(3.6%) |
+| Thunder Strike | Battle Skill | 2★ | gold: each strike hits one extra enemy; rainbow: briefly reduces ATK/MOV SPD and reduces Energy Regen SPD by 50% per sec for 6s | Tome of Radiance: True DMG equal to 15%(45%) of Attack |
+| Enhanced Storm | Enhance | 5★ | — | — |
+| Guardian Rune | Special Skill | 8★ | red: on application, damage taken −20% for 8s; fatal-hit healing +16% max HP | Luminous Visor: additionally restores 3%(9%) of Max HP |
+| Orc Soul | Passive | 12★ | — | — |
+| Electric Overload | Enhance | 16★ | — | Resonance Pendant: maximum additional damage taken raised to 130%(200%) |
+
+The two red Artifact-tab badges match **Knockback Effect** (left) and **Anti-CRIT
+Rate** (right) in the owner's screenshot-derived catalog. All four cores and
+artifact tiers are visible, using the scrolled Thunder Strike and Guardian Rune
+captures for the lower panels. The **rainbow** bonus also modifies **Thunder
+Strike**, not a separate artifact skill; it belongs under the talent and in the
+Artifacts section. Preserve the ultimate's in-game title **Electric storm**,
+including the lowercase "s", when linking cores and bonuses. The screenshots say
+100% magic DMG for the ultimate and 90% true DMG for Thunder Strike without
+specifying an ATK basis; do not add one. Sources: the owner's 2026-09-13
+9.27.06–9.27.35 AM captures in `gameplay/talents/`.
 
 ### Awakening skills (game, 2026-09-13)
 
@@ -191,6 +216,8 @@ and padlock overlays are not part of the recorded hero skill.
 | Shadow Fiend | III | Soul Borrowing | Gains an additional 2.5% ATK SPD and 2.5% ATK for every enemy on the battlefield. | 8.54.44 |
 | Necromancer | I | Sadist's Heart | Every enemy killed (excluding summons) grants 3% Ranged DMG Reduction and 0.3% HP Regen per second, up to 5 stacks. | 9.19.39 |
 | Necromancer | III | Necro Possession | On entering battle, grants the highest-ATK ally (excluding self) 25% Ranged DMG Reduction, decaying to 10% after 15s; the screenshot says it "lasts until the end". | 9.22.05 |
+| Thrall | I | Kinetic Field | While Thrall is alive, enemies except illusions and summons have movement speed −10% and control resistance −30%. | 9.27.26 |
+| Thrall | III | Guardian Purification | Casting any skill randomly dispels some debuffs from one ally and restores HP equal to 50% of "Thal's" ATK every second for 6s, with an 8s cooldown. | 9.27.29 |
 
 Awakening I unlocks at **18★** and III at **22★** (owner-confirmed).
 Necromancer's Awakening I is recorded from the follow-up 9.19.39 AM screenshot.
@@ -202,6 +229,8 @@ drops below 30%, immediately restores HP equal to 120% of ATK. (CD: 13s)"
 This is recorded here once as **Support Awakening IV**, following the owner's
 class-wide II/IV rule; it is not a hero-specific I skill. Shared class awakening
 data/display is not implemented yet. II and other classes' IV remain unrecorded.
+Thrall's III is inactive in the screenshot, but its full description is visible.
+The game spells his name "Thal" in that description; the transcription preserves it.
 
 ### Divinities (game, 2026-09-12)
 
@@ -350,6 +379,12 @@ is said. These override anything marked (web).
 - 2026-09-13 — The scrolled **Luminous Visor** core panel (9.21.52 AM) completes its Ghost Shield bonus: HP Regen +0.2%(0.6%) and Energy Regen +2%(6%).
 - 2026-09-13 — Ghostlight Bone's artifact popup (9.19.54 AM) confirms the purple, gold, and red bonuses and names its rainbow skill **Exhaustion Aura**: it releases upon entering battle, reducing all enemies' DMG by 12% and Energy Regen by an obscured value. The Max Quality footer covers the remaining description; it must not be invented.
 
+- 2026-09-13 — The owner's new screenshots show **Thrall** (Support · Heal · Eternal): **Electric storm** (Ultimate), **Thunder Strike** (Battle, 2★), **Enhanced Storm** (Enhance, 5★), **Guardian Rune** (Special, 8★), **Orc Soul** (Passive, 12★), **Electric Overload** (Enhance, 16★). Artifact: **Hammer of Destruction**. Its red divinity badges match **Knockback Effect** (left) and **Anti-CRIT Rate** (right).
+- 2026-09-13 — Thrall's four core panels show **Crystal Staff** (Electric storm), **Tome of Radiance** (Thunder Strike), **Luminous Visor** (Guardian Rune), and **Resonance Pendant** (Electric Overload). Its rainbow artifact tier is a bonus to **Thunder Strike**, alongside its gold bonus; rainbow does not always create a standalone skill.
+- 2026-09-13 — Thrall's **Kinetic Field** (Awakening I) reduces enemy movement speed by 10% and control resistance by 30% while Thrall is alive, excluding illusions and summons. **Guardian Purification** (Awakening III) triggers on casting any skill, randomly dispels some debuffs from one ally, and heals for 50% of "Thal's" ATK each second for 6s (8s cooldown); the name spelling is from the screenshot.
+
+- 2026-09-13 — The owner reported that Necromancer is missing one core in the app. The 9.31.17 AM screenshot in `gameplay/talents/` shows **Crystal Staff·Core**: **Death Pulse enhances its DMG and Heal by 30% of Attack**. This completes Necromancer's four recorded cores; the app stores the gear name as **Crystal Staff** and links it to **Death Pulse**.
+
 ## How the app models it
 
 - Hero builds include hand-picked **cores** from that hero's recorded talent
@@ -383,8 +418,8 @@ is said. These override anything marked (web).
   without adding database queries or per-view synchronization writes.
   `HERO_AWAKENING_STAGES` stores the shared I → 18★ and III → 22★ thresholds.
 - `hero_artifact_bonuses` table: `heroId`, `tier` (purple | gold | red | rainbow),
-  `skillId` (the talent it modifies; null for the rainbow-tier artifact skill),
-  `name` (rainbow only), `description`, `sortOrder`. A bonus attached to a talent is
+  `skillId` (the talent it modifies; null for standalone artifact skills),
+  `name` (standalone skills only), `description`, `sortOrder`. A bonus attached to a talent is
   shown under that talent **and** in the Artifacts section; an unattached one only
   in the Artifacts section.
 - `hero_cores` table: `heroId`, `skillId` (the talent it modifies), `name` (gear

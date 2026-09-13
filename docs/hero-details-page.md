@@ -22,7 +22,7 @@ button in the left column):
 | Lineups        | saved lineups that use the hero                                                                                                                                                                                                                  | `lineup_heroes`                                         |
 
 Awakening I and III are recorded for **Sea Captain**, **Nezha**, **Shadow Fiend**,
-and **Necromancer**. Necromancer's III preserves the screenshot's exact ending,
+**Necromancer**, and **Thrall**. Necromancer's III preserves the screenshot's exact ending,
 "lasts until the end". Its other awakening capture shows **Support IV: Emergency
 Healing**, recorded once in the game reference. Class-wide II/IV are not displayed
 yet and must not be copied into hero-specific I/III data.
@@ -55,6 +55,9 @@ Rules that shape the page:
 - An artifact bonus **attached to a talent** appears under that talent _and_ in
   the Artifacts section. One **not attached** (the rainbow-tier artifact skill,
   e.g. Ship Raid) appears only under Artifacts.
+  Rainbow is not always standalone: Thrall's rainbow bonus modifies **Thunder
+  Strike** and appears in both sections. Use the talent link, not the tier, to
+  decide whether an ability is attached.
 - Only **mythic (red)** divinities are recorded — the two bottom badges of the
   Artifact tab. The purple/gold rows are ignored.
 - Names follow the in-game text, minus UI suffixes: divinity = stat row without
@@ -144,7 +147,8 @@ write, or an additional database query on page load.
   `description`, `sourceScreenshot`. The optional `awakeningSkills`
   array is served as part of `HeroDetail`; unrecorded heroes get an empty array.
 - `hero_artifact_bonuses`: `tier` (purple | gold | red | rainbow), `skillId`
-  (null for rainbow), `name` (rainbow only), `description`, `sortOrder`.
+  (null for standalone skills), `name` (standalone skills only), `description`,
+  `sortOrder`. Rainbow bonuses can have a talent link, as Thrall's does.
 - `hero_cores`: `skillId`, `name`, `description`, `sortOrder`.
 - `hero_divinities`: `divinityId`, `position` (0 = bottom-left, 1 = bottom-right).
 - `divinities`: `slug`, `name`, `kind`, `iconUrl` (catalog of mythic divinities).
@@ -176,8 +180,10 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
 
 - Necromancer: Ghostlight Bone's rainbow skill **Exhaustion Aura** is partly
   hidden behind the artifact popup's Max Quality footer; its Energy Regen
-  reduction value and any following text are not visible. Only three core panels
-  have been supplied. Awakening I and the full Luminous Visor core are now recorded.
+  reduction value and any following text are not visible. All four cores are now
+  recorded, including **Crystal Staff** for **Death Pulse** from the 9.31.17 AM
+  capture (DMG and Heal +30% of Attack). Awakening I and the full Luminous Visor
+  core are also recorded.
 - Shadow Fiend: the full Soul Mask ability popup is missing, its red description
   is cut off after "upon entering", the rainbow ability is unrecorded, and only
   three core panels are visible. The rest of the supplied hero details are recorded.

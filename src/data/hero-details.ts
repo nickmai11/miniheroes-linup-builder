@@ -27,9 +27,9 @@ export type HeroDetailSeed = {
     name: string;
     iconUrl?: string;
     /**
-     * One ability per quality tier in unlock order. Purple / gold / red name
-     * the talent they modify (`skill`); rainbow is the artifact's own skill
-     * and carries its `name` instead.
+     * One ability per quality tier in unlock order. Talent bonuses name the
+     * talent they modify (`skill`); standalone abilities carry their `name`.
+     * Rainbow can be either: Thrall's modifies Thunder Strike.
      */
     bonuses: {
       tier: ArtifactTier;
@@ -61,6 +61,130 @@ export type HeroDetailSeed = {
 const talent = (hero: string, slug: string) => `/talents/${hero}/${slug}.png`;
 
 export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
+  thrall: {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Kinetic Field",
+        description:
+          "While Thrall is alive, all enemies (excluding illusions and summons) have their movement speed reduced by 10% and control resistance reduced by 30%.",
+        sourceScreenshot: "Screenshot 2026-09-13 at 9.27.26\u202fAM.png",
+      },
+      {
+        stage: "III",
+        name: "Guardian Purification",
+        // The in-game description spells Thrall as "Thal"; preserve its text.
+        description:
+          "When casting any skill, randomly dispels some debuffs from one allied hero and restores HP equal to 50% of Thal's ATK every second for 6s (Cooldown: 8s).",
+        sourceScreenshot: "Screenshot 2026-09-13 at 9.27.29\u202fAM.png",
+      },
+    ],
+    artifact: {
+      name: "Hammer of Destruction",
+      iconUrl: "/artifacts/thrall.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Electric storm",
+          description:
+            "Knockback reduction from the electric storm is increased by 8%.",
+        },
+        {
+          tier: "gold",
+          skill: "Thunder Strike",
+          description: "Each lightning strike also hits one additional enemy.",
+        },
+        {
+          tier: "red",
+          skill: "Guardian Rune",
+          description:
+            "When applying a Guardian Rune to an ally, reduces their DMG taken by 20% for 8 s, and increases the max HP restored when blocking fatal damage by 16%.",
+        },
+        {
+          tier: "rainbow",
+          // Both the talent and artifact popups attach this to Thunder Strike.
+          skill: "Thunder Strike",
+          description:
+            "Each lightning strike briefly reduces the enemy's ATK SPD and MOV SPD significantly, and decreases their Energy Regen SPD by 50% per sec for 6s.",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Electric storm",
+        unlockStars: 0,
+        iconUrl: talent("thrall", "electric-storm"),
+        description:
+          "Creates an unstable electric storm on the battlefield, dealing 100% magic DMG per sec to all enemies and silencing them for 2 s.",
+      },
+      {
+        kind: "battle",
+        name: "Thunder Strike",
+        unlockStars: 2,
+        iconUrl: talent("thrall", "thunder-strike"),
+        description:
+          "Curses one enemy every 8 s. The cursed enemy will be struck by lightning 3 times over 6 s, each strike dealing 90% true DMG.",
+      },
+      {
+        kind: "enhance",
+        name: "Enhanced Storm",
+        unlockStars: 5,
+        iconUrl: talent("thrall", "enhanced-storm"),
+        description:
+          "Electric storm: During the storm, all enemies's knockback effects reduced by 12%.",
+      },
+      {
+        kind: "special",
+        name: "Guardian Rune",
+        unlockStars: 8,
+        iconUrl: talent("thrall", "guardian-rune"),
+        description:
+          "After 6 s in battle, applies a Guardian Rune to the ally with the lowest HP, blocking 1 instances of fatal damage and restoring 20% of their max HP. Each cast increases the CD by 8 s (can be cast up to 2 times per battle, and each ally can only receive the rune once).",
+      },
+      {
+        kind: "passive",
+        name: "Orc Soul",
+        unlockStars: 12,
+        iconUrl: talent("thrall", "orc-soul"),
+        description: "Physical RES increased by 10%, HP increased by 15%.",
+      },
+      {
+        kind: "enhance",
+        name: "Electric Overload",
+        unlockStars: 16,
+        iconUrl: talent("thrall", "electric-overload"),
+        description:
+          "Electric storm: During the electric storm, the lower the target's energy, the more DMG they take, up to an additional 100% DMG. All enemies are stunned for 1 s when the storm ends.",
+      },
+    ],
+    cores: [
+      {
+        name: "Crystal Staff",
+        skill: "Electric storm",
+        description:
+          "Electric Storm additionally reduces all Enemies' HP Regen per second by 1.2%(3.6%).",
+      },
+      {
+        name: "Tome of Radiance",
+        skill: "Thunder Strike",
+        description:
+          "Thunder Strike inflicts True DMG equal to 15%(45%) of Attack.",
+      },
+      {
+        name: "Luminous Visor",
+        skill: "Guardian Rune",
+        description: "Guardian Rune additionally restores 3%(9%) of Max HP.",
+      },
+      {
+        name: "Resonance Pendant",
+        skill: "Electric Overload",
+        description:
+          "Electric Overload raises the maximum additional DMG taken to 130%(200%).",
+      },
+    ],
+    divinities: ["knockback-effect", "anti-crit-rate"],
+  },
   necromancer: {
     awakeningSkills: [
       {
@@ -158,6 +282,12 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
       },
     ],
     cores: [
+      {
+        name: "Crystal Staff",
+        skill: "Death Pulse",
+        // Source: Screenshot 2026-09-13 at 9.31.17 AM.
+        description: "Death Pulse enhances its DMG and Heal by 30% of Attack.",
+      },
       {
         name: "Tome of Radiance",
         skill: "Reaper Scythe",
