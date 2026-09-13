@@ -3,7 +3,7 @@ export type BuildPriority = (typeof BUILD_PRIORITIES)[number];
 export const DEFAULT_BUILD_PRIORITY: BuildPriority = "optional";
 
 export const BUILD_PRIORITY_LABELS: Record<BuildPriority, string> = {
-  must: "Must have",
+  must: "Should have",
   optional: "OK to have",
 };
 

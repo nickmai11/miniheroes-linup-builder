@@ -1,3 +1,4 @@
+import { requireAppAccess } from "@/lib/app-access";
 import Link from "next/link";
 import { ArrowRight, Hammer, ListOrdered, Users } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
@@ -31,6 +32,7 @@ const SECTIONS = [
 ] as const;
 
 export default async function Home() {
+  await requireAppAccess();
   const canEdit = await canEditLocally();
   const sections = SECTIONS.filter(
     ({ href }) => canEdit || href !== "/lineups/new",

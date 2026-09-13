@@ -1,6 +1,6 @@
 "use client";
 
-import { Download, Pencil, Plus, RotateCcw, Trash2 } from "lucide-react";
+import { Download, Pencil, Plus, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,27 +8,30 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
   RUNE_TYPES,
-  type HeroCore,
   type RuneAttribute,
-  type RuneType,
   type WeaponAttribute,
 } from "@/db/schema";
-import type { HeroBuild } from "@/lib/build-types";
+import type { CoreWithSkill, HeroBuild } from "@/lib/build-types";
 import {
-  BUILD_PRIORITIES,
-  BUILD_PRIORITY_LABELS,
   DEFAULT_BUILD_PRIORITY,
   nextBuildPriority,
-  sortByBuildPriority,
   type BuildPriority,
 } from "@/lib/build-priorities";
-import { RUNE_TYPE_LABELS } from "@/lib/hero-labels";
-import { cn } from "@/lib/utils";
 import {
   deleteHeroBuild,
   importHeroBuild,
   saveHeroBuild,
 } from "./build-actions";
+import {
+  AttributeGroup,
+  BuildSection,
+  BuildStats,
+  Chip,
+  PriorityLegend,
+  runeTypeShort,
+} from "@/components/build-stats";
+import { CoreDetails } from "@/components/core-popover";
+import { BuildPopover } from "@/components/build-popover";
 import { HeroBuildImport } from "./hero-build-import";
 
 type Props = {
@@ -38,13 +41,8 @@ type Props = {
   builds: HeroBuild[];
   runeAttributes: RuneAttribute[];
   weaponAttributes: WeaponAttribute[];
-  cores: HeroCore[];
+  cores: CoreWithSkill[];
 };
-
-/** Rune-type label without the trailing " Runes" (shown under a Runes section). */
-function runeTypeShort(type: RuneType) {
-  return RUNE_TYPE_LABELS[type].replace(/ Runes$/, "");
-}
 
 /** Pick order remains stable within each separately assigned tier. */
 type Draft = {
@@ -84,13 +82,6 @@ function draftFrom(build?: HeroBuild): Draft {
       build?.cores.map((c) => [c.id, c.priority]) ?? [],
     ),
   };
-}
-
-function groupRunes<T extends RuneAttribute>(runes: T[]): [RuneType, T[]][] {
-  return RUNE_TYPES.flatMap((t) => {
-    const list = runes.filter((r) => r.runeType === t);
-    return list.length > 0 ? [[t, list] as [RuneType, T[]]] : [];
-  });
 }
 
 export function HeroBuilds({
@@ -249,7 +240,16 @@ export function HeroBuilds({
           >
             <div className="flex items-start justify-between gap-3">
               <div className="flex min-w-0 flex-col gap-1">
-                <h3 className="text-lg font-semibold">{build.name}</h3>
+                <h3 className="text-lg font-semibold">
+                  <BuildPopover
+                    build={build}
+                    trigger={
+                      <button type="button" className="text-left">
+                        {build.name}
+                      </button>
+                    }
+                  />
+                </h3>
                 {build.notes && (
                   <p className="text-muted-foreground text-sm whitespace-pre-wrap">
                     {build.notes}
@@ -280,51 +280,7 @@ export function HeroBuilds({
               )}
             </div>
 
-            {build.runes.length > 0 && (
-              <BuildSection title="Runes">
-                {groupRunes(sortByBuildPriority(build.runes)).map(
-                  ([type, list]) => (
-                    <AttributeGroup key={type} title={runeTypeShort(type)}>
-                      {list.map((r) => (
-                        <Chip
-                          key={r.id}
-                          title={r.description}
-                          priority={r.priority}
-                        >
-                          {r.name}
-                        </Chip>
-                      ))}
-                    </AttributeGroup>
-                  ),
-                )}
-              </BuildSection>
-            )}
-            {build.weapons.length > 0 && (
-              <BuildSection title="Weapons">
-                <div className="flex flex-wrap gap-1.5">
-                  {sortByBuildPriority(build.weapons).map((w) => (
-                    <Chip key={w.id} priority={w.priority}>
-                      {w.name}
-                    </Chip>
-                  ))}
-                </div>
-              </BuildSection>
-            )}
-            {build.cores.length > 0 && (
-              <BuildSection title="Cores">
-                <div className="flex flex-wrap gap-1.5">
-                  {sortByBuildPriority(build.cores).map((core) => (
-                    <Chip
-                      key={core.id}
-                      title={core.description}
-                      priority={core.priority}
-                    >
-                      {core.name}
-                    </Chip>
-                  ))}
-                </div>
-              </BuildSection>
-            )}
+            <BuildStats build={build} />
           </article>
         ),
       )}
@@ -366,7 +322,7 @@ export function HeroBuilds({
             </div>
 
             <p className="text-muted-foreground text-sm">
-              Click a chip to cycle: Must have → OK to have → remove.
+              Click a chip to cycle: Should have → OK to have → remove.
             </p>
 
             <BuildSection
@@ -439,7 +395,7 @@ export function HeroBuilds({
                       key={core.id}
                       priority={draft.corePriorities[core.id]}
                       onClick={() => cyclePriority("coreIds", core.id)}
-                      title={core.description}
+                      popover={<CoreDetails core={core} />}
                     >
                       {core.name}
                     </Chip>
@@ -512,188 +468,5 @@ export function HeroBuilds({
           </div>
         ))}
     </div>
-  );
-}
-
-/** Top-level "Runes" / "Weapons" / "Cores" heading for a build's contents. */
-function BuildSection({
-  title,
-  children,
-  onReset,
-  resetDisabled,
-}: {
-  title: string;
-  children: React.ReactNode;
-  onReset?: () => void;
-  resetDisabled?: boolean;
-}) {
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="border-primary bg-primary/10 text-foreground flex items-center justify-between gap-2 rounded-r-md border-l-4 px-3 py-1.5">
-        <h4 className="text-base font-bold">{title}</h4>
-        {onReset && (
-          <ResetButton
-            group={title}
-            onClick={onReset}
-            disabled={resetDisabled}
-          />
-        )}
-      </div>
-      <div className="flex flex-col gap-2">{children}</div>
-    </div>
-  );
-}
-
-function AttributeGroup({
-  title,
-  children,
-  onReset,
-  resetDisabled,
-}: {
-  title: string;
-  children: React.ReactNode;
-  onReset?: () => void;
-  resetDisabled?: boolean;
-}) {
-  return (
-    <div className="flex flex-col gap-1.5">
-      <div className="flex items-center justify-between gap-2">
-        <span className="text-primary text-xs font-medium tracking-wide uppercase">
-          {title}
-        </span>
-        {onReset && (
-          <ResetButton
-            group={`${title} runes`}
-            onClick={onReset}
-            disabled={resetDisabled}
-          />
-        )}
-      </div>
-      <div className="flex flex-wrap gap-1.5">{children}</div>
-    </div>
-  );
-}
-
-function ResetButton({
-  group,
-  onClick,
-  disabled,
-}: {
-  group: string;
-  onClick: () => void;
-  disabled?: boolean;
-}) {
-  return (
-    <Button
-      type="button"
-      variant="ghost"
-      size="xs"
-      onClick={onClick}
-      disabled={disabled}
-      aria-label={`Reset ${group}`}
-      title={`Clear ${group.toLowerCase()} selections`}
-      className="text-muted-foreground"
-    >
-      <RotateCcw aria-hidden data-icon="inline-start" />
-      Reset
-    </Button>
-  );
-}
-
-const PRIORITY_STYLES: Record<BuildPriority, string> = {
-  must: "border-amber-500/45 bg-amber-500/10",
-  optional: "border-sky-500/40 bg-sky-500/10",
-};
-
-function PriorityMarker({ priority }: { priority: BuildPriority }) {
-  return (
-    <span
-      aria-hidden
-      className={cn(
-        "inline-block size-2 shrink-0",
-        priority === "must" &&
-          "rotate-45 rounded-[1px] bg-amber-600 dark:bg-amber-400",
-        priority === "optional" && "rounded-full bg-sky-600 dark:bg-sky-400",
-      )}
-    />
-  );
-}
-
-function PriorityLegend() {
-  return (
-    <ul
-      aria-label="Attribute priority"
-      className="text-muted-foreground flex flex-wrap gap-x-4 gap-y-2 text-xs"
-    >
-      {BUILD_PRIORITIES.map((priority) => (
-        <li key={priority} className="flex items-center gap-2">
-          <PriorityMarker priority={priority} />
-          {BUILD_PRIORITY_LABELS[priority]}
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-/** Colors and marker shapes convey tiers; accessible names also spell them out. */
-function Chip({
-  children,
-  priority,
-  onClick,
-  title,
-}: {
-  children: string;
-  priority?: BuildPriority;
-  onClick?: () => void;
-  title?: string;
-}) {
-  const base =
-    "inline-flex min-h-7 max-w-full items-center gap-2 rounded-md border px-2 py-1 text-left text-xs leading-4 font-medium";
-  const label = priority ? BUILD_PRIORITY_LABELS[priority] : "Not selected";
-  const next = nextBuildPriority(priority);
-  const action = next ? `Set to ${BUILD_PRIORITY_LABELS[next]}` : "Remove";
-  const description = [`${children} — ${label}`, title, onClick ? action : null]
-    .filter(Boolean)
-    .join("\n");
-  const content = (
-    <>
-      {priority ? (
-        <PriorityMarker priority={priority} />
-      ) : (
-        <Plus className="size-3 shrink-0" aria-hidden />
-      )}
-      <span className="min-w-0 break-words">{children}</span>
-    </>
-  );
-  if (!onClick) {
-    return (
-      <span
-        className={cn(base, priority && PRIORITY_STYLES[priority])}
-        title={description}
-        data-priority={priority}
-      >
-        {content}
-        <span className="sr-only">, {label}</span>
-      </span>
-    );
-  }
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={priority !== undefined}
-      aria-label={`${children}: ${label}. ${action}`}
-      title={description}
-      data-priority={priority}
-      className={cn(
-        base,
-        "focus-visible:ring-ring/50 transition-colors focus-visible:ring-3 focus-visible:outline-none",
-        priority
-          ? PRIORITY_STYLES[priority]
-          : "hover:border-primary/60 text-muted-foreground border-dashed bg-transparent",
-      )}
-    >
-      {content}
-    </button>
   );
 }

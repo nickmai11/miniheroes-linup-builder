@@ -12,6 +12,14 @@ heroes with an entry in `heroDetailSeeds`. Partly recorded heroes remain visible
 adding a detail entry automatically makes a hero eligible for these lists.
 Saved lineup slots and direct hero lookups retain the full roster.
 
+Build names open a stats popover on hover or tap, using the same rune/weapon/core
+layout and priority markers as the saved build. Core names and chips open a
+popover showing the core's recorded bonus and linked talent (name, kind, unlock
+stars, icon, and description). This applies to saved builds, the build editor,
+and core bonuses beneath talents; use recorded `skillId` links, never name guesses.
+The lineup editor can assign a hero one of its own saved builds and uses these
+same previews without expanding the hero card.
+
 In this order, top to bottom of the right column (portrait + "Start a lineup"
 button in the left column):
 
@@ -23,7 +31,7 @@ button in the left column):
 | **Awakening skills** | I (18★) and III (22★): stage, unlock stars, skill name and description, without icons; an unrecorded stage has an empty state | `HERO_AWAKENING_STAGES` and `heroDetailSeeds[slug].awakeningSkills` in `src/data/hero-details.ts` |
 | **Artifacts**  | artifact image + name; one row per quality tier (purple, gold, red, rainbow) with the diamond, the talent it modifies or the artifact's own skill, and the description                                                                           | `heroes.artifactName/IconUrl`, `hero_artifact_bonuses`  |
 | **Divinities** | the hero's mythic (red) divinities as equal-width badge cards, each linking to `/divinities/<slug>` (the heroes that share it)                                                                                                                   | `hero_divinities` → `divinities`                        |
-| **Builds**     | the owner's builds for the hero: name, notes, chosen rune attributes grouped by rune type, weapon attributes, and hero cores, each with a Must have / OK to have tier; editable in place (new / edit / delete) | `hero_builds`, `hero_build_runes`, `hero_build_weapons`, `hero_build_cores` |
+| **Builds**     | the owner's builds for the hero: name, notes, chosen rune attributes grouped by rune type, weapon attributes, and hero cores, each with a Should have / OK to have tier; editable in place (new / edit / delete) | `hero_builds`, `hero_build_runes`, `hero_build_weapons`, `hero_build_cores` |
 | Lineups        | saved lineups that use the hero                                                                                                                                                                                                                  | `lineup_heroes`                                         |
 
 Awakening I and III are recorded for **Sea Captain**, **Nezha**, **Shadow Fiend**,
@@ -57,13 +65,14 @@ and keeps the results in a scrollable panel. Select a build, then choose **Impor
 build** to copy its name, notes, attribute priorities, and matching core priorities.
 Searching or changing pages clears the selection; Cancel or Escape closes the picker.
 
-Build attributes and cores use two priority tiers: **Must have** (gold diamond)
-and **OK to have** (the former Should have blue dot and chip tint). A shared legend explains
+Build attributes and cores use two priority tiers: **Should have** (gold diamond)
+and **OK to have** (blue dot and chip tint). A shared legend explains
 the markers; accessible names and tooltips also spell out the tier. In the editor,
 clicking a chip cycles through those tiers and then removes it. Saved selections
 are grouped by tier within each rune type, Weapons, and Cores, preserving pick
-order within a tier. Previous **Should have** selections become **OK to have**,
-which is also the default when no priority is supplied.
+order within a tier. The stored `must` value displays as **Should have**;
+the former middle tier remains **OK to have**, which is also the default when no
+priority is supplied.
 
 The build editor has a **Reset** button for Runes, Weapons, Cores, and each rune
 type. Reset clears only that group's selections and priority assignments in the
@@ -237,9 +246,10 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
   recorded, including **Crystal Staff** for **Death Pulse** from the 9.31.17 AM
   capture (DMG and Heal +30% of Attack). Awakening I and the full Luminous Visor
   core are also recorded.
-- Shadow Fiend: the full Soul Mask ability popup is missing, its red description
-  is cut off after "upon entering", the rainbow ability is unrecorded, and only
-  three core panels are visible. The rest of the supplied hero details are recorded.
+- Shadow Fiend: the full Soul Mask ability popup and rainbow ability are still
+  missing. The follow-up `gameplay/talents/image copy.png` completes the red bonus
+  and fourth core, **Crystal Pendant** for **Destructive Gloom** (6% DMG Reduction
+  for 10s after each cast; 100% chance to purge all negative effects from self).
 - Awakening II and IV: class-wide skills are not displayed yet; Support IV is
   recorded in the game reference. Mage Spell Barrier / Psychic Surge appear only
   in the unverified MR-UK excerpt and need in-game confirmation; the other

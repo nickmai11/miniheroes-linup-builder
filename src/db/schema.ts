@@ -23,6 +23,27 @@ export const notes = pgTable("notes", {
 export type Note = typeof notes.$inferSelect;
 export type NewNote = typeof notes.$inferInsert;
 
+export const invitationCodes = pgTable("invitation_codes", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  codeHash: text("code_hash").notNull().unique(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  usedAt: timestamp("used_at", { withTimezone: true }),
+});
+
+export const registeredDevices = pgTable("registered_devices", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  tokenHash: text("token_hash").notNull().unique(),
+  invitationId: integer("invitation_id")
+    .notNull()
+    .unique()
+    .references(() => invitationCodes.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
 // The game has exactly four hero classes.
 export const HERO_ROLES = ["warrior", "marksman", "mage", "support"] as const;
 export type HeroRole = (typeof HERO_ROLES)[number];
@@ -380,11 +401,52 @@ export const lineupHeroes = pgTable(
       .references(() => heroes.id, { onDelete: "cascade" }),
     // 0-based slot index within the lineup.
     position: integer("position").notNull(),
+    buildId: integer("build_id").references(() => heroBuilds.id, {
+      onDelete: "set null",
+    }),
   },
   (t) => [
     unique().on(t.lineupId, t.position),
     index("lineup_heroes_hero_id_idx").on(t.heroId),
+    index("lineup_heroes_build_id_idx").on(t.buildId),
   ],
 );
 
 export type LineupHero = typeof lineupHeroes.$inferSelect;
+
+/** Catalog assignments belong to a hero in one lineup, not the global hero. */
+export const lineupHeroPets = pgTable(
+  "lineup_hero_pets",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    lineupHeroId: integer("lineup_hero_id")
+      .notNull()
+      .references(() => lineupHeroes.id, { onDelete: "cascade" }),
+    petId: integer("pet_id")
+      .notNull()
+      .references(() => pets.id, { onDelete: "cascade" }),
+    sortOrder: integer("sort_order").notNull().default(0),
+  },
+  (t) => [
+    unique().on(t.lineupHeroId, t.petId),
+    index("lineup_hero_pets_pet_id_idx").on(t.petId),
+  ],
+);
+
+export const lineupHeroRelics = pgTable(
+  "lineup_hero_relics",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    lineupHeroId: integer("lineup_hero_id")
+      .notNull()
+      .references(() => lineupHeroes.id, { onDelete: "cascade" }),
+    relicId: integer("relic_id")
+      .notNull()
+      .references(() => relics.id, { onDelete: "cascade" }),
+    sortOrder: integer("sort_order").notNull().default(0),
+  },
+  (t) => [
+    unique().on(t.lineupHeroId, t.relicId),
+    index("lineup_hero_relics_relic_id_idx").on(t.relicId),
+  ],
+);

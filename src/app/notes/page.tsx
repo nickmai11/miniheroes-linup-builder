@@ -1,3 +1,4 @@
+import { requireAppAccess } from "@/lib/app-access";
 import { desc } from "drizzle-orm";
 import { db, schema } from "@/db";
 import { canEditLocally } from "@/lib/local-editing";
@@ -7,6 +8,7 @@ import { NoteForm } from "./note-form";
 export const dynamic = "force-dynamic";
 
 export default async function NotesPage() {
+  await requireAppAccess();
   const canEdit = await canEditLocally();
   const rows = await db
     .select()

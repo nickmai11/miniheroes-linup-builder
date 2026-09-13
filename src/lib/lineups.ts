@@ -1,27 +1,90 @@
 import { cache } from "react";
 import { asc, desc, eq, inArray } from "drizzle-orm";
 import { db, schema } from "@/db";
-import type { Hero, Lineup } from "@/db/schema";
+import type { Hero, Lineup, Pet, Relic } from "@/db/schema";
+import type { HeroBuild } from "@/lib/build-types";
+import { getBuildsByIds } from "@/lib/builds";
 import {
   divinitiesByHeroIds,
   syncSeededHeroDetails,
   type HeroWithDivinities,
 } from "./heroes";
 
+export type LineupHeroWithAssignments = HeroWithDivinities & {
+  pets: Pet[];
+  relics: Relic[];
+  build: HeroBuild | null;
+};
+
 export type LineupWithHeroes = Lineup & {
   /** Slot index -> hero (missing slots are null). */
-  slots: (HeroWithDivinities | null)[];
+  slots: (LineupHeroWithAssignments | null)[];
 };
 
 async function assemble(
   lineupRows: Lineup[],
-  slotRows: { lineupId: number; position: number; hero: Hero }[],
+  slotRows: {
+    id: number;
+    lineupId: number;
+    position: number;
+    hero: Hero;
+    buildId: number | null;
+  }[],
 ): Promise<LineupWithHeroes[]> {
-  const byHero = await divinitiesByHeroIds([
-    ...new Set(slotRows.map((s) => s.hero.id)),
+  const slotIds = slotRows.map((slot) => slot.id);
+  const [byHero, petRows, relicRows, builds] = await Promise.all([
+    divinitiesByHeroIds([...new Set(slotRows.map((s) => s.hero.id))]),
+    slotIds.length
+      ? db
+          .select({
+            slotId: schema.lineupHeroPets.lineupHeroId,
+            pet: schema.pets,
+          })
+          .from(schema.lineupHeroPets)
+          .innerJoin(
+            schema.pets,
+            eq(schema.lineupHeroPets.petId, schema.pets.id),
+          )
+          .where(inArray(schema.lineupHeroPets.lineupHeroId, slotIds))
+          .orderBy(asc(schema.lineupHeroPets.sortOrder))
+      : [],
+    slotIds.length
+      ? db
+          .select({
+            slotId: schema.lineupHeroRelics.lineupHeroId,
+            relic: schema.relics,
+          })
+          .from(schema.lineupHeroRelics)
+          .innerJoin(
+            schema.relics,
+            eq(schema.lineupHeroRelics.relicId, schema.relics.id),
+          )
+          .where(inArray(schema.lineupHeroRelics.lineupHeroId, slotIds))
+          .orderBy(asc(schema.lineupHeroRelics.sortOrder))
+      : [],
+    getBuildsByIds([
+      ...new Set(
+        slotRows.flatMap((slot) =>
+          slot.buildId === null ? [] : [slot.buildId],
+        ),
+      ),
+    ]),
   ]);
+  const buildsById = new Map(builds.map((build) => [build.id, build]));
+  const petsBySlot = new Map<number, Pet[]>();
+  const relicsBySlot = new Map<number, Relic[]>();
+  for (const { slotId, pet } of petRows) {
+    const pets = petsBySlot.get(slotId) ?? [];
+    pets.push(pet);
+    petsBySlot.set(slotId, pets);
+  }
+  for (const { slotId, relic } of relicRows) {
+    const relics = relicsBySlot.get(slotId) ?? [];
+    relics.push(relic);
+    relicsBySlot.set(slotId, relics);
+  }
   return lineupRows.map((l) => {
-    const slots: (HeroWithDivinities | null)[] = Array.from(
+    const slots: (LineupHeroWithAssignments | null)[] = Array.from(
       { length: schema.LINEUP_SIZE },
       () => null,
     );
@@ -30,6 +93,13 @@ async function assemble(
         slots[s.position] = {
           ...s.hero,
           divinities: byHero.get(s.hero.id) ?? [],
+          pets: petsBySlot.get(s.id) ?? [],
+          relics: relicsBySlot.get(s.id) ?? [],
+          build:
+            s.buildId !== null &&
+            buildsById.get(s.buildId)?.heroId === s.hero.id
+              ? buildsById.get(s.buildId)!
+              : null,
         };
       }
     }
@@ -41,6 +111,8 @@ async function loadSlots(lineupIds: number[]) {
   if (lineupIds.length === 0) return [];
   return db
     .select({
+      id: schema.lineupHeroes.id,
+      buildId: schema.lineupHeroes.buildId,
       lineupId: schema.lineupHeroes.lineupId,
       position: schema.lineupHeroes.position,
       hero: schema.heroes,

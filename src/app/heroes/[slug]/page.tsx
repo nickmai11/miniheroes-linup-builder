@@ -1,3 +1,4 @@
+import { requireAppAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -16,6 +17,8 @@ import { canEditLocally } from "@/lib/local-editing";
 import { getAllRuneAttributes } from "@/lib/runes";
 import { getAllWeaponAttributes } from "@/lib/weapons";
 import { HeroBuilds } from "./hero-builds";
+import { InfoPopover } from "@/components/info-popover";
+import { CoreDetails } from "@/components/core-popover";
 import {
   ARTIFACT_TIER_LABELS,
   ROLE_LABELS,
@@ -27,12 +30,14 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata(
   props: PageProps<"/heroes/[slug]">,
 ): Promise<Metadata> {
+  await requireAppAccess();
   const { slug } = await props.params;
   const hero = await getHeroDetail(slug);
   return { title: hero?.name ?? "Hero" };
 }
 
 export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
+  await requireAppAccess();
   const { slug } = await props.params;
   const hero = await getHeroDetail(slug);
   if (!hero) notFound();
@@ -174,9 +179,20 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
                               className="mt-0.5 size-5.5 shrink-0"
                             />
                             <span>
-                              <span className="font-medium">
-                                {core.name} Core:{" "}
-                              </span>
+                              <InfoPopover
+                                label={`${core.name} skill`}
+                                trigger={
+                                  <button
+                                    type="button"
+                                    className="font-medium underline decoration-dotted underline-offset-4"
+                                  >
+                                    {core.name} Core
+                                  </button>
+                                }
+                              >
+                                <CoreDetails core={{ ...core, skill }} />
+                              </InfoPopover>
+                              {": "}
                               <span className="text-muted-foreground">
                                 {core.description}
                               </span>
@@ -326,7 +342,17 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
                 builds={builds}
                 runeAttributes={runeAttributes}
                 weaponAttributes={weaponAttributes}
-                cores={canEdit ? hero.cores : []}
+                cores={
+                  canEdit
+                    ? hero.cores.map((core) => ({
+                        ...core,
+                        skill:
+                          hero.skills.find(
+                            (skill) => skill.id === core.skillId,
+                          ) ?? null,
+                      }))
+                    : []
+                }
               />
             </CardContent>
           </Card>

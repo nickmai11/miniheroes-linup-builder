@@ -1,0 +1,288 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import postgres from "postgres";
+import { drizzle } from "drizzle-orm/postgres-js";
+import { eq } from "drizzle-orm";
+import { loadTypeScript } from "./load-typescript.mjs";
+
+// Opt-in, disposable local database only; never uses the app's DATABASE_URL.
+const testUrl = process.env.LINEUP_TEST_DATABASE_URL;
+
+test(
+  "lineup create/edit round trips, isolation, validation, rollback, and cascading deletes",
+  { skip: !testUrl },
+  async () => {
+    const target = new URL(testUrl);
+    assert.equal(target.hostname, "127.0.0.1");
+    assert.equal(target.port, "55440");
+    assert.equal(target.username, "lineup_test");
+    assert.equal(target.pathname, "/lineup_edit_test");
+    const sql = postgres(testUrl, { prepare: false, max: 4 });
+    const schema = loadTypeScript("src/db/schema.ts");
+    let failRelicInsert = false;
+    const db = drizzle(sql, {
+      schema,
+      logger: {
+        logQuery(query) {
+          if (
+            failRelicInsert &&
+            query.startsWith('insert into "lineup_hero_relics"')
+          )
+            throw new Error("Simulated assignment failure");
+        },
+      },
+    });
+    const invalidated = [];
+    const actions = loadTypeScript("src/app/lineups/actions.ts", {
+      "@/db": { db, schema },
+      "@/lib/app-access": { requireAppAccess: async () => {} },
+      "@/lib/local-editing": {
+        canEditLocally: async () => true,
+        requireLocalEditing: async () => {},
+      },
+      "next/cache": { revalidatePath: (...args) => invalidated.push(args) },
+      "next/navigation": {
+        redirect: (path) => {
+          throw Object.assign(new Error("redirect"), { path });
+        },
+      },
+    });
+    const { getLineup, getAllLineups } = loadTypeScript("src/lib/lineups.ts", {
+      "server-only": {},
+      "@/db": { db, schema },
+      "./heroes": {
+        syncSeededHeroDetails: async () => {},
+        divinitiesByHeroIds: async () => new Map(),
+      },
+    });
+    const savedIds = [];
+    const fixtures = [];
+    async function save(input) {
+      const result = await actions.saveLineup(input);
+      assert.equal(result.error, undefined);
+      assert.ok(Number.isInteger(result.id));
+      if (!savedIds.includes(result.id)) savedIds.push(result.id);
+      return result.id;
+    }
+    try {
+      const prefix = `lineup-test-${Date.now()}`;
+      for (const [table, count] of [
+        [schema.heroes, 3],
+        [schema.pets, 2],
+        [schema.relics, 2],
+      ]) {
+        const rows = await db
+          .insert(table)
+          .values(
+            Array.from({ length: count }, (_, i) =>
+              table === schema.heroes
+                ? {
+                    slug: `${prefix}-hero-${i}`,
+                    name: `Hero ${i}`,
+                    role: "warrior",
+                    rarity: "mythic",
+                  }
+                : {
+                    slug: `${prefix}-${i}`,
+                    name: `Item ${i}`,
+                    iconUrl: "/test.png",
+                  },
+            ),
+          )
+          .returning();
+        fixtures.push({ table, rows });
+      }
+      const [heroes, pets, relics] = fixtures.map((fixture) => fixture.rows);
+      const heroId = heroes[0].id;
+      const [build, otherBuild] = await db
+        .insert(schema.heroBuilds)
+        .values([
+          { heroId, name: "Own build", notes: "Build priorities" },
+          { heroId: heroes[1].id, name: "Another hero's build" },
+        ])
+        .returning();
+      const [skill] = await db
+        .insert(schema.heroSkills)
+        .values({
+          heroId,
+          kind: "battle",
+          name: "Linked talent",
+          description: "Recorded skill effect",
+          unlockStars: 2,
+        })
+        .returning();
+      const [core] = await db
+        .insert(schema.heroCores)
+        .values({
+          heroId,
+          skillId: skill.id,
+          name: "Linked core",
+          description: "Recorded core effect",
+        })
+        .returning();
+      await db
+        .insert(schema.heroBuildCores)
+        .values({ buildId: build.id, coreId: core.id, priority: "must" });
+      const selection = {
+        heroId,
+        buildId: build.id,
+        petIds: pets.map((pet) => pet.id).reverse(),
+        relicIds: relics.map((relic) => relic.id),
+      };
+      const original = {
+        name: "Original",
+        description: "Keep notes",
+        slots: [selection, null, { heroId: heroes[1].id }, null, null],
+      };
+      const id = await save(original);
+      const first = await getLineup(id);
+      assert.equal(first.name, "Original");
+      assert.equal(first.slots[1], null);
+      assert.deepEqual(
+        first.slots[0].pets.map((pet) => pet.id),
+        selection.petIds,
+      );
+      assert.deepEqual(
+        first.slots[0].relics.map((relic) => relic.id),
+        selection.relicIds,
+      );
+      assert.deepEqual(first.slots[2].pets, []);
+      assert.equal(first.slots[0].build.id, build.id);
+      assert.equal(first.slots[0].build.cores[0].skill.name, "Linked talent");
+      assert.equal(
+        first.slots[0].build.cores[0].skill.description,
+        "Recorded skill effect",
+      );
+      assert.equal(first.slots[0].build.cores[0].priority, "must");
+      assert.equal(first.slots[2].build, null);
+
+      const otherId = await save({
+        name: "Other lineup",
+        slots: [{ heroId }, null, null, null, null],
+      });
+      const edited = {
+        id,
+        name: "Edited",
+        description: "Changed notes",
+        slots: [
+          null,
+          { ...selection, petIds: [pets[0].id] },
+          null,
+          { heroId: heroes[2].id },
+          null,
+        ],
+      };
+      assert.equal(await save(edited), id);
+      const after = await getLineup(id);
+      assert.equal(after.createdAt.getTime(), first.createdAt.getTime());
+      assert.equal(after.name, "Edited");
+      assert.equal(after.description, "Changed notes");
+      assert.equal(after.slots[0], null);
+      assert.equal(after.slots[2], null);
+      assert.equal(
+        after.slots[1].build.id,
+        build.id,
+        "Build follows the hero into another slot",
+      );
+      assert.deepEqual(
+        after.slots[1].pets.map((pet) => pet.id),
+        [pets[0].id],
+      );
+      assert.deepEqual(
+        after.slots[1].relics.map((relic) => relic.id),
+        selection.relicIds,
+      );
+      assert.deepEqual((await getLineup(otherId)).slots[0].pets, []);
+      assert.equal((await getLineup(otherId)).slots[0].build, null);
+      assert.equal(
+        (await getAllLineups()).filter((lineup) => savedIds.includes(lineup.id))
+          .length,
+        2,
+      );
+      assert.ok(invalidated.some(([path]) => path === `/lineups/${id}/edit`));
+
+      for (const [field, value, message] of [
+        ["heroId", 2147483647, "heroes"],
+        ["petIds", [2147483647], "pets"],
+        ["relicIds", [2147483647], "relics"],
+        ["buildId", otherBuild.id, "belonging"],
+        ["buildId", 2147483647, "belonging"],
+      ]) {
+        const input = structuredClone(edited);
+        input.slots[1][field] = value;
+        assert.match(
+          (await actions.saveLineup(input)).error,
+          new RegExp(message),
+        );
+        assert.deepEqual(await getLineup(id), after);
+      }
+      assert.match(
+        (await actions.saveLineup({ ...edited, id: 2147483647 })).error,
+        /no longer exists/,
+      );
+
+      failRelicInsert = true;
+      await assert.rejects(
+        actions.saveLineup({ ...edited, name: "Must roll back" }),
+      );
+      assert.deepEqual(
+        await getLineup(id),
+        after,
+        "An assignment failure must roll back name, formation and all assignments",
+      );
+      failRelicInsert = false;
+      await save({ ...edited, slots: [null, { heroId }, null, null, null] });
+      assert.deepEqual((await getLineup(id)).slots[1].pets, []);
+      assert.deepEqual((await getLineup(id)).slots[1].relics, []);
+      assert.equal((await getLineup(id)).slots[1].build, null);
+      await save(edited);
+      await db
+        .update(schema.heroBuilds)
+        .set({ name: "Updated build" })
+        .where(eq(schema.heroBuilds.id, build.id));
+      assert.equal(
+        (await getLineup(id)).slots[1].build.name,
+        "Updated build",
+        "Previews reflect the current saved build",
+      );
+      await db
+        .delete(schema.heroBuilds)
+        .where(eq(schema.heroBuilds.id, build.id));
+      assert.equal(
+        (await getLineup(id)).slots[1].build,
+        null,
+        "Deleting a build clears the assignment without deleting the hero",
+      );
+      assert.equal((await getLineup(id)).slots[1].id, heroId);
+      const slotIds = (
+        await db
+          .select()
+          .from(schema.lineupHeroes)
+          .where(eq(schema.lineupHeroes.lineupId, id))
+      ).map((slot) => slot.id);
+      await assert.rejects(
+        actions.deleteLineup(id),
+        (error) => error.path === "/lineups",
+      );
+      assert.equal(await getLineup(id), undefined);
+      assert.ok(
+        (await db.select().from(schema.lineupHeroPets)).every(
+          (row) => !slotIds.includes(row.lineupHeroId),
+        ),
+      );
+      assert.ok(
+        (await db.select().from(schema.lineupHeroRelics)).every(
+          (row) => !slotIds.includes(row.lineupHeroId),
+        ),
+      );
+      assert.ok(await getLineup(otherId));
+    } finally {
+      for (const id of savedIds)
+        await db.delete(schema.lineups).where(eq(schema.lineups.id, id));
+      for (const { table, rows } of fixtures)
+        for (const row of rows)
+          await db.delete(table).where(eq(table.id, row.id));
+      await sql.end({ timeout: 1 });
+    }
+  },
+);

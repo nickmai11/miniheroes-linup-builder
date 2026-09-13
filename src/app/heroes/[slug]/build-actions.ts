@@ -1,5 +1,7 @@
 "use server";
 
+import { requireAppAccess } from "@/lib/app-access";
+
 import { and, asc, eq, inArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -28,6 +30,7 @@ export async function saveHeroBuild(
   input: BuildInput,
 ): Promise<BuildActionState> {
   if (!(await canEditLocally())) return { error: LOCAL_EDITING_ERROR };
+  await requireAppAccess();
   const parsed = buildSchema.safeParse(input);
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Invalid build" };
@@ -134,6 +137,7 @@ export async function saveHeroBuild(
   if (buildId === null) return { error: "Build not found" };
 
   revalidatePath(`/heroes/${hero.slug}`);
+  revalidatePath("/lineups", "layout");
   return { id: buildId };
 }
 
@@ -149,6 +153,7 @@ export async function importHeroBuild(
   input: ImportBuildInput,
 ): Promise<BuildActionState> {
   if (!(await canEditLocally())) return { error: LOCAL_EDITING_ERROR };
+  await requireAppAccess();
   const parsed = importSchema.safeParse(input);
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Invalid request" };
@@ -267,6 +272,7 @@ export async function importHeroBuild(
   });
 
   revalidatePath(`/heroes/${hero.slug}`);
+  revalidatePath("/lineups", "layout");
   return {
     id: newId,
     notice:
@@ -278,6 +284,7 @@ export async function importHeroBuild(
 
 export async function deleteHeroBuild(id: number): Promise<BuildActionState> {
   if (!(await canEditLocally())) return { error: LOCAL_EDITING_ERROR };
+  await requireAppAccess();
   const [deleted] = await db
     .delete(schema.heroBuilds)
     .where(eq(schema.heroBuilds.id, id))
@@ -288,5 +295,6 @@ export async function deleteHeroBuild(id: number): Promise<BuildActionState> {
     .from(schema.heroes)
     .where(eq(schema.heroes.id, deleted.heroId));
   if (hero) revalidatePath(`/heroes/${hero.slug}`);
+  revalidatePath("/lineups", "layout");
   return {};
 }

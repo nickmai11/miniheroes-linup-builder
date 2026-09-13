@@ -1,3 +1,4 @@
+import { requireAppAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Crown } from "lucide-react";
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
+  await requireAppAccess();
   const canEdit = await canEditLocally();
   return (
     <PageShell

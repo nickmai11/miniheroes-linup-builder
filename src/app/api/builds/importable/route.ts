@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { getOtherHeroBuilds } from "@/lib/builds";
+import { getRegisteredDevice } from "@/lib/app-access";
+import { INVITATION_REQUIRED } from "@/lib/invitation-policy";
 
 const searchSchema = z.object({
   heroId: z.coerce.number().int().positive().max(2147483647),
@@ -8,6 +10,8 @@ const searchSchema = z.object({
 });
 
 export async function GET(request: Request) {
+  if (!(await getRegisteredDevice()))
+    return Response.json({ error: INVITATION_REQUIRED }, { status: 401 });
   const parsed = searchSchema.safeParse(
     Object.fromEntries(new URL(request.url).searchParams),
   );

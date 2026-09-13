@@ -3,6 +3,8 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db, schema } from "@/db";
 import { canEditLocally, LOCAL_EDITING_ERROR } from "@/lib/local-editing";
+import { getRegisteredDevice } from "@/lib/app-access";
+import { INVITATION_REQUIRED } from "@/lib/invitation-policy";
 
 const createNoteSchema = z.object({
   title: z.string().trim().min(1).max(200),
@@ -10,6 +12,8 @@ const createNoteSchema = z.object({
 });
 
 export async function GET() {
+  if (!(await getRegisteredDevice()))
+    return NextResponse.json({ error: INVITATION_REQUIRED }, { status: 401 });
   const rows = await db
     .select()
     .from(schema.notes)
@@ -21,6 +25,8 @@ export async function POST(request: Request) {
   if (!(await canEditLocally())) {
     return NextResponse.json({ error: LOCAL_EDITING_ERROR }, { status: 403 });
   }
+  if (!(await getRegisteredDevice()))
+    return NextResponse.json({ error: INVITATION_REQUIRED }, { status: 401 });
   const parsed = createNoteSchema.safeParse(await request.json());
   if (!parsed.success) {
     return NextResponse.json(

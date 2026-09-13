@@ -1,5 +1,5 @@
 import "server-only";
-import { and, asc, eq, ilike, inArray, ne, or } from "drizzle-orm";
+import { and, asc, eq, ilike, inArray, ne, or, type SQL } from "drizzle-orm";
 import { db, schema } from "@/db";
 import type { HeroBuild, ImportableBuildPage } from "@/lib/build-types";
 
@@ -8,10 +8,26 @@ import type { HeroBuild, ImportableBuildPage } from "@/lib/build-types";
  * attributes and cores in pick order, with each selection's saved priority tier.
  */
 export async function getHeroBuilds(heroId: number): Promise<HeroBuild[]> {
+  return getBuildsForHeroes([heroId]);
+}
+
+export async function getBuildsForHeroes(
+  heroIds: number[],
+): Promise<HeroBuild[]> {
+  if (heroIds.length === 0) return [];
+  return loadBuilds(inArray(schema.heroBuilds.heroId, heroIds));
+}
+
+export async function getBuildsByIds(ids: number[]): Promise<HeroBuild[]> {
+  if (ids.length === 0) return [];
+  return loadBuilds(inArray(schema.heroBuilds.id, ids));
+}
+
+async function loadBuilds(where: SQL): Promise<HeroBuild[]> {
   const builds = await db
     .select()
     .from(schema.heroBuilds)
-    .where(eq(schema.heroBuilds.heroId, heroId))
+    .where(where)
     .orderBy(asc(schema.heroBuilds.createdAt), asc(schema.heroBuilds.id));
   if (builds.length === 0) return [];
   const ids = builds.map((b) => b.id);
@@ -56,6 +72,7 @@ export async function getHeroBuilds(heroId: number): Promise<HeroBuild[]> {
       .select({
         buildId: schema.heroBuildCores.buildId,
         core: schema.heroCores,
+        skill: schema.heroSkills,
         priority: schema.heroBuildCores.priority,
       })
       .from(schema.heroBuildCores)
@@ -63,12 +80,21 @@ export async function getHeroBuilds(heroId: number): Promise<HeroBuild[]> {
         schema.heroCores,
         eq(schema.heroBuildCores.coreId, schema.heroCores.id),
       )
-      .where(
+      .innerJoin(
+        schema.heroBuilds,
         and(
-          inArray(schema.heroBuildCores.buildId, ids),
-          eq(schema.heroCores.heroId, heroId),
+          eq(schema.heroBuildCores.buildId, schema.heroBuilds.id),
+          eq(schema.heroCores.heroId, schema.heroBuilds.heroId),
         ),
       )
+      .leftJoin(
+        schema.heroSkills,
+        and(
+          eq(schema.heroCores.skillId, schema.heroSkills.id),
+          eq(schema.heroCores.heroId, schema.heroSkills.heroId),
+        ),
+      )
+      .where(inArray(schema.heroBuildCores.buildId, ids))
       .orderBy(
         asc(schema.heroBuildCores.sortOrder),
         asc(schema.heroBuildCores.id),
@@ -85,7 +111,7 @@ export async function getHeroBuilds(heroId: number): Promise<HeroBuild[]> {
       .map((w) => ({ ...w.weapon, priority: w.priority })),
     cores: coreRows
       .filter((c) => c.buildId === b.id)
-      .map((c) => ({ ...c.core, priority: c.priority })),
+      .map((c) => ({ ...c.core, skill: c.skill, priority: c.priority })),
   }));
 }
 

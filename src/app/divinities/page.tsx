@@ -1,3 +1,4 @@
+import { requireAppAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { DivinityIcon } from "@/components/divinity-icon";
@@ -20,6 +21,7 @@ function groupByKind(list: Divinity[]): [string, Divinity[]][] {
 }
 
 export default async function DivinitiesPage() {
+  await requireAppAccess();
   const divinities = await getAllDivinities();
   const groups = groupByKind(divinities);
 

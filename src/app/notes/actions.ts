@@ -1,5 +1,7 @@
 "use server";
 
+import { requireAppAccess } from "@/lib/app-access";
+
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -22,6 +24,7 @@ export async function createNote(
   formData: FormData,
 ): Promise<ActionState> {
   if (!(await canEditLocally())) return { error: LOCAL_EDITING_ERROR };
+  await requireAppAccess();
   const parsed = createNoteSchema.safeParse({
     title: formData.get("title"),
     body: formData.get("body") ?? "",
@@ -36,6 +39,7 @@ export async function createNote(
 
 export async function deleteNote(id: number) {
   await requireLocalEditing();
+  await requireAppAccess();
   await db.delete(schema.notes).where(eq(schema.notes.id, id));
   revalidatePath("/notes");
 }

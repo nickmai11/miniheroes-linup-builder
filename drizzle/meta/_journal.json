@@ -127,6 +127,27 @@
       "when": 1789279462564,
       "tag": "0017_pets",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1789279887219,
+      "tag": "0018_lineup_hero_assignments",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1789280639615,
+      "tag": "0019_invitation_access",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1789286219063,
+      "tag": "0020_lineup_hero_builds",
+      "breakpoints": true
     }
   ]
 }

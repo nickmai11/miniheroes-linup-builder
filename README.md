@@ -64,8 +64,63 @@ visitors. Every write action and the notes POST API check access on the server;
 request headers cannot enable editing in production. The policy also rejects
 non-local hosts, remote forwarded addresses, proxy chains, and cross-origin
 requests in development. The lineup builder route is unavailable outside local
-development, and saved lineups and builds remain publicly readable. Automatic
+development, and registered browsers can read saved lineups and builds. Automatic
 synchronization of the versioned game reference data is unchanged.
 
 Run `pnpm test` (Node 22.6+), `pnpm typecheck`, and `pnpm lint` to check the policy
 and its protected entry points.
+
+## Invitation access
+
+Run `pnpm dev` and open **http://localhost:3000/invitations/new**. Click
+**Generate**, then **Copy code**. No input is required. Each randomly generated
+code can register one browser and does not expire before use. Optionally enter
+the deployed app URL to copy a link containing `?ic=CODE`.
+
+The generator page and its POST endpoint are available only in local development,
+using the same loopback policy as editing. They work before that browser is
+registered, so you can generate the first invitation. Production builds do not
+expose the generator, including when run on localhost.
+
+Saved lineup cards and detail pages have a **Share** menu. **Copy link** copies
+the lineup URL on the current domain without invitation codes or other query
+parameters. **Copy link with IC** generates a fresh, single-use code and copies
+the lineup URL with `?ic=CODE`; this option is available only on localhost.
+If clipboard access is blocked, the link is shown for manual copying, and
+retrying reuses the invitation that was already generated.
+
+Unregistered browsers see `/invite` and must enter a valid, unused code. Opening
+an app URL with `?ic=CODE` submits the code automatically through a POST, then
+replaces the address with the original page without `ic`. Other query parameters
+and fragments are preserved. Ordinary GET requests and link previews do not redeem
+codes. Registered browsers keep access even if a link contains an invalid or used
+code; they do not consume additional codes.
+
+Access is remembered by a random HTTP-only cookie for one year, renewed on visits,
+and verified against `registered_devices`. Clearing cookies, using a different
+browser profile, or switching domains requires a new code. Only hashes of codes
+and device tokens are stored. Redemption and registration are atomic, and retries
+from the same browser are safe. Deleting a registered-device row revokes its access.
+
+Apply `drizzle/0019_invitation_access.sql` with the normal migration workflow
+before running the updated app. It includes RLS policies and grants for
+`lineup_app`; follow the transaction-pooler fallback in
+[the database notes](docs/mini-heroes-magic-throne.md#how-the-app-models-it)
+if needed. Local generation and the deployed app must use the same `DATABASE_URL`.
+
+Pages, metadata, APIs (including health), actions, and original game images require
+registration. Framework CSS, JavaScript, fonts, and the favicon remain accessible
+to render the invitation screen. Images use their original authenticated URLs;
+the shared Next.js image optimizer is disabled to avoid caching private artwork.
+
+`pnpm test` includes invitation routing, input validation, and access checks.
+To exercise concurrent claims and transaction rollback, migrate a disposable local
+Postgres database and run:
+
+```bash
+INVITATION_TEST_DATABASE_URL=postgres://invitation_test@127.0.0.1:55441/invitation_access_test \
+  node --experimental-strip-types --test tests/invitations.integration.test.mjs
+```
+
+The integration test requires this isolated host, port, user, and database name;
+it never uses the app's `DATABASE_URL`.

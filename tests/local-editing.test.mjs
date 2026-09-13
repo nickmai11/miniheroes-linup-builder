@@ -146,6 +146,10 @@ function serverModules(nodeEnv, requestHeaders) {
     },
   );
   const overrides = {
+    "@/lib/app-access": {
+      requireAppAccess: async () => {},
+      getRegisteredDevice: async () => ({ id: 1 }),
+    },
     "@/lib/local-editing": access,
     "@/db": { db: databaseTripwire, schema: databaseTripwire },
     "@/db/schema": { LINEUP_SIZE: 5 },

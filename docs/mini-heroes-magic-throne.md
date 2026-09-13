@@ -145,7 +145,7 @@ once-per-battle revive) is not attached to any talent. Full descriptions are in
 | Soul Requiem | Ultimate Skill | Start | — | Swift Longbow: +60% Attack's Physical DMG |
 | Soul Burn | Battle Skill | 2★ | purple: each Basic ATK/Skill Cast adds 0.6% ATK, up to 15 stacks | Arrow Core: +0.5%(1.5%) ATK SPD |
 | Ghost Curse | Enhance | 5★ | — | Hunter's Cloak: duration +1(3)s, enemy Ranged DMG Boost −5%(15%) |
-| Destructive Gloom | Special Skill | 8★ | gold: 1s stun and 14% damage-to-HP conversion; red: immediately releases Destructive Gloom once upon entering… (text cut off) | not visible in supplied popup |
+| Destructive Gloom | Special Skill | 8★ | gold: 1s stun and 14% damage-to-HP conversion; red: free cast on entering battle, Shadow Physical DMG +90% | Crystal Pendant: after each cast, 6% DMG Reduction for 10s and 100% chance to purge all negative effects from self |
 | Haunted | Passive | 12★ | — | — |
 | Spiteful Curse | Enhance | 16★ | — | — |
 
@@ -153,8 +153,9 @@ The two red divinity icons on the Artifact tab match **Physical DMG Boost**
 (left) and **CRIT Damage** (right) in the owner's screenshot-derived catalog.
 Both gold and red artifact bonuses modify **Destructive Gloom**, so a talent may
 have more than one artifact bonus. The full Soul Mask ability popup is missing:
-its rainbow-tier ability is unrecorded and the red description is incomplete.
-Only three core panels are visible; do not invent a fourth. The popup names
+its rainbow-tier ability is unrecorded. The scrolled follow-up
+`gameplay/talents/image copy.png` completes the red bonus and fourth core,
+**Crystal Pendant**, linked to **Destructive Gloom**. The popup names
 **Arrow Core·Core**; removing only the final UI suffix gives **Arrow Core**.
 Full visible descriptions are transcribed in `src/data/hero-details.ts`.
 
@@ -430,13 +431,15 @@ the owner's screenshots and statements override them.
 
 The pet catalog records **only each pet's name and icon**. Icons come from the
 owner's `gameplay/pets/` screenshots. Pet stats, skills, companion bonuses,
-levels, and equipped heroes are outside the requested scope.
+and levels are outside the requested scope. Pets can be assigned to individual
+heroes within a lineup; each hero can have multiple pet selections.
 
 ### Relics (owner-defined, 2026-09-13)
 
 The relic catalog records **only each relic's name and icon**, as requested by
 the owner. Names and icons come from `gameplay/relics/`; enhancement levels,
-attributes, star effects and equipped heroes are not part of this catalog.
+attributes and star effects are not part of this catalog. Relics can be assigned
+to individual heroes within a lineup, with multiple selections per hero.
 
 The eight supplied Relic Archive popups identify **Night Twinblades**, **Charge
 Shield**, **Spiked Armor**, **Soulcalm Gem**, **Boots of Haste**, **Silverblade**,
@@ -455,6 +458,19 @@ The app labels slots plainly _Slot 1–5_ until the owner describes the real for
 Hero cards in saved lineup lists, lineup detail pages, and the lineup builder
 (both the hero picker and selected slots) must not display divinities
 (owner, 2026-09-13).
+
+Saved lineups are editable, including their name, notes, heroes, and each hero's
+pet/relic assignments (owner, 2026-09-13). A hero can be assigned one or more pets
+and one or more relics within that lineup. Assignment controls and selected icons
+belong inside the hero card, using the same icon-and-name presentation as
+divinities. Assignments are specific to a lineup, not a hero's global catalog data.
+Pet/relic pickers use floating multi-select dropdowns with a fixed-height selected
+icon preview, so opening the options or changing selections does not shift the
+surrounding hero cards (owner, 2026-09-13).
+Each lineup hero may also be assigned one of that hero's saved builds. Hovering
+over a build shows its recorded rune/weapon attributes, priorities, and cores in
+a popover; hovering over a core shows its linked skill in a popover (owner,
+2026-09-13). Build selection uses a floating dropdown without shifting cards.
 
 ### Progression systems (web, unverified)
 
@@ -561,13 +577,24 @@ is said. These override anything marked (web).
 
 - 2026-09-13 — The owner requested relics in the database: **"just icons and names"**. Use the supplied `gameplay/relics/` screenshots for both.
 
+- 2026-09-13 — The owner requested editable lineups, with each hero assignable to **one or more pets and relics**. Pet/relic assignment controls belong **inside the hero card, like divinities**.
+
+- 2026-09-13 — The owner dislikes the UI jumping when pet/relic pickers expand and requested **select dropdowns** instead.
+
+- 2026-09-13 — Each lineup hero should be assignable to **one of its own saved builds**. Hovering over a build should show its stats in a popover; hovering over a core should show its linked skill in a popover.
+
+- 2026-09-13 — The owner renamed the build priority **Must have** to **Should have**. This is a wording change: the two tiers are now **Should have** and **OK to have**, with existing selections and stored priority values preserved.
+
+- 2026-09-13 — The owner flagged Shadow Fiend's missing fourth core. The recent `gameplay/talents/image copy.png` confirms **Crystal Pendant·Core** for **Destructive Gloom**: after each cast, gain **6% DMG Reduction for 10s**, with a **100% chance to purge all negative effects from self**. The same screenshot completes the red artifact bonus: immediately cast Destructive Gloom on entering battle, and increase Physical DMG from Shadow by **90%**. All four cores are now recorded; the Soul Mask rainbow ability remains unrecorded.
+
 ## How the app models it
 
-- Build attributes have two owner-assigned priority tiers: **Must have** and
+- Build attributes have two owner-assigned priority tiers: **Should have** and
   **OK to have**, shown as a gold diamond and blue dot, with a shared legend.
   Rune attributes, weapon attributes, and cores each store a `priority`
-  (`build_priority`: must | optional). Previous Should have selections become
-  OK to have, which is also the default. Editing cycles through the tiers and then
+  (`build_priority`: must | optional); `must` displays as **Should have**.
+  Former middle-tier selections remain OK to have, which is also the default.
+  Editing cycles through the tiers and then
   removes the selection; imports preserve tiers. Pick order is retained within
   each tier. In the editor, Reset clears the draft selections and priorities for
   Runes, Weapons, Cores, or one rune type; the owner saves the build to apply it.
@@ -585,7 +612,7 @@ is said. These override anything marked (web).
 - `pets` table: `slug`, `name`, `iconUrl` (`/pets/<slug>.png`), plus the standard
   ID and creation timestamp. The 20 names/icons in `src/data/pets.ts` are seeded
   by `ensurePetsSeeded()` in `src/lib/pets.ts`; `getAllPets()` reads them by name.
-  No pet skills, stats, bonuses, or hero/lineup links are stored.
+  No pet skills, stats, or bonuses are stored; lineup assignments use separate links.
 - `divinities` table: `slug`, `name` (stat without "All"), `kind` (display category,
   with owner corrections taking precedence over popup titles), `iconUrl`
   (`/divinities/<slug>.png`). Seeded from `src/data/divinities.ts`
@@ -598,8 +625,8 @@ is said. These override anything marked (web).
   creation timestamp. Regenerate icons, `src/data/relics.ts`, and
   `scripts/upsert-relics.sql` with `python3 scripts/slice-relics.py`; apply the SQL
   to import the catalog while preserving existing IDs. `getAllRelics()` in
-  `src/lib/relics.ts` reads the catalog without writes. Relics have no page or
-  hero/build links yet.
+  `src/lib/relics.ts` reads the catalog without writes. Lineup assignments use
+  separate links; relics have no standalone page or hero-build links.
 - `rune_attributes` table: `runeType` (attack | effect | energy | survival), `slug`,
   `name`, `maxValue` + `isPercent` (e.g. 7 / true = "7.0%", 50 / false = 50 energy),
   `description`, `analysis` (owner's verdict), `sortOrder` (sheet row order). Seeded
@@ -630,6 +657,13 @@ is said. These override anything marked (web).
   with X" opens the builder with that hero pre-placed in slot 1.
 - `lineups` + `lineup_heroes`: a named lineup with a free-text write-up and up to 5
   `(position, hero)` rows, position 0–4. Deleting a hero or lineup cascades.
+  Each slot also has an optional `buildId` referencing one of that hero's saved
+  builds. Server validation rejects another hero's build; deleting the build
+  clears this reference while retaining the hero and its pet/relic assignments.
+  Build previews show the current saved build, including subsequent edits.
+- `lineup_hero_pets` + `lineup_hero_relics`: ordered, unique catalog selections
+  linked to a `lineup_heroes` row. Removing a lineup hero deletes its assignments.
+  Creating or editing a lineup saves the whole formation and assignments atomically.
 - `/divinities` — read-only list of all divinities, grouped by kind, icon + name.
 - `/divinities/[slug]` — one divinity: icon, name, kind, and the heroes whose mythic
   divinities include it (portrait grid linking to the hero pages). Divinity badges on
@@ -643,6 +677,12 @@ is said. These override anything marked (web).
 - `/lineups/new` — pick heroes with recorded details into slots, add name + notes,
   save. Existing saved lineups still show their complete recorded formation.
 - `/lineups`, `/lineups/[id]` — browse and view saved lineups.
+- `/lineups/[id]/edit` — edit a saved lineup, with pet/relic multi-select controls
+  inside each selected hero card. Editing preserves the lineup ID and share URL.
+  A fixed-height build dropdown offers that hero's own saved builds. Build names
+  open stats popovers on hover or tap; core chips open nested popovers with the
+  core effect and its linked skill's name, kind, unlock stars, icon, and description.
+  The same core previews are available on hero pages and in the build editor.
 - Database: Postgres on Supabase, project `kautapzssaoeanylhfoo` (ap-northeast-1),
   accessed directly through Drizzle + postgres.js as the least-privilege role
   `lineup_app`. RLS is enabled on every table with an allow-all policy for that role

@@ -1581,9 +1581,9 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
         {
           tier: "red",
           skill: "Destructive Gloom",
-          // The 8.54.25 screenshot cuts off here. Do not invent the missing text.
+          // Completed by the owner's scrolled gameplay/talents/image copy.png.
           description:
-            "Immediately releases Destructive Gloom once upon entering…",
+            "Immediately releases Destructive Gloom once upon entering battle. Physical DMG from Shadow increases by 90%.",
         },
       ],
     },
@@ -1653,6 +1653,13 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
         skill: "Ghost Curse",
         description:
           "Ghost Curse duration increased by 1 (3) s, and additionally reduces Enemies' Ranged DMG Boost by 5%(15%).",
+      },
+      {
+        // The scrolled gameplay/talents/image copy.png shows the full panel.
+        name: "Crystal Pendant",
+        skill: "Destructive Gloom",
+        description:
+          "After each cast of Destructive Gloom, gain 6% DMG Reduction for 10 s, with a 100% chance to purge all negative effects from yourself.",
       },
     ],
     divinities: ["physical-dmg-boost", "crit-damage"],
