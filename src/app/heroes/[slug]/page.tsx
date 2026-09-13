@@ -51,7 +51,13 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
 
       <div className="grid gap-8 md:grid-cols-[260px_1fr]">
         <div className="flex flex-col gap-4">
-          <HeroPortrait hero={hero} sizes="260px" priority />
+          <HeroPortrait
+            hero={hero}
+            divinities={hero.divinities}
+            divinitySize={56}
+            sizes="260px"
+            priority
+          />
           <Link
             href={`/lineups/new?hero=${hero.slug}`}
             className={buttonVariants({ variant: "outline" })}

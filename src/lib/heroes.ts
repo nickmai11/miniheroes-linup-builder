@@ -20,7 +20,7 @@ export { RARITY_LABELS, ROLE_LABELS } from "./hero-labels";
 const ROLE_ORDER: HeroRole[] = ["warrior", "marksman", "mage", "support"];
 const RARITY_ORDER: HeroRarity[] = ["mythic", "legend", "epic"];
 
-export function sortHeroes(list: Hero[]): Hero[] {
+export function sortHeroes<T extends Hero>(list: T[]): T[] {
   return [...list].sort(
     (a, b) =>
       ROLE_ORDER.indexOf(a.role) - ROLE_ORDER.indexOf(b.role) ||
@@ -37,13 +37,53 @@ export async function ensureHeroesSeeded() {
     .onConflictDoNothing({ target: schema.heroes.slug });
 }
 
-export async function getAllHeroes(): Promise<Hero[]> {
+export type HeroWithDivinities = Hero & {
+  /** Mythic divinities in slot order (bottom-left, bottom-right). */
+  divinities: Divinity[];
+};
+
+/**
+ * Sync every hero that has a detail seed, so lazily-populated tables like
+ * hero_divinities are filled regardless of which hero pages have been opened.
+ */
+export async function syncSeededHeroDetails() {
   await ensureHeroesSeeded();
-  const rows = await db
-    .select()
-    .from(schema.heroes)
-    .orderBy(asc(schema.heroes.name));
-  return sortHeroes(rows);
+  if (Object.keys(heroDetailSeeds).length === 0) return;
+  const heroes = await db
+    .select({ id: schema.heroes.id, slug: schema.heroes.slug })
+    .from(schema.heroes);
+  for (const hero of heroes) {
+    if (hero.slug in heroDetailSeeds) await syncHeroDetail(hero);
+  }
+}
+
+export async function getAllHeroes(): Promise<HeroWithDivinities[]> {
+  await syncSeededHeroDetails();
+  const [rows, divinityRows] = await Promise.all([
+    db.select().from(schema.heroes).orderBy(asc(schema.heroes.name)),
+    db
+      .select({
+        heroId: schema.heroDivinities.heroId,
+        divinity: schema.divinities,
+      })
+      .from(schema.heroDivinities)
+      .innerJoin(
+        schema.divinities,
+        eq(schema.heroDivinities.divinityId, schema.divinities.id),
+      )
+      .orderBy(asc(schema.heroDivinities.position)),
+  ]);
+  const byHero = new Map<number, Divinity[]>();
+  for (const { heroId, divinity } of divinityRows) {
+    const list = byHero.get(heroId);
+    if (list) list.push(divinity);
+    else byHero.set(heroId, [divinity]);
+  }
+  const withDivinities = rows.map((hero) => ({
+    ...hero,
+    divinities: byHero.get(hero.id) ?? [],
+  }));
+  return sortHeroes(withDivinities);
 }
 
 export async function getHeroesByIds(ids: number[]): Promise<Hero[]> {

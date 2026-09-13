@@ -1,6 +1,7 @@
 import Image from "next/image";
-import type { Hero } from "@/db/schema";
+import type { Divinity, Hero } from "@/db/schema";
 import { versioned } from "@/lib/asset-version";
+import { DivinityIcon } from "./divinity-icon";
 
 function initials(name: string) {
   return name
@@ -14,11 +15,16 @@ function initials(name: string) {
 /** Square portrait tile: real image when available, initials placeholder otherwise. */
 export function HeroPortrait({
   hero,
+  divinities,
+  divinitySize = 36,
   className = "",
   sizes = "96px",
   priority = false,
 }: {
   hero: Pick<Hero, "name" | "imageUrl" | "role" | "rarity">;
+  /** Mythic divinities in slot order; [0] overlays bottom-left, [1] bottom-right. */
+  divinities?: Pick<Divinity, "name" | "iconUrl">[];
+  divinitySize?: number;
   className?: string;
   sizes?: string;
   /** Eager-load above-the-fold portraits (first row of a grid). */
@@ -43,6 +49,26 @@ export function HeroPortrait({
           aria-label={hero.name}
         >
           {initials(hero.name)}
+        </div>
+      )}
+      {divinities && divinities.length > 0 && (
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between p-1.5">
+          {divinities[0] ? (
+            <DivinityIcon
+              divinity={divinities[0]}
+              size={divinitySize}
+              className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.55)]"
+            />
+          ) : (
+            <span />
+          )}
+          {divinities[1] && (
+            <DivinityIcon
+              divinity={divinities[1]}
+              size={divinitySize}
+              className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.55)]"
+            />
+          )}
         </div>
       )}
     </div>

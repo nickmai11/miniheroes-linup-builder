@@ -3,12 +3,12 @@
 import { Search } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import type { Hero } from "@/db/schema";
 import { HeroName, HeroPortrait } from "@/components/hero-portrait";
 import { RoleFilterGroup, type RoleFilter } from "@/components/role-filter";
 import { Input } from "@/components/ui/input";
+import type { HeroWithDivinities } from "@/lib/heroes";
 
-export function HeroPool({ heroes }: { heroes: Hero[] }) {
+export function HeroPool({ heroes }: { heroes: HeroWithDivinities[] }) {
   const [query, setQuery] = useState("");
   const [role, setRole] = useState<RoleFilter>("all");
 
@@ -49,8 +49,10 @@ export function HeroPool({ heroes }: { heroes: Hero[] }) {
               >
                 <HeroPortrait
                   hero={hero}
+                  divinities={hero.divinities}
                   sizes="(max-width: 640px) 50vw, 200px"
                   priority={i < 8}
+                  divinitySize={32}
                 />
                 <HeroName
                   hero={hero}
