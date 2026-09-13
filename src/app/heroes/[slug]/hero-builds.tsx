@@ -1,6 +1,6 @@
 "use client";
 
-import { Download, Pencil, Plus, Trash2 } from "lucide-react";
+import { Download, Pencil, Plus, RotateCcw, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -58,6 +58,13 @@ type Draft = {
   weaponPriorities: Record<number, BuildPriority>;
   corePriorities: Record<number, BuildPriority>;
 };
+
+const PRIORITY_FIELDS = {
+  runeIds: "runePriorities",
+  weaponIds: "weaponPriorities",
+  coreIds: "corePriorities",
+} as const;
+type SelectionKey = keyof typeof PRIORITY_FIELDS;
 
 function draftFrom(build?: HeroBuild): Draft {
   return {
@@ -133,14 +140,10 @@ export function HeroBuilds({
     setError(null);
   }
 
-  function cyclePriority(key: "runeIds" | "weaponIds" | "coreIds", id: number) {
+  function cyclePriority(key: SelectionKey, id: number) {
     setDraft((d) => {
       if (!d) return d;
-      const field = {
-        runeIds: "runePriorities",
-        weaponIds: "weaponPriorities",
-        coreIds: "corePriorities",
-      }[key] as "runePriorities" | "weaponPriorities" | "corePriorities";
+      const field = PRIORITY_FIELDS[key];
       const selected = d[key].includes(id);
       const next = nextBuildPriority(
         selected ? (d[field][id] ?? DEFAULT_BUILD_PRIORITY) : undefined,
@@ -154,6 +157,22 @@ export function HeroBuilds({
           : [...d[key], id]
         : d[key].filter((value) => value !== id);
       return { ...d, [key]: ids, [field]: priorities };
+    });
+  }
+
+  function resetSelections(key: SelectionKey, groupIds?: number[]) {
+    setError(null);
+    setDraft((d) => {
+      if (!d) return d;
+      const cleared = new Set(groupIds ?? d[key]);
+      const field = PRIORITY_FIELDS[key];
+      const priorities = { ...d[field] };
+      for (const id of cleared) delete priorities[id];
+      return {
+        ...d,
+        [key]: d[key].filter((id) => !cleared.has(id)),
+        [field]: priorities,
+      };
     });
   }
 
@@ -226,11 +245,11 @@ export function HeroBuilds({
         draft?.id === build.id ? null : (
           <article
             key={build.id}
-            className="bg-background flex flex-col gap-3 rounded-lg border p-3"
+            className="bg-background flex flex-col gap-6 rounded-lg border p-3"
           >
             <div className="flex items-start justify-between gap-3">
               <div className="flex min-w-0 flex-col gap-1">
-                <h3 className="font-medium">{build.name}</h3>
+                <h3 className="text-lg font-semibold">{build.name}</h3>
                 {build.notes && (
                   <p className="text-muted-foreground text-sm whitespace-pre-wrap">
                     {build.notes}
@@ -313,7 +332,7 @@ export function HeroBuilds({
       {canEdit &&
         (draft ? (
           <form
-            className="bg-background flex flex-col gap-4 rounded-lg border p-3"
+            className="bg-background flex flex-col gap-6 rounded-lg border p-3"
             onSubmit={(e) => {
               e.preventDefault();
               submit();
@@ -351,12 +370,31 @@ export function HeroBuilds({
               remove.
             </p>
 
-            <BuildSection title="Runes">
-              {RUNE_TYPES.map((type) => (
-                <AttributeGroup key={type} title={runeTypeShort(type)}>
-                  {runeAttributes
-                    .filter((r) => r.runeType === type)
-                    .map((r) => (
+            <BuildSection
+              title="Runes"
+              onReset={() => resetSelections("runeIds")}
+              resetDisabled={pending || draft.runeIds.length === 0}
+            >
+              {RUNE_TYPES.map((type) => {
+                const attributes = runeAttributes.filter(
+                  (r) => r.runeType === type,
+                );
+                return (
+                  <AttributeGroup
+                    key={type}
+                    title={runeTypeShort(type)}
+                    onReset={() =>
+                      resetSelections(
+                        "runeIds",
+                        attributes.map((r) => r.id),
+                      )
+                    }
+                    resetDisabled={
+                      pending ||
+                      !attributes.some((r) => draft.runeIds.includes(r.id))
+                    }
+                  >
+                    {attributes.map((r) => (
                       <Chip
                         key={r.id}
                         priority={draft.runePriorities[r.id]}
@@ -368,10 +406,15 @@ export function HeroBuilds({
                         {r.name}
                       </Chip>
                     ))}
-                </AttributeGroup>
-              ))}
+                  </AttributeGroup>
+                );
+              })}
             </BuildSection>
-            <BuildSection title="Weapons">
+            <BuildSection
+              title="Weapons"
+              onReset={() => resetSelections("weaponIds")}
+              resetDisabled={pending || draft.weaponIds.length === 0}
+            >
               <div className="flex flex-wrap gap-1.5">
                 {weaponAttributes.map((w) => (
                   <Chip
@@ -385,7 +428,11 @@ export function HeroBuilds({
               </div>
             </BuildSection>
 
-            <BuildSection title="Cores">
+            <BuildSection
+              title="Cores"
+              onReset={() => resetSelections("coreIds")}
+              resetDisabled={pending || draft.coreIds.length === 0}
+            >
               {cores.length > 0 ? (
                 <div className="flex flex-wrap gap-1.5">
                   {cores.map((core) => (
@@ -473,13 +520,26 @@ export function HeroBuilds({
 function BuildSection({
   title,
   children,
+  onReset,
+  resetDisabled,
 }: {
   title: string;
   children: React.ReactNode;
+  onReset?: () => void;
+  resetDisabled?: boolean;
 }) {
   return (
-    <div className="flex flex-col gap-2">
-      <span className="text-sm font-semibold">{title}</span>
+    <div className="flex flex-col gap-3">
+      <div className="border-primary bg-primary/10 text-foreground flex items-center justify-between gap-2 rounded-r-md border-l-4 px-3 py-1.5">
+        <h4 className="text-base font-bold">{title}</h4>
+        {onReset && (
+          <ResetButton
+            group={title}
+            onClick={onReset}
+            disabled={resetDisabled}
+          />
+        )}
+      </div>
       <div className="flex flex-col gap-2">{children}</div>
     </div>
   );
@@ -488,17 +548,56 @@ function BuildSection({
 function AttributeGroup({
   title,
   children,
+  onReset,
+  resetDisabled,
 }: {
   title: string;
   children: React.ReactNode;
+  onReset?: () => void;
+  resetDisabled?: boolean;
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <span className="text-primary text-xs font-medium tracking-wide uppercase">
-        {title}
-      </span>
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-primary text-xs font-medium tracking-wide uppercase">
+          {title}
+        </span>
+        {onReset && (
+          <ResetButton
+            group={`${title} runes`}
+            onClick={onReset}
+            disabled={resetDisabled}
+          />
+        )}
+      </div>
       <div className="flex flex-wrap gap-1.5">{children}</div>
     </div>
+  );
+}
+
+function ResetButton({
+  group,
+  onClick,
+  disabled,
+}: {
+  group: string;
+  onClick: () => void;
+  disabled?: boolean;
+}) {
+  return (
+    <Button
+      type="button"
+      variant="ghost"
+      size="xs"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={`Reset ${group}`}
+      title={`Clear ${group.toLowerCase()} selections`}
+      className="text-muted-foreground"
+    >
+      <RotateCcw aria-hidden data-icon="inline-start" />
+      Reset
+    </Button>
   );
 }
 

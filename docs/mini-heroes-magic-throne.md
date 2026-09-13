@@ -76,13 +76,15 @@ Hero Awaken screen; I and III for Sea Captain and Nezha were supplied in
 ### Talents, artifact and cores (game, 2026-09-12)
 
 **Talent tab.** Six talents: the **Ultimate Skill** in the centre and five in a
-ring. Kinds seen: Ultimate Skill, Special Skill, Battle Skill, Enhance, Passive.
+ring. Kinds seen: Ultimate Skill, Special Skill, Battle Skill, Enhance, Attribute,
+Passive. The ring position determines unlock stars, not kind: Holy Healer's 2★
+talent is Enhance; Silence and Gunslinger's 2★ talents are Special Skill.
 Each talent has a name and description; a progress bar ("Max" / "Currently full")
 tracks talent levels. Tapping a talent opens up to three panels:
 
 1. the talent itself (kind + description),
 2. **Artifact Bonus** — an extra effect on that talent, colour-coded by the
-   artifact quality that unlocks it (purple, gold, red diamond),
+   artifact quality that unlocks it (purple, gold, red, rainbow diamond),
 3. **`<Gear>·Core`** — a core bonus that further modifies the talent, e.g.
    "Cavalier Helm·Core: 「Water Blade」 additionally inflicts True DMG equal to
    18%(54%) of Attack". The four cores are Helm, Armor, Boots and the weapon
@@ -92,9 +94,12 @@ tracks talent levels. Tapping a talent opens up to three panels:
 **Artifact tab.** The hero's divine weapon: a named artifact with stars and
 ATK/DEF/HP (player-dependent, not stored), an "Ascension Bonus" line, and the six
 divinity badges around it. The artifact popup lists one ability per quality tier:
-purple / gold / red are the three talents' Artifact Bonuses, and a fourth
-rainbow tier may add a new skill (Sea Captain: **Ship Raid**) or further modify a
-talent (Thrall: **Thunder Strike**). The app stores all four in
+purple / gold / red / rainbow. Quality does not determine whether the ability
+modifies a talent or is standalone: Dark Knight's gold **Frost Dark Axe**,
+Gunslinger's gold **Full-out Shooting**, and Witch Dictator's red **Withering
+Fear** are standalone; rainbow may be standalone (Sea Captain: **Ship Raid**)
+or modify a talent (Thrall: **Thunder Strike**, Gunslinger: **Snipe**, Witch
+Dictator: **Frost Echo**). The app stores all four in
 `hero_artifact_bonuses`; only standalone abilities have no talent link.
 
 **Sea Captain** (Warrior · DPS · Eternal; artifact Siren Blade):
@@ -199,6 +204,63 @@ including the lowercase "s", when linking cores and bonuses. The screenshots say
 specifying an ATK basis; do not add one. Sources: the owner's 2026-09-13
 9.27.06–9.27.35 AM captures in `gameplay/talents/`.
 
+#### Nine-hero screenshot batch (game, 2026-09-13)
+
+All nine have six talents, four fully recorded cores, four artifact abilities,
+and hero-specific Awakening I/III. Existing Archive portraits are retained even
+when the gameplay capture uses a different skin. Sources below are AM captures
+in `gameplay/talents/`, including scrolled continuations and `AM 1` variants.
+
+| Hero / class | Artifact | Mythic divinities (left → right) | Source range |
+| --- | --- | --- | --- |
+| Jungle Envoy / Mage | Verdant Staff | Magic DMG Boost → Knockback Effect | 11.33.24–11.33.49; Pulse Nova 11.49.48 and 11.50.02 |
+| Radiant Paladin / Support | Sacred Book | Physical RES → Anti-Control Rate | 11.33.58–11.34.20 |
+| Silence / Support | Blood Knight | Support ATK → Magic DMG Boost | 11.34.28–11.34.46 |
+| Gunslinger / Marksman | Flame-red Robe | Ranged DMG Reduction → CRIT Damage | 11.34.51–11.35.15 |
+| Dark Knight / Warrior | Sorrow Frost | Receive Healing → DMG Reduction | 11.35.22–11.35.46 |
+| Arcane Saint / Support | Starshine Staff | DEF → HP | 11.35.50–11.36.14 |
+| Witch Dictator / Mage | Mana Potion | Magic DMG Boost → Magic RES | 11.36.20–11.36.41; I completed by 11.50.20 and 11.51.47 |
+| Silver Warrior / Warrior | Gunblade | ATK → Melee DMG Reduction | 11.36.52–11.37.22 |
+| Holy Healer / Support | Recover Staff | Support ATK → Melee DMG Boost | 11.37.31–11.37.50 |
+
+Talents below are in **0★ / 2★ / 5★ / 8★ / 12★ / 16★** order. Full effects and
+exact core-to-talent links are in `src/data/hero-details.ts`.
+
+- **Jungle Envoy:** Pulse Nova / Lightning Storm / Enhanced Pulse / Demonic Edict /
+  Jungle Warden / Power Surge. Cores: Wizard's Wand, Arcane Hat, Mage Robe, Spell
+  Tome. Pulse Nova deals 38% of ATK as magic DMG per second for 7s; Wizard's Wand
+  adds 30% Heavy Injury Effect. Its core capture shows no parenthesized value.
+- **Radiant Paladin:** Guardian of Light / Sanctity Hammer / Illumination /
+  Purifying Light / Sacred Incarnate / Divine Guardian. Cores: Crystal Staff,
+  Tome of Radiance, Luminous Visor, Resonance Pendant. Purifying Light is Passive;
+  Luminous Visor heals for 30%(100%) of Attack, not 30%(90%).
+- **Silence:** Silence Domain / Wisdom Blade / ATK Reduction / Magic Curse /
+  Arcane Enhanced / Energy Drain. Cores: Crystal Staff, Tome of Radiance,
+  Luminous Visor, Resonance Pendant. Silence Domain literally says "for 4" with
+  no duration unit; preserve it rather than inserting seconds.
+- **Gunslinger:** Snipe / Shotgun / Quick Snipe / Headshot / Aim / Enhance Snipe.
+  Cores: Swift Longbow, Arrow Core, Hunter's Cloak, Crystal Pendant. Gold
+  **Full-out Shooting** is standalone; rainbow modifies **Snipe**.
+- **Dark Knight:** Darklight Shield / Entangle / Charge / Gloomy Shield /
+  Dark Bloodline / Undead. Cores: Blade of Valor, Cavalier Helm, Brawler's Armor,
+  Brawler's Boots. Gold **Frost Dark Axe** and rainbow **Evil Aura** are standalone.
+- **Arcane Saint:** Golden Holy Bloom / Sage's Gift / Energy Penalty / Unified /
+  Vigorous / Guard Bloom. Cores: Crystal Staff, Tome of Radiance, Luminous Visor,
+  Resonance Pendant. Rainbow **Summon Beast** summons a Pangolin and Lark.
+- **Witch Dictator:** Frost Echo / Frigid Explosion / Ultimate Frost / Frost
+  Armor / ATK Amplification / Multifrost. Cores: Wizard's Wand, Arcane Hat, Mage
+  Robe, Spell Tome. Red **Withering Fear** is standalone; rainbow modifies Frost
+  Echo. Spell Tome's HP recovery increment is 0.3%(1%), exactly as shown.
+- **Silver Warrior:** Godslayer Strike / Dawn Slash / Mad Blade / Adrenaline /
+  Energy Armor / Annihilation Blade. Cores: Blade of Valor, Cavalier Helm,
+  Brawler's Armor, Brawler's Boots. The Boots text says "Blade of Destruction",
+  but its talent title/link is **Annihilation Blade**. Rainbow: **Potential Unleashed**.
+- **Holy Healer:** Darkness Land / Darkness Strike / Darkness Befalls / Meteor
+  Falls / ATK Amplification / Darkest Hour. Cores: Crystal Staff, Tome of Radiance,
+  Luminous Visor, Resonance Pendant. Descriptions call the ultimate "Darkness
+  Forbidden Land"; links use **Darkness Land**. Gold and red both modify Meteor
+  Falls. Rainbow **Starry Salvation** is standalone.
+
 ### Awakening skills (game, 2026-09-13)
 
 Hero-specific I and III are read from the Hero Awaken screenshots in
@@ -218,6 +280,24 @@ and padlock overlays are not part of the recorded hero skill.
 | Necromancer | III | Necro Possession | On entering battle, grants the highest-ATK ally (excluding self) 25% Ranged DMG Reduction, decaying to 10% after 15s; the screenshot says it "lasts until the end". | 9.22.05 |
 | Thrall | I | Kinetic Field | While Thrall is alive, enemies except illusions and summons have movement speed −10% and control resistance −30%. | 9.27.26 |
 | Thrall | III | Guardian Purification | Casting any skill randomly dispels some debuffs from one ally and restores HP equal to 50% of "Thal's" ATK every second for 6s, with an 8s cooldown. | 9.27.29 |
+| Jungle Envoy | I | Force of Nature | Enemy ATK −15% for 12s on entry, then gradually diminishes over 18s, ending at 30s. | 11.33.24 |
+| Jungle Envoy | III | Tranquil Redemption | Lightning Storm or Demonic Edict heals the lowest-HP ally for 130% of own ATK. | 11.33.25 |
+| Radiant Paladin | I | Sacred Body | Each 10% max HP lost adds 3% Physical RES and 3.5% Injured Energy Regen. | 11.33.58 |
+| Radiant Paladin | III | Wings of Purity | First HP drop below 40% grants 4s Physical DMG immunity and 5% max HP healing per second. | 11.34.00 |
+| Silence | I | Blade Break | Wisdom Blade has a 40% chance to hit two front enemies; four attacks on the same target reduce DEF by 10% for 5s. | 11.34.28 |
+| Silence | III | Soul Sustenance | Each fallen ally grants 4.5% ATK and DEF until battle ends. | 11.34.29 |
+| Gunslinger | I | Swift Victory | Entry grants 40% Energy Recovery SPD for 25s, gradually diminishing. | 11.34.51 |
+| Gunslinger | III | Frenzy | Each Snipe adds 10% ATK and ATK SPD until battle ends, up to two stacks. | 11.34.53 |
+| Dark Knight | I | Undead Guard | Entry grants all allies 10% Magic RES; the description calls it "Undead Guardian". | 11.35.22 |
+| Dark Knight | III | Death Pact | Fatal damage delays death by 3.5s; cannot recover energy during this time. | 11.35.24 |
+| Arcane Saint | I | Gourd Guard | Entry protects the lowest-DEF ally, increasing Energy gained from damage taken by 80% until that unit dies. | 11.35.52 |
+| Arcane Saint | III | Nature's Power | Each Golden Holy Bloom adds 8% Physical and Magic RES to all allies, up to two stacks. | 11.35.55 |
+| Witch Dictator | I | Dark Faded | Enemies take 5% more Magic DMG; Basic ATKs have a 30% chance to freeze for 1.5s. All own freezes drain 30 enemy energy (3s CD). | 11.50.20 + 11.51.47 |
+| Witch Dictator | III | Dark Ritual | Entry consumes 3% current maximum HP for 100 energy (10s CD); cannot activate below 30% HP. | 11.36.22 |
+| Silver Warrior | I | Lone And Brave | First HP drop below 50% grants immunity to certain control/slow effects for 7.5s. | 11.36.52 |
+| Silver Warrior | III | Killing Intent | Godslayer Strike's final hit stuns for 4s and reduces Dawn Slash cooldown by 1.5s. | 11.36.54 |
+| Holy Healer | I | Eudaemon Blessing | Enemy energy skills shield the weakest ally for 200% of Holy Healer's ATK (12s CD). | 11.37.31 |
+| Holy Healer | III | Conviction | Every 8s, reduces the highest-damage enemy's Energy Regen SPD by 55% for 5s. | 11.37.33 |
 
 Awakening I unlocks at **18★** and III at **22★** (owner-confirmed).
 Necromancer's Awakening I is recorded from the follow-up 9.19.39 AM screenshot.
@@ -246,8 +326,11 @@ account-wide stats or a class name for class-specific ones. **Naming rule
 (owner):** the app names a divinity by its stat row without "All" and never with
 the "Divinity" suffix. So "DMG Reduction Divinity" whose row reads
 "All DMG Reduction" is **DMG Reduction**, and the same-titled popup whose row reads
-"All Physical RES" is **Physical RES**. The popup title (minus "Divinity") is kept
-as `kind`.
+"All Physical RES" is **Physical RES**. `kind` is the app's display category,
+initially taken from the popup title (minus "Divinity"). Owner corrections take
+precedence: **Knockback Resist** and **SPD Reduction RES** belong to **Knockback**;
+**Heavy Injury**, **Healing Effect**, and **Receive Healing** belong to **Healing**
+(owner, 2026-09-13).
 
 Divinities have rarities; the app only includes **mythic (red)** ones (owner). The
 30 mythic divinities read from the owner's popups (`gameplay/divinities/`, 131 shots with
@@ -261,11 +344,10 @@ duplicates; produced by `scripts/slice-divinities.py`):
 | DMG Increase  | DMG Increase, Physical DMG Boost, Magic DMG Boost, Melee DMG Boost, Ranged DMG Boost (%)                    |
 | DMG Reduction | DMG Reduction, Physical RES, Magic RES, Melee DMG Reduction*, Ranged DMG Reduction (%)                      |
 | CRIT          | CRIT Rate, CRIT Damage (%)                                                                                  |
-| RES           | Anti-Control Rate, Control RES, SPD Reduction RES, CRIT DMG Reduction, Anti-CRIT Rate, Knockback Resist (%) |
-| Knockback     | Knockback Effect (%)                                                                                        |
-| Weakness      | Heavy Injury (%)                                                                                            |
+| RES           | Anti-Control Rate, Control RES, CRIT DMG Reduction, Anti-CRIT Rate (%)                                      |
+| Knockback     | Knockback Effect, Knockback Resist, SPD Reduction RES (%)                                                  |
+| Healing       | Heavy Injury, Healing Effect, Receive Healing (%)                                                         |
 | SPD Boost     | ATK SPD (%)                                                                                                 |
-| Cleansing     | Healing Effect, Receive Healing (%)                                                                         |
 
 \* The in-game row is truncated to "All Melee DMG Reduct"; expanded to match
 "Ranged DMG Reduction".
@@ -386,6 +468,18 @@ is said. These override anything marked (web).
 - 2026-09-13 — The owner reported that Necromancer is missing one core in the app. The 9.31.17 AM screenshot in `gameplay/talents/` shows **Crystal Staff·Core**: **Death Pulse enhances its DMG and Heal by 30% of Attack**. This completes Necromancer's four recorded cores; the app stores the gear name as **Crystal Staff** and links it to **Death Pulse**.
 
 - 2026-09-13 — The owner requested three priority categories for build attributes: **Must have**, **Should have**, and **OK to have**. The categories may be indicated with colors or other visual cues rather than repeated text labels on every attribute.
+- 2026-09-13 — The owner requested a **Reset** button on every build section and subsection.
+
+- 2026-09-13 — The owner requested that **hero listing pages show only heroes with recorded details**.
+
+- 2026-09-13 — The owner's 11.33–11.37 AM screenshots supply full detail sets for **Jungle Envoy, Radiant Paladin, Silence, Gunslinger, Dark Knight, Arcane Saint, Witch Dictator, Silver Warrior, and Holy Healer**: six talents, four cores, four artifact tiers, two red divinities, and hero-specific Awakening I/III. The reference above records their names, class, artifact, divinities, and source ranges; full descriptions are transcribed in the detail seeds.
+- 2026-09-13 — The **Jungle Envoy** follow-ups (11.49.48 and 11.50.02 AM) complete **Pulse Nova**: 38% of ATK as magic DMG per second to all enemies for 7s, cannot be dispelled, ends on death, and reactivation refreshes duration. **Wizard's Wand** adds a 30% Heavy Injury Effect; no additional parenthesized value is shown.
+- 2026-09-13 — **Witch Dictator's Dark Faded (I)** is completed by the inner-description scroll at **11.51.47 AM**, combined with 11.50.20: enemies take 5% more Magic DMG, Basic ATKs have a 30% chance to freeze for 1.5s, and all its freeze effects reduce enemy energy by 30 (3s cooldown).
+- 2026-09-13 — Artifact attachment is not determined by quality: **Dark Knight's gold Frost Dark Axe**, **Gunslinger's gold Full-out Shooting**, and **Witch Dictator's red Withering Fear** are standalone. Gunslinger's rainbow modifies **Snipe**; Witch Dictator's rainbow modifies **Frost Echo**. Only linked abilities appear under Talents as well as Artifacts.
+- 2026-09-13 — The new talent popups establish **Attribute** as another in-game kind; positions do not determine kind. **Holy Healer's Darkness Strike** (2★) is Enhance, **Radiant Paladin's Purifying Light** is Passive, and **Silence's Wisdom Blade / Gunslinger's Shotgun** (2★) are Special Skill.
+- 2026-09-13 — Screenshot wording must preserve actual displayed values and aliases: Silence Domain says "for 4" without a unit; Radiant Paladin's Luminous Visor reads 30%(100%); Witch Dictator's Spell Tome reads 0.3%(1%) HP recovery. Silver Warrior's Boots say "Blade of Destruction" but belong to **Annihilation Blade**, and Holy Healer's "Darkness Forbidden Land" descriptions belong to **Darkness Land**.
+
+- 2026-09-13 — Divinity categories: move **Knockback Resist** (owner wrote "knockback reset") and **SPD Reduction RES** into **Knockback**; group **Heavy Injury**, **Healing Effect** ("headling effect"), and **Receive Healing** under **Healing** (owner allowed "healing/heal"). These category choices override the popup-derived RES, Weakness, and Cleansing groups.
 
 ## How the app models it
 
@@ -395,7 +489,8 @@ is said. These override anything marked (web).
   store a `priority` (`build_priority`: must | should | optional). Existing
   selections default to Should have. Editing cycles through the tiers and then
   removes the selection; imports preserve tiers. Pick order is retained within
-  each tier.
+  each tier. In the editor, Reset clears the draft selections and priorities for
+  Runes, Weapons, Cores, or one rune type; the owner saves the build to apply it.
 
 - Hero builds include hand-picked **cores** from that hero's recorded talent
   bonuses, alongside rune and weapon attributes. Core selections have the same
@@ -407,8 +502,9 @@ is said. These override anything marked (web).
 
 - `heroes` table: `slug`, `name`, `role` (warrior | marksman | mage | support),
   `rarity` (mythic | legend | epic), `imageUrl`, `notes`.
-- `divinities` table: `slug`, `name` (stat without "All"), `kind` (popup title without
-  "Divinity"), `iconUrl` (`/divinities/<slug>.png`). Seeded from `src/data/divinities.ts`
+- `divinities` table: `slug`, `name` (stat without "All"), `kind` (display category,
+  with owner corrections taking precedence over popup titles), `iconUrl`
+  (`/divinities/<slug>.png`). Seeded from `src/data/divinities.ts`
   by `ensureDivinitiesSeeded()` in `src/lib/divinities.ts`; no hero link yet.
 - `weapon_attributes` table: `slug`, `name` (as printed in the Possible Attributes
   popup), `sortOrder`. Seeded from `src/data/weapon-attributes.ts` by
@@ -449,9 +545,13 @@ is said. These override anything marked (web).
   divinities include it (portrait grid linking to the hero pages). Divinity badges on
   `/divinities` and on hero pages link here. All seeded heroes are synced on load so
   the list is complete regardless of which hero pages were opened.
-- `/heroes` — the pool: read-only portrait grid with search and class filter. Each
-  hero is shown as `{class badge} {name}`; badges live in `public/badges/<role>.png`.
-- `/lineups/new` — click heroes into slots, add name + notes, save.
+- `/heroes` — the pool: read-only portrait grid with search and class filter,
+  showing only heroes with an entry in `heroDetailSeeds`. Partly recorded heroes
+  are included. Each hero is shown as `{class badge} {name}`; badges live in
+  `public/badges/<role>.png`. The same visibility rule applies to the hero picker
+  and divinity hero lists, using `getRecordedHeroSlugs()` on the server.
+- `/lineups/new` — pick heroes with recorded details into slots, add name + notes,
+  save. Existing saved lineups still show their complete recorded formation.
 - `/lineups`, `/lineups/[id]` — browse and view saved lineups.
 - Database: Postgres on Supabase, project `kautapzssaoeanylhfoo` (ap-northeast-1),
   accessed directly through Drizzle + postgres.js as the least-privilege role
@@ -524,6 +624,12 @@ finds the badge by the red title bar and the blue circle, groups duplicates by b
   `scripts/upsert-divinities.sql`. Unmatched screenshots are listed and fail the run:
   add a CATALOG row for each and rerun. Screenshots that are not popups (e.g. the
   divine weapon screen itself) are ignored.
+
+For category-only changes, edit `CATALOG` and run
+`python3 scripts/slice-divinities.py --catalog-only`, then apply the generated
+upsert SQL. This updates seed metadata without replacing icons or requiring an
+asset-version bump. `kind` follows the owner's categories even when they differ
+from the original popup titles.
 
 ### Rune attribute pipeline
 

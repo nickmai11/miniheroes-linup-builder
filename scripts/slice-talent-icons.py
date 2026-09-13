@@ -37,6 +37,133 @@ S13AM = lambda t: f"Screenshot 2026-09-13 at {t}{NB}AM.png"
 # hero slug -> {"popups": [(file, talent name), ...],
 #               "artifact": Artifact tab, "artifact_popup": the artifact's ability list}
 LAYOUT = {
+    "jungle-envoy": {
+        "popups": [
+            (S13AM("11.50.02"), "Pulse Nova"),
+            (S13AM("11.33.30"), "Lightning Storm"),
+            (S13AM("11.33.32"), "Enhanced Pulse"),
+            (S13AM("11.33.37"), "Demonic Edict"),
+            (S13AM("11.33.40"), "Jungle Warden"),
+            (S13AM("11.33.41"), "Power Surge"),
+        ],
+        "artifact": S13AM("11.33.45"),
+        # Include the staff's full diagonal art below the player's star.
+        "artifact_box": (140, 240, 580, 530),
+        "artifact_popup": S13AM("11.33.48"),
+    },
+    "radiant-paladin": {
+        "popups": [
+            (S13AM("11.34.14"), "Guardian of Light"),
+            (S13AM("11.34.04"), "Sanctity Hammer"),
+            (S13AM("11.34.08"), "Illumination"),
+            (S13AM("11.34.09"), "Purifying Light"),
+            (S13AM("11.34.11"), "Sacred Incarnate"),
+            (S13AM("11.34.12"), "Divine Guardian"),
+        ],
+        "artifact": S13AM("11.34.16"),
+        # Keep the book and lightning tips, excluding the player's stars.
+        "artifact_box": (190, 240, 560, 570),
+        "artifact_popup": S13AM("11.34.19"),
+    },
+    "holy-healer": {
+        "popups": [
+            (S13AM("11.37.46"), "Darkness Land"),
+            (S13AM("11.37.37"), "Darkness Strike"),
+            (S13AM("11.37.38"), "Darkness Befalls"),
+            (S13AM("11.37.40"), "Meteor Falls"),
+            (S13AM("11.37.42"), "ATK Amplification"),
+            (S13AM("11.37.44"), "Darkest Hour"),
+        ],
+        "artifact": S13AM("11.37.49"),
+        # Keep the staff head and lower handle, excluding the player's star.
+        "artifact_box": (185, 238, 525, 565),
+        "artifact_popup": S13AM("11.37.50"),
+    },
+    "silence": {
+        "popups": [
+            (S13AM("11.34.40"), "Silence Domain"),
+            (S13AM("11.34.33"), "Wisdom Blade"),
+            (S13AM("11.34.35"), "ATK Reduction"),
+            (S13AM("11.34.36"), "Magic Curse"),
+            (S13AM("11.34.37"), "Arcane Enhanced"),
+            (S13AM("11.34.39"), "Energy Drain"),
+        ],
+        "artifact": S13AM("11.34.42"),
+        # Wide ellipse retains both blade tips below the star row.
+        "artifact_box": (155, 243, 575, 563),
+        # 11.34.46 completes text; existing shared tier icons remain in use.
+        "artifact_popup": S13AM("11.34.45"),
+    },
+    "gunslinger": {
+        "popups": [
+            (S13AM("11.35.07"), "Snipe"),
+            (S13AM("11.34.59"), "Shotgun"),
+            (S13AM("11.35.02"), "Quick Snipe"),
+            (S13AM("11.35.03"), "Headshot"),
+            (S13AM("11.35.05"), "Aim"),
+            (S13AM("11.35.06"), "Enhance Snipe"),
+        ],
+        "artifact": S13AM("11.35.13"),
+        "artifact_box": (205, 243, 505, 543),
+        "artifact_popup": S13AM("11.35.15"),
+    },
+    "silver-warrior": {
+        "popups": [
+            (S13AM("11.37.17"), "Godslayer Strike"),
+            (S13AM("11.37.08"), "Dawn Slash"),
+            (S13AM("11.37.10"), "Mad Blade"),
+            (S13AM("11.37.11"), "Adrenaline"),
+            (S13AM("11.37.13"), "Energy Armor"),
+            (S13AM("11.37.15"), "Annihilation Blade"),
+        ],
+        "artifact": S13AM("11.37.20"),
+        # Wide ellipse includes the long upper-left tip and the full handle.
+        "artifact_box": (155, 243, 555, 553),
+        "artifact_popup": S13AM("11.37.22"),
+    },
+    "dark-knight": {
+        "popups": [
+            (S13AM("11.35.31"), "Entangle"),
+            (S13AM("11.35.33"), "Charge"),
+            (S13AM("11.35.35").replace(".png", " 1.png"), "Gloomy Shield"),
+            (S13AM("11.35.37"), "Dark Bloodline"),
+            (S13AM("11.35.39"), "Undead"),
+            (S13AM("11.35.41"), "Darklight Shield"),
+        ],
+        "artifact": S13AM("11.35.44"),
+        # Full sword rectangle below its star; an inscribed ellipse clips its ends.
+        "artifact_box": (210, 245, 510, 530),
+        "artifact_corner_radius": 24,
+        "artifact_popup": S13AM("11.35.46"),
+    },
+    "arcane-saint": {
+        "popups": [
+            (S13AM("11.35.59"), "Sage's Gift"),
+            (S13AM("11.36.01"), "Energy Penalty"),
+            (S13AM("11.36.02"), "Unified"),
+            (S13AM("11.36.03"), "Vigorous"),
+            (S13AM("11.36.04"), "Guard Bloom"),
+            (S13AM("11.36.06"), "Golden Holy Bloom"),
+        ],
+        "artifact": S13AM("11.36.12"),
+        # Include the staff tips and cords while excluding its stars.
+        "artifact_box": (205, 245, 505, 535),
+        "artifact_corner_radius": 24,
+        "artifact_popup": S13AM("11.36.13"),
+    },
+    "witch-dictator": {
+        "popups": [
+            (S13AM("11.36.36"), "Frost Echo"),
+            (S13AM("11.36.26"), "Frigid Explosion"),
+            (S13AM("11.36.28"), "Ultimate Frost"),
+            (S13AM("11.36.30"), "Frost Armor"),
+            (S13AM("11.36.32"), "ATK Amplification"),
+            (S13AM("11.36.34"), "Multifrost"),
+        ],
+        "artifact": S13AM("11.36.40"),
+        "artifact_box": (185, 240, 525, 550),
+        "artifact_popup": S13AM("11.36.41"),
+    },
     "thrall": {
         "popups": [
             (S13AM("9.27.07"), "Thunder Strike"),
@@ -261,7 +388,19 @@ def main():
         art = os.path.join(SRC, cfg["artifact"])
         im = Image.open(art).convert("RGB")
         os.makedirs(os.path.join(ROOT, "public/artifacts"), exist_ok=True)
-        circle(im.crop(cfg.get("artifact_box", ARTIFACT_BOX)), inset=0).save(os.path.join(ROOT, "public/artifacts", f"{hero}.png"))
+        crop = im.crop(cfg.get("artifact_box", ARTIFACT_BOX))
+        if "artifact_corner_radius" in cfg:
+            # Diagonal weapons can extend outside the usual circular mask.
+            artifact = crop.convert("RGBA")
+            mask = Image.new("L", crop.size, 0)
+            ImageDraw.Draw(mask).rounded_rectangle(
+                (0, 0, crop.width - 1, crop.height - 1),
+                radius=cfg["artifact_corner_radius"], fill=255,
+            )
+            artifact.putalpha(mask)
+        else:
+            artifact = circle(crop, inset=0)
+        artifact.save(os.path.join(ROOT, "public/artifacts", f"{hero}.png"))
     print("icons:", ", ".join(sorted(tier_written)))
 
 

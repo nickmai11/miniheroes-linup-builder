@@ -122,12 +122,6 @@ export const divinitySeeds: DivinitySeed[] = [
     iconUrl: "/divinities/control-res.png",
   },
   {
-    slug: "spd-reduction-res",
-    name: "SPD Reduction RES",
-    kind: "RES",
-    iconUrl: "/divinities/spd-reduction-res.png",
-  },
-  {
     slug: "crit-dmg-reduction",
     name: "CRIT DMG Reduction",
     kind: "RES",
@@ -140,39 +134,45 @@ export const divinitySeeds: DivinitySeed[] = [
     iconUrl: "/divinities/anti-crit-rate.png",
   },
   {
-    slug: "knockback-resist",
-    name: "Knockback Resist",
-    kind: "RES",
-    iconUrl: "/divinities/knockback-resist.png",
-  },
-  {
     slug: "knockback-effect",
     name: "Knockback Effect",
     kind: "Knockback",
     iconUrl: "/divinities/knockback-effect.png",
   },
   {
+    slug: "knockback-resist",
+    name: "Knockback Resist",
+    kind: "Knockback",
+    iconUrl: "/divinities/knockback-resist.png",
+  },
+  {
+    slug: "spd-reduction-res",
+    name: "SPD Reduction RES",
+    kind: "Knockback",
+    iconUrl: "/divinities/spd-reduction-res.png",
+  },
+  {
     slug: "heavy-injury",
     name: "Heavy Injury",
-    kind: "Weakness",
+    kind: "Healing",
     iconUrl: "/divinities/heavy-injury.png",
+  },
+  {
+    slug: "healing-effect",
+    name: "Healing Effect",
+    kind: "Healing",
+    iconUrl: "/divinities/healing-effect.png",
+  },
+  {
+    slug: "receive-healing",
+    name: "Receive Healing",
+    kind: "Healing",
+    iconUrl: "/divinities/receive-healing.png",
   },
   {
     slug: "atk-spd",
     name: "ATK SPD",
     kind: "SPD Boost",
     iconUrl: "/divinities/atk-spd.png",
-  },
-  {
-    slug: "healing-effect",
-    name: "Healing Effect",
-    kind: "Cleansing",
-    iconUrl: "/divinities/healing-effect.png",
-  },
-  {
-    slug: "receive-healing",
-    name: "Receive Healing",
-    kind: "Cleansing",
-    iconUrl: "/divinities/receive-healing.png",
   },
 ];

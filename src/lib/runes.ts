@@ -1,16 +1,17 @@
 import "server-only";
+import { onceAsync } from "@/lib/once-async";
 import { asc } from "drizzle-orm";
 import { db, schema } from "@/db";
 import { runeAttributeSeeds } from "@/data/rune-attributes";
 import { RUNE_TYPES, type RuneAttribute, type RuneType } from "@/db/schema";
 
 /** Insert any seed rune attributes that aren't in the table yet. Safe to call repeatedly. */
-export async function ensureRuneAttributesSeeded() {
+export const ensureRuneAttributesSeeded = onceAsync(async () => {
   await db
     .insert(schema.runeAttributes)
     .values(runeAttributeSeeds)
     .onConflictDoNothing({ target: schema.runeAttributes.slug });
-}
+});
 
 /** All rune attributes in rune-type order, then sheet order. */
 export async function getAllRuneAttributes(): Promise<RuneAttribute[]> {

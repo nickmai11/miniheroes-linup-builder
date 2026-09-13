@@ -14,7 +14,7 @@ const SECTIONS = [
     href: "/heroes",
     icon: Users,
     title: "Hero pool",
-    description: "Every hero with in-game art and class badge.",
+    description: "Explore heroes with recorded talents, artifacts, and builds.",
   },
   {
     href: "/lineups/new",

@@ -21,13 +21,13 @@ INSERT INTO divinities (slug, name, kind, icon_url) VALUES
 ('crit-damage','CRIT Damage','CRIT','/divinities/crit-damage.png'),
 ('anti-control-rate','Anti-Control Rate','RES','/divinities/anti-control-rate.png'),
 ('control-res','Control RES','RES','/divinities/control-res.png'),
-('spd-reduction-res','SPD Reduction RES','RES','/divinities/spd-reduction-res.png'),
 ('crit-dmg-reduction','CRIT DMG Reduction','RES','/divinities/crit-dmg-reduction.png'),
 ('anti-crit-rate','Anti-CRIT Rate','RES','/divinities/anti-crit-rate.png'),
-('knockback-resist','Knockback Resist','RES','/divinities/knockback-resist.png'),
 ('knockback-effect','Knockback Effect','Knockback','/divinities/knockback-effect.png'),
-('heavy-injury','Heavy Injury','Weakness','/divinities/heavy-injury.png'),
-('atk-spd','ATK SPD','SPD Boost','/divinities/atk-spd.png'),
-('healing-effect','Healing Effect','Cleansing','/divinities/healing-effect.png'),
-('receive-healing','Receive Healing','Cleansing','/divinities/receive-healing.png')
+('knockback-resist','Knockback Resist','Knockback','/divinities/knockback-resist.png'),
+('spd-reduction-res','SPD Reduction RES','Knockback','/divinities/spd-reduction-res.png'),
+('heavy-injury','Heavy Injury','Healing','/divinities/heavy-injury.png'),
+('healing-effect','Healing Effect','Healing','/divinities/healing-effect.png'),
+('receive-healing','Receive Healing','Healing','/divinities/receive-healing.png'),
+('atk-spd','ATK SPD','SPD Boost','/divinities/atk-spd.png')
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, kind = EXCLUDED.kind, icon_url = EXCLUDED.icon_url;

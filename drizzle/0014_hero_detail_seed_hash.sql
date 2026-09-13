@@ -1,0 +1,1 @@
+ALTER TABLE "heroes" ADD COLUMN "detail_seed_hash" text;

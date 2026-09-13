@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { asc, desc, eq, inArray } from "drizzle-orm";
 import { db, schema } from "@/db";
 import type { Hero, Lineup } from "@/db/schema";
@@ -60,7 +61,7 @@ export async function getAllLineups(): Promise<LineupWithHeroes[]> {
   return assemble(lineupRows, slotRows);
 }
 
-export async function getLineup(
+export const getLineup = cache(async function getLineup(
   id: number,
 ): Promise<LineupWithHeroes | undefined> {
   await syncSeededHeroDetails();
@@ -71,4 +72,4 @@ export async function getLineup(
   if (lineupRows.length === 0) return undefined;
   const slotRows = await loadSlots([id]);
   return (await assemble(lineupRows, slotRows))[0];
-}
+});

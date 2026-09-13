@@ -7,6 +7,11 @@ facts behind these rules are in `mini-heroes-magic-throne.md` (Owner-stated fact
 
 ## 1. What the page shows
 
+Hero listings (the hero pool, lineup picker, and divinity hero lists) show only
+heroes with an entry in `heroDetailSeeds`. Partly recorded heroes remain visible;
+adding a detail entry automatically makes a hero eligible for these lists.
+Saved lineup slots and direct hero lookups retain the full roster.
+
 In this order, top to bottom of the right column (portrait + "Start a lineup"
 button in the left column):
 
@@ -22,7 +27,12 @@ button in the left column):
 | Lineups        | saved lineups that use the hero                                                                                                                                                                                                                  | `lineup_heroes`                                         |
 
 Awakening I and III are recorded for **Sea Captain**, **Nezha**, **Shadow Fiend**,
-**Necromancer**, and **Thrall**. Necromancer's III preserves the screenshot's exact ending,
+**Necromancer**, **Thrall**, **Jungle Envoy**, **Radiant Paladin**, **Silence**,
+**Gunslinger**, **Dark Knight**, **Arcane Saint**, **Witch Dictator**, **Silver
+Warrior**, and **Holy Healer**. The nine-hero 11.33–11.37 AM batch is complete;
+Jungle Envoy's follow-ups provide Pulse Nova and its fourth core, and Witch
+Dictator's 11.51.47 AM inner-panel scroll completes Dark Faded.
+Necromancer's III preserves the screenshot's exact ending,
 "lasts until the end". Its other awakening capture shows **Support IV: Emergency
 Healing**, recorded once in the game reference. Class-wide II/IV are not displayed
 yet and must not be copied into hero-specific I/III data.
@@ -43,6 +53,16 @@ clicking a chip cycles through those tiers and then removes it. Saved selections
 are grouped by tier within each rune type, Weapons, and Cores, preserving pick
 order within a tier. Existing selections start in **Should have**.
 
+The build editor has a **Reset** button for Runes, Weapons, Cores, and each rune
+type. Reset clears only that group's selections and priority assignments in the
+draft; changes take effect when the build is saved. Empty groups and groups being
+saved have disabled Reset buttons.
+
+Runes, Weapons, and Cores have bold headings on a subtle gold background with a
+gold left border, in both saved builds and the editor. Build names are larger to
+keep them distinct from these section headings and the smaller rune-type labels.
+Sections have 1.5rem of vertical separation, with 1rem between rune-type groups.
+
 Builds also include **Cores**, picked from this hero's recorded cores with the same
 priority tiers as Runes and Weapons. Core descriptions appear on
 hover. A build may contain only cores; heroes without recorded cores show an
@@ -61,8 +81,9 @@ Rules that shape the page:
 
 - **No counts** anywhere ("6 talents", "30 divinities"). Empty states are fine.
 - An artifact bonus **attached to a talent** appears under that talent _and_ in
-  the Artifacts section. One **not attached** (the rainbow-tier artifact skill,
-  e.g. Ship Raid) appears only under Artifacts.
+  the Artifacts section. One **not attached** (e.g. Ship Raid, gold-tier Frost
+  Dark Axe / Full-out Shooting, or red-tier Withering Fear) appears only under
+  Artifacts.
   Rainbow is not always standalone: Thrall's rainbow bonus modifies **Thunder
   Strike** and appears in both sections. Use the talent link, not the tier, to
   decide whether an ability is attached.
@@ -113,7 +134,9 @@ the screenshot positions; the compendium cards list the same order.
    If the artifact ability popup is missing, set `artifact_popup` to `None` to
    slice the supplied talents and artifact using the existing shared tier icons.
    Use a per-hero `artifact_box` when capture geometry differs; exclude stars and
-   other player progress from the artifact crop.
+   other player progress from the artifact crop. For diagonal art that extends
+   outside the circular mask, set `artifact_corner_radius` (e.g. 24) to use a
+   rounded rectangle that preserves the weapon's tips.
 2. **New divinities** — only if a red badge is missing from `/divinities`: add the
    popup screenshot to `gameplay/divinities/`, a row to `CATALOG` in
    `scripts/slice-divinities.py`, run it, then run `scripts/upsert-divinities.sql`
@@ -140,6 +163,15 @@ up to date; there is no separate seed command.
 The sync locks the target hero before reading its existing talents, so concurrent
 first loads cannot create competing seed rows. Metadata and page rendering share
 one `getHeroDetail()` call through request-scoped React caching.
+
+The `heroes.detailSeedHash` fingerprint records the last successfully synced
+talents, cores, artifact and divinities. Unchanged content skips synchronization
+writes; editing a seed automatically refreshes that hero on the next load.
+The fingerprint is checked again under the row lock and commits in the same
+transaction as the content, so concurrent loads and failed updates remain safe.
+Apply migration `0014` before running the app with this optimization. Catalog
+inserts are shared once per server module lifetime and retry after failures;
+lineups, builds and notes still read current database values on each request.
 
 Awakening skills are read directly from the versioned hero data file by
 `getHeroDetail()`. They do not require a database migration, synchronization
@@ -178,7 +210,7 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
 - [ ] Six talents, kinds match the in-game labels, stars 0/2/5/8/12/16 in clockwise order
 - [ ] Every talent has an icon; no gold chevron or text fragments in it
 - [ ] Awakening I and III have screenshot-verified names and descriptions; no icons
-- [ ] Artifact name, image, and four tier abilities; the first three link to talents
+- [ ] Artifact name, image, and four tier abilities; link by the shown talent, not quality (any tier may be standalone)
 - [ ] Four cores, each linked to a talent
 - [ ] Two mythic divinities, both present in the catalog with icons
 - [ ] Descriptions copied from the owner's screenshot text, not from a guide

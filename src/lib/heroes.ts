@@ -1,10 +1,12 @@
 import "server-only";
+import { createHash } from "node:crypto";
 import { cache } from "react";
 import { asc, desc, eq, inArray } from "drizzle-orm";
 import { db, schema } from "@/db";
 import { heroDetailSeeds, type HeroAwakeningSkill } from "@/data/hero-details";
 import { heroSeeds } from "@/data/heroes";
 import { ensureDivinitiesSeeded } from "./divinities";
+import { onceAsync } from "@/lib/once-async";
 import type {
   Divinity,
   Hero,
@@ -21,6 +23,25 @@ export { RARITY_LABELS, ROLE_LABELS } from "./hero-labels";
 const ROLE_ORDER: HeroRole[] = ["warrior", "marksman", "mage", "support"];
 const RARITY_ORDER: HeroRarity[] = ["mythic", "legend", "epic"];
 
+// Only persisted fields belong here; awakening skills are served from the file.
+// Bump the version if the synchronization rules change without a seed edit.
+const DETAIL_SEED_HASHES = new Map(
+  Object.entries(heroDetailSeeds).map(([slug, seed]) => [
+    slug,
+    createHash("sha256")
+      .update(
+        JSON.stringify([
+          1,
+          seed.skills,
+          seed.cores,
+          seed.artifact ?? null,
+          seed.divinities,
+        ]),
+      )
+      .digest("hex"),
+  ]),
+);
+
 export function sortHeroes<T extends Hero>(list: T[]): T[] {
   return [...list].sort(
     (a, b) =>
@@ -31,12 +52,12 @@ export function sortHeroes<T extends Hero>(list: T[]): T[] {
 }
 
 /** Insert any seed heroes that aren't in the table yet. Safe to call repeatedly. */
-export async function ensureHeroesSeeded() {
+export const ensureHeroesSeeded = onceAsync(async () => {
   await db
     .insert(schema.heroes)
     .values(heroSeeds)
     .onConflictDoNothing({ target: schema.heroes.slug });
-}
+});
 
 export type HeroWithDivinities = Hero & {
   /** Mythic divinities in slot order (bottom-left, bottom-right). */
@@ -47,16 +68,21 @@ export type HeroWithDivinities = Hero & {
  * Sync every hero that has a detail seed, so lazily-populated tables like
  * hero_divinities are filled regardless of which hero pages have been opened.
  */
-export async function syncSeededHeroDetails() {
+export const syncSeededHeroDetails = cache(async () => {
   await ensureHeroesSeeded();
   if (Object.keys(heroDetailSeeds).length === 0) return;
   const heroes = await db
-    .select({ id: schema.heroes.id, slug: schema.heroes.slug })
-    .from(schema.heroes);
+    .select({
+      id: schema.heroes.id,
+      slug: schema.heroes.slug,
+      detailSeedHash: schema.heroes.detailSeedHash,
+    })
+    .from(schema.heroes)
+    .where(inArray(schema.heroes.slug, getRecordedHeroSlugs()));
   for (const hero of heroes) {
     if (hero.slug in heroDetailSeeds) await syncHeroDetail(hero);
   }
-}
+});
 
 /** Mythic divinities per hero id, in slot order (bottom-left, bottom-right). */
 export async function divinitiesByHeroIds(
@@ -98,11 +124,20 @@ export async function attachDivinities(
   }));
 }
 
-export async function getAllHeroes(): Promise<HeroWithDivinities[]> {
+/** Detail seeds determine listing visibility, including partly recorded heroes. */
+export function getRecordedHeroSlugs(): string[] {
+  return Object.keys(heroDetailSeeds);
+}
+
+/** Heroes available to browse or pick, with their recorded detail content. */
+export async function getHeroesWithDetails(): Promise<HeroWithDivinities[]> {
+  const slugs = getRecordedHeroSlugs();
+  if (slugs.length === 0) return [];
   await syncSeededHeroDetails();
   const rows = await db
     .select()
     .from(schema.heroes)
+    .where(inArray(schema.heroes.slug, slugs))
     .orderBy(asc(schema.heroes.name));
   return sortHeroes(await attachDivinities(rows));
 }
@@ -139,20 +174,26 @@ export function slugify(name: string): string {
  * Make one hero's talents, cores, mythic divinities and artifact name match
  * src/data/hero-details.ts. Skills and cores are matched by name so ids (and
  * core→skill links) survive edits; anything not in the seed is removed.
- * No-op for heroes without a seed.
+ * Unchanged seeds need no writes. The fingerprint commits with the content so
+ * failures retry and separate server processes agree on what has been synced.
  */
-export async function syncHeroDetail(hero: Pick<Hero, "id" | "slug">) {
+export async function syncHeroDetail(
+  hero: Pick<Hero, "id" | "slug"> & Partial<Pick<Hero, "detailSeedHash">>,
+): Promise<boolean> {
   const seed = heroDetailSeeds[hero.slug];
-  if (!seed) return;
+  const detailSeedHash = DETAIL_SEED_HASHES.get(hero.slug);
+  if (!seed || !detailSeedHash || hero.detailSeedHash === detailSeedHash)
+    return false;
   await ensureDivinitiesSeeded();
-  await db.transaction(async (tx) => {
+  return db.transaction(async (tx) => {
     // Serialize this hero's sync before checking for existing talents. A new
     // hero can otherwise be seeded simultaneously by separate page requests.
-    await tx
-      .select({ id: schema.heroes.id })
+    const [locked] = await tx
+      .select({ detailSeedHash: schema.heroes.detailSeedHash })
       .from(schema.heroes)
       .where(eq(schema.heroes.id, hero.id))
       .for("update");
+    if (!locked || locked.detailSeedHash === detailSeedHash) return false;
     const existing = await tx
       .select({ id: schema.heroSkills.id, name: schema.heroSkills.name })
       .from(schema.heroSkills)
@@ -257,8 +298,10 @@ export async function syncHeroDetail(hero: Pick<Hero, "id" | "slug">) {
       .set({
         artifactName: seed.artifact?.name ?? null,
         artifactIconUrl: seed.artifact?.iconUrl ?? null,
+        detailSeedHash,
       })
       .where(eq(schema.heroes.id, hero.id));
+    return true;
   });
 }
 
@@ -277,16 +320,24 @@ export type HeroDetail = Hero & {
 // Metadata and page rendering share the same load (and seed) within a request.
 export const getHeroDetail = cache(
   async (slug: string): Promise<HeroDetail | undefined> => {
-    const [found] = await db
-      .select({ id: schema.heroes.id, slug: schema.heroes.slug })
-      .from(schema.heroes)
-      .where(eq(schema.heroes.slug, slug));
-    if (!found) return undefined;
-    await syncHeroDetail(found);
-    const [hero] = await db
+    let [hero] = await db
       .select()
       .from(schema.heroes)
-      .where(eq(schema.heroes.id, found.id));
+      .where(eq(schema.heroes.slug, slug));
+    if (!hero) return undefined;
+    if (
+      heroDetailSeeds[slug] &&
+      hero.detailSeedHash !== DETAIL_SEED_HASHES.get(slug)
+    ) {
+      await syncHeroDetail(hero);
+      // Another request may have completed the sync while we waited for its
+      // lock. Refresh the hero fields even when that request did the writes.
+      [hero] = await db
+        .select()
+        .from(schema.heroes)
+        .where(eq(schema.heroes.id, hero.id));
+      if (!hero) return undefined;
+    }
     const [skills, cores, artifactBonuses, divinityRows, lineupRows] =
       await Promise.all([
         db

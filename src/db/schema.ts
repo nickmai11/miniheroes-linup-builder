@@ -41,6 +41,8 @@ export const heroes = pgTable("heroes", {
   // Divine weapon name and image from the Artifact tab (e.g. "Siren Blade").
   artifactName: text("artifact_name"),
   artifactIconUrl: text("artifact_icon_url"),
+  // Fingerprint of the last successfully synchronized detail seed.
+  detailSeedHash: text("detail_seed_hash"),
   notes: text("notes").notNull().default(""),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
@@ -145,7 +147,7 @@ export type HeroCore = typeof heroCores.$inferSelect;
  * Divinities: the per-stat badges ringed around a hero's divine weapon, levelled
  * with divinity gems. Named by the stat row of the in-game popup without the
  * leading "All" (e.g. "DMG Reduction", "Physical RES", "Warrior ATK"); `kind` is
- * the popup title without " Divinity" (e.g. "DMG Reduction", "RES", "ATK").
+ * the display category, with owner corrections overriding the popup title.
  */
 export const divinities = pgTable("divinities", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
