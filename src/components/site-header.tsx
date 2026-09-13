@@ -16,7 +16,7 @@ export function SiteHeader() {
           <span className="sr-only sm:hidden">Mini Heroes Lineups</span>
         </Link>
         <NavLinks />
-        <div className="ml-auto">
+        <div className="ml-auto shrink-0">
           <ThemeToggle />
         </div>
       </div>

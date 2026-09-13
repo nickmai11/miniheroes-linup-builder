@@ -21,7 +21,7 @@ button in the left column):
 | **Builds**     | the owner's builds for the hero: name, notes, chosen rune attributes grouped by rune type (with max value) and weapon attributes, each in pick order with a rank number (first picked = most important); editable in place (new / edit / delete) | `hero_builds`, `hero_build_runes`, `hero_build_weapons` |
 | Lineups        | saved lineups that use the hero                                                                                                                                                                                                                  | `lineup_heroes`                                         |
 
-Awakening I and III are recorded for **Sea Captain** and **Nezha**. II and IV
+Awakening I and III are recorded for **Sea Captain**, **Nezha**, and **Shadow Fiend**. II and IV
 remain unrecorded; they are shared per class and must be stored once per class
 when their screenshots are supplied.
 
@@ -84,6 +84,10 @@ the screenshot positions; the compendium cards list the same order.
    masked), `public/artifacts/<hero>.png`, and, once, the shared
    `public/icons/artifact-{purple,gold,red,rainbow}.png` and `public/icons/core.png`.
    All icons are trimmed to their opaque bounds so they render at one scale.
+   If the artifact ability popup is missing, set `artifact_popup` to `None` to
+   slice the supplied talents and artifact using the existing shared tier icons.
+   Use a per-hero `artifact_box` when capture geometry differs; exclude stars and
+   other player progress from the artifact crop.
 2. **New divinities** — only if a red badge is missing from `/divinities`: add the
    popup screenshot to `gameplay/divinities/`, a row to `CATALOG` in
    `scripts/slice-divinities.py`, run it, then run `scripts/upsert-divinities.sql`
@@ -106,6 +110,9 @@ No migration is needed for a new hero. The page calls `syncHeroDetail()` on view
 which upserts the seed (skills matched by name, cores / bonuses / divinities
 replaced, artifact name and icon set). Open `/heroes/<slug>` once and the DB is
 up to date; there is no separate seed command.
+The sync locks the target hero before reading its existing talents, so concurrent
+first loads cannot create competing seed rows. Metadata and page rendering share
+one `getHeroDetail()` call through request-scoped React caching.
 
 Awakening skills are read directly from the versioned hero data file by
 `getHeroDetail()`. They do not require a database migration, synchronization
@@ -148,6 +155,9 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
 
 ## 6. Known gaps
 
+- Shadow Fiend: the full Soul Mask ability popup is missing, its red description
+  is cut off after "upon entering", the rainbow ability is unrecorded, and only
+  three core panels are visible. The rest of the supplied hero details are recorded.
 - Awakening II and IV: class-wide skills are not recorded or displayed yet.
 - The rainbow-tier artifact skill has no icon (the game shows it as text only).
 - Divinity growth values per level are not stored (only name, kind, icon).

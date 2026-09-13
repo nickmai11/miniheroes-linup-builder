@@ -61,6 +61,119 @@ export type HeroDetailSeed = {
 const talent = (hero: string, slug: string) => `/talents/${hero}/${slug}.png`;
 
 export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
+  "shadow-fiend": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Soul Reaping",
+        description:
+          "For every hero that dies, instantly recover 100 energy and gain 30% ATK SPD for 6s (cannot stack but refresh the duration upon each trigger).",
+        sourceScreenshot: "Screenshot 2026-09-13 at 8.54.42\u202fAM.png",
+      },
+      {
+        stage: "III",
+        name: "Soul Borrowing",
+        description:
+          "For every enemy on the battlefield, gain an additional 2.5% ATK SPD and 2.5% ATK.",
+        sourceScreenshot: "Screenshot 2026-09-13 at 8.54.44\u202fAM.png",
+      },
+    ],
+    artifact: {
+      name: "Soul Mask",
+      iconUrl: "/artifacts/shadow-fiend.png",
+      // Only talent-popup bonuses are available; the rainbow tier is unrecorded.
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Soul Burn",
+          description:
+            "Each Basic ATK and Skill Cast increases ATK by 0.6% (up to 15 stacks).",
+        },
+        {
+          tier: "gold",
+          skill: "Destructive Gloom",
+          description:
+            "Enemies hit by Shadow are stunned for 1s, and 14% of the DMG dealt is converted to the Shadow Fiend's HP.",
+        },
+        {
+          tier: "red",
+          skill: "Destructive Gloom",
+          // The 8.54.25 screenshot cuts off here. Do not invent the missing text.
+          description:
+            "Immediately releases Destructive Gloom once upon entering…",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Soul Requiem",
+        unlockStars: 0,
+        iconUrl: talent("shadow-fiend", "soul-requiem"),
+        description:
+          "Unleashes ghost to deal Physical DMG equal to 250% of ATK to all enemies. Enemies near the Shadow Fiend take 2 times the damage.",
+      },
+      {
+        kind: "battle",
+        name: "Soul Burn",
+        unlockStars: 2,
+        iconUrl: talent("shadow-fiend", "soul-burn"),
+        description:
+          "Each Basic ATK and Skill Cast increases ATK SPD by 3% (up to 15 stacks).",
+      },
+      {
+        kind: "enhance",
+        name: "Ghost Curse",
+        unlockStars: 5,
+        iconUrl: talent("shadow-fiend", "ghost-curse"),
+        description:
+          '"Soul Requiem" Ghost striking enemies reduce their Physical RES by 15% and Magic RES by 15% for 6s.',
+      },
+      {
+        kind: "special",
+        name: "Destructive Gloom",
+        unlockStars: 8,
+        iconUrl: talent("shadow-fiend", "destructive-gloom"),
+        description:
+          "Every 8s, unleashes 3 waves of shadow across a forward area of 200/350/500 yards. Each wave deals 180% Physical DMG to enemies within a medium range.",
+      },
+      {
+        kind: "passive",
+        name: "Haunted",
+        unlockStars: 12,
+        iconUrl: talent("shadow-fiend", "haunted"),
+        description: "Armor PEN increased by 10%, ATK increased by 15%.",
+      },
+      {
+        kind: "enhance",
+        name: "Spiteful Curse",
+        unlockStars: 16,
+        iconUrl: talent("shadow-fiend", "spiteful-curse"),
+        description:
+          '"Soul Requiem" Physical DMG dealt by Ghost is increased by 80%, and Shadow Fiend releases Soul Requiem upon death.',
+      },
+    ],
+    cores: [
+      {
+        name: "Swift Longbow",
+        skill: "Soul Requiem",
+        description: "Soul Requiem increases Attack's Physical DMG by 60%.",
+      },
+      {
+        // The popup says "Arrow Core·Core"; only the final UI suffix is removed.
+        name: "Arrow Core",
+        skill: "Soul Burn",
+        description: "Soul Burn additionally increases ATK SPD by 0.5%(1.5%).",
+      },
+      {
+        name: "Hunter's Cloak",
+        skill: "Ghost Curse",
+        description:
+          "Ghost Curse duration increased by 1 (3) s, and additionally reduces Enemies' Ranged DMG Boost by 5%(15%).",
+      },
+    ],
+    divinities: ["physical-dmg-boost", "crit-damage"],
+  },
   "sea-captain": {
     awakeningSkills: [
       {

@@ -61,6 +61,21 @@ LAYOUT = {
         "artifact": S13AM("7.30.59"),
         "artifact_popup": S13AM("7.31.05"),
     },
+    "shadow-fiend": {
+        "popups": [
+            (S13AM("8.54.22"), "Soul Burn"),
+            (S13AM("8.54.24"), "Ghost Curse"),
+            (S13AM("8.54.25"), "Destructive Gloom"),
+            (S13AM("8.54.27"), "Haunted"),
+            (S13AM("8.54.29"), "Spiteful Curse"),
+            (S13AM("8.54.30"), "Soul Requiem"),
+        ],
+        "artifact": S13AM("8.54.33"),
+        # This 706x1255 capture places the player's stars above the mask.
+        "artifact_box": (205, 243, 505, 543),
+        # Full ability popup has not been supplied; shared tier icons exist.
+        "artifact_popup": None,
+    },
 }
 
 # Popup geometry (constant across heroes at this capture size).
@@ -181,7 +196,9 @@ def main():
     os.makedirs(icons_dir, exist_ok=True)
     tier_written = set(os.listdir(icons_dir))
     for hero, cfg in LAYOUT.items():
-        needed = [f for f, _ in cfg["popups"]] + [cfg["artifact"], cfg["artifact_popup"]]
+        needed = [f for f, _ in cfg["popups"]] + [cfg["artifact"]]
+        if cfg["artifact_popup"]:
+            needed.append(cfg["artifact_popup"])
         if any(not os.path.exists(os.path.join(SRC, f)) for f in needed):
             print(f"{hero:14s} skipped (source screenshots not present)")
             continue
@@ -204,17 +221,18 @@ def main():
                     trim(transparent_panel(icon)).save(os.path.join(icons_dir, "core.png"))
                     tier_written.add("core.png")
             print(f"{hero:14s} {name:16s} panels={len(extra)} {' '.join(found)}")
-        popup = Image.open(os.path.join(SRC, cfg["artifact_popup"])).convert("RGB")
-        for tier, y in TIER_ROWS:
-            fn = f"artifact-{tier}.png"
-            if fn not in tier_written:
-                x0, x1 = TIER_BOX
-                trim(transparent_light(popup.crop((x0, y - 30, x1, y + 30)))).save(os.path.join(icons_dir, fn))
-                tier_written.add(fn)
+        if cfg["artifact_popup"]:
+            popup = Image.open(os.path.join(SRC, cfg["artifact_popup"])).convert("RGB")
+            for tier, y in TIER_ROWS:
+                fn = f"artifact-{tier}.png"
+                if fn not in tier_written:
+                    x0, x1 = TIER_BOX
+                    trim(transparent_light(popup.crop((x0, y - 30, x1, y + 30)))).save(os.path.join(icons_dir, fn))
+                    tier_written.add(fn)
         art = os.path.join(SRC, cfg["artifact"])
         im = Image.open(art).convert("RGB")
         os.makedirs(os.path.join(ROOT, "public/artifacts"), exist_ok=True)
-        circle(im.crop(ARTIFACT_BOX), inset=0).save(os.path.join(ROOT, "public/artifacts", f"{hero}.png"))
+        circle(im.crop(cfg.get("artifact_box", ARTIFACT_BOX)), inset=0).save(os.path.join(ROOT, "public/artifacts", f"{hero}.png"))
     print("icons:", ", ".join(sorted(tier_written)))
 
 

@@ -9,12 +9,16 @@ const LINKS = [
   { href: "/divinities", label: "Divinities" },
   { href: "/lineups", label: "Lineups" },
   { href: "/lineups/new", label: "Build" },
+  { href: "/about", label: "About" },
 ] as const;
 
 export function NavLinks() {
   const pathname = usePathname();
   return (
-    <nav className="flex min-w-0 items-center gap-0.5 text-sm sm:gap-1">
+    <nav
+      aria-label="Main navigation"
+      className="flex min-w-0 items-center gap-0.5 overflow-x-auto text-sm sm:gap-1"
+    >
       {LINKS.map(({ href, label }) => {
         const active =
           href === "/lineups"
@@ -24,6 +28,7 @@ export function NavLinks() {
           <Link
             key={href}
             href={href}
+            aria-current={active ? "page" : undefined}
             className={cn(
               "text-muted-foreground hover:bg-muted hover:text-foreground rounded-md px-2 py-1.5 font-medium whitespace-nowrap transition-colors sm:px-2.5",
               active && "bg-accent text-accent-foreground",

@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { asc, desc, eq, inArray } from "drizzle-orm";
 import { db, schema } from "@/db";
 import { heroDetailSeeds, type HeroAwakeningSkill } from "@/data/hero-details";
@@ -145,6 +146,13 @@ export async function syncHeroDetail(hero: Pick<Hero, "id" | "slug">) {
   if (!seed) return;
   await ensureDivinitiesSeeded();
   await db.transaction(async (tx) => {
+    // Serialize this hero's sync before checking for existing talents. A new
+    // hero can otherwise be seeded simultaneously by separate page requests.
+    await tx
+      .select({ id: schema.heroes.id })
+      .from(schema.heroes)
+      .where(eq(schema.heroes.id, hero.id))
+      .for("update");
     const existing = await tx
       .select({ id: schema.heroSkills.id, name: schema.heroSkills.name })
       .from(schema.heroSkills)
@@ -247,62 +255,63 @@ export type HeroDetail = Hero & {
   lineups: Lineup[];
 };
 
-export async function getHeroDetail(
-  slug: string,
-): Promise<HeroDetail | undefined> {
-  const [found] = await db
-    .select({ id: schema.heroes.id, slug: schema.heroes.slug })
-    .from(schema.heroes)
-    .where(eq(schema.heroes.slug, slug));
-  if (!found) return undefined;
-  await syncHeroDetail(found);
-  const [hero] = await db
-    .select()
-    .from(schema.heroes)
-    .where(eq(schema.heroes.id, found.id));
-  const [skills, cores, artifactBonuses, divinityRows, lineupRows] =
-    await Promise.all([
-      db
-        .select()
-        .from(schema.heroSkills)
-        .where(eq(schema.heroSkills.heroId, hero.id))
-        .orderBy(asc(schema.heroSkills.sortOrder)),
-      db
-        .select()
-        .from(schema.heroCores)
-        .where(eq(schema.heroCores.heroId, hero.id))
-        .orderBy(asc(schema.heroCores.sortOrder)),
-      db
-        .select()
-        .from(schema.heroArtifactBonuses)
-        .where(eq(schema.heroArtifactBonuses.heroId, hero.id))
-        .orderBy(asc(schema.heroArtifactBonuses.sortOrder)),
-      db
-        .select({ divinity: schema.divinities })
-        .from(schema.heroDivinities)
-        .innerJoin(
-          schema.divinities,
-          eq(schema.heroDivinities.divinityId, schema.divinities.id),
-        )
-        .where(eq(schema.heroDivinities.heroId, hero.id))
-        .orderBy(asc(schema.heroDivinities.position)),
-      db
-        .select({ lineup: schema.lineups })
-        .from(schema.lineupHeroes)
-        .innerJoin(
-          schema.lineups,
-          eq(schema.lineupHeroes.lineupId, schema.lineups.id),
-        )
-        .where(eq(schema.lineupHeroes.heroId, hero.id))
-        .orderBy(desc(schema.lineups.createdAt)),
-    ]);
-  return {
-    ...hero,
-    skills,
-    awakeningSkills: heroDetailSeeds[hero.slug]?.awakeningSkills ?? [],
-    cores,
-    artifactBonuses,
-    divinities: divinityRows.map((r) => r.divinity),
-    lineups: lineupRows.map((r) => r.lineup),
-  };
-}
+// Metadata and page rendering share the same load (and seed) within a request.
+export const getHeroDetail = cache(
+  async (slug: string): Promise<HeroDetail | undefined> => {
+    const [found] = await db
+      .select({ id: schema.heroes.id, slug: schema.heroes.slug })
+      .from(schema.heroes)
+      .where(eq(schema.heroes.slug, slug));
+    if (!found) return undefined;
+    await syncHeroDetail(found);
+    const [hero] = await db
+      .select()
+      .from(schema.heroes)
+      .where(eq(schema.heroes.id, found.id));
+    const [skills, cores, artifactBonuses, divinityRows, lineupRows] =
+      await Promise.all([
+        db
+          .select()
+          .from(schema.heroSkills)
+          .where(eq(schema.heroSkills.heroId, hero.id))
+          .orderBy(asc(schema.heroSkills.sortOrder)),
+        db
+          .select()
+          .from(schema.heroCores)
+          .where(eq(schema.heroCores.heroId, hero.id))
+          .orderBy(asc(schema.heroCores.sortOrder)),
+        db
+          .select()
+          .from(schema.heroArtifactBonuses)
+          .where(eq(schema.heroArtifactBonuses.heroId, hero.id))
+          .orderBy(asc(schema.heroArtifactBonuses.sortOrder)),
+        db
+          .select({ divinity: schema.divinities })
+          .from(schema.heroDivinities)
+          .innerJoin(
+            schema.divinities,
+            eq(schema.heroDivinities.divinityId, schema.divinities.id),
+          )
+          .where(eq(schema.heroDivinities.heroId, hero.id))
+          .orderBy(asc(schema.heroDivinities.position)),
+        db
+          .select({ lineup: schema.lineups })
+          .from(schema.lineupHeroes)
+          .innerJoin(
+            schema.lineups,
+            eq(schema.lineupHeroes.lineupId, schema.lineups.id),
+          )
+          .where(eq(schema.lineupHeroes.heroId, hero.id))
+          .orderBy(desc(schema.lineups.createdAt)),
+      ]);
+    return {
+      ...hero,
+      skills,
+      awakeningSkills: heroDetailSeeds[hero.slug]?.awakeningSkills ?? [],
+      cores,
+      artifactBonuses,
+      divinities: divinityRows.map((r) => r.divinity),
+      lineups: lineupRows.map((r) => r.lineup),
+    };
+  },
+);

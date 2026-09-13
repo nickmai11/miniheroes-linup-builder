@@ -132,6 +132,26 @@ Armillary Sash 8★, Threefold Arms 12★, Scorching Ember 16★; Wind Fire Whee
 once-per-battle revive) is not attached to any talent. Full descriptions are in
 `src/data/hero-details.ts`.
 
+**Shadow Fiend** (Marksman · DPS · Eternal; artifact **Soul Mask**):
+
+| Talent | Kind | Unlock | Artifact Bonus | Core |
+| ------ | ---- | ------ | -------------- | ---- |
+| Soul Requiem | Ultimate Skill | Start | — | Swift Longbow: +60% Attack's Physical DMG |
+| Soul Burn | Battle Skill | 2★ | purple: each Basic ATK/Skill Cast adds 0.6% ATK, up to 15 stacks | Arrow Core: +0.5%(1.5%) ATK SPD |
+| Ghost Curse | Enhance | 5★ | — | Hunter's Cloak: duration +1(3)s, enemy Ranged DMG Boost −5%(15%) |
+| Destructive Gloom | Special Skill | 8★ | gold: 1s stun and 14% damage-to-HP conversion; red: immediately releases Destructive Gloom once upon entering… (text cut off) | not visible in supplied popup |
+| Haunted | Passive | 12★ | — | — |
+| Spiteful Curse | Enhance | 16★ | — | — |
+
+The two red divinity icons on the Artifact tab match **Physical DMG Boost**
+(left) and **CRIT Damage** (right) in the owner's screenshot-derived catalog.
+Both gold and red artifact bonuses modify **Destructive Gloom**, so a talent may
+have more than one artifact bonus. The full Soul Mask ability popup is missing:
+its rainbow-tier ability is unrecorded and the red description is incomplete.
+Only three core panels are visible; do not invent a fourth. The popup names
+**Arrow Core·Core**; removing only the final UI suffix gives **Arrow Core**.
+Full visible descriptions are transcribed in `src/data/hero-details.ts`.
+
 ### Awakening skills (game, 2026-09-13)
 
 Hero-specific I and III are read from the Hero Awaken screenshots in
@@ -145,6 +165,8 @@ and padlock overlays are not part of the recorded hero skill.
 | Sea Captain | III | Assault | Reduces the cooldown time of Torrent and Ship Raid by 25%. | 8.42.25 |
 | Nezha | I | Samadhi Flame | Attacks deal bonus damage equal to 3% of the enemy's Max HP, capped at 150% of Nezha's Attack. | 8.42.32 |
 | Nezha | III | Lotus Ward | For every 10% max HP lost, increases own energy recovery upon taking damage by 10%. | 8.42.37 |
+| Shadow Fiend | I | Soul Reaping | Every hero death instantly restores 100 Energy and grants 30% ATK SPD for 6s; the buff refreshes instead of stacking. | 8.54.42 |
+| Shadow Fiend | III | Soul Borrowing | Gains an additional 2.5% ATK SPD and 2.5% ATK for every enemy on the battlefield. | 8.54.44 |
 
 Awakening I unlocks at **18★** and III at **22★** (owner-confirmed).
 Only I and III have been screenshotted. II and IV remain class-wide skills and
@@ -284,6 +306,9 @@ is said. These override anything marked (web).
 - 2026-09-13 — The owner's Hero Awaken screenshots show **Sea Captain I: Commander** (allies' DEF +15% from battle start until own death) and **III: Assault** (Torrent and Ship Raid cooldown −25%); **Nezha I: Samadhi Flame** (attacks add damage equal to 3% of enemy Max HP, capped at 150% of Nezha's Attack) and **III: Lotus Ward** (each 10% max HP lost increases own energy recovery upon taking damage by 10%). Nezha's III is inactive in the screenshot, but its description is visible and is recorded.
 
 - 2026-09-13 — The owner confirmed that **Awakening I unlocks at 18★ and Awakening III at 22★**. The values are stars, not seconds.
+- 2026-09-13 — The owner's new talent screenshots show **Shadow Fiend** (Marksman · DPS · Eternal): **Soul Requiem** (Ultimate), **Soul Burn** (Battle, 2★), **Ghost Curse** (Enhance, 5★), **Destructive Gloom** (Special, 8★), **Haunted** (Passive, 12★), **Spiteful Curse** (Enhance, 16★). The artifact is **Soul Mask**; its two red divinity icons match the existing **Physical DMG Boost** (left) and **CRIT Damage** (right) catalog icons.
+- 2026-09-13 — Shadow Fiend's **Soul Reaping** (Awakening I) restores 100 Energy and grants 30% ATK SPD for 6s whenever any hero dies; the buff does not stack but its duration refreshes on each trigger. **Soul Borrowing** (Awakening III) grants 2.5% ATK SPD and 2.5% ATK per enemy on the battlefield.
+- 2026-09-13 — Shadow Fiend's talent popups show a purple artifact bonus on **Soul Burn**, and both gold and red bonuses on **Destructive Gloom**. The visible cores are **Arrow Core** (Soul Burn), **Hunter's Cloak** (Ghost Curse), and **Swift Longbow** (Soul Requiem). The red bonus description is cut off after "upon entering"; the full artifact popup, rainbow ability, and any further core panel are not in this screenshot batch.
 
 ## How the app models it
 
