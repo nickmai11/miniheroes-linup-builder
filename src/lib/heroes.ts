@@ -1,7 +1,7 @@
 import "server-only";
 import { asc, desc, eq, inArray } from "drizzle-orm";
 import { db, schema } from "@/db";
-import { heroDetailSeeds } from "@/data/hero-details";
+import { heroDetailSeeds, type HeroAwakeningSkill } from "@/data/hero-details";
 import { heroSeeds } from "@/data/heroes";
 import { ensureDivinitiesSeeded } from "./divinities";
 import type {
@@ -237,6 +237,7 @@ export async function syncHeroDetail(hero: Pick<Hero, "id" | "slug">) {
 
 export type HeroDetail = Hero & {
   skills: HeroSkill[];
+  awakeningSkills: HeroAwakeningSkill[];
   cores: HeroCore[];
   /** Artifact abilities in tier order; `skillId` links the first three to a talent. */
   artifactBonuses: HeroArtifactBonus[];
@@ -298,6 +299,7 @@ export async function getHeroDetail(
   return {
     ...hero,
     skills,
+    awakeningSkills: heroDetailSeeds[hero.slug]?.awakeningSkills ?? [],
     cores,
     artifactBonuses,
     divinities: divinityRows.map((r) => r.divinity),

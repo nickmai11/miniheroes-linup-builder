@@ -8,6 +8,7 @@ import { HeroPortrait, RoleBadge } from "@/components/hero-portrait";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { ArtifactTier } from "@/db/schema";
+import { HERO_AWAKENING_STAGES } from "@/data/hero-details";
 import { versioned } from "@/lib/asset-version";
 import { getHeroBuilds } from "@/lib/builds";
 import { getHeroDetail } from "@/lib/heroes";
@@ -182,6 +183,40 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
                   })}
                 </ul>
               )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Awakening skills</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="grid gap-3 sm:grid-cols-2">
+                {HERO_AWAKENING_STAGES.map(({ stage, unlockStars }) => {
+                  const skill = hero.awakeningSkills.find(
+                    (awakening) => awakening.stage === stage,
+                  );
+                  return (
+                    <li
+                      key={stage}
+                      className="bg-background flex flex-col gap-2 rounded-lg border p-3"
+                    >
+                      <div className="flex min-w-0 flex-col">
+                        <span className="text-primary text-xs font-medium tracking-wide uppercase">
+                          Awakening {stage} · {unlockStars}★
+                        </span>
+                        {skill && (
+                          <span className="font-medium">{skill.name}</span>
+                        )}
+                      </div>
+                      <p className="text-muted-foreground text-sm">
+                        {skill?.description ??
+                          `Awakening ${stage} has not been recorded for ${hero.name} yet.`}
+                      </p>
+                    </li>
+                  );
+                })}
+              </ul>
             </CardContent>
           </Card>
 

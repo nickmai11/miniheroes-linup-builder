@@ -1,10 +1,25 @@
 import type { ArtifactTier, SkillKind } from "@/db/schema";
 
+/** Star unlock thresholds confirmed by the owner on 2026-09-13. */
+export const HERO_AWAKENING_STAGES = [
+  { stage: "I", unlockStars: 18 },
+  { stage: "III", unlockStars: 22 },
+] as const;
+
+/** Hero-specific awakenings. Class-wide II/IV belong in shared class data. */
+export type HeroAwakeningSkill = {
+  stage: (typeof HERO_AWAKENING_STAGES)[number]["stage"];
+  name: string;
+  description: string;
+  /** Owner screenshot filename under gameplay/talents/. */
+  sourceScreenshot: string;
+};
+
 /**
  * Per-hero details transcribed from the owner's in-game screenshots
- * (gameplay/talents/, gameplay/divinities/). The hero page syncs this into the
- * DB on view (syncHeroDetail in src/lib/heroes.ts). Icons come from
- * scripts/slice-talent-icons.py.
+ * (gameplay/talents/, gameplay/divinities/). Talents, artifacts, cores and divinities
+ * sync into the DB on view (syncHeroDetail in src/lib/heroes.ts); awakening skills
+ * are read directly from this file. Icons come from scripts/slice-talent-icons.py.
  */
 export type HeroDetailSeed = {
   /** The divine weapon from the Artifact tab. */
@@ -39,12 +54,30 @@ export type HeroDetailSeed = {
   cores: { name: string; skill: string; description: string }[];
   /** Mythic (red) divinity slugs: [bottom-left, bottom-right]. */
   divinities: string[];
+  /** Read directly by the server; this fixed content needs no per-view DB sync. */
+  awakeningSkills?: HeroAwakeningSkill[];
 };
 
 const talent = (hero: string, slug: string) => `/talents/${hero}/${slug}.png`;
 
 export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   "sea-captain": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Commander",
+        description:
+          "At the start of battle, increases all allies' DEF by 15% (effect disappears upon own death).",
+        sourceScreenshot: "Screenshot 2026-09-13 at 8.42.24\u202fAM.png",
+      },
+      {
+        stage: "III",
+        name: "Assault",
+        description:
+          "Reduces the cooldown time of Torrent and Ship Raid by 25%.",
+        sourceScreenshot: "Screenshot 2026-09-13 at 8.42.25\u202fAM.png",
+      },
+    ],
     artifact: {
       name: "Siren Blade",
       iconUrl: "/artifacts/sea-captain.png",
@@ -152,6 +185,22 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
     divinities: ["warrior-atk", "atk"],
   },
   nezha: {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Samadhi Flame",
+        description:
+          "Attacks deal bonus damage equal to 3% of the enemy's Max HP (capped at 150% of Nezha's Attack).",
+        sourceScreenshot: "Screenshot 2026-09-13 at 8.42.32\u202fAM.png",
+      },
+      {
+        stage: "III",
+        name: "Lotus Ward",
+        description:
+          "For every 10% max HP lost, increases own energy recovery upon taking damage by 10%.",
+        sourceScreenshot: "Screenshot 2026-09-13 at 8.42.37\u202fAM.png",
+      },
+    ],
     artifact: {
       name: "Fire-Tipped Spear",
       iconUrl: "/artifacts/nezha.png",

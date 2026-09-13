@@ -57,14 +57,21 @@ Rule (game): a hero has four awakening skills, I–IV. **Awakening skills II and
 are identical for every hero of the same class**; only I and III are hero-specific.
 The app should store the class-wide II/IV once per class, not per hero.
 
+Owner requirement (2026-09-13): hero pages must include the hero-specific
+**Awakening I and III**, transcribed from `gameplay/talents/` screenshots.
+Awakening skills are text-only; the owner does not want icons for them.
+The owner confirmed the unlock thresholds: **Awakening I at 18★** and
+**Awakening III at 22★**. Show these alongside the stage labels.
+
 Not part of the hero page: Level / ATK / HP / DEF / power (they depend on the
 player's investment), skins, and the fan "Tank / DPS" label.
 
 Where each lives in the game (owner screenshots, 2026-09-12): **talents** = the
 Talent tab (six skills); **cores** = the four `<Gear>·Core` bonuses shown under a
 talent; **divinities** = the six badges around the artifact on the Artifact tab
-(only the two red / mythic ones are recorded); **awakening skills** = not yet
-screenshotted.
+(only the two red / mythic ones are recorded). **Awakening skills** appear on the
+Hero Awaken screen; I and III for Sea Captain and Nezha were supplied in
+`gameplay/talents/` on 2026-09-13.
 
 ### Talents, artifact and cores (game, 2026-09-12)
 
@@ -124,6 +131,24 @@ Armillary Sash 8★, Threefold Arms 12★, Scorching Ember 16★; Wind Fire Whee
 (ultimate) from the start. The rainbow-tier skill **Immortal Divine Body** (a
 once-per-battle revive) is not attached to any talent. Full descriptions are in
 `src/data/hero-details.ts`.
+
+### Awakening skills (game, 2026-09-13)
+
+Hero-specific I and III are read from the Hero Awaken screenshots in
+`gameplay/talents/`. The named skill is the final node, with its description in
+the panel below. The player's Activated/Inactivated state, currency inventory,
+and padlock overlays are not part of the recorded hero skill.
+
+| Hero | Stage | Skill | Effect | Screenshot (2026-09-13 AM) |
+| ---- | ----- | ----- | ------ | ------------------------- |
+| Sea Captain | I | Commander | At the start of battle, increases all allies' DEF by 15%; the effect disappears upon own death. | 8.42.24 |
+| Sea Captain | III | Assault | Reduces the cooldown time of Torrent and Ship Raid by 25%. | 8.42.25 |
+| Nezha | I | Samadhi Flame | Attacks deal bonus damage equal to 3% of the enemy's Max HP, capped at 150% of Nezha's Attack. | 8.42.32 |
+| Nezha | III | Lotus Ward | For every 10% max HP lost, increases own energy recovery upon taking damage by 10%. | 8.42.37 |
+
+Awakening I unlocks at **18★** and III at **22★** (owner-confirmed).
+Only I and III have been screenshotted. II and IV remain class-wide skills and
+must not be copied into each hero's data when recorded later.
 
 ### Divinities (game, 2026-09-12)
 
@@ -253,6 +278,13 @@ is said. These override anything marked (web).
 - 2026-09-13 — Nezha's mythic divinities (Artifact screenshot): **ATK** (left) and **Melee DMG Boost** (right) — both already in the catalog.
 - 2026-09-13 — Nezha's rainbow-tier artifact skill is **Immortal Divine Body**: on taking fatal damage, instantly restore 55% of max HP and gain 30% DEF and 100% Energy Regen SPD per second for 8s, once per battle. A revive effect, not attached to any talent (like Sea Captain's Ship Raid).
 
+- 2026-09-13 — Hero pages must include the hero-specific **Awakening I and III**; the owner directed transcription from the screenshots in `gameplay/talents/`.
+- 2026-09-13 — The owner specified **"awk I: 18s awk III: 22s"**, subsequently confirmed to mean star unlock thresholds.
+- 2026-09-13 — **Awakening skills do not need icons.** Show the stage, skill name and description as text.
+- 2026-09-13 — The owner's Hero Awaken screenshots show **Sea Captain I: Commander** (allies' DEF +15% from battle start until own death) and **III: Assault** (Torrent and Ship Raid cooldown −25%); **Nezha I: Samadhi Flame** (attacks add damage equal to 3% of enemy Max HP, capped at 150% of Nezha's Attack) and **III: Lotus Ward** (each 10% max HP lost increases own energy recovery upon taking damage by 10%). Nezha's III is inactive in the screenshot, but its description is visible and is recorded.
+
+- 2026-09-13 — The owner confirmed that **Awakening I unlocks at 18★ and Awakening III at 22★**. The values are stars, not seconds.
+
 ## How the app models it
 
 - `heroes` table: `slug`, `name`, `role` (warrior | marksman | mage | support),
@@ -272,6 +304,11 @@ is said. These override anything marked (web).
 - `hero_skills` table: `heroId`, `kind` (ultimate | battle | special | attribute |
   enhance | passive), `name`, `description`, `unlockStars`, `iconUrl`, `sortOrder` —
   the six talents.
+- Hero-specific awakening I/III: `heroDetailSeeds[slug].awakeningSkills` in
+  `src/data/hero-details.ts`, with stage, name, description and source
+  screenshot filename. `getHeroDetail()` includes this fixed content directly,
+  without adding database queries or per-view synchronization writes.
+  `HERO_AWAKENING_STAGES` stores the shared I → 18★ and III → 22★ thresholds.
 - `hero_artifact_bonuses` table: `heroId`, `tier` (purple | gold | red | rainbow),
   `skillId` (the talent it modifies; null for the rainbow-tier artifact skill),
   `name` (rainbow only), `description`, `sortOrder`. A bonus attached to a talent is

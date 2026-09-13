@@ -15,13 +15,18 @@ button in the left column):
 | Header         | class badge + name, class label                                                                                                                                                                                                                  | `heroes` row (from Archive slices)                      |
 | Notes          | free text, only if set                                                                                                                                                                                                                           | `heroes.notes`                                          |
 | **Talents**    | six cards: icon, kind, unlock stars, name, description; under a card: its Artifact Bonus (tier diamond) and Core bonus (core gem)                                                                                                                | `hero_skills`, `hero_artifact_bonuses`, `hero_cores`    |
+| **Awakening skills** | I (18★) and III (22★): stage, unlock stars, skill name and description, without icons; an unrecorded stage has an empty state | `HERO_AWAKENING_STAGES` and `heroDetailSeeds[slug].awakeningSkills` in `src/data/hero-details.ts` |
 | **Artifacts**  | artifact image + name; one row per quality tier (purple, gold, red, rainbow) with the diamond, the talent it modifies or the artifact's own skill, and the description                                                                           | `heroes.artifactName/IconUrl`, `hero_artifact_bonuses`  |
 | **Divinities** | the hero's mythic (red) divinities as equal-width badge cards, each linking to `/divinities/<slug>` (the heroes that share it)                                                                                                                   | `hero_divinities` → `divinities`                        |
 | **Builds**     | the owner's builds for the hero: name, notes, chosen rune attributes grouped by rune type (with max value) and weapon attributes, each in pick order with a rank number (first picked = most important); editable in place (new / edit / delete) | `hero_builds`, `hero_build_runes`, `hero_build_weapons` |
 | Lineups        | saved lineups that use the hero                                                                                                                                                                                                                  | `lineup_heroes`                                         |
 
-Still to build: **Awakening skills** (I–IV; II and IV are shared per class, so store
-those once per class). No screenshots yet.
+Awakening I and III are recorded for **Sea Captain** and **Nezha**. II and IV
+remain unrecorded; they are shared per class and must be stored once per class
+when their screenshots are supplied.
+
+The owner confirmed I unlocks at **18★** and III at **22★**. The shared thresholds
+live in `HERO_AWAKENING_STAGES`; show them beside the stage, including empty states.
 
 Build imports use an outline button matching **New build**. The picker searches
 hero and build names on the server, loads twelve results per page only when opened,
@@ -56,11 +61,16 @@ keep the same device/scale). Put them in:
 | `gameplay/talents/`    | Talent tab with **each** talent's popup open — the popup must show the talent, and its Artifact Bonus and Core panels when they exist | 6     |
 | `gameplay/talents/`    | Artifact tab (the weapon with the six divinity badges)                                                                                | 1     |
 | `gameplay/talents/`    | Artifact popup (tap the weapon: name, stars, four tier abilities)                                                                     | 1     |
+| `gameplay/talents/`    | Hero Awaken screen with I and III selected; show each skill's name and full description | 2 |
 | `gameplay/divinities/` | A divinity popup for any **red** badge whose divinity is not yet in the catalog                                                       | 0+    |
 
 From these you read: talent kind / name / description; unlock order; artifact
 bonuses and their tier; core names and text; the artifact's name and rainbow-tier
 skill; the two mythic divinities (left, right).
+
+Awakening screenshots currently use 706×1255 captures. Each stage's named skill
+is the final node above the description panel. Preserve the text even if the
+player has not activated the skill; activation state is not hero data.
 
 Unlock order is fixed: ultimate in the centre (available from the start), then the
 ring **clockwise from the lower-left** at **2★, 5★, 8★, 12★, 16★**. Verify against
@@ -82,6 +92,8 @@ the screenshot positions; the compendium cards list the same order.
    `artifact { name, iconUrl, bonuses[tier, skill | name, description] }`,
    `skills[kind, name, unlockStars, iconUrl, description]` in unlock order,
    `cores[name, skill, description]`, `divinities[left-slug, right-slug]`.
+   Add `awakeningSkills[stage, name, description, sourceScreenshot]`
+   for I and III. Preserve the source screenshot filename for verification.
    `skill` strings must match a talent name exactly (that is how bonuses and cores
    link to talents).
 4. **Doc** — `docs/mini-heroes-magic-throne.md`: log any new game fact the owner
@@ -95,12 +107,19 @@ which upserts the seed (skills matched by name, cores / bonuses / divinities
 replaced, artifact name and icon set). Open `/heroes/<slug>` once and the DB is
 up to date; there is no separate seed command.
 
+Awakening skills are read directly from the versioned hero data file by
+`getHeroDetail()`. They do not require a database migration, synchronization
+write, or an additional database query on page load.
+
 ## 4. Data model (for reference)
 
 - `heroes`: `+ artifactName`, `artifactIconUrl`.
 - `hero_skills`: `kind` (ultimate | battle | special | attribute | enhance |
   passive), `name`, `description`, `unlockStars` (0 for the ultimate), `iconUrl`,
   `sortOrder`.
+- `HeroAwakeningSkill` in `src/data/hero-details.ts`: `stage` (I | III), `name`,
+  `description`, `sourceScreenshot`. The optional `awakeningSkills`
+  array is served as part of `HeroDetail`; unrecorded heroes get an empty array.
 - `hero_artifact_bonuses`: `tier` (purple | gold | red | rainbow), `skillId`
   (null for rainbow), `name` (rainbow only), `description`, `sortOrder`.
 - `hero_cores`: `skillId`, `name`, `description`, `sortOrder`.
@@ -119,6 +138,7 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
 
 - [ ] Six talents, kinds match the in-game labels, stars 0/2/5/8/12/16 in clockwise order
 - [ ] Every talent has an icon; no gold chevron or text fragments in it
+- [ ] Awakening I and III have screenshot-verified names and descriptions; no icons
 - [ ] Artifact name, image, and four tier abilities; the first three link to talents
 - [ ] Four cores, each linked to a talent
 - [ ] Two mythic divinities, both present in the catalog with icons
@@ -128,7 +148,7 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
 
 ## 6. Known gaps
 
-- Awakening skills: not modelled or displayed.
+- Awakening II and IV: class-wide skills are not recorded or displayed yet.
 - The rainbow-tier artifact skill has no icon (the game shows it as text only).
 - Divinity growth values per level are not stored (only name, kind, icon).
 - "Tank / DPS" position and "Eternal" quality tags are real in-game labels but are
