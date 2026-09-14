@@ -1254,8 +1254,11 @@ Hero cards in saved lineup lists, lineup detail pages, and the lineup builder
 Saved lineups are editable, including their name, notes, heroes, and each hero's
 pet/relic assignments (owner, 2026-09-13). A hero can be assigned one or more pets
 and one or more relics within that lineup. Assignment controls and selected icons
-belong inside the hero card, using the same icon-and-name presentation as
-divinities. Assignments are specific to a lineup, not a hero's global catalog data.
+belong inside the hero card. Attached pets and relics display as icons only,
+without visible item names; retain the Pets and Relics category labels on lineup
+details (owner clarification, 2026-09-14). Names remain
+available through accessible image labels and on hover. Assignments are specific
+to a lineup, not a hero's global catalog data.
 Pet/relic pickers use floating multi-select dropdowns with a fixed-height selected
 icon preview, so opening the options or changing selections does not shift the
 surrounding hero cards (owner, 2026-09-13).
@@ -1265,6 +1268,9 @@ a popover; hovering over a core shows its linked skill in a popover (owner,
 2026-09-13). Build selection uses a floating dropdown without shifting cards.
 Build names in lineup cards and the editor show an **eye icon** beside the name
 to make their hover/tap stats preview discoverable (owner, 2026-09-13).
+The lineup details toolbar places Edit, Delete, and Clone on the left, in that
+order. Share appears in the page title row. There is no New lineup button
+(owner, 2026-09-14).
 Lineups also include fishes, selected from a database catalog in the builder
 (owner, 2026-09-13).
 The owner also requested a **Clone** option. It opens an editable copy with the
@@ -1304,6 +1310,20 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-14 — Move Share to the same row as the lineup title, superseding its
+  placement on the right of the toolbar.
+
+- 2026-09-14 — Remove New lineup from the lineup details toolbar; place Edit,
+  Delete, and Clone on the left and Share on the right.
+
+- 2026-09-14 — Keep the Pets and Relics labels; only the attached item names
+  should be hidden, leaving their icons visible.
+
+- 2026-09-14 — Rearrange the toolbar buttons on lineup details.
+
+- 2026-09-14 — In hero lineups, show only the icons of pets and relics attached
+  to each hero.
 
 - 2026-09-14 — On the build page, clicking a lineup slot should open the hero
   pool in a dialog. Rearrange the layout so the other input fields use the full width.

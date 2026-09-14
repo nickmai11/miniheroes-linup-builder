@@ -3,7 +3,7 @@ import { hasAppAccess, requirePageAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Copy, Pencil, Plus, Trash2 } from "lucide-react";
+import { Copy, Pencil, Trash2 } from "lucide-react";
 import { HeroName, HeroPortrait } from "@/components/hero-portrait";
 import { LineupFishes } from "@/components/lineup-fishes";
 import { LineupAssignments } from "@/components/lineup-assignments";
@@ -52,38 +52,30 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
       description={t("Saved {date}", {
         date: formatDate(lineup.createdAt, true),
       })}
+      actions={<LineupShare lineupId={lineup.id} canInvite={canEdit} />}
       width="max-w-4xl"
     >
-      <div className="flex flex-wrap items-start gap-2">
-        <LineupShare lineupId={lineup.id} canInvite={canEdit} />
-        {canEdit && (
-          <>
-            <Link
-              href={`/lineups/${lineup.id}/edit`}
-              className={buttonVariants()}
-            >
-              <Pencil data-icon="inline-start" /> {t("Edit lineup")}
-            </Link>
-            <Link
-              href={`/lineups/new?clone=${lineup.id}`}
-              className={buttonVariants({ variant: "outline" })}
-            >
-              <Copy data-icon="inline-start" /> {t("Clone lineup")}
-            </Link>
-            <Link
-              href="/lineups/new"
-              className={buttonVariants({ variant: "outline" })}
-            >
-              <Plus data-icon="inline-start" /> {t("New lineup")}
-            </Link>
-            <form action={deleteLineup.bind(null, lineup.id)}>
-              <Button type="submit" variant="destructive">
-                <Trash2 data-icon="inline-start" /> {t("Delete")}
-              </Button>
-            </form>
-          </>
-        )}
-      </div>
+      {canEdit && (
+        <div className="flex min-w-0 flex-wrap items-start gap-2">
+          <Link
+            href={`/lineups/${lineup.id}/edit`}
+            className={buttonVariants()}
+          >
+            <Pencil data-icon="inline-start" /> {t("Edit lineup")}
+          </Link>
+          <form action={deleteLineup.bind(null, lineup.id)}>
+            <Button type="submit" variant="destructive">
+              <Trash2 data-icon="inline-start" /> {t("Delete")}
+            </Button>
+          </form>
+          <Link
+            href={`/lineups/new?clone=${lineup.id}`}
+            className={buttonVariants({ variant: "outline" })}
+          >
+            <Copy data-icon="inline-start" /> {t("Clone lineup")}
+          </Link>
+        </div>
+      )}
 
       <ul className="grid grid-cols-2 items-start gap-3 sm:grid-cols-3 md:grid-cols-5">
         {lineup.slots.map((hero, i) => (

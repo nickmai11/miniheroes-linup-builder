@@ -28,7 +28,7 @@ export function AssignmentIcon({
   );
 }
 
-/** Shared by saved hero cards and the editor's multi-select controls. */
+/** Icon-only assignments for saved lineup hero cards. */
 export function LineupAssignments({
   pets,
   relics,
@@ -48,7 +48,7 @@ export function LineupAssignments({
       ].map(
         ({ label, kind, items }) =>
           items.length > 0 && (
-            <div key={label}>
+            <div key={kind}>
               {!compact && (
                 <p className="text-muted-foreground mb-1 text-xs font-medium">
                   {label}
@@ -59,22 +59,13 @@ export function LineupAssignments({
                   <li
                     key={item.id}
                     title={gameLabel(kind, item)}
-                    className={
-                      compact
-                        ? ""
-                        : "bg-muted/50 flex w-full items-center gap-1.5 rounded p-1 text-xs"
-                    }
+                    className="shrink-0"
                   >
                     <AssignmentIcon
                       kind={kind}
                       item={item}
                       size={compact ? 24 : 28}
                     />
-                    {!compact && (
-                      <span className="min-w-0 break-words">
-                        {gameLabel(kind, item)}
-                      </span>
-                    )}
                   </li>
                 ))}
               </ul>
