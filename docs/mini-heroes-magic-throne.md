@@ -1243,6 +1243,10 @@ also required; builds, pets, relics, fishes, and notes can be left empty.
 There is **no "Front 1 / Front 2 / Back" slot naming** in the game (owner, 2026-09-12).
 The app labels slots plainly _Slot 1–5_ until the owner describes the real formation.
 
+Clicking a slot in the lineup builder opens the hero pool in a dialog. The name
+and notes use the full page content width below the lineup and fish controls
+(owner, 2026-09-14).
+
 Hero cards in saved lineup lists, lineup detail pages, and the lineup builder
 (both the hero picker and selected slots) must not display divinities
 (owner, 2026-09-13).
@@ -1300,6 +1304,9 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-14 — On the build page, clicking a lineup slot should open the hero
+  pool in a dialog. Rearrange the layout so the other input fields use the full width.
 
 - 2026-09-14 — Add an option to clone a saved hero build.
 

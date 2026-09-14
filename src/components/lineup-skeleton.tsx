@@ -2,8 +2,6 @@
 
 import { useI18n } from "@/lib/i18n/client";
 import {
-  HeroFiltersSkeleton,
-  HeroGridSkeleton,
   LoadingPage,
   PageHeadingSkeleton,
   Skeleton,
@@ -77,35 +75,23 @@ export function LineupBuilderSkeleton({
 
         <LineupFishesSkeleton picker />
 
-        <div className="grid items-start gap-8 lg:grid-cols-[1fr_300px]">
-          <section className="flex min-w-0 flex-col gap-4">
-            <h2 className="font-semibold">{t("Choose heroes")}</h2>
-            <HeroFiltersSkeleton />
-            <Skeleton className="h-5.5 w-44" />
-            <HeroGridSkeleton
-              count={10}
-              compact
-              className="grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5"
-            />
-          </section>
-          <Card className="lg:sticky lg:top-20">
-            <CardHeader>
-              <CardTitle>{t("Lineup details")}</CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-4">
-              <div className="flex flex-col gap-1.5">
-                <Skeleton className="h-4 w-12" />
-                <Skeleton className="h-8 w-full" />
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-36 w-full" />
-              </div>
-              <Skeleton className="h-9 w-full" />
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("Lineup details")}</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1.5">
+              <Skeleton className="h-4 w-12" />
               <Skeleton className="h-8 w-full" />
-            </CardContent>
-          </Card>
-        </div>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-36 w-full" />
+            </div>
+            <Skeleton className="h-9 w-full" />
+            <Skeleton className="h-8 w-full" />
+          </CardContent>
+        </Card>
       </div>
     </LoadingPage>
   );

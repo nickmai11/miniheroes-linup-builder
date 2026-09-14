@@ -5,7 +5,8 @@ import { useI18n } from "@/lib/i18n/client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Plus, Search, X } from "lucide-react";
-import { useMemo, useState, useTransition } from "react";
+import { useId, useMemo, useRef, useState, useTransition } from "react";
+import { Dialog } from "@base-ui/react/dialog";
 import { LINEUP_SIZE, type Fish } from "@/db/schema";
 import type { HeroWithDivinities } from "@/lib/heroes";
 import type { LineupWithHeroes } from "@/lib/lineups";
@@ -68,6 +69,8 @@ export function LineupBuilder({
       initial[0] = { heroId: pre.id, buildId: null, petIds: [], relicIds: [] };
     return initial;
   });
+  const heroPoolId = useId();
+  const slotTriggerRef = useRef<HTMLButtonElement | null>(null);
   const [activeSlot, setActiveSlot] = useState<number | null>(null);
   const [name, setName] = useState(initialDraft?.name ?? "");
   const [fishSelections, setFishSelections] = useState<FishSelection[]>(
@@ -104,24 +107,21 @@ export function LineupBuilder({
   }, [heroes, query, role]);
 
   function pickHero(heroId: number) {
+    if (activeSlot === null || pending) return;
     setError(null);
     setSlots((prev) => {
       const existing = prev.findIndex((slot) => slot?.heroId === heroId);
       const next = [...prev];
       if (existing !== -1) {
-        if (activeSlot !== null && activeSlot !== existing) {
+        if (activeSlot !== existing) {
           // Move the entire assignment with its hero, swapping occupied slots.
           [next[activeSlot], next[existing]] = [
             next[existing],
             next[activeSlot],
           ];
-        } else {
-          next[existing] = null;
         }
       } else {
-        const target = activeSlot ?? prev.indexOf(null);
-        if (target === -1) return prev;
-        next[target] = { heroId, buildId: null, petIds: [], relicIds: [] };
+        next[activeSlot] = { heroId, buildId: null, petIds: [], relicIds: [] };
       }
       return next;
     });
@@ -206,8 +206,15 @@ export function LineupBuilder({
                 </div>
                 <button
                   type="button"
-                  onClick={() => setActiveSlot(active ? null : i)}
-                  aria-pressed={active}
+                  onClick={(event) => {
+                    slotTriggerRef.current = event.currentTarget;
+                    setQuery("");
+                    setRole("all");
+                    setActiveSlot(i);
+                  }}
+                  aria-haspopup="dialog"
+                  aria-expanded={active}
+                  aria-controls={active ? heroPoolId : undefined}
                   aria-label={t("{slot}: {hero}", {
                     slot: t(SLOT_LABELS[i]),
                     hero: hero ? gameLabel("hero", hero) : t("Empty"),
@@ -269,7 +276,7 @@ export function LineupBuilder({
                   </>
                 ) : (
                   <p className="text-muted-foreground py-2 text-center text-xs">
-                    {t("Choose a hero below")}
+                    {t("Click the slot to choose a hero")}
                   </p>
                 )}
               </li>
@@ -293,141 +300,164 @@ export function LineupBuilder({
         disabled={pending}
       />
 
-      <div className="grid items-start gap-8 lg:grid-cols-[1fr_300px]">
-        <section
-          className="flex min-w-0 flex-col gap-4"
-          aria-label={t("Choose heroes")}
-        >
-          <h2 className="font-semibold">{t("Choose heroes")}</h2>
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="relative">
-              <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2" />
-              <Input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder={t("Search heroes…")}
-                aria-label={t("Search heroes")}
-                className="w-56 pl-8"
-              />
-            </div>
-            <div className="max-w-full overflow-x-auto">
-              <RoleFilterGroup value={role} onChange={setRole} />
-            </div>
-          </div>
-          <p className="text-muted-foreground text-sm" aria-live="polite">
-            {activeSlot !== null
-              ? t(
-                  "Pick a hero for {slot}. Picking a selected hero swaps its position and assignments.",
-                  { slot: t(SLOT_LABELS[activeSlot]) },
-                )
-              : t(
-                  "Click a hero to add or remove it. Choose a slot above first to replace or move a hero.",
-                )}
-          </p>
-          <ul className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5">
-            {visible.map((hero) => {
-              const isSelected = selected.has(hero.id);
-              return (
-                <li key={hero.id}>
-                  <button
-                    type="button"
-                    onClick={() => pickHero(hero.id)}
-                    disabled={
-                      !isSelected &&
-                      filled === LINEUP_SIZE &&
-                      activeSlot === null
-                    }
-                    title={hero.notes || gameLabel("hero", hero)}
-                    aria-pressed={isSelected}
-                    className={cn(
-                      "bg-card hover:border-primary/60 focus-visible:ring-ring/50 flex w-full flex-col gap-1 rounded-lg border p-1 text-left shadow-xs transition-all focus-visible:ring-3 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-40",
-                      isSelected && "border-primary opacity-50",
-                    )}
+      <Dialog.Root
+        open={activeSlot !== null}
+        onOpenChange={(open) => {
+          if (!open) setActiveSlot(null);
+        }}
+      >
+        <Dialog.Portal>
+          <Dialog.Backdrop className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" />
+          <Dialog.Viewport className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <Dialog.Popup
+              id={heroPoolId}
+              finalFocus={slotTriggerRef}
+              className="bg-background flex max-h-[calc(100dvh-2rem)] w-full max-w-3xl flex-col overflow-hidden rounded-xl border shadow-2xl outline-none"
+            >
+              <div className="flex shrink-0 flex-col gap-3 border-b p-4 sm:p-6">
+                <div className="flex items-center justify-between gap-3">
+                  <Dialog.Title className="font-heading text-xl font-semibold">
+                    {t("Choose heroes")}
+                    {activeSlot !== null && ` · ${t(SLOT_LABELS[activeSlot])}`}
+                  </Dialog.Title>
+                  <Dialog.Close
+                    aria-label={t("Close hero pool")}
+                    className={buttonVariants({
+                      variant: "ghost",
+                      size: "icon",
+                    })}
                   >
-                    <HeroPortrait
-                      hero={hero}
-                      sizes="(max-width: 640px) 33vw, 160px"
-                    />
-                    <HeroName
-                      hero={hero}
-                      className="flex min-h-9 w-full items-center justify-center text-center text-xs font-medium"
-                    />
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-          {visible.length === 0 && (
-            <p className="text-muted-foreground py-4 text-sm">
-              {t("No heroes match your search.")}
+                    <X className="size-5" />
+                  </Dialog.Close>
+                </div>
+                <Dialog.Description className="text-muted-foreground text-sm">
+                  {activeSlot !== null &&
+                    t(
+                      "Pick a hero for {slot}. Picking a selected hero swaps its position and assignments.",
+                      { slot: t(SLOT_LABELS[activeSlot]) },
+                    )}
+                </Dialog.Description>
+                <div className="relative">
+                  <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2" />
+                  <Input
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder={t("Search heroes…")}
+                    aria-label={t("Search heroes")}
+                    className="w-full pl-8"
+                  />
+                </div>
+                <div className="max-w-full overflow-x-auto">
+                  <RoleFilterGroup value={role} onChange={setRole} />
+                </div>
+              </div>
+              <div className="min-h-0 overflow-y-auto overscroll-contain p-4 sm:p-6">
+                <ul className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5">
+                  {visible.map((hero) => {
+                    const isSelected = selected.has(hero.id);
+                    return (
+                      <li key={hero.id}>
+                        <button
+                          type="button"
+                          onClick={() => pickHero(hero.id)}
+                          disabled={pending}
+                          title={hero.notes || gameLabel("hero", hero)}
+                          aria-pressed={isSelected}
+                          className={cn(
+                            "bg-card hover:border-primary/60 focus-visible:ring-ring/50 flex w-full flex-col gap-1 rounded-lg border p-1 text-left shadow-xs transition-all focus-visible:ring-3 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-40",
+                            isSelected && "border-primary opacity-50",
+                          )}
+                        >
+                          <HeroPortrait
+                            hero={hero}
+                            sizes="(max-width: 640px) 30vw, 160px"
+                          />
+                          <HeroName
+                            hero={hero}
+                            className="flex min-h-9 w-full items-center justify-center text-center text-xs font-medium"
+                          />
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+                {visible.length === 0 && (
+                  <p
+                    className="text-muted-foreground py-4 text-sm"
+                    role="status"
+                  >
+                    {t("No heroes match your search.")}
+                  </p>
+                )}
+              </div>
+            </Dialog.Popup>
+          </Dialog.Viewport>
+        </Dialog.Portal>
+      </Dialog.Root>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>{t("Lineup details")}</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="lineup-name">{t("Name")}</Label>
+            <Input
+              id="lineup-name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder={t("e.g. Arena anti-mage")}
+              maxLength={120}
+              required
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="lineup-notes">{t("Why it works")}</Label>
+            <Textarea
+              id="lineup-notes"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder={t(
+                "Positioning, skill order, what it counters, gear priorities…",
+              )}
+              rows={6}
+              maxLength={5000}
+            />
+          </div>
+          {error && (
+            <p role="alert" className="text-destructive text-sm">
+              {t(error)}
             </p>
           )}
-        </section>
-
-        <Card className="lg:sticky lg:top-20">
-          <CardHeader>
-            <CardTitle>{t("Lineup details")}</CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-4">
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="lineup-name">{t("Name")}</Label>
-              <Input
-                id="lineup-name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder={t("e.g. Arena anti-mage")}
-                maxLength={120}
-                required
-              />
-            </div>
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="lineup-notes">{t("Why it works")}</Label>
-              <Textarea
-                id="lineup-notes"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder={t(
-                  "Positioning, skill order, what it counters, gear priorities…",
-                )}
-                rows={6}
-                maxLength={5000}
-              />
-            </div>
-            {error && (
-              <p role="alert" className="text-destructive text-sm">
-                {t(error)}
-              </p>
+          {filled < LINEUP_SIZE && (
+            <p className="text-muted-foreground text-sm">
+              {t("Pick all five heroes before saving")}
+            </p>
+          )}
+          <Button
+            onClick={submit}
+            disabled={pending || filled !== LINEUP_SIZE || !name.trim()}
+            size="lg"
+          >
+            {pending
+              ? t("Saving…")
+              : lineup
+                ? t("Save changes")
+                : t("Save lineup")}
+          </Button>
+          <Link
+            href={sourceLineup ? `/lineups/${sourceLineup.id}` : "/lineups"}
+            className={cn(
+              buttonVariants({ variant: "outline" }),
+              pending && "pointer-events-none",
             )}
-            {filled < LINEUP_SIZE && (
-              <p className="text-muted-foreground text-sm">
-                {t("Pick all five heroes before saving")}
-              </p>
-            )}
-            <Button
-              onClick={submit}
-              disabled={pending || filled !== LINEUP_SIZE || !name.trim()}
-              size="lg"
-            >
-              {pending
-                ? t("Saving…")
-                : lineup
-                  ? t("Save changes")
-                  : t("Save lineup")}
-            </Button>
-            <Link
-              href={sourceLineup ? `/lineups/${sourceLineup.id}` : "/lineups"}
-              className={cn(
-                buttonVariants({ variant: "outline" }),
-                pending && "pointer-events-none",
-              )}
-              aria-disabled={pending}
-              tabIndex={pending ? -1 : undefined}
-            >
-              {t("Cancel")}
-            </Link>
-          </CardContent>
-        </Card>
-      </div>
+            aria-disabled={pending}
+            tabIndex={pending ? -1 : undefined}
+          >
+            {t("Cancel")}
+          </Link>
+        </CardContent>
+      </Card>
     </fieldset>
   );
 }
