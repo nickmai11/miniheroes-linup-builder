@@ -81,8 +81,10 @@ containing `?ic=CODE` is also ready to copy and opens the production app at
 The former address `miniheroes-linup-builder.vercel.app` stays attached to the
 same deployment and forwards every page to the new one, keeping unused
 invitation links intact. A browser registered on the old address is moved
-along: the proxy there rotates its device token, sends it once in the redirect,
-and the new address exchanges it for its own cookie. Do not set a Vercel-level
+along: the proxy there adds a sealed, two-minute copy of its device token to
+the redirect, and the new address exchanges that copy for a fresh cookie,
+retiring the old one only at that moment. The seal is derived from
+`DATABASE_URL`, which every host already shares. Do not set a Vercel-level
 redirect on the old domain, or that hand-off never runs and existing visitors
 would need a fresh invitation. The hosts are listed in `src/lib/site-url.ts`.
 

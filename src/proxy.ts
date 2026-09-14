@@ -6,6 +6,7 @@ import {
   rotateDeviceToken,
 } from "@/lib/invitations";
 import { isLocalEditingAllowed } from "@/lib/local-edit-policy";
+import { openDeviceTransfer, sealDeviceTransfer } from "@/lib/device-transfer";
 import { PRODUCTION_APP_URL, isLegacyAppHost } from "@/lib/site-url";
 import { isPublicPage } from "@/lib/public-urls";
 import { isPublicPageAsset } from "@/lib/public-url-assets";
@@ -70,16 +71,17 @@ export async function proxy(request: NextRequest) {
 
   if (isLegacyAppHost(requestedHost(request.headers))) {
     // The old address keeps every path and query, including unused invitation
-    // links. A registered browser is moved with a one-time token: its old
-    // cookie stops working here and is exchanged for a new one over there.
+    // links. A registered browser also receives a sealed, short-lived copy of
+    // its token. Nothing changes here, so a request that never follows the
+    // redirect (a prefetch, a closed tab) costs nothing; the new address
+    // exchanges the copy for its own cookie and only then retires this one.
     const target = new URL(`${path}${url.search}`, PRODUCTION_APP_URL);
     target.searchParams.delete(TRANSFER_PARAM);
     if (isPageNavigation(request, path)) {
+      const token = request.cookies.get(DEVICE_COOKIE)?.value;
       try {
-        const transfer = await rotateDeviceToken(
-          request.cookies.get(DEVICE_COOKIE)?.value,
-        );
-        if (transfer) target.searchParams.set(TRANSFER_PARAM, transfer);
+        if (isDeviceToken(token) && (await findRegisteredDevice(token)))
+          target.searchParams.set(TRANSFER_PARAM, sealDeviceTransfer(token));
       } catch {
         return unavailable();
       }
@@ -135,13 +137,14 @@ export async function proxy(request: NextRequest) {
       url.searchParams.has(TRANSFER_PARAM) &&
       isPageNavigation(request, path)
     ) {
-      // Exchange the one-time token for this host's own cookie, then drop it
-      // from the address. A used or unknown token simply reaches the gate.
+      // Exchange the sealed token for this host's own cookie, then drop it from
+      // the address. Rotating retires the old host's cookie and the copy at
+      // once; a stale or forged copy simply reaches the gate.
       const clean = url.clone();
       clean.searchParams.delete(TRANSFER_PARAM);
       const response = NextResponse.redirect(clean);
       const moved = await rotateDeviceToken(
-        url.searchParams.get(TRANSFER_PARAM),
+        openDeviceTransfer(url.searchParams.get(TRANSFER_PARAM)),
       );
       if (moved) setDeviceCookie(response, moved);
       return finish(response);

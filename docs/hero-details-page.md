@@ -288,6 +288,32 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
 
 ## 6. Known gaps
 
+- **September 14, 9.58–10.02 AM readiness review (not imported):** 162 pending
+  screenshots plus Snowoman's two **10.10 AM** follow-ups cover twelve heroes
+  without detail entries. **Snowoman, Bamboo Hat, Fire
+  Sorceress, Red Hood, Little Goblin, Radiant Angel, Diva, Little Deer, Lucifer,
+  Captain Pilot, Li Bai, and Lady Pan** have six complete talents, four linked
+  cores, artifact artwork/all four abilities, and two catalog-matched mythic
+  divinities, with existing owner-sourced Archive portraits. They still need
+  **Awakening I (18★) and III (22★)**. No awakening exclusion was applied to
+  this batch. **Snowoman's Blizzard/fourth-core gap is resolved:**
+  `Screenshot 2026-09-14 at 10.10.23 AM.png` supplies the full ultimate
+  description (**3 waves, 80% of ATK as Magic DMG each**) and **Crystal Staff →
+  Blizzard** (**20%(60%) of Attack** as extra Magic DMG). Use the full central
+  icon from **9.58.26 AM** with a dedicated ring crop; the new popup is slightly
+  scrolled at the top. The **10.10.48 AM** follow-up reconfirms **Tome of
+  Radiance → Ice Blast** (**50%(150%) of Attack**). Its earlier captures already
+  supply all artifact tiers and Support ATK / Melee DMG Reduction. Only I/III
+  remain missing for Snowoman and the other eleven candidates. Source files,
+  continuations, and exact title aliases are in the game reference's
+  **September 14 9.58–10.02 AM screenshot review** section.
+- The same batch's **Witch Dictator, Silver Warrior, and Arcane Saint** captures
+  agree with their existing recorded content; their I/III are already recorded.
+  Supplied scrolls complete Radiant Angel's rainbow bonus (**10.00.06**),
+  Captain Pilot's **Armor PEN Bullet** (**10.01.39**), Li Bai's **Hero's Journey**
+  (**10.01.55**), and Lady Pan's **Random Snack** (**10.02.11**); do not request
+  these continuations again. Fire Sorceress's red/rainbow **Blazing Fire** is
+  standalone at both tiers, and Snowoman's **Glorious Aura (8★)** has kind Aura.
 - **September 14, 8.35–8.45 AM imported batch:** Skeleton King,
   Whirlpool Ninja, Foxy Spirit, Loli, GooGoo Fish, Moon Goddess, Cowboy Killer,
   Jungle Archer, White Ox, Hidden Ninja, Snow Hunter, Swordevil, and Mars have complete

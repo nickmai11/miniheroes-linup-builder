@@ -16,6 +16,8 @@ function loadTypeScript(path, overrides = {}) {
 const policy = loadTypeScript("src/lib/invitation-policy.ts");
 const { ASSET_VERSION } = loadTypeScript("src/lib/asset-version.ts");
 const { PRODUCTION_APP_URL } = loadTypeScript("src/lib/site-url.ts");
+process.env.DATABASE_URL ??= "postgresql://test:test@localhost:5432/test";
+const transfer = loadTypeScript("src/lib/device-transfer.ts");
 const token = "a".repeat(43);
 const code = "ABCD-1234-EFAB-5678-CDEF-9012";
 
@@ -175,12 +177,22 @@ test("the old address forwards every page and moves a registered browser with a 
     }),
   );
   assert.equal(moved.status, 307);
+  const location = new URL(moved.headers.get("location"));
   assert.equal(
-    moved.headers.get("location"),
-    `${production}/heroes/sea-captain?mode=arena&${policy.TRANSFER_PARAM}=${rotated}`,
+    location.origin + location.pathname,
+    `${production}/heroes/sea-captain`,
+  );
+  assert.equal(location.searchParams.get("mode"), "arena");
+  assert.equal(
+    transfer.openDeviceTransfer(
+      location.searchParams.get(policy.TRANSFER_PARAM),
+    ),
+    token,
   );
   assert.match(moved.headers.get("cache-control"), /no-store/);
-  assert.deepEqual(rotations, [token]);
+  // The old cookie is left intact until the new address takes it over.
+  assert.deepEqual(rotations, []);
+  assert.equal(moved.headers.get("set-cookie"), null);
   const forwarded = await proxy(
     request("/lineups/123", {
       headers: {
@@ -190,11 +202,18 @@ test("the old address forwards every page and moves a registered browser with a 
       },
     }),
   );
+  const forwardedTo = new URL(forwarded.headers.get("location"));
   assert.equal(
-    forwarded.headers.get("location"),
-    `${production}/lineups/123?${policy.TRANSFER_PARAM}=${rotated}`,
+    forwardedTo.origin + forwardedTo.pathname,
+    `${production}/lineups/123`,
   );
-  // Assets, APIs, RSC, and actions from a stale tab never spend the token.
+  assert.equal(
+    transfer.openDeviceTransfer(
+      forwardedTo.searchParams.get(policy.TRANSFER_PARAM),
+    ),
+    token,
+  );
+  // Assets, APIs, RSC, and actions from a stale tab carry no token.
   for (const [path, options] of [
     ["/heroes/sea-captain.png", {}],
     ["/api/notes", {}],
@@ -213,8 +232,30 @@ test("the old address forwards every page and moves a registered browser with a 
       }),
     );
     assert.equal(response.status, 307, path);
-    assert.equal(new URL(response.headers.get("location")).origin, production);
+    const target = new URL(response.headers.get("location"));
+    assert.equal(target.origin, production);
+    assert.equal(target.searchParams.has(policy.TRANSFER_PARAM), false, path);
     assert.equal(rotations.length, before, path);
+  }
+});
+
+test("sealed transfers open only for this app, only intact, and only briefly", () => {
+  const sealed = transfer.sealDeviceTransfer(token, 1000);
+  assert.equal(transfer.openDeviceTransfer(sealed, 1000), token);
+  assert.equal(
+    transfer.openDeviceTransfer(sealed, 1000 + transfer.TRANSFER_TTL_MS),
+    null,
+  );
+  assert.notEqual(transfer.sealDeviceTransfer(token), sealed);
+  for (const invalid of [
+    null,
+    "",
+    token,
+    sealed.slice(0, -2),
+    `${sealed.slice(0, -2)}AA`,
+    "A".repeat(300),
+  ]) {
+    assert.equal(transfer.openDeviceTransfer(invalid, 1000), null, invalid);
   }
 });
 
@@ -233,8 +274,11 @@ test("unused invitation links on the old address carry their code to the new one
 test("the new address exchanges a one-time token for its own cookie exactly once", async () => {
   const rotations = [];
   const proxy = routing(true, rotations);
+  const sealed = transfer.sealDeviceTransfer(token);
   const arrived = await proxy(
-    request(`/heroes/sea-captain?${policy.TRANSFER_PARAM}=${token}&mode=arena`),
+    request(
+      `/heroes/sea-captain?${policy.TRANSFER_PARAM}=${sealed}&mode=arena`,
+    ),
   );
   assert.equal(arrived.status, 307);
   assert.equal(
@@ -246,15 +290,24 @@ test("the new address exchanges a one-time token for its own cookie exactly once
     new RegExp(`${policy.DEVICE_COOKIE}=${rotated}; .*HttpOnly`),
   );
   assert.deepEqual(rotations, [token]);
-  // A spent or forged token is dropped and the visit reaches the gate as usual.
-  const spent = await routing(false)(
-    request(`/heroes?${policy.TRANSFER_PARAM}=${rotated}`),
-  );
-  assert.equal(spent.headers.get("location"), "http://localhost:3000/heroes");
-  assert.equal(spent.headers.get("set-cookie"), null);
+  // A spent, expired, or forged token is dropped and the visit reaches the gate.
+  for (const [registered, value] of [
+    [false, sealed],
+    [
+      true,
+      transfer.sealDeviceTransfer(token, Date.now() - transfer.TRANSFER_TTL_MS),
+    ],
+    [true, token],
+  ]) {
+    const spent = await routing(registered)(
+      request(`/heroes?${policy.TRANSFER_PARAM}=${value}`),
+    );
+    assert.equal(spent.headers.get("location"), "http://localhost:3000/heroes");
+    assert.equal(spent.headers.get("set-cookie"), null);
+  }
   // An already registered browser just loses the parameter.
   const registered = await proxy(
-    request(`/heroes?${policy.TRANSFER_PARAM}=${token}`, {
+    request(`/heroes?${policy.TRANSFER_PARAM}=${sealed}`, {
       headers: { cookie: `${policy.DEVICE_COOKIE}=${token}` },
     }),
   );
@@ -526,7 +579,6 @@ test("API and action entry points check registration even without Proxy", async 
     },
   );
   const overrides = {
-    "server-only": {},
     "@/db": { db: databaseTripwire, schema: databaseTripwire },
     "@/db/schema": { LINEUP_SIZE: 5 },
     "@/lib/app-access": {

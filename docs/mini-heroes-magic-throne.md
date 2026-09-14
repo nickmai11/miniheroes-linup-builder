@@ -85,7 +85,8 @@ Hero Awaken screen; I and III for Sea Captain and Nezha were supplied in
 ring. Kinds seen: Ultimate Skill, Special Skill, Battle Skill, Enhance, Attribute,
 Passive, Aura. **Aura** is shown on Skeleton King's **Bloodthirsty Curse** (2★)
 and Moon Goddess's **ATK SPD Aura** (16★) in the September 14 8.35–8.45 AM
-screenshots; the app stores and displays that kind as **Aura**. The ring position determines
+screenshots, and Snowoman's **Glorious Aura** (8★) in the 9.58 AM batch;
+the app stores and displays that kind as **Aura**. The ring position determines
 unlock stars, not kind: Holy Healer's 2★
 talent is Enhance; Silence and Gunslinger's 2★ talents are Special Skill.
 Each talent has a name and description; a progress bar ("Max" / "Currently full")
@@ -548,6 +549,181 @@ Jungle Archer evidence gaps are **Awakening I (18★) and III (22★)**. This fo
 updates readiness only; Jungle Archer and the other 12 new candidates are not
 imported.
 
+#### September 14 9.58–10.02 AM screenshot review (game, 2026-09-14)
+
+This is a **readiness review, not an import**. The 162 pending owner screenshots
+from **9.58.26–10.02.38 AM**, plus Snowoman's two **10.10.23 / 10.10.48 AM**
+follow-ups, cover 15 heroes. **Witch Dictator, Silver Warrior,
+and Arcane Saint** already have detail entries, including I/III; their supplied
+talents, cores, artifact abilities, and divinities agree with those entries.
+The other **12** have roster entries and owner-sourced Archive portraits but no
+detail seeds. Existing portraits show the whole art panel without the
+artifact-progress diamond, and remain usable even where gameplay uses a skin.
+
+**All twelve new candidates have complete non-awakening evidence:** six talent
+names/kinds/descriptions and usable unscrolled icon sources, four complete linked cores,
+artifact artwork and all four abilities, and two catalog-matched mythic badges.
+**Snowoman's 10.10.23 AM follow-up completes Blizzard and Crystal Staff.**
+Its original 9.58.26 ring supplies the full Blizzard icon. No Hero Awaken
+screen appears in this batch; **I (18★) and III (22★) are missing for all 12 new
+candidates**. The earlier batch's awakening exclusion does not apply to this
+review. No seeds, public assets, or database content were changed.
+
+All source times below refer to
+`gameplay/talents/Screenshot 2026-09-14 at <time> AM.png`; preserve the narrow
+no-break space and any ` 1` suffix. Divinities were compared visually with
+`src/data/divinities.ts` and `public/divinities/`, in bottom-left → bottom-right
+order. No new divinity popup is needed for this batch.
+
+| Hero / class | Artifact | Mythic divinities (left → right) | AM source range | Non-awakening evidence |
+| --- | --- | --- | --- | --- |
+| Snowoman / Support | Soulseeker Staff | Support ATK → Melee DMG Reduction | 9.58.26–9.58.43; 10.10.23 / 10.10.48 | Complete after follow-up |
+| Bamboo Hat / Mage | Witherwood Staff | HP → Ranged DMG Reduction | 9.58.46–9.58.57 | Complete |
+| Fire Sorceress / Mage | Flame Crown | Mage ATK → Magic RES | 9.59.01–9.59.20 | Complete |
+| Red Hood / Mage | Captain Headgear | Receive Healing → Knockback Resist | 9.59.23–9.59.38 | Complete |
+| Little Goblin / Mage | Goblin Wrench | Mage ATK → Heavy Injury | 9.59.40–9.59.51 | Complete |
+| Radiant Angel / Support | Angel Staff | Support ATK → Knockback Resist | 9.59.54–10.00.06 | Complete |
+| Diva / Support | Crystal Necklace | HP → Healing Effect | 10.00.14–10.00.26 | Complete |
+| Little Deer / Support | Ironskin Staff | HP → Melee DMG Reduction | 10.00.29–10.00.46 | Complete |
+| Witch Dictator / Mage | Mana Potion | Magic DMG Boost → Magic RES | 10.00.50–10.01.03 | Already recorded; agrees |
+| Lucifer / Warrior | Blood Demon Crystal | SPD Reduction RES → Physical RES | 10.01.06–10.01.21 | Complete |
+| Captain Pilot / Marksman | Energy Spring | CRIT Damage → Ranged DMG Reduction | 10.01.27–10.01.39 | Complete |
+| Li Bai / Marksman | Lotus Nectar | Physical RES → Ranged DMG Reduction | 10.01.41–10.01.55 | Complete |
+| Lady Pan / Support | Nonstick Pan | ATK → HP | 10.01.59–10.02.11 | Complete |
+| Silver Warrior / Warrior | Gunblade | ATK → Melee DMG Reduction | 10.02.13–10.02.24 | Already recorded; agrees |
+| Arcane Saint / Support | Starshine Staff | DEF → HP | 10.02.27–10.02.38 | Already recorded; agrees |
+
+New candidates' talent order is **0 / 2 / 5 / 8 / 12 / 16★**. Names and kinds
+come from their actual popups; Snowoman's **10.10.23 AM** follow-up confirms
+Blizzard's Ultimate Skill kind and full base description, matching the ring.
+
+| Hero | Talents in unlock order |
+| --- | --- |
+| Snowoman | Blizzard / Ice Blast / Bone-Chilling Cold / Glorious Aura / Ice Purification / Storm Domain |
+| Bamboo Hat | Energy Impact / Weakness Sensing / Energy Overload / Qi Mantra / ATK Amplification / Energy Burst |
+| Fire Sorceress | Flame Shock / Burn / Blazing Slash / Blaze / ATK Amplification / Enhance Impact |
+| Red Hood | Mushroom Bomb / Poisoned Shooting / Here comes the bomb / Time Bomb / I am Red Hood / Big-headed Mushroom |
+| Little Goblin | Master of Machinery / Throw Mastery / Quick Release / DEF Formation / Knockback Boost / Spare Tool |
+| Radiant Angel | Holy Light Protection / Judgement / Enhance Protection / Holy Light Shines / Holy Soul / Super Protection |
+| Diva | Protagonist Arrive / Full-out Merrying / Enhance Stage / Revisit / Excited / Plot Armor |
+| Little Deer | Awaken / Poisoned Spear / Purify / Nourishment / Assist / Cleanse |
+| Lucifer | Doomsday Curse / Flame Blade / Strengthen Curse / Demon Fire / Demonic Contract / Hatred Deepens |
+| Captain Pilot | Warrior Strike / Molotov Cocktail / Enhance Bullet / Suppressive Shoot / Weakness Break / Explosive Bullet |
+| Li Bai | Sky-Splitting Sword / Twin Swords / Sword Breaker / Sword Beam / Lotus Sword / Man and Sword |
+| Lady Pan | Cutlery Throw / Home Delivery / Precise Throw / Deluxe Cake / Culinary Mastery / Spare Cutlery |
+
+At 2★, **Ice Blast, Full-out Merrying, and Home Delivery are Special Skill**;
+the other new candidates' 2★ popups are Battle Skill. At 8★, **Glorious Aura is
+Aura**, **Blaze and Revisit are Enhance**, and **Time Bomb is Battle Skill**;
+the others are Special Skill. All supplied 5★/16★ popups are Enhance and all
+12★ popups are Attribute. Little Deer's **Awaken** is its ultimate talent;
+that title does not supply hero-specific awakening evidence.
+
+Talent popup times below follow the same unlock order. These provide original
+icons except Snowoman's scrolled Blizzard follow-up: use its **9.58.26 AM**
+ring for the full icon. A suffix explicitly shown as `AM 1.png` is part of the filename.
+
+| Hero | Talent popups (0 / 2 / 5 / 8 / 12 / 16★) | Artifact tab | Ability popup / continuation |
+| --- | --- | --- | --- |
+| Snowoman | 10.10.23 / 9.58.29 / 9.58.31 / 9.58.32 / 9.58.33 / 9.58.35 | 9.58.42 | 9.58.43 |
+| Bamboo Hat | 9.58.54 / 9.58.47 / 9.58.49 / 9.58.50 / 9.58.52 / 9.58.53 | 9.58.56 | 9.58.57 |
+| Fire Sorceress | 9.59.17 / 9.59.02 / 9.59.11 / 9.59.13 / 9.59.14 / 9.59.15 | 9.59.18 | 9.59.19 / 9.59.20 |
+| Red Hood | 9.59.34 / 9.59.24 / 9.59.25 / 9.59.26 / 9.59.32 / 9.59.33 | 9.59.37 | 9.59.38 |
+| Little Goblin | 9.59.47 / 9.59.41 / 9.59.42 / 9.59.43 / 9.59.45 / 9.59.46 | 9.59.50 | 9.59.51 |
+| Radiant Angel | 10.00.02 / 9.59.55 / 9.59.57 / 9.59.58 / 10.00.00 / 10.00.01 | 10.00.05 | 10.00.05 AM 1.png / 10.00.06 |
+| Diva | 10.00.22 / 10.00.15 / 10.00.16 / 10.00.18 AM 1.png / 10.00.18 / 10.00.21 | 10.00.25 | 10.00.26 |
+| Little Deer | 10.00.42 / 10.00.30 / 10.00.33 / 10.00.34 / 10.00.39 / 10.00.40 | 10.00.45 | 10.00.46 |
+| Lucifer | 10.01.16 AM 1.png / 10.01.07 AM 1.png / 10.01.09 / 10.01.10 / 10.01.12 / 10.01.13 | 10.01.19 | 10.01.21 AM 1.png / 10.01.21 |
+| Captain Pilot | 10.01.35 / 10.01.27 / 10.01.28 / 10.01.29 / 10.01.32 / 10.01.33 | 10.01.37 | 10.01.38 / 10.01.39 |
+| Li Bai | 10.01.50 / 10.01.42 / 10.01.44 / 10.01.45 / 10.01.46 / 10.01.48 | 10.01.53 | 10.01.54 / 10.01.55 |
+| Lady Pan | 10.02.07 / 10.02.00 / 10.02.02 / 10.02.03 / 10.02.05 / 10.02.06 | 10.02.09 | 10.02.10 / 10.02.11 |
+
+Ring references are the first image in each hero's source range, except Captain
+Pilot: no separate unobstructed ring was supplied, but its positions/names are
+visible behind the 10.01.28 / 10.01.32 popups. The separate ring is optional.
+
+Verified core links (full effects remain in the source screenshots):
+
+| Hero | Gear → talent |
+| --- | --- |
+| Snowoman | Crystal Staff → Blizzard; Tome of Radiance → Ice Blast; Luminous Visor → Bone-Chilling Cold; Resonance Pendant → Glorious Aura |
+| Bamboo Hat | Wizard's Wand → Energy Impact; Arcane Hat → Weakness Sensing; Mage Robe → Qi Mantra; Spell Tome → Energy Burst |
+| Fire Sorceress | Wizard's Wand → Flame Shock; Arcane Hat → Burn; Mage Robe → Blaze; Spell Tome → Enhance Impact |
+| Red Hood | Wizard's Wand → Mushroom Bomb; Arcane Hat → Poisoned Shooting; Mage Robe → Time Bomb; Spell Tome → Big-headed Mushroom |
+| Little Goblin | Wizard's Wand → Master of Machinery; Arcane Hat → Throw Mastery; Mage Robe → Quick Release; Spell Tome → DEF Formation |
+| Radiant Angel | Crystal Staff → Holy Light Protection; Tome of Radiance → Judgement; Luminous Visor → Holy Light Shines; Resonance Pendant → Super Protection |
+| Diva | Crystal Staff → Protagonist Arrive; Tome of Radiance → Full-out Merrying; Luminous Visor → Revisit; Resonance Pendant → Plot Armor |
+| Little Deer | Crystal Staff → Awaken; Tome of Radiance → Poisoned Spear; Luminous Visor → Nourishment; Resonance Pendant → Cleanse |
+| Lucifer | Blade of Valor → Doomsday Curse; Cavalier Helm → Flame Blade; Brawler's Armor → Strengthen Curse; Brawler's Boots → Demon Fire |
+| Captain Pilot | Swift Longbow → Warrior Strike; Arrow Core → Molotov Cocktail; Hunter's Cloak → Suppressive Shoot; Crystal Pendant → Explosive Bullet |
+| Li Bai | Swift Longbow → Sky-Splitting Sword; Arrow Core → Twin Swords; Hunter's Cloak → Sword Beam; Crystal Pendant → Man and Sword |
+| Lady Pan | Crystal Staff → Cutlery Throw; Tome of Radiance → Home Delivery; Luminous Visor → Deluxe Cake; Resonance Pendant → Spare Cutlery |
+
+Review and transcription notes:
+
+- **Snowoman follow-up review:**
+  `Screenshot 2026-09-14 at 10.10.23 AM.png` shows **Blizzard (Ultimate Skill,
+  0★)** and its complete fourth core, **Crystal Staff·Core**. Blizzard summons
+  **3 waves**, each dealing Magic DMG equal to **80% of ATK** to enemies within
+  range. Crystal Staff **increases Magic DMG by 20%(60%) of Attack**, linked to
+  **Blizzard**. Its gold bonus agrees with 9.58.43: Magic DMG per wave +50%,
+  and enemies struck have a 50% chance to be frozen for 1s. The follow-up popup
+  is slightly scrolled at its top edge, so use the fully visible central
+  Blizzard icon in **9.58.26 AM** with a dedicated ring crop; do not run the
+  usual fixed popup-icon crop on 10.10.23. No additional icon capture is needed.
+  `Screenshot 2026-09-14 at 10.10.48 AM.png` repeats the Ice Blast scroll,
+  matching the original **9.58.29** popup and **9.58.30** continuation: **Tome
+  of Radiance → Ice Blast**, Magic DMG **+50%(150%) of Attack**. The other
+  two cores are complete at 9.58.31 / 9.58.32. **Glorious Aura** restores **40
+  energy to all allied heroes every 3s**; its core adds **5(15) Energy each
+  time**. Soulseeker Staff's four abilities are complete at 9.58.43: standalone
+  purple **Ice Seal Technique**, gold **Blizzard**, red **Ice Blast Technique**
+  (alias for **Ice Blast**), and rainbow **Glorious Aura**.
+  With these two follow-ups, Snowoman has all six talents and four cores;
+  **only Awakening I/III remain missing**, bringing all twelve new candidates
+  to complete non-awakening readiness. This remains a review, not an import.
+- Core continuations: Bamboo Hat **9.58.48**; Fire Sorceress **9.59.09**;
+  Red Hood **9.59.31 / 9.59.35**; Little Goblin **9.59.44 / 9.59.48**;
+  Radiant Angel **10.00.03**; Diva **10.00.15 AM 1.png / 10.00.23**;
+  Lucifer **10.01.07 / 10.01.11 / 10.01.16**; Captain Pilot **10.01.30**
+  (10.01.35 AM 1.png is an alternate shifted ultimate popup); Li Bai
+  **10.01.51**; Lady Pan **10.02.01 / 10.02.04**. Original unscrolled icon
+  sources are listed above; a duplicate suffix alone does not identify a scroll.
+- **Fire Sorceress:** purple and gold modify **Burn**. Red introduces standalone
+  **Blazing Fire**, and rainbow further modifies that same artifact ability;
+  both use the standalone title, since no talent is named Blazing Fire. The
+  **9.59.20** scroll completes rainbow's **20%** range increase and **40 Energy
+  points within 5s after skill use**. Burn's purple **12% Magic DMG per second**
+  has no displayed ATK basis. Wizard's Wand literally shows **20(60%)%**;
+  Arcane Hat shows **3%(10%)**. Preserve the source values/wording.
+- Other standalone rainbow abilities: Little Goblin **Energy Recharge Shield**,
+  Little Deer **Divine Light Shelter**, Captain Pilot **Armor PEN Bullet**,
+  Li Bai **Hero's Journey**, and Lady Pan **Random Snack**. The supplied scrolls
+  at **10.01.39 / 10.01.55 / 10.02.11** complete the last three. Random Snack
+  includes all three buffs: Custard Tart (ATK SPD/MOV SPD), Cake (ATK), and Burger
+  (DEF), each **25% for 5s**.
+- Rainbow attaches to Bamboo Hat's **Weakness Sensing**, Red Hood's **Mushroom
+  Bomb**, Radiant Angel's **Holy Light Protection**, Diva's **Protagonist Arrive**,
+  and Lucifer's **Demon Fire**. Radiant Angel's **10.00.06** scroll completes
+  the rainbow text, including **ATK by 200%** and CRIT immunity. Diva has purple
+  and red bonuses on **Full-out Merrying**, gold and rainbow on **Protagonist
+  Arrive**. Lady Pan has both purple and gold on **Home Delivery**.
+- Title aliases: Bamboo Hat's gold **Qi Consolidation Mantra** links to **Qi
+  Mantra**; Captain Pilot's gold **Suppressive Shooting** links to **Suppressive
+  Shoot**. Keep Red Hood's capitalization **Here comes the bomb / I am Red Hood**.
+- Preserve fully visible unusual wording: Red Hood's gold Time Bomb says
+  **within 2 upon explosion** without a unit; Lucifer's Doomsday Curse says
+  **100% Physical DMG per second** without an ATK basis; Li Bai's Sword Beam
+  says **3% of ATK**, and its Hunter's Cloak says **consumes 15(45) less energy**.
+  Bamboo Hat's Arcane Hat cap is **115%(150%) of Bamboo Hat's Attack**;
+  Little Deer's Luminous Visor shows **30%(100%)**. These are not clipped text
+  and do not require invented corrections or recaptures.
+- The repeated existing heroes introduce no contradictions. Witch Dictator's
+  Frost Armor original is **10.00.55 AM 1.png**, with the file without ` 1`
+  completing Spell Tome. Silver Warrior's Godslayer Strike original is
+  **10.02.21 AM 1.png**, with the file without ` 1` completing Blade of Valor.
+  Arcane Saint's **10.02.38** scroll fully shows Summon Beast, matching its seed.
+
 ### Awakening skills (game, 2026-09-13)
 
 Hero-specific I and III are read from the Hero Awaken screenshots in
@@ -785,6 +961,45 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-14 — **Snowoman follow-up review:** the owner added
+  `Screenshot 2026-09-14 at 10.10.23 AM.png` and
+  `Screenshot 2026-09-14 at 10.10.48 AM.png`. The first confirms **Blizzard**
+  as Ultimate Skill: **3 waves**, each dealing **80% of ATK as Magic DMG** to
+  enemies within range. Its fourth core is **Crystal Staff·Core → Blizzard**:
+  increases Magic DMG by **20%(60%) of Attack**. The complete gold bonus matches
+  the earlier artifact popup. The earlier **9.58.26 AM** ring supplies the full
+  icon because the new popup's top is scrolled. The second new screenshot
+  reconfirms **Tome of Radiance → Ice Blast**, **50%(150%) of Attack** as extra
+  Magic DMG. Snowoman's talent/core gaps are resolved; all twelve candidates in
+  the 9.58–10.02 AM batch now have complete non-awakening evidence. **I (18★)
+  and III (22★)** remain missing for all twelve. Documentation only; no import.
+
+- 2026-09-14 — **Readiness review of the 9.58.26–10.02.38 AM batch:** the
+  owner's 162 screenshots cover twelve new detail candidates (Snowoman,
+  Bamboo Hat, Fire Sorceress, Red Hood, Little Goblin, Radiant Angel, Diva,
+  Little Deer, Lucifer, Captain Pilot, Li Bai, Lady Pan) and three already
+  recorded heroes (Witch Dictator, Silver Warrior, Arcane Saint). The identities,
+  artifacts, left/right mythic divinities, talent order/kinds, core links, exact
+  source files, aliases, and transcription cautions are recorded in the
+  **September 14 9.58–10.02 AM screenshot review** section above. Eleven new
+  candidates have complete non-awakening evidence; Snowoman lacks the Blizzard
+  popup and fourth core. All twelve lack I/III; this review does not inherit
+  another batch's exclusion. Existing heroes' supplied content agrees with
+  their seeds. This review updates documentation only, without importing data.
+- 2026-09-14 — The owner's **9.58.32 AM** Snowoman screenshot labels
+  **Glorious Aura (8★)** as **Aura**: restore **40 energy to all allied heroes
+  every 3s**. Its Resonance Pendant adds **5(15) Energy each time**. Ice Blast
+  (2★) is Special Skill; Bone-Chilling Cold (5★) has Luminous Visor. The
+  **9.58.43 AM** artifact popup establishes standalone purple **Ice Seal
+  Technique** and the **Ice Blast Technique → Ice Blast** title alias.
+- 2026-09-14 — The same review establishes Fire Sorceress's red/rainbow
+  **Blazing Fire** as one standalone artifact ability across two tiers;
+  Bamboo Hat's **Qi Consolidation Mantra → Qi Mantra** and Captain Pilot's
+  **Suppressive Shooting → Suppressive Shoot** aliases; and the complete
+  scrolled **Hero's Journey / Random Snack** descriptions. Preserve Li Bai's
+  displayed **3% of ATK** on Sword Beam, Red Hood's **within 2 upon explosion**
+  without an inferred unit, and the other source-specific values noted above.
 
 - 2026-09-14 — Hovering over a fish should show **where to get it**.
 
