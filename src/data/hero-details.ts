@@ -61,6 +61,115 @@ export type HeroDetailSeed = {
 const talent = (hero: string, slug: string) => `/talents/${hero}/${slug}.png`;
 
 export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
+  // September 14 12.58.22–12.58.40 PM owner screenshots; I/III not supplied.
+  swordmaster: {
+    artifact: {
+      name: "Devil Fruit",
+      iconUrl: "/artifacts/swordmaster.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "36 Pound Cannon",
+          description:
+            "After the silence from [36 Pound Cannon] ends, reduces the target's energy recovery speed by 40% for 5s",
+        },
+        {
+          tier: "gold",
+          skill: "Rashomon",
+          description:
+            "The reflect DMG effect of [Rashomon] is increased by 30%, and its duration is extended by 2s",
+        },
+        {
+          tier: "red",
+          name: "Great Chiliocosm",
+          description:
+            "After entering the battlefield for 13s, the Swordmaster unleashes a sword aura storm around himself with dual blades, making it impossible for opponents to evade. Targets take 27% increased DMG from him, and his own silence duration is reduced by 60% until the end of battle",
+        },
+        {
+          tier: "rainbow",
+          skill: "Rashomon",
+          description:
+            "When the Swordmaster activates [Rashomon], immediately restores 13% of his max HP. While the sword aura barrier is active, his energy recovery speed is increased by 35% and his HP regeneration per second is increased by 0.8%",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Infernal Oni Slash",
+        unlockStars: 0,
+        iconUrl: talent("swordmaster", "infernal-oni-slash"),
+        description:
+          "The Swordmaster creates phantoms to dash and strike across the battlefield, unleashing 6 slashes. Each slash deals 360% ATK as physical DMG and knocks enemies back. Each target can be hit up to 3 times. Units vulnerable to physical DMG are prioritized",
+      },
+      {
+        kind: "battle",
+        name: "36 Pound Cannon",
+        unlockStars: 2,
+        iconUrl: talent("swordmaster", "36-pound-cannon"),
+        description:
+          "Every 10s, unleashes a sword aura that targets the enemy unit with the highest energy, dealing 500% ATK as physical DMG and silencing them for 1.5s",
+      },
+      {
+        kind: "enhance",
+        name: "Enhanced Slash",
+        unlockStars: 5,
+        iconUrl: talent("swordmaster", "enhanced-slash"),
+        description:
+          "When the target struck by Infernal Oni Slash has higher ATK than self, reduces their ATK by 15% for 7s (effect cannot stack, reapplying refreshes the duration)",
+      },
+      {
+        kind: "special",
+        name: "Rashomon",
+        unlockStars: 8,
+        iconUrl: talent("swordmaster", "rashomon"),
+        description:
+          "Each time the Swordmaster loses 25% of max HP, he forms a Sword Aura barrier with Iaido, providing both defense and counterattack. The barrier blocks 18% DMG and increases his reflect DMG by 25% for 4s (effect cannot stack; reapplying refreshes duration).",
+      },
+      {
+        kind: "passive",
+        name: "Armament Haki",
+        unlockStars: 12,
+        iconUrl: talent("swordmaster", "armament-haki"),
+        description: "ATK increased by 10%, HP increased by 15%",
+      },
+      {
+        kind: "enhance",
+        name: "Path of Asura",
+        unlockStars: 16,
+        iconUrl: talent("swordmaster", "path-of-asura"),
+        description:
+          "Infernal Oni Slash: Each slash sears the target, dealing additional True Damage equal to 100% of Attack and lowering the target's Knockback Resist by 15% for 5 seconds.",
+      },
+    ],
+    cores: [
+      {
+        name: "Blade of Valor",
+        skill: "Infernal Oni Slash",
+        description:
+          "「Infernal Oni Slash」 deals Physical DMG equal to 60%(180%) of Attack",
+      },
+      {
+        name: "Cavalier Helm",
+        skill: "Enhanced Slash",
+        description:
+          "「Enhance Slash」 each slash inflicts bonus DMG equal to 1.5%(4.5%) of the Target's lost HP, capped at 150%(450%) of the Swordmaster's Attack",
+      },
+      {
+        name: "Brawler's Armor",
+        skill: "Rashomon",
+        description:
+          "「Rashomon」 enhances Reflect DMG by an additional 10%(30%)",
+      },
+      {
+        name: "Brawler's Boots",
+        skill: "Path of Asura",
+        description:
+          "「Path of Asura」 inflicts True DMG equal to 20%(60%) of Attack, and extends its duration by 1(3) s",
+      },
+    ],
+    divinities: ["atk", "melee-dmg-boost"],
+  },
   // September 14 10.40–10.45 AM screenshots and 10.57–10.58 AM follow-ups.
   // Full source mapping and exact transcription notes are in the game reference.
   "wine-immortal": {

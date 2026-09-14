@@ -785,8 +785,9 @@ card art with the artifact-progress diamond removed.
 The import adds **84 talents, 56 linked cores, 56 artifact abilities, 28 mythic
 divinity links, and 100 new images** (84 talents, 14 artifacts, two portraits).
 All 496 existing PNGs remain byte-identical, so no asset-version bump is needed.
-The app now has 67 roster heroes and 66 detail entries; Swordmaster still has
-no recorded details. Hellscream and Dark Queen use `eternal` rarity in the
+That batch brought the app to 67 roster heroes and 66 detail entries. The later
+12.58 PM Swordmaster import brings detail coverage to all 67 roster heroes.
+Hellscream and Dark Queen use `eternal` rarity in the
 existing text-backed rarity column, labels, sort order, and portrait pipeline;
 this addition requires no database migration.
 
@@ -974,6 +975,61 @@ Artifact links and transcription cautions for a later authorized import:
   **10.44.47 AM 1.png** are artifact continuations. Dark Queen's
   **10.44.59 AM.png** is the original Dread Arrow popup; the ` 1` file completes
   the gold bonus and Swift Longbow. No recapture is needed for those endings.
+
+#### Swordmaster (game, 2026-09-14, 12.58 PM)
+
+The owner's eleven **12.58.22–12.58.40 PM** screenshots supply **Swordmaster
+(Warrior)**, artifact **Devil Fruit**, and the bottom red **ATK → Melee DMG
+Boost** badges, visually matched to the existing divinity catalog. The existing
+Mythic Archive portrait is retained. All six talents, four cores, and four
+artifact abilities are recorded; **Awakening I (18★) and III (22★)** were not
+supplied or excluded and remain unrecorded. This completes detail-entry coverage
+for the 67-hero roster, with the documented evidence gaps still applying.
+
+| Talent | Kind | Unlock | Artifact bonus | Core |
+| --- | --- | --- | --- | --- |
+| Infernal Oni Slash | Ultimate Skill | 0★ | — | Blade of Valor: Physical DMG equal to 60%(180%) of Attack |
+| 36 Pound Cannon | Battle Skill | 2★ | Purple: after silence ends, energy recovery speed −40% for 5s | — |
+| Enhanced Slash | Enhance | 5★ | — | Cavalier Helm: each slash adds DMG equal to 1.5%(4.5%) of target's lost HP, capped at 150%(450%) of Swordmaster's Attack |
+| Rashomon | Special Skill | 8★ | Gold: reflect DMG +30%, duration +2s; rainbow: restores 13% max HP, barrier grants +35% energy recovery speed and +0.8% HP regeneration per second | Brawler's Armor: Reflect DMG +10%(30%) |
+| Armament Haki | Passive | 12★ | — | — |
+| Path of Asura | Enhance | 16★ | — | Brawler's Boots: True DMG equal to 20%(60%) of Attack, duration +1(3) s |
+
+**Great Chiliocosm** is Devil Fruit's standalone **red** ability. After 13s on
+the battlefield, Swordmaster unleashes an unavoidable sword aura storm; targets
+take 27% increased DMG from him, and his own silence duration is reduced by 60%
+until battle ends. **Rashomon's rainbow bonus is talent-attached**, alongside
+gold, and appears in both Talents and Artifacts. The Cavalier Helm description
+uses **Enhance Slash**; preserve that wording while linking to **Enhanced Slash**.
+Full source descriptions are in `src/data/hero-details.ts`.
+
+All filenames below are under `gameplay/talents/`, with prefix
+`Screenshot 2026-09-14 at ` and suffix ` PM.png` unless explicitly stated.
+The narrow no-break space and ` 1` suffix are significant.
+
+- Ring: **12.58.35** confirms clockwise 0/2/5/8/12/16★ order.
+- Original talent popups in that order: **12.58.31 / 12.58.22 / 12.58.24 /
+  12.58.25 / 12.58.28 / 12.58.29**. These supply the six icon crops.
+- **12.58.26** is Rashomon's scrolled continuation, completing its rainbow
+  bonus and Brawler's Armor core; do not use it for the talent icon.
+- Artifact tab: **12.58.37**, supplying the name and two mythic divinities.
+- **Screenshot 2026-09-14 at 12.58.40 PM 1.png** is the original artifact
+  popup, providing the full-color Devil Fruit crop, purple/gold tiers, and
+  complete red ability. **12.58.40 PM.png** is the scroll with complete rainbow
+  text, agreeing with Rashomon's continuation.
+
+Verification on 2026-09-14: Swordmaster synchronized through the existing
+`getHeroDetail` flow; stored talent descriptions, core/artifact links, and
+divinity order match the seed. Isolated rendering of the actual hero page
+passed for names/descriptions, core previews, I/III empty states at 18★/22★,
+all three attached bonuses in both sections, and standalone red only in
+Artifacts. All seven new crops were visually checked and all ten referenced
+portrait/talent/artifact/divinity PNGs validated. All **596** previously existing
+PNGs remain byte-identical, so no asset-version bump is needed. Typecheck, lint,
+formatting of the seed, and diff checks passed; tests reported **213 passed,
+5 skipped**. Authenticated live page/image responses remain unverified: the
+local port-4000 hero route redirects to the invitation screen and the artifact
+request returns 401 without a session. No access settings were changed.
 
 ### Awakening skills (game, 2026-09-13)
 
@@ -1213,6 +1269,15 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-14 — The owner's eleven **12.58.22–12.58.40 PM Swordmaster**
+  screenshots establish the six talents and four linked cores in the reference
+  above, **Devil Fruit**, and mythic **ATK / Melee DMG Boost** in left/right
+  order. Red **Great Chiliocosm** is standalone; gold and rainbow both modify
+  **Rashomon**. Cavalier Helm's **Enhance Slash** wording refers to the talent
+  titled **Enhanced Slash**. The invoked add-hero skill authorizes importing
+  these supplied details and screenshot crops with the existing Archive
+  portrait. Awakening I/III were not supplied and remain unrecorded.
 
 - 2026-09-14 — Feature access is determined by admin status; localhost is no
   longer an access condition. Editing, invitation generation, and public URL

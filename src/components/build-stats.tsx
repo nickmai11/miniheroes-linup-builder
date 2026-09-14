@@ -30,7 +30,7 @@ function groupRunes<T extends RuneAttribute>(runes: T[]): [RuneType, T[]][] {
 
 export function BuildStats({ build }: { build: HeroBuild }) {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-8">
       <BuildSection title="Runes">
         {groupRunes(sortByBuildPriority(build.runes)).map(([type, list]) => (
           <AttributeGroup key={type} title={runeTypeShort(type)}>

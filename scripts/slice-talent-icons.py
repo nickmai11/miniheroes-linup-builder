@@ -35,10 +35,26 @@ S = lambda t: f"Screenshot 2026-09-12 at {t}{NB}PM.png"
 S13AM = lambda t: f"Screenshot 2026-09-13 at {t}{NB}AM.png"
 S13PM = lambda t: f"Screenshot 2026-09-13 at {t}{NB}PM.png"
 S14AM = lambda t: f"Screenshot 2026-09-14 at {t}{NB}AM.png"
+S14PM = lambda t: f"Screenshot 2026-09-14 at {t}{NB}PM.png"
 
 # hero slug -> {"popups": [(file, talent name), ...],
 #               "artifact": Artifact tab, "artifact_popup": the artifact's ability list}
 LAYOUT = {
+    "swordmaster": {
+        "popups": [
+            (S14PM("12.58.31"), "Infernal Oni Slash"),
+            (S14PM("12.58.22"), "36 Pound Cannon"),
+            (S14PM("12.58.24"), "Enhanced Slash"),
+            (S14PM("12.58.25"), "Rashomon"),
+            (S14PM("12.58.28"), "Armament Haki"),
+            (S14PM("12.58.29"), "Path of Asura"),
+        ],
+        # The popup supplies colored art without the tab's activation/progress UI.
+        "artifact": S14PM("12.58.40").replace(".png", " 1.png"),
+        "artifact_box": (78, 244, 235, 417),
+        "artifact_corner_radius": 8,
+        "artifact_popup": S14PM("12.58.40").replace(".png", " 1.png"),
+    },
     # September 14 10.40–10.45 AM batch and 10.57–10.58 AM follow-ups.
     "wine-immortal": {
         "popups": [

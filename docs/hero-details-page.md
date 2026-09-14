@@ -114,6 +114,15 @@ Archive portraits and **Eternal** roster entries. Abyssal Queen's unobscured
 artifact image comes from its **10.41.04 AM** ability popup. Awakening I/III
 were not supplied and retain their empty states.
 
+**Swordmaster** is recorded from the **September 14 12.58.22–12.58.40 PM**
+screenshots: six talents, four linked cores, all four **Devil Fruit** tiers,
+and **ATK / Melee DMG Boost** mythic divinities. Its existing Archive portrait
+is retained. Red **Great Chiliocosm** is standalone; gold and rainbow both
+modify **Rashomon** and appear in Talents and Artifacts. Cavalier Helm's
+**Enhance Slash** wording links to the actual talent title **Enhanced Slash**.
+The full-color artifact crop comes from **12.58.40 PM 1.png**; the file without
+` 1` completes the rainbow description. Awakening I/III were not supplied.
+
 Build imports use an outline button matching **New build**. The picker searches
 hero and build names on the server, loads twelve results per page only when opened,
 and keeps the results in a scrollable panel. Select a build, then choose **Import
@@ -310,6 +319,9 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
 
 ## 6. Known gaps
 
+- **Swordmaster (September 14, 12.58 PM):** all non-awakening details are
+  recorded. Only **Awakening I (18★) and III (22★)** remain missing; supply
+  their selected Hero Awaken tabs with each skill's name and full description.
 - **September 14, 10.40–10.45 AM import and 10.57–10.58 AM/Archive follow-ups:**
   the original 179 captures plus five follow-ups cover fourteen new detail
   imports and two already recorded heroes. **All fourteen imported heroes now
