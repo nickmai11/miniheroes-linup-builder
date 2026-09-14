@@ -94,7 +94,7 @@ export type ArtifactTier = (typeof ARTIFACT_TIERS)[number];
 
 /**
  * Talent kinds from the in-game Talent tab (Ultimate Skill, Special Skill,
- * Battle Skill, Enhance, Passive; "attribute" is the older card label).
+ * Battle Skill, Enhance, Attribute, Passive, Aura).
  */
 export const SKILL_KINDS = [
   "ultimate",
@@ -103,6 +103,7 @@ export const SKILL_KINDS = [
   "attribute",
   "enhance",
   "passive",
+  "aura",
 ] as const;
 export type SkillKind = (typeof SKILL_KINDS)[number];
 

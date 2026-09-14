@@ -39,6 +39,193 @@ S14AM = lambda t: f"Screenshot 2026-09-14 at {t}{NB}AM.png"
 # hero slug -> {"popups": [(file, talent name), ...],
 #               "artifact": Artifact tab, "artifact_popup": the artifact's ability list}
 LAYOUT = {
+    # September 14 8.35–8.45 AM and Jungle Archer 9.01 AM follow-up.
+    "skeleton-king": {
+        "popups": [
+            (S14AM("8.35.46"), "Dark Soul Fireball"),
+            (S14AM("8.35.38"), "Bloodthirsty Curse"),
+            (S14AM("8.35.40"), "Hellfire Heavy Strike"),
+            (S14AM("8.35.41"), "Return from the Underworld"),
+            (S14AM("8.35.42"), "Dark Soul Real Body"),
+            (S14AM("8.35.44"), "Hell King's Howl"),
+        ],
+        "artifact": S14AM("8.36.27"),
+        "artifact_box": (215, 244, 490, 515),
+        "artifact_corner_radius": 12,
+        "artifact_popup": None,
+    },
+    "whirlpool-ninja": {
+        "popups": [
+            (S14AM("8.36.42"), "Energy Vortex"),
+            (S14AM("8.36.33"), "Cloning Technique"),
+            (S14AM("8.36.35"), "Enhance Vortex"),
+            (S14AM("8.36.37"), "Unyielding"),
+            (S14AM("8.36.39"), "Ninjutsu"),
+            (S14AM("8.36.41"), "Super Charge"),
+        ],
+        "artifact": S14AM("8.36.44"),
+        "artifact_box": (210, 250, 490, 525),
+        "artifact_corner_radius": 12,
+        "artifact_popup": None,
+    },
+    "foxy-spirit": {
+        "popups": [
+            (S14AM("8.37.00"), "Nightfire"),
+            (S14AM("8.36.53"), "Soul Snatcher Orb"),
+            (S14AM("8.36.55"), "Spell Surge"),
+            (S14AM("8.36.56"), "Mind's Mirror"),
+            (S14AM("8.36.57"), "Heart Cleansing"),
+            (S14AM("8.36.59"), "Fox Fire"),
+        ],
+        "artifact": S14AM("8.37.03"),
+        "artifact_box": (210, 250, 500, 520),
+        "artifact_corner_radius": 12,
+        "artifact_popup": None,
+    },
+    "loli": {
+        "popups": [
+            (S14AM("8.38.29"), "Super Bullet"),
+            (S14AM("8.37.09"), "Explosive Flying Bullet"),
+            (S14AM("8.37.11"), "Enhance Missile"),
+            (S14AM("8.37.12"), "Explosive Strike"),
+            (S14AM("8.37.16"), "ATK Amplification"),
+            (S14AM("8.38.06"), "Concussion Bullet"),
+        ],
+        "artifact": S14AM("8.38.58"),
+        "artifact_box": (210, 250, 500, 525),
+        "artifact_corner_radius": 12,
+        "artifact_popup": None,
+    },
+    "googoo-fish": {
+        "popups": [
+            (S14AM("8.39.13"), "Aqua Dance"),
+            (S14AM("8.39.05"), "Steal"),
+            (S14AM("8.39.08"), "Water Burst"),
+            (S14AM("8.39.09"), "Sudden Assault"),
+            (S14AM("8.39.10"), "Contract"),
+            (S14AM("8.39.12"), "Dark Shadow"),
+        ],
+        "artifact": S14AM("8.39.16"),
+        "artifact_box": (230, 250, 515, 520),
+        "artifact_corner_radius": 12,
+        "artifact_popup": None,
+    },
+    "moon-goddess": {
+        "popups": [
+            (S14AM("8.39.36"), "Meteor Shower"),
+            (S14AM("8.39.22"), "Moon Goddess's Arrow"),
+            (S14AM("8.39.23"), "Meteor Strike"),
+            (S14AM("8.39.31"), "Encourage"),
+            (S14AM("8.39.33"), "ATK Amplification"),
+            (S14AM("8.39.35"), "ATK SPD Aura"),
+        ],
+        "artifact": S14AM("8.39.38"),
+        "artifact_box": (210, 250, 500, 532),
+        "artifact_corner_radius": 12,
+        "artifact_popup": None,
+    },
+    "cowboy-killer": {
+        "popups": [
+            (S14AM("8.41.17"), "Barrage Bullets"),
+            (S14AM("8.41.08"), "PEN Bullet"),
+            (S14AM("8.41.10"), "Enhance Ammo"),
+            (S14AM("8.41.11"), "Growth Favors"),
+            (S14AM("8.41.13"), "Precise"),
+            (S14AM("8.41.15"), "Metal Slug"),
+        ],
+        "artifact": S14AM("8.41.21"),
+        "artifact_box": (215, 232, 490, 525),
+        "artifact_corner_radius": 12,
+        # The last progress star touches the barrel. Keep the barrel's curved
+        # top while masking the star, with points relative to artifact_box.
+        "artifact_polygon": [(0, 12), (189, 12), (200, 9), (210, 2),
+                             (275, 2), (275, 293), (0, 293)],
+        "artifact_popup": None,
+    },
+    "jungle-archer": {
+        "popups": [
+            (S14AM("9.01.18"), "Gale Arrow"),
+            (S14AM("9.01.11"), "Fiery Barrage"),
+            (S14AM("9.01.12"), "Enhance Arrows"),
+            (S14AM("9.01.14"), "High Speed"),
+            (S14AM("9.01.16"), "Hunter's Lineage"),
+            (S14AM("9.01.17"), "Upgraded Arrows"),
+        ],
+        "artifact": S14AM("8.42.09"),
+        "artifact_box": (210, 242, 500, 525),
+        "artifact_corner_radius": 12,
+        "artifact_popup": None,
+    },
+    "white-ox": {
+        "popups": [
+            (S14AM("8.44.07"), "Brute Charge"),
+            (S14AM("8.43.55"), "Warrior Charge"),
+            (S14AM("8.44.01"), "Heavy Strike"),
+            (S14AM("8.44.03"), "HP Shield"),
+            (S14AM("8.44.04"), "Indomitable"),
+            (S14AM("8.44.05"), "Brute Strength"),
+        ],
+        "artifact": S14AM("8.44.09"),
+        "artifact_box": (210, 245, 490, 530),
+        "artifact_corner_radius": 12,
+        "artifact_popup": None,
+    },
+    "hidden-ninja": {
+        "popups": [
+            (S14AM("8.44.20"), "Beast Pursuit"),
+            (S14AM("8.44.14"), "Paralysis ATK"),
+            (S14AM("8.44.16"), "Beast Possession"),
+            (S14AM("8.44.17"), "Seal Technique"),
+            (S14AM("8.44.18"), "Quick Regen"),
+            (S14AM("8.44.19"), "Super Beast"),
+        ],
+        "artifact": S14AM("8.44.23"),
+        "artifact_box": (220, 242, 490, 532),
+        "artifact_corner_radius": 12,
+        "artifact_popup": None,
+    },
+    "snow-hunter": {
+        "popups": [
+            (S14AM("8.44.35"), "Freezing Arrows"),
+            (S14AM("8.44.28"), "Frost Arrows"),
+            (S14AM("8.44.29"), "Speedfrost Arrowhead"),
+            (S14AM("8.44.30"), "Multiarrow"),
+            (S14AM("8.44.32"), "Focus"),
+            (S14AM("8.44.34"), "Explosive Arrows"),
+        ],
+        "artifact": S14AM("8.44.37"),
+        "artifact_box": (220, 250, 490, 520),
+        "artifact_corner_radius": 12,
+        "artifact_popup": None,
+    },
+    "swordevil": {
+        "popups": [
+            (S14AM("8.45.08"), "Sweep Army"),
+            (S14AM("8.45.00"), "Thunder Strike"),
+            (S14AM("8.45.01"), "Skill Immunity"),
+            (S14AM("8.45.03"), "Phantom Combo"),
+            (S14AM("8.45.04"), "Strength Awakening"),
+            (S14AM("8.45.06"), "Gale Aura"),
+        ],
+        "artifact": S14AM("8.45.10"),
+        "artifact_box": (210, 250, 500, 530),
+        "artifact_corner_radius": 12,
+        "artifact_popup": None,
+    },
+    "mars": {
+        "popups": [
+            (S14AM("8.45.24"), "Spear of War"),
+            (S14AM("8.45.16"), "Shield Bash"),
+            (S14AM("8.45.18"), "Enhance Spear Strike"),
+            (S14AM("8.45.20"), "DEF Stance"),
+            (S14AM("8.45.22"), "Protective Shield"),
+            (S14AM("8.45.23"), "Blood-Stained Spear"),
+        ],
+        "artifact": S14AM("8.45.27"),
+        "artifact_box": (210, 242, 500, 535),
+        "artifact_corner_radius": 12,
+        "artifact_popup": None,
+    },
     # September 14 batch: reuse the shared tier/core icons.
     "hela": {
         "popups": [
@@ -587,6 +774,13 @@ def main():
             artifact.putalpha(mask)
         else:
             artifact = circle(crop, inset=0)
+        if "artifact_polygon" in cfg:
+            # Intersect the normal crop mask with a screenshot-specific edge
+            # when progress UI sits beside a protruding weapon tip.
+            mask = Image.new("L", crop.size, 0)
+            ImageDraw.Draw(mask).polygon(cfg["artifact_polygon"], fill=255)
+            alpha = np.minimum(np.asarray(artifact.getchannel("A")), np.asarray(mask))
+            artifact.putalpha(Image.fromarray(alpha))
         artifact.save(os.path.join(ROOT, "public/artifacts", f"{hero}.png"))
     print("icons:", ", ".join(sorted(tier_written)))
 

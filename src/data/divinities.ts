@@ -98,6 +98,18 @@ export const divinitySeeds: DivinitySeed[] = [
     iconUrl: "/divinities/ranged-dmg-reduction.png",
   },
   {
+    slug: "crit-dmg-reduction",
+    name: "CRIT DMG Reduction",
+    kind: "DMG Reduction",
+    iconUrl: "/divinities/crit-dmg-reduction.png",
+  },
+  {
+    slug: "anti-crit-rate",
+    name: "Anti-CRIT Rate",
+    kind: "DMG Reduction",
+    iconUrl: "/divinities/anti-crit-rate.png",
+  },
+  {
     slug: "crit-rate",
     name: "CRIT Rate",
     kind: "CRIT",
@@ -112,26 +124,14 @@ export const divinitySeeds: DivinitySeed[] = [
   {
     slug: "anti-control-rate",
     name: "Anti-Control Rate",
-    kind: "RES",
+    kind: "Control",
     iconUrl: "/divinities/anti-control-rate.png",
   },
   {
     slug: "control-res",
     name: "Control RES",
-    kind: "RES",
+    kind: "Control",
     iconUrl: "/divinities/control-res.png",
-  },
-  {
-    slug: "crit-dmg-reduction",
-    name: "CRIT DMG Reduction",
-    kind: "RES",
-    iconUrl: "/divinities/crit-dmg-reduction.png",
-  },
-  {
-    slug: "anti-crit-rate",
-    name: "Anti-CRIT Rate",
-    kind: "RES",
-    iconUrl: "/divinities/anti-crit-rate.png",
   },
   {
     slug: "knockback-effect",

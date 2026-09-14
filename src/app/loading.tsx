@@ -1,22 +1,35 @@
+import {
+  LoadingPage,
+  Skeleton,
+  TextSkeleton,
+} from "@/components/loading-skeleton";
+import { Card, CardHeader } from "@/components/ui/card";
+
 export default function Loading() {
   return (
-    <main
-      aria-busy="true"
-      aria-label="Loading page"
-      className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6"
+    <LoadingPage
+      label="home"
+      className="max-w-6xl flex-1 gap-10 px-4 py-12 sm:px-6"
     >
-      <p role="status" className="text-muted-foreground text-sm">
-        Loading…
-      </p>
-      <div aria-hidden="true" className="space-y-6 motion-safe:animate-pulse">
-        <div className="bg-muted h-8 w-48 rounded-md" />
-        <div className="bg-muted h-10 w-full max-w-sm rounded-md" />
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {Array.from({ length: 8 }, (_, i) => (
-            <div key={i} className="bg-muted h-44 rounded-xl" />
-          ))}
+      <section className="flex flex-col gap-4">
+        <Skeleton className="h-5.5 w-48" />
+        <Skeleton className="h-[2.4rem] w-full max-w-2xl" />
+        <div className="max-w-2xl">
+          <TextSkeleton lines={2} />
         </div>
-      </div>
-    </main>
+        <Skeleton className="h-9 w-40" />
+      </section>
+      <section className="grid gap-4 sm:grid-cols-3">
+        {Array.from({ length: 3 }, (_, i) => (
+          <Card key={i}>
+            <CardHeader className="gap-2">
+              <Skeleton className="mb-2 size-5" />
+              <Skeleton className="h-5.5 w-32" />
+              <TextSkeleton lines={2} />
+            </CardHeader>
+          </Card>
+        ))}
+      </section>
+    </LoadingPage>
   );
 }

@@ -27,6 +27,7 @@ export const SKILL_KIND_LABELS: Record<SkillKind, string> = {
   attribute: "Attribute",
   enhance: "Enhance",
   passive: "Passive",
+  aura: "Aura",
 };
 
 export const ARTIFACT_TIER_LABELS: Record<ArtifactTier, string> = {

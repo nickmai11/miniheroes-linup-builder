@@ -63,7 +63,7 @@ Awakening skills are text-only; the owner does not want icons for them.
 The owner confirmed the unlock thresholds: **Awakening I at 18★** and
 **Awakening III at 22★**. Show these alongside the stage labels.
 
-For the **2026-09-14 screenshot review and subsequent import**, the owner explicitly
+For the **2026-09-14 7.52–8.05 AM screenshot batch and subsequent import**, the owner explicitly
 excluded Awakening I/III from the requested scope. Those stages do not block
 adding the supplied details; leave unrecorded awakenings empty and preserve any
 existing awakening data. This is a batch-specific scope, not a change to the
@@ -83,7 +83,10 @@ Hero Awaken screen; I and III for Sea Captain and Nezha were supplied in
 
 **Talent tab.** Six talents: the **Ultimate Skill** in the centre and five in a
 ring. Kinds seen: Ultimate Skill, Special Skill, Battle Skill, Enhance, Attribute,
-Passive. The ring position determines unlock stars, not kind: Holy Healer's 2★
+Passive, Aura. **Aura** is shown on Skeleton King's **Bloodthirsty Curse** (2★)
+and Moon Goddess's **ATK SPD Aura** (16★) in the September 14 8.35–8.45 AM
+screenshots; the app stores and displays that kind as **Aura**. The ring position determines
+unlock stars, not kind: Holy Healer's 2★
 talent is Enhance; Silence and Gunslinger's 2★ talents are Special Skill.
 Each talent has a name and description; a progress bar ("Max" / "Currently full")
 tracks talent levels. Tapping a talent opens up to three panels:
@@ -398,6 +401,153 @@ Transcription and source notes:
 - Baphomet's **7.56.26 AM** divinity popup confirms the left red badge's stat
   **All Heavy Injury**, matching the existing **Heavy Injury** catalog entry.
 
+#### September 14 8.35–8.45 AM screenshot review and import (game, 2026-09-14)
+
+The owner authorized importing this reviewed batch, including **Aura** support.
+The original 147 owner screenshots
+from **8.35.37–8.45.28 AM**, plus Jungle Archer's nine **9.01.10–9.01.19 AM**
+follow-ups, cover 14 heroes. All already have roster entries and
+owner-sourced Archive portraits, with the whole art panel and no artifact-progress
+diamond. **Gunslinger** already has a detail seed, including I/III; its supplied
+talents, cores, artifact tiers, and divinities agree with the recorded content.
+The other 13 now have detail entries: Skeleton King, Whirlpool Ninja, Foxy Spirit,
+Loli, GooGoo Fish, Moon Goddess, Cowboy Killer, Jungle Archer, White Ox,
+Hidden Ninja, Snow Hunter, Swordevil, and Mars.
+
+**All 13 imported heroes have complete non-awakening details:** their six
+talent names, kinds, full descriptions, unscrolled icon sources, ring order,
+four linked cores, artifact artwork and four abilities, and two catalog-matched
+red divinities are supplied. **Jungle Archer's 9.01 AM follow-ups** close its
+talent/core gaps, combined with the original Artifact tab and ability popup.
+No Hero Awaken screenshots appear in this batch, so I (18★) and III (22★)
+remain unrecorded for all 13, with the existing empty states. The import adds
+78 talents, 52 linked cores, 52 artifact bonuses, 26 divinity links, and 91 new
+talent/artifact images. Aura is supported as its own talent kind; Swordevil's
+**Gale Aura** remains **Enhance**, matching its popup. Existing portraits and
+shared icons are reused; no existing public image is replaced.
+
+Sources are `gameplay/talents/Screenshot 2026-09-14 at <time> AM.png`, including
+the narrow no-break space before `AM` and any ` 1` suffix. Ranges below are AM.
+Divinities are the bottom red badges in left/right order, compared visually with
+the existing catalog; no additional divinity popup is needed for this batch.
+
+| Hero / class | Artifact | Mythic divinities (left → right) | Source range | Non-awakening evidence |
+| --- | --- | --- | --- | --- |
+| Skeleton King / Warrior | Blade of Destruction | HP → Heavy Injury | 8.35.37–8.36.29 | Complete |
+| Whirlpool Ninja / Warrior | Whirlwind Meteor | HP → CRIT Damage | 8.36.32–8.36.47 | Complete |
+| Foxy Spirit / Mage | Exquisite Lamp | Magic RES → CRIT Damage | 8.36.52–8.37.05 | Complete |
+| Loli / Marksman | Gatling | Marksman DEF → CRIT Damage | 8.37.08–8.38.59 | Complete |
+| GooGoo Fish / Warrior | Dragon Scale | ATK → CRIT Damage | 8.39.04–8.39.17 | Complete |
+| Moon Goddess / Marksman | Merciless Crossbow | Marksman DEF → Heavy Injury | 8.39.20–8.40.40 | Complete |
+| Cowboy Killer / Marksman | Desert Revolver | Marksman DEF → Physical DMG Boost | 8.41.06–8.41.22 | Complete |
+| Jungle Archer / Marksman | Forest Longbow | Marksman DEF → Anti-CRIT Rate | 8.42.09–8.42.10; 9.01.10–9.01.19 | Complete after follow-up |
+| White Ox / Warrior | Mountain Splitting Axe | Knockback Effect → Heavy Injury | 8.43.51–8.44.10 | Complete |
+| Hidden Ninja / Marksman | Shuriken | Marksman DEF → ATK SPD | 8.44.13–8.44.24 | Complete |
+| Snow Hunter / Marksman | Flash Bow | Marksman DEF → CRIT DMG Reduction | 8.44.27–8.44.38 | Complete |
+| Gunslinger / Marksman | Flame-red Robe | Ranged DMG Reduction → CRIT Damage | 8.44.40–8.44.56 | Already recorded |
+| Swordevil / Warrior | Slaughter | CRIT Damage → CRIT Rate | 8.44.59–8.45.12 | Complete |
+| Mars / Warrior | Spear of War | ATK → Physical RES | 8.45.15–8.45.28 | Complete |
+
+Verified talent order is **0 / 2 / 5 / 8 / 12 / 16★**. The matching original
+popup times are listed in the same order; these provide usable icon sources.
+
+| Hero | Talents in unlock order | Original popup times (AM) |
+| --- | --- | --- |
+| Skeleton King | Dark Soul Fireball / Bloodthirsty Curse / Hellfire Heavy Strike / Return from the Underworld / Dark Soul Real Body / Hell King's Howl | 8.35.46 / 8.35.38 / 8.35.40 / 8.35.41 / 8.35.42 / 8.35.44 |
+| Whirlpool Ninja | Energy Vortex / Cloning Technique / Enhance Vortex / Unyielding / Ninjutsu / Super Charge | 8.36.42 / 8.36.33 / 8.36.35 / 8.36.37 / 8.36.39 / 8.36.41 |
+| Foxy Spirit | Nightfire / Soul Snatcher Orb / Spell Surge / Mind's Mirror / Heart Cleansing / Fox Fire | 8.37.00 / 8.36.53 / 8.36.55 / 8.36.56 / 8.36.57 / 8.36.59 |
+| Loli | Super Bullet / Explosive Flying Bullet / Enhance Missile / Explosive Strike / ATK Amplification / Concussion Bullet | 8.38.29 / 8.37.09 / 8.37.11 / 8.37.12 / 8.37.16 / 8.38.06 |
+| GooGoo Fish | Aqua Dance / Steal / Water Burst / Sudden Assault / Contract / Dark Shadow | 8.39.13 / 8.39.05 / 8.39.08 / 8.39.09 / 8.39.10 / 8.39.12 |
+| Moon Goddess | Meteor Shower / Moon Goddess's Arrow / Meteor Strike / Encourage / ATK Amplification / ATK SPD Aura | 8.39.36 / 8.39.22 / 8.39.23 / 8.39.31 / 8.39.33 / 8.39.35 |
+| Cowboy Killer | Barrage Bullets / PEN Bullet / Enhance Ammo / Growth Favors / Precise / Metal Slug | 8.41.17 / 8.41.08 / 8.41.10 / 8.41.11 / 8.41.13 / 8.41.15 |
+| Jungle Archer | Gale Arrow / Fiery Barrage / Enhance Arrows / High Speed / Hunter's Lineage / Upgraded Arrows | 9.01.18 / 9.01.11 / 9.01.12 / 9.01.14 / 9.01.16 / 9.01.17 |
+| White Ox | Brute Charge / Warrior Charge / Heavy Strike / HP Shield / Indomitable / Brute Strength | 8.44.07 / 8.43.55 / 8.44.01 / 8.44.03 / 8.44.04 / 8.44.05 |
+| Hidden Ninja | Beast Pursuit / Paralysis ATK / Beast Possession / Seal Technique / Quick Regen / Super Beast | 8.44.20 / 8.44.14 / 8.44.16 / 8.44.17 / 8.44.18 / 8.44.19 |
+| Snow Hunter | Freezing Arrows / Frost Arrows / Speedfrost Arrowhead / Multiarrow / Focus / Explosive Arrows | 8.44.35 / 8.44.28 / 8.44.29 / 8.44.30 / 8.44.32 / 8.44.34 |
+| Swordevil | Sweep Army / Thunder Strike / Skill Immunity / Phantom Combo / Strength Awakening / Gale Aura | 8.45.08 / 8.45.00 / 8.45.01 / 8.45.03 / 8.45.04 / 8.45.06 |
+| Mars | Spear of War / Shield Bash / Enhance Spear Strike / DEF Stance / Protective Shield / Blood-Stained Spear | 8.45.24 / 8.45.16 / 8.45.18 / 8.45.20 / 8.45.22 / 8.45.23 |
+
+Review notes for a future authorized import:
+
+- **Aura is a supported talent kind** for Skeleton King and Moon
+  Goddess; no further screenshot is needed to establish it. Swordevil's
+  **Gale Aura** is labeled **Enhance**, and **Strength Awakening** is an
+  **Attribute** talent, not an awakening-stage capture. White Ox's 5★
+  **Heavy Strike** and Snow Hunter's 8★ **Multiarrow** are **Battle Skill**.
+- Talent aliases: Whirlpool Ninja's **Clone** means **Cloning Technique**;
+  Foxy Spirit's **Mind's Eye Mirror** means **Mind's Mirror**; White Ox's core
+  calls **HP Shield** **Life Shield**; Hidden Ninja's **Thunder Beast Pursuit**
+  and **Thunder Beast Possession** link to **Beast Pursuit** and **Beast
+  Possession**, respectively. Preserve description wording while linking to
+  the actual popup title.
+- Core links differ by hero. Skeleton King's Brawler's Armor links to
+  **Hellfire Heavy Strike** (5★), Foxy Spirit's Mage Robe to **Spell Surge**
+  (5★), and White Ox's Brawler's Armor to **HP Shield** (8★). Moon Goddess's
+  Crystal Pendant links to **ATK SPD Aura** (16★); Cowboy Killer's to
+  **Growth Favors** (8★), and Loli's to **Explosive Strike** (8★).
+- Core continuations are complete: Whirlpool Ninja **8.36.34 / 8.36.38**,
+  Foxy Spirit **8.36.54**, Loli **8.37.10 / 8.38.30 / 8.38.33**, GooGoo Fish
+  **8.39.07**, Cowboy Killer **8.41.08 AM 1.png / 8.41.12 / 8.41.18**, White Ox
+  **8.43.56**, Hidden Ninja **8.44.21**, Snow Hunter **8.44.31 /
+  8.44.35 AM 1.png**, Swordevil **8.45.03 AM 1.png / 8.45.08 AM 1.png**, and
+  Mars **8.45.17 / 8.45.25**. Files without ` 1` provide the original icon
+  popups for the listed same-second pairs. Loli's repeated Super Bullet captures
+  include both full talent and full Swift Longbow text; no recapture is needed.
+- Artifact continuations **Foxy Spirit 8.37.05** and **Swordevil 8.45.12**
+  complete their rainbow text. Foxy Spirit has standalone red **Foxfire Raid**
+  and rainbow **Soul Rend**; Skeleton King's rainbow **Soul Guardian**, Loli's
+  **Extreme Excitement**, White Ox's **Divine Aura**, and Swordevil's **Healing
+  Guard** are also standalone. Rainbow attaches to Whirlpool Ninja's
+  **Cloning Technique**, GooGoo Fish's **Aqua Dance**, Moon Goddess's **ATK SPD
+  Aura**, Cowboy Killer's **Growth Favors**, Hidden Ninja's **Beast Pursuit**,
+  Snow Hunter's **Multiarrow**, and Mars's **Spear of War**.
+- Preserve unusual displayed values: Whirlpool Ninja's Cavalier Helm reduces
+  clone damage by **80% (250%)**; Loli's Swift Longbow shows **3% (10%)** of
+  lost HP, capped at **400% (500%)** of Loli's Attack; Cowboy Killer's Arrow
+  Core shows **30% (100%)** and **60% (200%)**; White Ox's Boots show
+  **30% (100%)**. White Ox's Brute Charge says **700% Physical DMG** and its
+  red bonus **300% True DMG** without an ATK basis; Foxy Spirit's Nightfire
+  says **160% Magic DMG** without an ATK basis. Do not supply an unseen basis.
+- Jungle Archer's **8.42.10** artifact popup fully shows purple **Fiery
+  Barrage** (30% chance to stun for 1.5s), gold **High Speed** (duration +50%),
+  red **Gale Arrow** (final DMG Result +60%), and rainbow **High Speed**
+  (duration +18s). The **9.01 AM** talent popups confirm these exact talent
+  titles and links, including both gold and rainbow on **High Speed**.
+
+**Jungle Archer follow-up review (9.01.10–9.01.19 AM):** all nine new files
+belong to Jungle Archer / Marksman. The **9.01.10** talent-ring screenshot
+establishes the order above. All six original popups provide full descriptions
+and usable icons. The existing Forest Longbow artwork, all four artifact tiers,
+and Marksman DEF / Anti-CRIT Rate badges remain verified from **8.42.09 / 8.42.10**.
+
+| Talent | Kind | Unlock | Effect shown in the follow-up |
+| --- | --- | --- | --- |
+| Gale Arrow | Ultimate Skill | 0★ | Pierces all enemies for Physical DMG equal to 360% of ATK with Knockback; DMG Result and Knockback diminish by 8% with each enemy hit. |
+| Fiery Barrage | Battle Skill | 2★ | Basic ATK have a 35% chance to shoot two arrows, each dealing Physical DMG equal to 100% of ATK. |
+| Enhance Arrows | Enhance | 5★ | Gale Arrow's Physical DMG increases by 90%. |
+| High Speed | Special Skill | 8★ | On entering battle, MOV SPD and ATK SPD increase by 30% for 10s. |
+| Hunter's Lineage | Attribute | 12★ | ATK increases by 10%, Armor PEN by 15%. |
+| Upgraded Arrows | Enhance | 16★ | Gale Arrow's DMG Result and Knockback Effect no longer diminish upon hitting an enemy. |
+
+All four complete core panels are supplied:
+
+| Gear | Talent link | Displayed core effect | Full-text source (AM) |
+| --- | --- | --- | --- |
+| Swift Longbow | Gale Arrow | Increases Physical DMG by 40%(120%) of Attack. | 9.01.18; clearer scroll 9.01.19 |
+| Arrow Core | Fiery Barrage | Increases each arrow's Physical DMG by 20%(60%) of Attack. | 9.01.11 |
+| Hunter's Cloak | Enhance Arrows | “Empowered Arrows” increases Physical DMG by 40%(120%) of Attack. | 9.01.12 |
+| Crystal Pendant | High Speed | Additionally increases ATK SPD and MOV SPD by 5%(15%). | 9.01.14 AM 1.png |
+
+**Empowered Arrows** is the Hunter's Cloak description's alias for the popup
+title **Enhance Arrows**; link to the actual title. The original
+`Screenshot 2026-09-14 at 9.01.14 AM.png` has High Speed's icon and full talent
+description; `Screenshot 2026-09-14 at 9.01.14 AM 1.png` is the scrolled
+continuation that completes Crystal Pendant. Gale Arrow's icon source is
+**9.01.18**, with **9.01.19** providing its scrolled core panel. The only remaining
+Jungle Archer evidence gaps are **Awakening I (18★) and III (22★)**. This follow-up
+updates readiness only; Jungle Archer and the other 12 new candidates are not
+imported.
+
 ### Awakening skills (game, 2026-09-13)
 
 Hero-specific I and III are read from the Hero Awaken screenshots in
@@ -492,7 +642,9 @@ the "Divinity" suffix. So "DMG Reduction Divinity" whose row reads
 initially taken from the popup title (minus "Divinity"). Owner corrections take
 precedence: **Knockback Resist** and **SPD Reduction RES** belong to **Knockback**;
 **Heavy Injury**, **Healing Effect**, and **Receive Healing** belong to **Healing**
-(owner, 2026-09-13).
+(owner, 2026-09-13). **CRIT DMG Reduction** and **Anti-CRIT Rate** belong to
+**DMG Reduction**; the remaining **RES** category is named **Control**, containing
+**Anti-Control Rate** and **Control RES** (owner, 2026-09-14).
 
 Divinities have rarities; the app only includes **mythic (red)** ones (owner). The
 30 mythic divinities read from the owner's popups (`gameplay/divinities/`, 131 shots with
@@ -504,9 +656,9 @@ duplicates; produced by `scripts/slice-divinities.py`):
 | DEF           | DEF, Marksman DEF (flat)                                                                                    |
 | HP            | HP (flat)                                                                                                   |
 | DMG Increase  | DMG Increase, Physical DMG Boost, Magic DMG Boost, Melee DMG Boost, Ranged DMG Boost (%)                    |
-| DMG Reduction | DMG Reduction, Physical RES, Magic RES, Melee DMG Reduction*, Ranged DMG Reduction (%)                      |
+| DMG Reduction | DMG Reduction, Physical RES, Magic RES, Melee DMG Reduction*, Ranged DMG Reduction, CRIT DMG Reduction, Anti-CRIT Rate (%) |
 | CRIT          | CRIT Rate, CRIT Damage (%)                                                                                  |
-| RES           | Anti-Control Rate, Control RES, CRIT DMG Reduction, Anti-CRIT Rate (%)                                      |
+| Control       | Anti-Control Rate, Control RES (%)                                                                         |
 | Knockback     | Knockback Effect, Knockback Resist, SPD Reduction RES (%)                                                  |
 | Healing       | Heavy Injury, Healing Effect, Receive Healing (%)                                                         |
 | SPD Boost     | ATK SPD (%)                                                                                                 |
@@ -630,6 +782,19 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-14 — The owner revised the earlier divinity grouping: **CRIT DMG
+  Reduction** ("crit res") and **Anti-CRIT Rate** now belong to **DMG Reduction**.
+  This supersedes the earlier move into CRIT; **Control** remains the category name.
+
+- 2026-09-14 — Divinity categories: move **CRIT DMG Reduction** and
+  **Anti-CRIT Rate** into **CRIT**, and rename **RES** to **Control**.
+
+- **2026-09-14:** The owner authorized adding the reviewed new heroes and **Aura**.
+  Import the thirteen 8.35–8.45 AM detail candidates, including Jungle Archer's
+  9.01 AM follow-ups, with their verified talents, cores, artifacts, and divinities.
+  Aura is the talent kind on Bloodthirsty Curse and ATK SPD Aura. No I/III
+  screenshots were supplied; those stages remain unrecorded in this import.
 
 Everything the owner says about the game gets appended here, dated, the moment it
 is said. These override anything marked (web).
@@ -778,6 +943,41 @@ is said. These override anything marked (web).
   mythic divinities recorded in the September 14 section above. All 12 detail
   entries are now imported, including Mermaid Princess's fourth core from the
   8.05.14 AM follow-up; existing Archive portraits are retained.
+
+- 2026-09-14 — **Readiness review of the new 8.35.37–8.45.28 AM batch:** the
+  owner's 147 screenshots cover 14 heroes. Skeleton King, Whirlpool Ninja,
+  Foxy Spirit, Loli, GooGoo Fish, Moon Goddess, Cowboy Killer, White Ox, Hidden
+  Ninja, Snow Hunter, Swordevil, and Mars have complete non-awakening evidence.
+  Jungle Archer supplies only Forest Longbow's Artifact tab and all four
+  abilities. Gunslinger's supplied content agrees with its existing detail seed.
+  All 13 new candidates lack I/III screenshots; the previous batch's exclusion
+  was not applied to this review. The source and readiness tables above record
+  these findings; no seeds, public assets, or database content were imported.
+- 2026-09-14 — The owner's **8.35.38 AM** Skeleton King popup labels
+  **Bloodthirsty Curse** as **Aura**: increases Lifesteal for all Melee allies
+  by 15%. Moon Goddess's **8.39.35 AM** **ATK SPD Aura** also has kind **Aura**:
+  increases all Ranged allied heroes' ATK SPD by 10%. These are screenshot-backed
+  game facts; the app's current talent-kind list has no Aura entry.
+- 2026-09-14 — The same review establishes the hero/artifact/divinity identities,
+  clockwise talent order, title aliases, core continuations, and artifact
+  attachments listed in the 8.35–8.45 AM section. In particular, White Ox's
+  **Life Shield** core belongs to **HP Shield**, and Hidden Ninja's **Thunder
+  Beast Pursuit / Thunder Beast Possession** bonuses belong to **Beast Pursuit /
+  Beast Possession**. Unusual parenthesized values remain as displayed.
+
+- 2026-09-14 — **Jungle Archer follow-up review:** the owner supplied nine
+  **9.01.10–9.01.19 AM** captures. They establish Gale Arrow (Ultimate, 0★),
+  Fiery Barrage (Battle, 2★), Enhance Arrows (Enhance, 5★), High Speed (Special,
+  8★), Hunter's Lineage (Attribute, 12★), and Upgraded Arrows (Enhance, 16★),
+  plus all four core descriptions. **Arrow Core → Fiery Barrage** adds
+  20%(60%) of Attack; **Hunter's Cloak → Enhance Arrows** and **Swift Longbow →
+  Gale Arrow** each add 40%(120%) of Attack as Physical DMG. Hunter's Cloak's
+  text uses the alias **Empowered Arrows**. The **9.01.14 AM 1.png** scroll
+  completes **Crystal Pendant → High Speed**: ATK SPD and MOV SPD additionally
+  increase by 5%(15%). Together with the earlier Forest Longbow captures, this
+  closes every non-awakening gap for Jungle Archer, bringing all 13 new
+  candidates to complete non-awakening coverage. I/III remain missing for all
+  13. This is a review, not an import.
 
 ## How the app models it
 

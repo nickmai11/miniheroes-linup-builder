@@ -59,7 +59,7 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
       </Link>
 
       <div className="grid gap-8 md:grid-cols-[260px_1fr]">
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 md:sticky md:top-20 md:self-start">
           <HeroPortrait
             hero={hero}
             divinities={hero.divinities}

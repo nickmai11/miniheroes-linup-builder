@@ -25,6 +25,16 @@ space around their trigger. All info popovers use fixed positioning and reserve
 scrollbar space inside the popup; the page also reserves its scrollbar gutter so
 opening a preview does not shift the page or rewrap its contents.
 
+At the two-column breakpoint (`md`, 768px and up), the portrait and "Start a
+lineup" button stick together 5rem below the viewport top, clear of the site
+header. The portrait column aligns to the start of the grid so it can stay sticky
+while the details scroll. On smaller screens it scrolls normally with the page.
+
+The hero detail loading skeleton in `src/app/heroes/[slug]/loading.tsx` follows
+this same container width, portrait aspect ratio, sticky breakpoint, and section
+order, including talents, awakening skills, artifacts, divinities, builds, and
+lineups. Keep it in sync when changing the page layout.
+
 In this order, top to bottom of the right column (portrait + "Start a lineup"
 button in the left column):
 
@@ -73,6 +83,15 @@ talent order, and transcription notes are in the game reference's September 14
 section. Mermaid Princess's **Tome of Radiance → Deep Sea Blessing** core uses
 the **8.05.14 AM** follow-up; its talent icon uses the original **7.55.19 AM**
 popup. Awakening I/III were explicitly excluded from this batch.
+
+The **September 14 8.35–8.45 AM import**, including Jungle Archer's **9.01 AM**
+follow-ups, adds **Skeleton King, Whirlpool Ninja, Foxy Spirit, Loli, GooGoo Fish,
+Moon Goddess, Cowboy Killer, Jungle Archer, White Ox, Hidden Ninja, Snow Hunter,
+Swordevil, and Mars**. Each has six talents, four linked cores, four artifact
+tiers, two mythic divinities, and new talent/artifact crops with its existing
+portrait. **Aura** is a supported talent kind for Bloodthirsty Curse and ATK SPD
+Aura; the shared labels also cover core previews. No I/III screenshots were
+supplied, so those stages retain their empty states.
 
 Build imports use an outline button matching **New build**. The picker searches
 hero and build names on the server, loads twelve results per page only when opened,
@@ -182,6 +201,9 @@ the screenshot positions; the compendium cards list the same order.
    other player progress from the artifact crop. For diagonal art that extends
    outside the circular mask, set `artifact_corner_radius` (e.g. 24) to use a
    rounded rectangle that preserves the weapon's tips.
+   When progress UI touches a protruding tip, `artifact_polygon` can intersect
+   that mask using points relative to `artifact_box`; Cowboy Killer uses this
+   to exclude the last star beside the barrel without shortening the barrel.
 2. **New divinities** — only if a red badge is missing from `/divinities`: add the
    popup screenshot to `gameplay/divinities/`, a row to `CATALOG` in
    `scripts/slice-divinities.py`, run it, then run `scripts/upsert-divinities.sql`
@@ -226,8 +248,9 @@ write, or an additional database query on page load.
 
 - `heroes`: `+ artifactName`, `artifactIconUrl`.
 - `hero_skills`: `kind` (ultimate | battle | special | attribute | enhance |
-  passive), `name`, `description`, `unlockStars` (0 for the ultimate), `iconUrl`,
+  passive | aura), `name`, `description`, `unlockStars` (0 for the ultimate), `iconUrl`,
   `sortOrder`.
+  These kinds are stored as text; adding Aura requires no database migration.
 - `HeroAwakeningSkill` in `src/data/hero-details.ts`: `stage` (I | III), `name`,
   `description`, `sourceScreenshot`. The optional `awakeningSkills`
   array is served as part of `HeroDetail`; unrecorded heroes get an empty array.
@@ -265,7 +288,28 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
 
 ## 6. Known gaps
 
-- September 14 batch: **Hela, Shadow Master, Medusa,
+- **September 14, 8.35–8.45 AM imported batch:** Skeleton King,
+  Whirlpool Ninja, Foxy Spirit, Loli, GooGoo Fish, Moon Goddess, Cowboy Killer,
+  Jungle Archer, White Ox, Hidden Ninja, Snow Hunter, Swordevil, and Mars have complete
+  recorded details for six talents, four cores, all artifact tiers, and two
+  catalog divinities, plus existing Archive portraits, after Jungle Archer's
+  9.01 AM follow-up. All thirteen still lack
+  Awakening I (18★) and III (22★); their pages show the unrecorded states.
+  Source ranges, original talent popups,
+  continuations, and transcription notes are in the game reference's
+  **September 14 8.35–8.45 AM screenshot review and import** section.
+- **Jungle Archer's talent/core gaps are resolved:** the nine 9.01.10–9.01.19 AM
+  follow-ups supply its ring and six complete talents with all four cores.
+  `Screenshot 2026-09-14 at 9.01.14 AM 1.png` completes **Crystal Pendant →
+  High Speed** (ATK SPD and MOV SPD +5%(15%)); the file without ` 1` provides
+  the unscrolled icon. **Hunter's Cloak** calls its talent **Empowered Arrows**,
+  but the popup title/link is **Enhance Arrows**. The original **8.42.09 /
+  8.42.10** captures already complete Forest Longbow and its divinities.
+  Only **Awakening I/III** remain missing; all supplied details are imported.
+- **Aura support is complete:** Skeleton King's **Bloodthirsty Curse** (2★) and Moon
+  Goddess's **ATK SPD Aura** (16★) are stored and displayed as Aura. Gunslinger's
+  new 8.44.40–8.44.56 AM captures agree with its already recorded details.
+- September 14, 7.52–8.05 AM imported batch: **Hela, Shadow Master, Medusa,
   Two-Headed Dragon, Mermaid Princess, Soul Doll, Baphomet, Masked Ninja, Whaley
   Imp, Ironblade Mixed-Race, Roar Warrior, and Monkey King** have no recorded
   Awakening I/III. The owner excluded these stages from the authorized import;

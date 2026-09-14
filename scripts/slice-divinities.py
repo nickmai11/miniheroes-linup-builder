@@ -60,14 +60,14 @@ CATALOG = [
     (S("10.42.36"), "Magic RES", "DMG Reduction"),
     (S("10.44.15"), "Melee DMG Reduction", "DMG Reduction"),  # in-game row is cut to "Melee DMG Reduct"
     (S("10.43.57"), "Ranged DMG Reduction", "DMG Reduction"),
+    (S("10.41.28"), "CRIT DMG Reduction", "DMG Reduction"),
+    (S("10.41.52"), "Anti-CRIT Rate", "DMG Reduction"),
     # CRIT (%)
     (S("10.41.22"), "CRIT Rate", "CRIT"),
     (S("10.43.18"), "CRIT Damage", "CRIT"),
-    # RES (%)
-    (S("10.41.17"), "Anti-Control Rate", "RES"),
-    (S("10.42.46"), "Control RES", "RES"),
-    (S("10.41.28"), "CRIT DMG Reduction", "RES"),
-    (S("10.41.52"), "Anti-CRIT Rate", "RES"),
+    # Control (%) — owner renamed RES; CRIT defenses join DMG Reduction (2026-09-14).
+    (S("10.41.17"), "Anti-Control Rate", "Control"),
+    (S("10.42.46"), "Control RES", "Control"),
     # Owner-defined categories (2026-09-13), overriding popup titles.
     (S("10.41.47"), "Knockback Effect", "Knockback"),
     (S("10.42.55"), "Knockback Resist", "Knockback"),

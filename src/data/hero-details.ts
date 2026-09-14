@@ -61,6 +61,1442 @@ export type HeroDetailSeed = {
 const talent = (hero: string, slug: string) => `/talents/${hero}/${slug}.png`;
 
 export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 8.35.46 AM.png, 8.35.38 AM.png, 8.35.40 AM.png, 8.35.41 AM.png, 8.35.42 AM.png, 8.35.44 AM.png.
+  // Artifact tab: 8.36.27 AM.png; abilities: 8.36.29 AM.png.
+  "skeleton-king": {
+    artifact: {
+      name: "Blade of Destruction",
+      iconUrl: "/artifacts/skeleton-king.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Bloodthirsty Curse",
+          description:
+            '"Bloodthirsty Curse" Can be applied to all allied heroes',
+        },
+        {
+          tier: "gold",
+          skill: "Return from the Underworld",
+          description:
+            '"Return from the Underworld" Increases HP Recovery to 85%',
+        },
+        {
+          tier: "red",
+          skill: "Dark Soul Fireball",
+          description:
+            '"Dark Soul Fireball" Deals equivalent DMG and effects to targets in a small range',
+        },
+        {
+          tier: "rainbow",
+          name: "Soul Guardian",
+          description:
+            "For every 8s, summon a Soul Guardian to the battlefield. The Soul Guardian possesses 25% of the Skeleton King's attributes, lasting for 20s.",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Dark Soul Fireball",
+        unlockStars: 0,
+        iconUrl: talent("skeleton-king", "dark-soul-fireball"),
+        description:
+          "Release a Dark Soul Fireball forward, dealing Physical DMG equal to 455% of ATK to a single target with a knockback effect. All DMG taken by the hit target within 6s will be increased by 15%",
+      },
+      {
+        kind: "aura",
+        name: "Bloodthirsty Curse",
+        unlockStars: 2,
+        iconUrl: talent("skeleton-king", "bloodthirsty-curse"),
+        description:
+          "Increase the Lifesteal effect for all Melee allies by 15%",
+      },
+      {
+        kind: "enhance",
+        name: "Hellfire Heavy Strike",
+        unlockStars: 5,
+        iconUrl: talent("skeleton-king", "hellfire-heavy-strike"),
+        description: "Dark Soul Fireball Stuns the target for 4s",
+      },
+      {
+        kind: "passive",
+        name: "Return from the Underworld",
+        unlockStars: 8,
+        iconUrl: talent("skeleton-king", "return-from-the-underworld"),
+        description:
+          "Skeleton King survives lethal damage and restores 35% HP (triggers 1 time(s) per battle).",
+      },
+      {
+        kind: "attribute",
+        name: "Dark Soul Real Body",
+        unlockStars: 12,
+        iconUrl: talent("skeleton-king", "dark-soul-real-body"),
+        description: "Increase DEF by 25%",
+      },
+      {
+        kind: "enhance",
+        name: "Hell King's Howl",
+        unlockStars: 16,
+        iconUrl: talent("skeleton-king", "hell-king-s-howl"),
+        description:
+          "Return from the Underworld Stuns all enemy targets for 3s. The Skeleton King will receive 25% increased DEF within 10s of resurrection.",
+      },
+    ],
+    cores: [
+      {
+        name: "Blade of Valor",
+        skill: "Dark Soul Fireball",
+        description:
+          "「Dark Soul Fireball」 increases all DMG taken by the target by 5% (15%)",
+      },
+      {
+        name: "Cavalier Helm",
+        skill: "Bloodthirsty Curse",
+        description: "「Bloodthirsty Curse」 increases Lifesteal by 5% (15%)",
+      },
+      {
+        name: "Brawler's Armor",
+        skill: "Hellfire Heavy Strike",
+        description:
+          "「Hellfire Heavy Strike」 Dark Soul Fireball additionally deals True DMG equal to 100% (300%) of ATK",
+      },
+      {
+        name: "Brawler's Boots",
+        skill: "Hell King's Howl",
+        description:
+          "「Hell King's Howl」 increases DEF buff duration by 2 (6)s and additionally increases DEF by 10% (30%)",
+      },
+    ],
+    divinities: ["hp", "heavy-injury"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 8.36.42 AM.png, 8.36.33 AM.png, 8.36.35 AM.png, 8.36.37 AM.png, 8.36.39 AM.png, 8.36.41 AM.png.
+  // Artifact tab: 8.36.44 AM.png; abilities: 8.36.47 AM.png.
+  // Core continuations: 8.36.34 AM.png, 8.36.38 AM.png.
+  "whirlpool-ninja": {
+    artifact: {
+      name: "Whirlwind Meteor",
+      iconUrl: "/artifacts/whirlpool-ninja.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Cloning Technique",
+          description:
+            '"Clone" Decreases the DMG received by the clone by 150%',
+        },
+        {
+          tier: "gold",
+          skill: "Unyielding",
+          description:
+            '"Unyielding" When triggered, immediately knocks surrounding enemies back, and increases DMG Reduction by 15% within 6s',
+        },
+        {
+          tier: "red",
+          skill: "Energy Vortex",
+          description:
+            '"Energy Vortex" Increases the Physical DMG dealt by 100%, with 3s of Stun effect',
+        },
+        {
+          tier: "rainbow",
+          skill: "Cloning Technique",
+          description:
+            '"Clone" When the clone receives lethal DMG, it will release Silence Balls, dealing Physical DMG equal to 200% of ATK to surrounding targets, silencing them for 4s',
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Energy Vortex",
+        unlockStars: 0,
+        iconUrl: talent("whirlpool-ninja", "energy-vortex"),
+        description:
+          "Launch a vortex ball forward to deal Physical DMG equal to 400% of ATK to targets in range and prevent them from recovering Energy for 3s",
+      },
+      {
+        kind: "special",
+        name: "Cloning Technique",
+        unlockStars: 2,
+        iconUrl: talent("whirlpool-ninja", "cloning-technique"),
+        description:
+          "Upon entering the battlefield, summon a clone that takes 400% of the DMG (can only be triggered 1 time(s) per battle)",
+      },
+      {
+        kind: "enhance",
+        name: "Enhance Vortex",
+        unlockStars: 5,
+        iconUrl: talent("whirlpool-ninja", "enhance-vortex"),
+        description: "Energy Vortex Increases Physical DMG dealt by 125%",
+      },
+      {
+        kind: "passive",
+        name: "Unyielding",
+        unlockStars: 8,
+        iconUrl: talent("whirlpool-ninja", "unyielding"),
+        description:
+          "When the HP falls below 35%, remove all debuffs and immediately restore 100% energy (can only be triggered 1 time(s) per battle)",
+      },
+      {
+        kind: "attribute",
+        name: "Ninjutsu",
+        unlockStars: 12,
+        iconUrl: talent("whirlpool-ninja", "ninjutsu"),
+        description: "Increase DEF by 25%",
+      },
+      {
+        kind: "enhance",
+        name: "Super Charge",
+        unlockStars: 16,
+        iconUrl: talent("whirlpool-ninja", "super-charge"),
+        description:
+          "Energy Vortex Increases DMG Range by 25%, the target hit will be unable to recover Energy for an additional 1s",
+      },
+    ],
+    cores: [
+      {
+        name: "Blade of Valor",
+        skill: "Energy Vortex",
+        description:
+          "「Energy Vortex」 increases Physical DMG by 50% (150%) of ATK",
+      },
+      {
+        name: "Cavalier Helm",
+        skill: "Cloning Technique",
+        description:
+          "「Cloning Technique」 reduces DMG taken by clones by 80% (250%)",
+      },
+      {
+        name: "Brawler's Armor",
+        skill: "Unyielding",
+        description:
+          "「Unyielding」 additionally increases own DEF by 10% (30%) for 10s",
+      },
+      {
+        name: "Brawler's Boots",
+        skill: "Super Charge",
+        description:
+          "「Super Charge」 additionally increases DMG range by 5% (15%)",
+      },
+    ],
+    divinities: ["hp", "crit-damage"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 8.37.00 AM.png, 8.36.53 AM.png, 8.36.55 AM.png, 8.36.56 AM.png, 8.36.57 AM.png, 8.36.59 AM.png.
+  // Artifact tab: 8.37.03 AM.png; abilities: 8.37.04 AM.png, 8.37.05 AM.png.
+  // Core continuations: 8.36.54 AM.png.
+  "foxy-spirit": {
+    artifact: {
+      name: "Exquisite Lamp",
+      iconUrl: "/artifacts/foxy-spirit.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Soul Snatcher Orb",
+          description:
+            '"Soul Snatcher Orb" Each time the orb hits an enemy, permanently increases self ATK by 10% (up to 3 stacks)',
+        },
+        {
+          tier: "gold",
+          skill: "Mind's Mirror",
+          description:
+            '"Mind\'s Eye Mirror" At the end of its duration, stuns enemies for an additional 2.5s',
+        },
+        {
+          tier: "red",
+          name: "Foxfire Raid",
+          description:
+            "Upon entering combat, immediately releases 4 foxfire to attack enemies. Each fire deals Magic DMG equal to 160% of ATK and significantly knocks back enemies. Passive: In the first 25s in combat, increases ATK SPD by 45% and ATK by 20%",
+        },
+        {
+          tier: "rainbow",
+          name: "Soul Rend",
+          description:
+            "Reduces all enemies' Magic DMG Boost by 15% upon entering battle. When Nightfire and Soul Snatcher Orb deal damage to enemies, converts 21% of the damage dealt into self HP",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Nightfire",
+        unlockStars: 0,
+        iconUrl: talent("foxy-spirit", "nightfire"),
+        description:
+          "Unleashes 5 foxfire to attack enemies. Each deals 160% Magic DMG to its target. The foxfire will prioritize attacking the melee enemy with the lowest HP",
+      },
+      {
+        kind: "battle",
+        name: "Soul Snatcher Orb",
+        unlockStars: 2,
+        iconUrl: talent("foxy-spirit", "soul-snatcher-orb"),
+        description:
+          "Basic ATKs have a 50% chance to launch a Soul Snatcher Orb, dealing Magic DMG equal to 100% of ATK +150% True DMG to enemies and significantly knocking them back",
+      },
+      {
+        kind: "enhance",
+        name: "Spell Surge",
+        unlockStars: 5,
+        iconUrl: talent("foxy-spirit", "spell-surge"),
+        description:
+          "Nightfire Each foxfire randomly deals DMG ranging from 0.9 to 1.3 times the base damage",
+      },
+      {
+        kind: "special",
+        name: "Mind's Mirror",
+        unlockStars: 8,
+        iconUrl: talent("foxy-spirit", "mind-s-mirror"),
+        description:
+          "Every 10s, debuffs the enemy with the highest ATK for 5s, reducing their ATK by 20% and ATK SPD by 40%",
+      },
+      {
+        kind: "attribute",
+        name: "Heart Cleansing",
+        unlockStars: 12,
+        iconUrl: talent("foxy-spirit", "heart-cleansing"),
+        description: "ATK increased by 15%, CRIT Rate increased by 10%",
+      },
+      {
+        kind: "enhance",
+        name: "Fox Fire",
+        unlockStars: 16,
+        iconUrl: talent("foxy-spirit", "fox-fire"),
+        description:
+          "Nightfire requires 15% less energy to cast, and the number of foxfire released +1",
+      },
+    ],
+    cores: [
+      {
+        name: "Wizard's Wand",
+        skill: "Nightfire",
+        description:
+          "「Nightfire」 each foxfire now also deals DMG equal to 1.2%(3.6%) of the target's max HP (capped at 20%(60%) of the Foxy Spirit's ATK)",
+      },
+      {
+        name: "Arcane Hat",
+        skill: "Soul Snatcher Orb",
+        description:
+          "「Soul Snatcher Orb」 inflicts additional True DMG equal to 50%(150%) of ATK",
+      },
+      {
+        name: "Mage Robe",
+        skill: "Spell Surge",
+        description:
+          "「Spell Surge」 DMG multiplier's upper and lower limits each increase by 0.1(0.3) times",
+      },
+      {
+        name: "Spell Tome",
+        skill: "Mind's Mirror",
+        description: "「Mind's Mirror」 cast interval reduced by 1(3)s",
+      },
+    ],
+    divinities: ["magic-res", "crit-damage"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 8.38.29 AM.png, 8.37.09 AM.png, 8.37.11 AM.png, 8.37.12 AM.png, 8.37.16 AM.png, 8.38.06 AM.png.
+  // Artifact tab: 8.38.58 AM.png; abilities: 8.38.59 AM.png.
+  // Core continuations: 8.38.30 AM.png, 8.37.10 AM.png.
+  loli: {
+    artifact: {
+      name: "Gatling",
+      iconUrl: "/artifacts/loli.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Explosive Flying Bullet",
+          description:
+            '"Explosive Flying Bullet" Increases the Physical DMG dealt by the explosion by 50%',
+        },
+        {
+          tier: "gold",
+          skill: "Explosive Strike",
+          description:
+            '"Explosive Strike" Decreases the Physical RES of the first target hit by the flying bullet by 15% within 5s',
+        },
+        {
+          tier: "red",
+          skill: "Super Bullet",
+          description:
+            '"Super Bullet" After the flying bullet hits the first target, it will cause an explosion, dealing Physical DMG equal to 350% of ATK to targets in range',
+        },
+        {
+          tier: "rainbow",
+          name: "Extreme Excitement",
+          description:
+            "When HP is higher than 65%, increase the CRIT Rate by 20% and ATK SPD by 20%",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Super Bullet",
+        unlockStars: 0,
+        iconUrl: talent("loli", "super-bullet"),
+        description:
+          "Launches a missile forward that strikes a single target, dealing 480% of Attack as Physical DMG, interrupting and knocking them back. The missile also deals bonus damage equal to 20% of the target's lost HP.",
+      },
+      {
+        kind: "battle",
+        name: "Explosive Flying Bullet",
+        unlockStars: 2,
+        iconUrl: talent("loli", "explosive-flying-bullet"),
+        description:
+          "Turns Basic ATK to Explosive Flying Bullet, dealing Physical DMG equal to 110% of ATK to the target. Upon hitting the target, causes an explosion that deals 40% Physical DMG to targets within range",
+      },
+      {
+        kind: "enhance",
+        name: "Enhance Missile",
+        unlockStars: 5,
+        iconUrl: talent("loli", "enhance-missile"),
+        description: "Super Bullet Increases Physical DMG dealt by 150%",
+      },
+      {
+        kind: "enhance",
+        name: "Explosive Strike",
+        unlockStars: 8,
+        iconUrl: talent("loli", "explosive-strike"),
+        description:
+          "Explosive Flying Bullet After hitting the first target, decreases Knockback Resist by 30% within 5s",
+      },
+      {
+        kind: "attribute",
+        name: "ATK Amplification",
+        unlockStars: 12,
+        iconUrl: talent("loli", "atk-amplification"),
+        description: "Increases ATK by 25%",
+      },
+      {
+        kind: "enhance",
+        name: "Concussion Bullet",
+        unlockStars: 16,
+        iconUrl: talent("loli", "concussion-bullet"),
+        description:
+          "Super Bullet Increases the Knockback Effect by 30%, stunning the hit target for 3s",
+      },
+    ],
+    cores: [
+      {
+        name: "Swift Longbow",
+        skill: "Super Bullet",
+        description:
+          "「Super Bullet」 Increases DMG by 3% (10%) of the Target's lost HP (up to 400% (500%) of the Loli's Attack).",
+      },
+      {
+        name: "Arrow Core",
+        skill: "Explosive Flying Bullet",
+        description:
+          "「Explosive Flying Bullet」 Inflicts additional Physical DMG equal to 50% (150%) of Attack to the primary Target.",
+      },
+      {
+        name: "Hunter's Cloak",
+        skill: "Enhance Missile",
+        description:
+          "「Enhance Missile」 Inflicts additional Physical DMG equal to 50%(150%) of Attack.",
+      },
+      {
+        name: "Crystal Pendant",
+        skill: "Explosive Strike",
+        description:
+          "「Explosive Strike」 additionally reduces the Target's Knockback Resist by 5% (15%)",
+      },
+    ],
+    divinities: ["marksman-def", "crit-damage"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 8.39.13 AM.png, 8.39.05 AM.png, 8.39.08 AM.png, 8.39.09 AM.png, 8.39.10 AM.png, 8.39.12 AM.png.
+  // Artifact tab: 8.39.16 AM.png; abilities: 8.39.17 AM.png.
+  // Core continuations: 8.39.07 AM.png.
+  "googoo-fish": {
+    artifact: {
+      name: "Dragon Scale",
+      iconUrl: "/artifacts/googoo-fish.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Steal",
+          description:
+            '100% of the ATK stolen through "Steal" will be transferred to self.',
+        },
+        {
+          tier: "gold",
+          skill: "Sudden Assault",
+          description: 'Increases DEF stolen through "Sudden Assault" by 10%',
+        },
+        {
+          tier: "red",
+          skill: "Steal",
+          description:
+            'Extend the duration of the "Steal" until the end of the battle',
+        },
+        {
+          tier: "rainbow",
+          skill: "Aqua Dance",
+          description:
+            'During "Aqua Dance", HP Recovery per second will be increased by 2.4%',
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Aqua Dance",
+        unlockStars: 0,
+        iconUrl: talent("googoo-fish", "aqua-dance"),
+        description:
+          "Create an Aqua Shield to protect yourself, restoring 3% Max HP per second, lasting for 6s.",
+      },
+      {
+        kind: "battle",
+        name: "Steal",
+        unlockStars: 2,
+        iconUrl: talent("googoo-fish", "steal"),
+        description:
+          "Attack to steal 10% of the target's ATK and transfer 50% to self, lasting for 10s (can only trigger once per target, up to a max of 100% of GooGoo Fish's ATK)",
+      },
+      {
+        kind: "enhance",
+        name: "Water Burst",
+        unlockStars: 5,
+        iconUrl: talent("googoo-fish", "water-burst"),
+        description:
+          "Aqua Dance Causes an explosion at the end of skill, dealing Physical DMG equal to 300% of ATK to surrounding enemies",
+      },
+      {
+        kind: "special",
+        name: "Sudden Assault",
+        unlockStars: 8,
+        iconUrl: talent("googoo-fish", "sudden-assault"),
+        description:
+          "Upon entering the battlefield, steal 20% of DEF from the enemy with the highest DEF, transferring 100% to self until the battle ends (up to a max of 100% of GooGoo Fish's DEF)",
+      },
+      {
+        kind: "attribute",
+        name: "Contract",
+        unlockStars: 12,
+        iconUrl: talent("googoo-fish", "contract"),
+        description: "ATK increased by 10%, HP increased by 15%",
+      },
+      {
+        kind: "enhance",
+        name: "Dark Shadow",
+        unlockStars: 16,
+        iconUrl: talent("googoo-fish", "dark-shadow"),
+        description: "During Aqua Dance, grants 15% EVA to GooGoo Fish",
+      },
+    ],
+    cores: [
+      {
+        name: "Blade of Valor",
+        skill: "Aqua Dance",
+        description:
+          "[Aqua Dance]: Recovers an additional 0.5% (1.5%) of Max HP every second.",
+      },
+      {
+        name: "Cavalier Helm",
+        skill: "Steal",
+        description:
+          "「Steal」 additionally steals 3% (10%) of the target's ATK (up to 130% (200%) of GooGoo Fish's ATK)",
+      },
+      {
+        name: "Brawler's Armor",
+        skill: "Water Burst",
+        description:
+          "「Water Burst」 increases Physical DMG by 100% (300%) of ATK",
+      },
+      {
+        name: "Brawler's Boots",
+        skill: "Sudden Assault",
+        description:
+          "「Sudden Assault」 additionally steals 5% (15%) of the target's DEF",
+      },
+    ],
+    divinities: ["atk", "crit-damage"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 8.39.36 AM.png, 8.39.22 AM.png, 8.39.23 AM.png, 8.39.31 AM.png, 8.39.33 AM.png, 8.39.35 AM.png.
+  // Artifact tab: 8.39.38 AM.png; abilities: 8.39.40 AM.png, 8.40.40 AM.png.
+  "moon-goddess": {
+    artifact: {
+      name: "Merciless Crossbow",
+      iconUrl: "/artifacts/moon-goddess.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Moon Goddess's Arrow",
+          description:
+            '"Moon Goddess\'s Arrow" Increases the ATK SPD by 50% within 2s upon triggering',
+        },
+        {
+          tier: "gold",
+          skill: "Encourage",
+          description: '"Encourage" Extends effect duration by 100%',
+        },
+        {
+          tier: "red",
+          skill: "Meteor Shower",
+          description:
+            '"Meteor Shower" Upon release, summons an enhanced meteor that deals True DMG equal to 350% of ATK to a random target, stunning them for 3s',
+        },
+        {
+          tier: "rainbow",
+          skill: "ATK SPD Aura",
+          description:
+            '"ATK SPD Aura" Increases ATK SPD by 10% and Ranged DMG by 15%.',
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Meteor Shower",
+        unlockStars: 0,
+        iconUrl: talent("moon-goddess", "meteor-shower"),
+        description:
+          "Summon a meteor strike on all enemies, dealing Physical DMG equal to 270% of ATK and stunning hit targets for 2s",
+      },
+      {
+        kind: "battle",
+        name: "Moon Goddess's Arrow",
+        unlockStars: 2,
+        iconUrl: talent("moon-goddess", "moon-goddess-s-arrow"),
+        description:
+          "Basic ATK has a 20% chance to shoot a Moon Goddess's Arrow at a single target, dealing Physical DMG equal to 150% of ATK and stuns for 1.5s",
+      },
+      {
+        kind: "enhance",
+        name: "Meteor Strike",
+        unlockStars: 5,
+        iconUrl: talent("moon-goddess", "meteor-strike"),
+        description: "Meteor Shower Increases the Physical DMG dealt by 60%",
+      },
+      {
+        kind: "special",
+        name: "Encourage",
+        unlockStars: 8,
+        iconUrl: talent("moon-goddess", "encourage"),
+        description:
+          "Upon entering the battlefield, increases the ATK SPD by 20% and MOV SPD by 20% for all allied heroes. The skill effect will diminish over time.",
+      },
+      {
+        kind: "attribute",
+        name: "ATK Amplification",
+        unlockStars: 12,
+        iconUrl: talent("moon-goddess", "atk-amplification"),
+        description: "ATK increased by 15%, Armor PEN increased by 10%",
+      },
+      {
+        kind: "aura",
+        name: "ATK SPD Aura",
+        unlockStars: 16,
+        iconUrl: talent("moon-goddess", "atk-spd-aura"),
+        description: "Increase the ATK SPD of all Ranged allied heroes by 10%",
+      },
+    ],
+    cores: [
+      {
+        name: "Swift Longbow",
+        skill: "Meteor Shower",
+        description:
+          "「Meteor Shower」 increases the Stun duration by 0.5(1.5)s",
+      },
+      {
+        name: "Arrow Core",
+        skill: "Moon Goddess's Arrow",
+        description:
+          "「Moon Goddess's Arrow」 deals additional Physical DMG equal to 100% (300%) of your Attack",
+      },
+      {
+        name: "Hunter's Cloak",
+        skill: "Meteor Strike",
+        description:
+          "「Meteor Strike」 deals additional Physical DMG equal to 20%(60%) of your Attack",
+      },
+      {
+        name: "Crystal Pendant",
+        skill: "ATK SPD Aura",
+        description:
+          "「ATK SPD Aura」 further increases the Attack Speed of allied Ranged Heroes by 5%(15%)",
+      },
+    ],
+    divinities: ["marksman-def", "heavy-injury"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 8.41.17 AM.png, 8.41.08 AM.png, 8.41.10 AM.png, 8.41.11 AM.png, 8.41.13 AM.png, 8.41.15 AM.png.
+  // Artifact tab: 8.41.21 AM.png; abilities: 8.41.22 AM.png.
+  // Core continuations: 8.41.18 AM.png, 8.41.08 AM 1.png, 8.41.12 AM.png.
+  "cowboy-killer": {
+    artifact: {
+      name: "Desert Revolver",
+      iconUrl: "/artifacts/cowboy-killer.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "PEN Bullet",
+          description:
+            '"PEN Bullet" After 1 Basic ATK, PEN Bullet will be triggered.',
+        },
+        {
+          tier: "gold",
+          skill: "Growth Favors",
+          description: '"Growth Favors" Stacks +4',
+        },
+        {
+          tier: "red",
+          skill: "Barrage Bullets",
+          description:
+            '"Barrage Bullets" Increases the CRIT Rate of shot bullets by 40%',
+        },
+        {
+          tier: "rainbow",
+          skill: "Growth Favors",
+          description:
+            '"Growth Favors" When using Basic ATK or skill, stacks an additional 2.5% for ATK SPD',
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Barrage Bullets",
+        unlockStars: 0,
+        iconUrl: talent("cowboy-killer", "barrage-bullets"),
+        description:
+          "Shoots 4 bullets to the front, with each bullet dealing Physical DMG equal to 100% of ATK to the front 3 target units. The Knockback Effect will decrease by 20% with every target the bullet passes through",
+      },
+      {
+        kind: "battle",
+        name: "PEN Bullet",
+        unlockStars: 2,
+        iconUrl: talent("cowboy-killer", "pen-bullet"),
+        description:
+          "Release a PEN bullet with the interrupting effect after 2 Basic ATK. It will deal Physical DMG equal to 100% of ATK to the first target and 200% Physical DMG to the second target",
+      },
+      {
+        kind: "enhance",
+        name: "Enhance Ammo",
+        unlockStars: 5,
+        iconUrl: talent("cowboy-killer", "enhance-ammo"),
+        description:
+          "Barrage Bullets Increases the Physical DMG dealt by each bullet by 20%",
+      },
+      {
+        kind: "passive",
+        name: "Growth Favors",
+        unlockStars: 8,
+        iconUrl: talent("cowboy-killer", "growth-favors"),
+        description:
+          "During Basic ATK or skill release, increase DMG Result by 3%, up to 6 stacks",
+      },
+      {
+        kind: "attribute",
+        name: "Precise",
+        unlockStars: 12,
+        iconUrl: talent("cowboy-killer", "precise"),
+        description: "ATK increased by 10%, Armor PEN increased by 15%",
+      },
+      {
+        kind: "enhance",
+        name: "Metal Slug",
+        unlockStars: 16,
+        iconUrl: talent("cowboy-killer", "metal-slug"),
+        description: "Barrage Bullets No. of bullets +1, Pierce count +1",
+      },
+    ],
+    cores: [
+      {
+        name: "Swift Longbow",
+        skill: "Barrage Bullets",
+        description:
+          "「Barrage Bullets」 Each bullet inflicts additional Physical DMG equal to 10% (30%) of Attack.",
+      },
+      {
+        name: "Arrow Core",
+        skill: "PEN Bullet",
+        description:
+          "「PEN Bullet」 Inflicts additional Physical DMG equal to 30%(100%) of Attack to the first Target, and additional Physical DMG equal to 60%(200%) of Attack to the second Target.",
+      },
+      {
+        name: "Hunter's Cloak",
+        skill: "Enhance Ammo",
+        description:
+          "「Enhance Ammo」 Each bullet inflicts additional Physical DMG equal to 10% (30%) of Attack.",
+      },
+      {
+        name: "Crystal Pendant",
+        skill: "Growth Favors",
+        description:
+          "「Growth Favors」 Each stack additionally increases the final DMG Result by 0.5%(1.5%).",
+      },
+    ],
+    divinities: ["marksman-def", "physical-dmg-boost"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 9.01.18 AM.png, 9.01.11 AM.png, 9.01.12 AM.png, 9.01.14 AM.png, 9.01.16 AM.png, 9.01.17 AM.png.
+  // Artifact tab: 8.42.09 AM.png; abilities: 8.42.10 AM.png.
+  // Core continuations: 9.01.19 AM.png, 9.01.14 AM 1.png.
+  "jungle-archer": {
+    artifact: {
+      name: "Forest Longbow",
+      iconUrl: "/artifacts/jungle-archer.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Fiery Barrage",
+          description:
+            '"Fiery Barrage" Arrows have a 30% chance to stun for 1.5s.',
+        },
+        {
+          tier: "gold",
+          skill: "High Speed",
+          description: '"High Speed" Extends effect duration by 50%',
+        },
+        {
+          tier: "red",
+          skill: "Gale Arrow",
+          description:
+            '"Gale Arrow" Increases the final DMG Result dealt by 60%',
+        },
+        {
+          tier: "rainbow",
+          skill: "High Speed",
+          description: '"High Speed" Extends effect duration by 18s',
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Gale Arrow",
+        unlockStars: 0,
+        iconUrl: talent("jungle-archer", "gale-arrow"),
+        description:
+          "Shoot a powerful arrow that pierces through all enemies, dealing Physical DMG equal to 360% of ATK and applying a Knockback Effect. The DMG Result and Knockback Effect dealt will diminish by 8% with each enemy hit",
+      },
+      {
+        kind: "battle",
+        name: "Fiery Barrage",
+        unlockStars: 2,
+        iconUrl: talent("jungle-archer", "fiery-barrage"),
+        description:
+          "Basic ATK have a 35% chance to shoot two arrows, each dealing Physical DMG equal to 100% of ATK to enemies",
+      },
+      {
+        kind: "enhance",
+        name: "Enhance Arrows",
+        unlockStars: 5,
+        iconUrl: talent("jungle-archer", "enhance-arrows"),
+        description: "Gale Arrow Increases the Physical DMG dealt by 90%",
+      },
+      {
+        kind: "special",
+        name: "High Speed",
+        unlockStars: 8,
+        iconUrl: talent("jungle-archer", "high-speed"),
+        description:
+          "Upon entering the battlefield, increase MOV SPD by 30% and ATK SPD by 30%, effects lasting for 10s.",
+      },
+      {
+        kind: "attribute",
+        name: "Hunter's Lineage",
+        unlockStars: 12,
+        iconUrl: talent("jungle-archer", "hunter-s-lineage"),
+        description: "ATK increased by 10%, Armor PEN increased by 15%",
+      },
+      {
+        kind: "enhance",
+        name: "Upgraded Arrows",
+        unlockStars: 16,
+        iconUrl: talent("jungle-archer", "upgraded-arrows"),
+        description:
+          "Gale Arrow DMG Result and Knockback Effect will no longer diminish upon hitting an enemy.",
+      },
+    ],
+    cores: [
+      {
+        name: "Swift Longbow",
+        skill: "Gale Arrow",
+        description:
+          "「Gale Arrow」 increases Physical DMG by 40%(120%) of Attack",
+      },
+      {
+        name: "Arrow Core",
+        skill: "Fiery Barrage",
+        description:
+          "「Fiery Barrage」 increases each arrow's Physical DMG by 20%(60%) of Attack",
+      },
+      {
+        name: "Hunter's Cloak",
+        skill: "Enhance Arrows",
+        description:
+          "「Empowered Arrows」 increases Physical DMG by 40%(120%) of Attack",
+      },
+      {
+        name: "Crystal Pendant",
+        skill: "High Speed",
+        description:
+          "「High Speed」 additionally increases ATK SPD and MOV SPD by 5%(15%)",
+      },
+    ],
+    divinities: ["marksman-def", "anti-crit-rate"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 8.44.07 AM.png, 8.43.55 AM.png, 8.44.01 AM.png, 8.44.03 AM.png, 8.44.04 AM.png, 8.44.05 AM.png.
+  // Artifact tab: 8.44.09 AM.png; abilities: 8.44.10 AM.png.
+  // Core continuations: 8.44.07 AM 1.png, 8.43.56 AM.png.
+  "white-ox": {
+    artifact: {
+      name: "Mountain Splitting Axe",
+      iconUrl: "/artifacts/white-ox.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Heavy Strike",
+          description:
+            '"Heavy Strike" Increases the Physical DMG dealt by 250%',
+        },
+        {
+          tier: "gold",
+          skill: "Warrior Charge",
+          description:
+            '"Warrior Charge" Upon entering the battlefield, increases DEF by 20% within 25s',
+        },
+        {
+          tier: "red",
+          skill: "Brute Charge",
+          description:
+            '"Brute Charge" Every 14s, summon a herd of bulls to strike all enemies on the battlefield, dealing 300% True DMG and knocking them back',
+        },
+        {
+          tier: "rainbow",
+          name: "Divine Aura",
+          description:
+            "Increases the MOV SPD of all allied heroes by 12%, increases Control RES by 35%",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Brute Charge",
+        unlockStars: 0,
+        iconUrl: talent("white-ox", "brute-charge"),
+        description:
+          "Summon 2 bulls to crash into the enemy, and each bull will deal 700% Physical DMG to the enemy. Enemies hit by the bull will be stunned for 1s.",
+      },
+      {
+        kind: "special",
+        name: "Warrior Charge",
+        unlockStars: 2,
+        iconUrl: talent("white-ox", "warrior-charge"),
+        description:
+          "Upon entering the battlefield, charge until it hits the first enemy. The enemy that was hit will be knocked back, receiving Physical DMG equal to 100% of ATK and stunned for 2s. The hero is immune to Control effects when it is charging",
+      },
+      {
+        kind: "battle",
+        name: "Heavy Strike",
+        unlockStars: 5,
+        iconUrl: talent("white-ox", "heavy-strike"),
+        description:
+          "Basic ATK has a 30% chance to deal Physical DMG equal to 30% of ATK to the enemy",
+      },
+      {
+        kind: "enhance",
+        name: "HP Shield",
+        unlockStars: 8,
+        iconUrl: talent("white-ox", "hp-shield"),
+        description:
+          "Warrior Charge Extends stun duration by 1s, and receives a shield with 50% of Max HP when charging.",
+      },
+      {
+        kind: "attribute",
+        name: "Indomitable",
+        unlockStars: 12,
+        iconUrl: talent("white-ox", "indomitable"),
+        description: "HP increased by 25%",
+      },
+      {
+        kind: "enhance",
+        name: "Brute Strength",
+        unlockStars: 16,
+        iconUrl: talent("white-ox", "brute-strength"),
+        description:
+          "Brute Charge Increases Knockback Effect by 50%, and increases the no. of bulls by 1.",
+      },
+    ],
+    cores: [
+      {
+        name: "Blade of Valor",
+        skill: "Brute Charge",
+        description:
+          "「Brute Charge」 increases Physical DMG by 170%(510%) of ATK",
+      },
+      {
+        name: "Cavalier Helm",
+        skill: "Warrior Charge",
+        description:
+          "「Warrior Charge」 Stun duration is increased by 0.3 (1)s, and additionally deals DMG equal to 3% (9%) of the target's Max HP (capped at 150% (450%) of White Ox's ATK)",
+      },
+      {
+        name: "Brawler's Armor",
+        skill: "HP Shield",
+        description:
+          "「Life Shield」 additionally grants a Shield equal to 10%(30%) of Max HP",
+      },
+      {
+        name: "Brawler's Boots",
+        skill: "Brute Strength",
+        description:
+          "「Brute Strength」 has a 30%(100%) chance to Summon an additional Brute Ox",
+      },
+    ],
+    divinities: ["knockback-effect", "heavy-injury"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 8.44.20 AM.png, 8.44.14 AM.png, 8.44.16 AM.png, 8.44.17 AM.png, 8.44.18 AM.png, 8.44.19 AM.png.
+  // Artifact tab: 8.44.23 AM.png; abilities: 8.44.24 AM.png.
+  // Core continuations: 8.44.21 AM.png.
+  "hidden-ninja": {
+    artifact: {
+      name: "Shuriken",
+      iconUrl: "/artifacts/hidden-ninja.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Paralysis ATK",
+          description:
+            '"Paralysis ATK" Removes cooldown and simultaneously reduces Physical RES by 8%.',
+        },
+        {
+          tier: "gold",
+          skill: "Seal Technique",
+          description:
+            '"Seal Technique" Now activates once per 8s, but the duration will change to 3s',
+        },
+        {
+          tier: "red",
+          skill: "Beast Possession",
+          description:
+            '"Thunder Beast Possession" Increases ATK by 15% with every release up to +2 stacks',
+        },
+        {
+          tier: "rainbow",
+          skill: "Beast Pursuit",
+          description:
+            '"Thunder Beast Pursuit" Now deals small AoE DMG, deals the same DMG and effects to targets within range.',
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Beast Pursuit",
+        unlockStars: 0,
+        iconUrl: talent("hidden-ninja", "beast-pursuit"),
+        description:
+          "Release a wolf-shaped thunder beast, dealing Physical DMG equal to 600% of ATK to a single enemy target, with Interruption and Knockback Effects. Hit targets lose 80 energy per second for 3s",
+      },
+      {
+        kind: "battle",
+        name: "Paralysis ATK",
+        unlockStars: 2,
+        iconUrl: talent("hidden-ninja", "paralysis-atk"),
+        description:
+          "Basic ATK will cause the target to enter a paralysis state for 10s, reducing Magic RES by 8% (Cooldown: 5s)",
+      },
+      {
+        kind: "enhance",
+        name: "Beast Possession",
+        unlockStars: 5,
+        iconUrl: talent("hidden-ninja", "beast-possession"),
+        description:
+          "Thunder Beast Pursuit Increases Armor PEN by 8%, up to 3 stacks.",
+      },
+      {
+        kind: "special",
+        name: "Seal Technique",
+        unlockStars: 8,
+        iconUrl: talent("hidden-ninja", "seal-technique"),
+        description:
+          "Upon entering the battlefield, at 10/25/40/60s, seal an enemy with the highest ATK for 4s, stopping it from recovering Energy and limiting it to just Basic ATKs.",
+      },
+      {
+        kind: "attribute",
+        name: "Quick Regen",
+        unlockStars: 12,
+        iconUrl: talent("hidden-ninja", "quick-regen"),
+        description: "ATK increased by 10%, Energy Regen SPD increased by 15%",
+      },
+      {
+        kind: "enhance",
+        name: "Super Beast",
+        unlockStars: 16,
+        iconUrl: talent("hidden-ninja", "super-beast"),
+        description:
+          "Thunder Beast Pursuit Turns DMG dealt to True DMG (ignores target's DEF and DMG Reduction RES)",
+      },
+    ],
+    cores: [
+      {
+        name: "Swift Longbow",
+        skill: "Beast Pursuit",
+        description:
+          "「Beast Pursuit」 reduces Energy Increase by 15(45) per second",
+      },
+      {
+        name: "Arrow Core",
+        skill: "Paralysis ATK",
+        description:
+          "「Paralysis ATK」 additionally reduces the target's Magic RES by 3%(9%)",
+      },
+      {
+        name: "Hunter's Cloak",
+        skill: "Beast Possession",
+        description:
+          "「Beast Possession」 additionally increases Armor PEN by 2%(6%)",
+      },
+      {
+        name: "Crystal Pendant",
+        skill: "Super Beast",
+        description:
+          "「Super Beast」 increases True DMG by 50%(150%) of Attack",
+      },
+    ],
+    divinities: ["marksman-def", "atk-spd"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 8.44.35 AM.png, 8.44.28 AM.png, 8.44.29 AM.png, 8.44.30 AM.png, 8.44.32 AM.png, 8.44.34 AM.png.
+  // Artifact tab: 8.44.37 AM.png; abilities: 8.44.38 AM.png.
+  // Core continuations: 8.44.35 AM 1.png, 8.44.31 AM.png.
+  "snow-hunter": {
+    artifact: {
+      name: "Flash Bow",
+      iconUrl: "/artifacts/snow-hunter.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Frost Arrows",
+          description:
+            '"Frost Arrows" Reduces the Knockback Resist of hit targets by 25% within 5s.',
+        },
+        {
+          tier: "gold",
+          skill: "Multiarrow",
+          description:
+            '"Multiarrow" Increases the Physical DMG dealt by each arrow by 30%',
+        },
+        {
+          tier: "red",
+          skill: "Freezing Arrows",
+          description:
+            '"Freezing Arrows" Upon release, increases ATK SPD by 100% within 6s.',
+        },
+        {
+          tier: "rainbow",
+          skill: "Multiarrow",
+          description:
+            '"Multiarrow" No. of arrows +3, and turns DMG dealt by the arrows to True DMG.',
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Freezing Arrows",
+        unlockStars: 0,
+        iconUrl: talent("snow-hunter", "freezing-arrows"),
+        description:
+          "Shoot a Freezing Arrow forward and deal Physical DMG equal to 400% of ATK to a single target, freezing it for 2s. Freezing Arrows will explode upon hitting the target, dealing Physical DMG equal to 200% of ATK to enemy targets within range",
+      },
+      {
+        kind: "battle",
+        name: "Frost Arrows",
+        unlockStars: 2,
+        iconUrl: talent("snow-hunter", "frost-arrows"),
+        description:
+          "Basic ATK will deal Physical DMG to the target equal to 150% of ATK, reducing their MOV SPD by 30% for 1.5s",
+      },
+      {
+        kind: "enhance",
+        name: "Speedfrost Arrowhead",
+        unlockStars: 5,
+        iconUrl: talent("snow-hunter", "speedfrost-arrowhead"),
+        description:
+          "Freezing Arrows Increases the Physical DMG dealt by 100%, and extends the freeze duration by 1s.",
+      },
+      {
+        kind: "battle",
+        name: "Multiarrow",
+        unlockStars: 8,
+        iconUrl: talent("snow-hunter", "multiarrow"),
+        description:
+          "At set intervals, release 4 arrows forward, with each arrow dealing Physical DMG equal to 40% of ATK and inflicting Slowdown effect. When the same target is hit by Multiarrow for 3 time(s), it will be frozen again for 1.5s",
+      },
+      {
+        kind: "attribute",
+        name: "Focus",
+        unlockStars: 12,
+        iconUrl: talent("snow-hunter", "focus"),
+        description: "ATK increased by 10%, Armor PEN increased by 15%",
+      },
+      {
+        kind: "enhance",
+        name: "Explosive Arrows",
+        unlockStars: 16,
+        iconUrl: talent("snow-hunter", "explosive-arrows"),
+        description:
+          "Freezing Arrows Increases the explosion range by 25%, freezing enemy targets that are also within range.",
+      },
+    ],
+    cores: [
+      {
+        name: "Swift Longbow",
+        skill: "Freezing Arrows",
+        description:
+          "「Freezing Arrows」 increases 50% (150%) of Attack's Explosive DMG",
+      },
+      {
+        name: "Arrow Core",
+        skill: "Frost Arrows",
+        description:
+          "「Frost Arrows」 increases 20%(60%) of Attack's Physical DMG",
+      },
+      {
+        name: "Hunter's Cloak",
+        skill: "Multiarrow",
+        description: "「Multiarrow」 increases Freeze Time by 0.5(1.5)s",
+      },
+      {
+        name: "Crystal Pendant",
+        skill: "Explosive Arrows",
+        description:
+          "「Explosive Arrows」 additionally increases Explosion Radius by 3%(9%)",
+      },
+    ],
+    divinities: ["marksman-def", "crit-dmg-reduction"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 8.45.08 AM.png, 8.45.00 AM.png, 8.45.01 AM.png, 8.45.03 AM.png, 8.45.04 AM.png, 8.45.06 AM.png.
+  // Artifact tab: 8.45.10 AM.png; abilities: 8.45.11 AM.png, 8.45.12 AM.png.
+  // Core continuations: 8.45.08 AM 1.png, 8.45.03 AM 1.png.
+  swordevil: {
+    artifact: {
+      name: "Slaughter",
+      iconUrl: "/artifacts/swordevil.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Thunder Strike",
+          description:
+            '"Thunder Strike" Increases the chance of triggering by 10%',
+        },
+        {
+          tier: "gold",
+          skill: "Phantom Combo",
+          description:
+            '"Phantom Combo" Reduces the intervals of release by 15%, increase the Physical DMG dealt by the first slash by 50%',
+        },
+        {
+          tier: "red",
+          skill: "Sweep Army",
+          description:
+            '"Sweep Army" Knockback effect is increased by 50%, and will not decrease over time. In 6s after getting hit, targets have their healing effect reduced by 40%',
+        },
+        {
+          tier: "rainbow",
+          name: "Healing Guard",
+          description:
+            "When the HP first falls below 40%, summon a Healing Guard to recover 30% of Max HP for all allied heroes in 6s, while increasing DMG Reduction of self by 30%",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Sweep Army",
+        unlockStars: 0,
+        iconUrl: talent("swordevil", "sweep-army"),
+        description:
+          "Immediately removes all debuffs and unleashes a powerful sword aura to the front, dealing 3 wave(s) of Physical DMG equal to 130% of ATK to all enemies in its path with Knockback Effect. For every enemy the sword aura hits, the effect will be reduced by 5%",
+      },
+      {
+        kind: "battle",
+        name: "Thunder Strike",
+        unlockStars: 2,
+        iconUrl: talent("swordevil", "thunder-strike"),
+        description:
+          "Basic ATK has a 25% chance to randomly deal True DMG equal to 1.5~2.2 times of ATK to the enemy",
+      },
+      {
+        kind: "enhance",
+        name: "Skill Immunity",
+        unlockStars: 5,
+        iconUrl: talent("swordevil", "skill-immunity"),
+        description:
+          "Sweep Army Upon release, gains immunity against all Skill DMG and debuffs apart from Basic ATK for 2.5s",
+      },
+      {
+        kind: "special",
+        name: "Phantom Combo",
+        unlockStars: 8,
+        iconUrl: talent("swordevil", "phantom-combo"),
+        description:
+          "In a set interval, summons a clone to randomly attack an enemy target 5 times. The first slash will deal Physical DMG equal to 70% of ATK, and all subsequent slashes will each deal Physical DMG equal to 18% of ATK",
+      },
+      {
+        kind: "attribute",
+        name: "Strength Awakening",
+        unlockStars: 12,
+        iconUrl: talent("swordevil", "strength-awakening"),
+        description: "CRIT Rate increased by 10%, HP increased by 15%",
+      },
+      {
+        kind: "enhance",
+        name: "Gale Aura",
+        unlockStars: 16,
+        iconUrl: talent("swordevil", "gale-aura"),
+        description:
+          "Sweep Army deals bonus damage equal to 10% of the target's current Max HP (capped at 300% of Swordevil's Attack). Furthermore, the first enemy struck is stunned for 3 seconds.",
+      },
+    ],
+    cores: [
+      {
+        name: "Blade of Valor",
+        skill: "Sweep Army",
+        description:
+          "「Sweep Army」 deals additional Physical DMG equal to 40%(120%) of Attack",
+      },
+      {
+        name: "Cavalier Helm",
+        skill: "Thunder Strike",
+        description:
+          "「Thunder Strike」 deals additional True DMG equal to 0.5(1.5) times Attack",
+      },
+      {
+        name: "Brawler's Armor",
+        skill: "Skill Immunity",
+        description: "「Skill Immunity」 extends Immune duration by 0.5(1.5)s",
+      },
+      {
+        name: "Brawler's Boots",
+        skill: "Phantom Combo",
+        description:
+          "「Phantom Combo」 Each slash after the first deals additional Physical DMG equal to 15%(45%) of Attack",
+      },
+    ],
+    divinities: ["crit-damage", "crit-rate"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 8.45.24 AM.png, 8.45.16 AM.png, 8.45.18 AM.png, 8.45.20 AM.png, 8.45.22 AM.png, 8.45.23 AM.png.
+  // Artifact tab: 8.45.27 AM.png; abilities: 8.45.28 AM.png.
+  // Core continuations: 8.45.25 AM.png, 8.45.17 AM.png.
+  mars: {
+    artifact: {
+      name: "Spear of War",
+      iconUrl: "/artifacts/mars.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Shield Bash",
+          description:
+            'Increases the chance to trigger "Shield Bash" by 15%, increases the Physical DMG dealt by 200%',
+        },
+        {
+          tier: "gold",
+          skill: "DEF Stance",
+          description: 'Extends the duration of "DEF Stance" by 100%',
+        },
+        {
+          tier: "red",
+          skill: "Shield Bash",
+          description:
+            'Each trigger of "Shield Bash" will increase Block by 4%, max 8 stacks',
+        },
+        {
+          tier: "rainbow",
+          skill: "Spear of War",
+          description:
+            'When releasing the "Spear of War", there is a 70% chance to penetrate the target. Deals the same DMG and effect to 2 enemy targets in the front.',
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Spear of War",
+        unlockStars: 0,
+        iconUrl: talent("mars", "spear-of-war"),
+        description:
+          "Casts a Long Spear to deal Physical DMG equal to 1200% of ATK to a single target, with Interrupt and Knockback Effect on target",
+      },
+      {
+        kind: "battle",
+        name: "Shield Bash",
+        unlockStars: 2,
+        iconUrl: talent("mars", "shield-bash"),
+        description:
+          "Basic ATK has a 20% chance to deal Physical DMG equal to 300% of ATK to the target and knockback the target for a certain distance",
+      },
+      {
+        kind: "enhance",
+        name: "Enhance Spear Strike",
+        unlockStars: 5,
+        iconUrl: talent("mars", "enhance-spear-strike"),
+        description:
+          "Spear of War Stuns the target for 3s, and reduces their healing effect by 35% for 5s",
+      },
+      {
+        kind: "special",
+        name: "DEF Stance",
+        unlockStars: 8,
+        iconUrl: talent("mars", "def-stance"),
+        description:
+          "Upon entering the battlefield, sacrifice 20% MOV SPD and increase Block by 30% and Knockback Resist by 30%. The effect will gradually decrease over time.",
+      },
+      {
+        kind: "attribute",
+        name: "Protective Shield",
+        unlockStars: 12,
+        iconUrl: talent("mars", "protective-shield"),
+        description: "Increase Ranged DMG Reduct by 25%",
+      },
+      {
+        kind: "enhance",
+        name: "Blood-Stained Spear",
+        unlockStars: 16,
+        iconUrl: talent("mars", "blood-stained-spear"),
+        description:
+          "Increases the Knockback Effect of Spear of War by 50%, and deals additional DMG equal to 15% of the lost HP of the target (capped at 500% of Mars' ATK)",
+      },
+    ],
+    cores: [
+      {
+        name: "Blade of Valor",
+        skill: "Spear of War",
+        description:
+          "「Spear of War」 Increase Physical DMG equal to 200%(600%) of ATK",
+      },
+      {
+        name: "Cavalier Helm",
+        skill: "Shield Bash",
+        description:
+          "「Shield Bash」 increases Physical DMG by 50%(150%) of ATK",
+      },
+      {
+        name: "Brawler's Armor",
+        skill: "Enhance Spear Strike",
+        description:
+          "「Enhance Spear Strike」 additionally reduces the target's Healing Effect by 10% (30%)",
+      },
+      {
+        name: "Brawler's Boots",
+        skill: "DEF Stance",
+        description:
+          "「DEF Stance」 grants an additional 10% (30%) chance to Block",
+      },
+    ],
+    divinities: ["atk", "physical-res"],
+  },
   // Owner screenshots from 2026-09-14; Awakening I/III intentionally unrecorded.
   // Talent popups (0/2/5/8/12/16★): 7.53.30 AM.png, 7.53.22 AM.png, 7.53.24 AM.png, 7.53.25 AM.png, 7.53.27 AM.png, 7.53.28 AM.png.
   hela: {
