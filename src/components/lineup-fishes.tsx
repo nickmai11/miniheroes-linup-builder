@@ -1,3 +1,4 @@
+import { FishPopover } from "@/components/fish-popover";
 import { FISH_CATEGORIES } from "@/lib/fish-selection";
 import type { LineupFish } from "@/lib/lineups";
 
@@ -19,14 +20,21 @@ export function LineupFishes({ fishes }: { fishes: LineupFish[] }) {
               <p className="text-muted-foreground text-xs">{category}</p>
               <ul className="flex flex-wrap gap-1.5">
                 {selected.map((fish) => (
-                  <li
-                    key={fish.id}
-                    className="bg-muted max-w-full rounded-md border px-2 py-1 text-sm break-words"
-                  >
-                    {fish.name}{" "}
-                    <span className="font-medium whitespace-nowrap">
-                      ×{fish.quantity}
-                    </span>
+                  <li key={fish.id} className="max-w-full">
+                    <FishPopover
+                      fish={fish}
+                      trigger={
+                        <button
+                          type="button"
+                          className="bg-muted hover:bg-accent focus-visible:ring-ring/50 max-w-full rounded-md border px-2 py-1 text-left text-sm break-words focus-visible:ring-3 focus-visible:outline-none"
+                        >
+                          {fish.name}{" "}
+                          <span className="font-medium whitespace-nowrap">
+                            ×{fish.quantity}
+                          </span>
+                        </button>
+                      }
+                    />
                   </li>
                 ))}
               </ul>

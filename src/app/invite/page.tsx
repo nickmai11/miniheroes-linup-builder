@@ -35,7 +35,7 @@ export default async function InvitePage(props: PageProps<"/invite">) {
             <h1 className="text-2xl">You’re invited</h1>
           </CardTitle>
           <CardDescription>
-            Enter your invitation code to explore Mini Heroes Lineups. This
+            Enter your invitation code to explore Mini Heroes Library. This
             browser will remember your access.
           </CardDescription>
         </CardHeader>

@@ -17,8 +17,8 @@ export async function SiteHeader() {
           className="font-heading flex shrink-0 items-center gap-2 text-base font-semibold whitespace-nowrap"
         >
           <Crown className="text-primary size-5" aria-hidden />
-          <span className="hidden sm:inline">Mini Heroes Lineups</span>
-          <span className="sr-only sm:hidden">Mini Heroes Lineups</span>
+          <span className="hidden sm:inline">Mini Heroes Library</span>
+          <span className="sr-only sm:hidden">Mini Heroes Library</span>
         </Link>
         {(device || publicPage || canEdit) && (
           <NavLinks

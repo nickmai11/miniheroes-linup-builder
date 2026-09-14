@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Mini Heroes Lineups",
-    template: "%s · Mini Heroes Lineups",
+    default: "Mini Heroes Library",
+    template: "%s · Mini Heroes Library",
   },
   description: "Lineup knowledge base for Mini Heroes: Magic Throne",
 };

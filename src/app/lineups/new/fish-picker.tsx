@@ -3,6 +3,7 @@
 import { Popover } from "@base-ui/react/popover";
 import { ChevronDown, Search } from "lucide-react";
 import { useState } from "react";
+import { FishPopover } from "@/components/fish-popover";
 import { Input } from "@/components/ui/input";
 import type { Fish } from "@/db/schema";
 import {
@@ -140,21 +141,20 @@ export function FishPicker({
                               key={fish.id}
                               className="hover:bg-accent flex min-h-12 items-center gap-2 rounded px-2 py-1.5 text-sm"
                             >
-                              <label className="flex min-w-0 flex-1 cursor-pointer items-center gap-2">
-                                <input
-                                  type="checkbox"
-                                  checked={quantity > 0}
-                                  disabled={disabled}
-                                  onChange={(event) =>
-                                    changeQuantity(
-                                      fish.id,
-                                      event.target.checked ? 1 : 0,
-                                    )
-                                  }
-                                  className="accent-primary focus-visible:outline-ring size-4 shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2"
-                                />
-                                <span>{fish.name}</span>
-                              </label>
+                              <input
+                                type="checkbox"
+                                aria-label={fish.name}
+                                checked={quantity > 0}
+                                disabled={disabled}
+                                onChange={(event) =>
+                                  changeQuantity(
+                                    fish.id,
+                                    event.target.checked ? 1 : 0,
+                                  )
+                                }
+                                className="accent-primary focus-visible:outline-ring size-4 shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2"
+                              />
+                              <FishPopover fish={fish} />
                               <select
                                 aria-label={`Quantity of ${fish.name}`}
                                 value={quantity || 1}

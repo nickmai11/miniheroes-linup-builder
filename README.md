@@ -76,7 +76,7 @@ Run `pnpm dev` and open **http://localhost:3000/invitations/new**. Click
 **Generate**, then **Copy code**. No input is required. Each randomly generated
 code can register one browser and does not expire before use. An invitation link
 containing `?ic=CODE` is also ready to copy and opens the production app at
-`https://miniheroes-linup-builder.vercel.app/`.
+`https://miniheroes-library.vercel.app/`.
 
 The generator page and its POST endpoint are available only in local development,
 using the same loopback policy as editing. They work before that browser is

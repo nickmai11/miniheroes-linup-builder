@@ -729,6 +729,9 @@ Fish selection is grouped into **Small, Medium, Large, and Aquatic**. Each categ
 can contain multiple distinct fishes, and each selected fish has a quantity of
 **1–4** (owner, 2026-09-13). The limit is per fish, not per category. Existing fish
 selections start at quantity 1; editing and cloning preserve quantities.
+Hovering over a fish must show where to get it (owner, 2026-09-14). Fish names in
+the picker and saved lineups open a location preview on hover or press, showing
+the recorded area and optional bait from the owner's sheets.
 The owner confirmed that fish selections use this **separate fish list**;
 the earlier fishing collectibles sheet must not be imported as fishes.
 
@@ -782,6 +785,8 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-14 — Hovering over a fish should show **where to get it**.
 
 - 2026-09-14 — The owner revised the earlier divinity grouping: **CRIT DMG
   Reduction** ("crit res") and **Anti-CRIT Rate** now belong to **DMG Reduction**.
