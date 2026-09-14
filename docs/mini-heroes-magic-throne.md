@@ -1301,6 +1301,12 @@ daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
 
+- 2026-09-14 — Add an option to clone a saved hero build.
+
+- 2026-09-14 — The owner will revisit the game and capture the actual Vietnamese
+  labels. They requested a separate Markdown checklist identifying which in-game
+  areas to screenshot so the app translations can be verified against the game.
+
 - 2026-09-14 — Lineups can be partially saved.
 - 2026-09-14 — Clarification: saving a lineup requires at least five heroes.
   Partial saving refers to optional details and assignments, not fewer heroes;
@@ -1660,6 +1666,11 @@ is said. These override anything marked (web).
 - Hero builds include hand-picked **cores** from that hero's recorded talent
   bonuses, alongside rune and weapon attributes. Core selections have the same
   three tiers. A build may contain only cores.
+- Saved hero builds offer **Clone** to signed-in admins (owner, 2026-09-14).
+  It opens an editable copy on the same hero, preserving notes, all rune/weapon/
+  core selections, pick order, and priority tiers. The name gets a ` (copy)`
+  suffix within the 120-character limit. Save creates a new build; Cancel
+  discards the draft. The source build and its lineup assignments stay intact.
 - `hero_build_cores` links each build to its hero's cores with `priority` for the
   tier and `sortOrder` within it. Hero detail synchronization matches cores by name, keeping IDs and
   build selections stable. Imports map matching gear names to the destination
@@ -1800,6 +1811,11 @@ be toggled in the header (`next-themes`, class strategy). Add components with
 `pnpm dlx shadcn@latest add <name>`.
 
 ### Game label localization
+
+The owner plans to supply actual Vietnamese in-game labels (2026-09-14). Use
+[the Vietnamese capture checklist](vietnamese-label-screenshot-checklist.md)
+to collect this evidence; current app translations are not verification of the
+game’s Vietnamese wording.
 
 Hero, fish, pet, relic, divinity, talent, awakening, core, artifact, attribute,
 and fishing labels must support English and Vietnamese (owner, 2026-09-14).

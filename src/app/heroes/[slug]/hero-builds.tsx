@@ -1,7 +1,7 @@
 "use client";
 
 import { useI18n } from "@/lib/i18n/client";
-import { Download, Pencil, Plus, Trash2 } from "lucide-react";
+import { Copy, Download, Pencil, Plus, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,10 +13,10 @@ import {
   type WeaponAttribute,
 } from "@/db/schema";
 import type { CoreWithSkill, HeroBuild } from "@/lib/build-types";
+import { createBuildDraft, type BuildDraft } from "@/lib/build-draft";
 import {
   DEFAULT_BUILD_PRIORITY,
   nextBuildPriority,
-  type BuildPriority,
 } from "@/lib/build-priorities";
 import {
   deleteHeroBuild,
@@ -46,45 +46,12 @@ type Props = {
   cores: CoreWithSkill[];
 };
 
-/** Pick order remains stable within each separately assigned tier. */
-type Draft = {
-  id?: number;
-  name: string;
-  notes: string;
-  runeIds: number[];
-  weaponIds: number[];
-  coreIds: number[];
-  runePriorities: Record<number, BuildPriority>;
-  weaponPriorities: Record<number, BuildPriority>;
-  corePriorities: Record<number, BuildPriority>;
-};
-
 const PRIORITY_FIELDS = {
   runeIds: "runePriorities",
   weaponIds: "weaponPriorities",
   coreIds: "corePriorities",
 } as const;
 type SelectionKey = keyof typeof PRIORITY_FIELDS;
-
-function draftFrom(build?: HeroBuild): Draft {
-  return {
-    id: build?.id,
-    name: build?.name ?? "",
-    notes: build?.notes ?? "",
-    runeIds: build?.runes.map((r) => r.id) ?? [],
-    weaponIds: build?.weapons.map((w) => w.id) ?? [],
-    coreIds: build?.cores.map((c) => c.id) ?? [],
-    runePriorities: Object.fromEntries(
-      build?.runes.map((r) => [r.id, r.priority]) ?? [],
-    ),
-    weaponPriorities: Object.fromEntries(
-      build?.weapons.map((w) => [w.id, w.priority]) ?? [],
-    ),
-    corePriorities: Object.fromEntries(
-      build?.cores.map((c) => [c.id, c.priority]) ?? [],
-    ),
-  };
-}
 
 export function HeroBuilds({
   canEdit,
@@ -97,7 +64,7 @@ export function HeroBuilds({
 }: Props) {
   const { gameLabel, t } = useI18n();
 
-  const [draft, setDraft] = useState<Draft | null>(null);
+  const [draft, setDraft] = useState<BuildDraft | null>(null);
   const [importing, setImporting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -122,13 +89,13 @@ export function HeroBuilds({
     setNotice(null);
     setError(null);
     setImporting(false);
-    setDraft(draftFrom());
+    setDraft(createBuildDraft());
   }
-  function startEdit(build: HeroBuild) {
+  function startEdit(build: HeroBuild, asCopy = false) {
     setNotice(null);
     setError(null);
     setImporting(false);
-    setDraft(draftFrom(build));
+    setDraft(createBuildDraft(build, asCopy));
   }
   function cancel() {
     setDraft(null);
@@ -282,6 +249,15 @@ export function HeroBuilds({
               </div>
               {canEdit && (
                 <div className="flex shrink-0 gap-1">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => startEdit(build, true)}
+                    disabled={pending}
+                    aria-label={t("Clone {name}", { name: build.name })}
+                  >
+                    <Copy data-icon="inline-start" /> {t("Clone")}
+                  </Button>
                   <Button
                     variant="ghost"
                     size="icon-sm"

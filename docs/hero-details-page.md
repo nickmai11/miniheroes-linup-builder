@@ -149,6 +149,11 @@ and keeps the results in a scrollable panel. Select a build, then choose **Impor
 build** to copy its name, notes, attribute priorities, and matching core priorities.
 Searching or changing pages clears the selection; Cancel or Escape closes the picker.
 
+Each saved build also offers **Clone** to admins. It opens a new draft on the
+same hero with a ` (copy)` name suffix and all notes, rune/weapon/core selections,
+pick order, and priority tiers preserved. Save creates a separate build; Cancel
+discards the copy. Cloning does not change the source build or lineup references.
+
 Rune attributes, weapon attributes, and cores use three priority tiers:
 **Important** (one red diamond),
 **Should have** (gold diamond), and **OK to have** (blue dot and chip tint).
