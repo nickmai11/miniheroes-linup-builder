@@ -75,7 +75,7 @@ export function HeroPortrait({
               aria-hidden
             />
           </TooltipTrigger>
-          <TooltipContent side="top" sideOffset={8}>
+          <TooltipContent role="tooltip" side="top" sideOffset={8}>
             {hero.name} has a saved build
           </TooltipContent>
         </Tooltip>

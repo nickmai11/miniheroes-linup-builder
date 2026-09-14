@@ -22,12 +22,12 @@ export function AboutContent() {
         <CardHeader>
           <Crown className="text-primary mb-2 size-6" aria-hidden />
           <CardTitle>
-            <h2 className="text-xl">Created by Cmajor</h2>
+            <h2 className="text-xl">Created by ✨Cmajor✨</h2>
           </CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground leading-relaxed">
-            Built and maintained by Cmajor, with in-game screenshots and
+            Built and maintained by ✨Cmajor✨, with in-game screenshots and
             knowledge gathered from playing Mini Heroes: Magic Throne.
           </p>
         </CardContent>
