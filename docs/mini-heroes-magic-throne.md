@@ -549,25 +549,43 @@ Jungle Archer evidence gaps are **Awakening I (18★) and III (22★)**. This fo
 updates readiness only; Jungle Archer and the other 12 new candidates are not
 imported.
 
-#### September 14 9.58–10.02 AM screenshot review (game, 2026-09-14)
+#### September 14 9.58–10.02 AM screenshot review and import (game, 2026-09-14)
 
-This is a **readiness review, not an import**. The 162 pending owner screenshots
-from **9.58.26–10.02.38 AM**, plus Snowoman's two **10.10.23 / 10.10.48 AM**
+The owner authorized importing this batch after the readiness review. The 162
+owner screenshots from **9.58.26–10.02.38 AM**, plus Snowoman's two
+**10.10.23 / 10.10.48 AM**
 follow-ups, cover 15 heroes. **Witch Dictator, Silver Warrior,
 and Arcane Saint** already have detail entries, including I/III; their supplied
 talents, cores, artifact abilities, and divinities agree with those entries.
-The other **12** have roster entries and owner-sourced Archive portraits but no
-detail seeds. Existing portraits show the whole art panel without the
+The other **12** now have detail seeds and new talent/artifact crops. Their
+existing owner-sourced Archive portraits show the whole art panel without the
 artifact-progress diamond, and remain usable even where gameplay uses a skin.
 
-**All twelve new candidates have complete non-awakening evidence:** six talent
-names/kinds/descriptions and usable unscrolled icon sources, four complete linked cores,
-artifact artwork and all four abilities, and two catalog-matched mythic badges.
+**All twelve imported heroes have complete recorded non-awakening details:**
+six talent names/kinds/descriptions and verified icon sources, four complete
+linked cores, artifact artwork and all four abilities, and two catalog-matched
+mythic badges.
 **Snowoman's 10.10.23 AM follow-up completes Blizzard and Crystal Staff.**
 Its original 9.58.26 ring supplies the full Blizzard icon. No Hero Awaken
 screen appears in this batch; **I (18★) and III (22★) are missing for all 12 new
 candidates**. The earlier batch's awakening exclusion does not apply to this
-review. No seeds, public assets, or database content were changed.
+import. Their pages retain the unrecorded states at 18★/22★.
+
+The import adds **72 talents, 48 linked cores, 48 artifact abilities, 24 mythic
+divinity links, and 84 public images** through the existing seed/crop pipeline.
+All 412 previously existing PNGs, including portraits and shared tier/core icons,
+remain byte-identical; adding these new paths needs no asset-version bump.
+Snowoman's Blizzard uses the documented per-talent ring crop override. No new
+roster entry, divinity, awakening skill, or saved build is inferred from this batch.
+
+Verification on 2026-09-14: all twelve heroes synchronized through the existing
+`getHeroDetail` flow, with exact core/artifact links and divinity order checked.
+Isolated rendering of the real hero page passed for all twelve, including the
+six talent-attached rainbow bonuses in both sections and the 18★/22★ empty
+states. Typecheck, lint, and diff checks passed; tests reported 197 passed and
+5 skipped. Authenticated live page/image responses remain unverified: the local
+server requires a registered device session, and unauthenticated requests return
+an invitation redirect or 401.
 
 All source times below refer to
 `gameplay/talents/Screenshot 2026-09-14 at <time> AM.png`; preserve the narrow
@@ -593,7 +611,7 @@ order. No new divinity popup is needed for this batch.
 | Silver Warrior / Warrior | Gunblade | ATK → Melee DMG Reduction | 10.02.13–10.02.24 | Already recorded; agrees |
 | Arcane Saint / Support | Starshine Staff | DEF → HP | 10.02.27–10.02.38 | Already recorded; agrees |
 
-New candidates' talent order is **0 / 2 / 5 / 8 / 12 / 16★**. Names and kinds
+The imported heroes' talent order is **0 / 2 / 5 / 8 / 12 / 16★**. Names and kinds
 come from their actual popups; Snowoman's **10.10.23 AM** follow-up confirms
 Blizzard's Ultimate Skill kind and full base description, matching the ring.
 
@@ -642,7 +660,7 @@ Ring references are the first image in each hero's source range, except Captain
 Pilot: no separate unobstructed ring was supplied, but its positions/names are
 visible behind the 10.01.28 / 10.01.32 popups. The separate ring is optional.
 
-Verified core links (full effects remain in the source screenshots):
+Verified core links (full effects are transcribed in `src/data/hero-details.ts`):
 
 | Hero | Gear → talent |
 | --- | --- |
@@ -681,7 +699,8 @@ Review and transcription notes:
   (alias for **Ice Blast**), and rainbow **Glorious Aura**.
   With these two follow-ups, Snowoman has all six talents and four cores;
   **only Awakening I/III remain missing**, bringing all twelve new candidates
-  to complete non-awakening readiness. This remains a review, not an import.
+  to complete non-awakening readiness. These details are now imported following
+  the owner's authorization.
 - Core continuations: Bamboo Hat **9.58.48**; Fire Sorceress **9.59.09**;
   Red Hood **9.59.31 / 9.59.35**; Little Goblin **9.59.44 / 9.59.48**;
   Radiant Angel **10.00.03**; Diva **10.00.15 AM 1.png / 10.00.23**;
@@ -962,6 +981,20 @@ daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
 
+- 2026-09-14 — After the readiness review and Snowoman follow-ups, the owner
+  authorized importing the reviewed hero details with
+  **`$add-mini-heroes-hero use multiple agents`**. This covers Snowoman, Bamboo
+  Hat, Fire Sorceress, Red Hood, Little Goblin, Radiant Angel, Diva, Little Deer,
+  Lucifer, Captain Pilot, Li Bai, and Lady Pan. Record the supplied talents,
+  linked cores, artifact abilities/artwork, and mythic divinities; keep their
+  existing Archive portraits. Awakening I/III have not been supplied or excluded
+  and remain unrecorded.
+- 2026-09-14 — **Authorized 9.58–10.02 AM import:** recorded the twelve heroes'
+  72 talents, 48 linked cores, 48 artifact abilities, and 24 mythic divinity links
+  from the source tables above, including Snowoman's 10.10 AM follow-ups. Generated
+  72 talent icons and 12 artifact images; all 412 existing PNGs stayed byte-identical.
+  Source wording is preserved, including Li Bai's **3% of ATK** Sword Beam and
+  Little Deer's **30%(100%)** Nourishment core. Awakening I/III remain unrecorded.
 - 2026-09-14 — **Snowoman follow-up review:** the owner added
   `Screenshot 2026-09-14 at 10.10.23 AM.png` and
   `Screenshot 2026-09-14 at 10.10.48 AM.png`. The first confirms **Blizzard**

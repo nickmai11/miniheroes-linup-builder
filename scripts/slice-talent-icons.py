@@ -39,6 +39,186 @@ S14AM = lambda t: f"Screenshot 2026-09-14 at {t}{NB}AM.png"
 # hero slug -> {"popups": [(file, talent name), ...],
 #               "artifact": Artifact tab, "artifact_popup": the artifact's ability list}
 LAYOUT = {
+    # September 14 9.58–10.02 AM batch and Snowoman 10.10 AM follow-up.
+    "snowoman": {
+        "popups": [
+            (S14AM("10.10.23"), "Blizzard"),
+            (S14AM("9.58.29"), "Ice Blast"),
+            (S14AM("9.58.31"), "Bone-Chilling Cold"),
+            (S14AM("9.58.32"), "Glorious Aura"),
+            (S14AM("9.58.33"), "Ice Purification"),
+            (S14AM("9.58.35"), "Storm Domain"),
+        ],
+        # The Blizzard follow-up is scrolled; the ring retains the whole icon.
+        "talent_icons": {
+            "Blizzard": {
+                "source": S14AM("9.58.26"),
+                "box": (278, 369, 430, 521),
+                "inset": 18,
+            },
+        },
+        "artifact": S14AM("9.58.42"),
+        "artifact_box": (215, 237, 490, 519),
+        "artifact_corner_radius": 8,
+        # Preserve the upper blade tip while excluding the three progress stars.
+        "artifact_polygon": [(0, 0), (97, 0), (97, 6), (175, 6), (175, 0),
+                             (275, 0), (275, 282), (0, 282)],
+        "artifact_popup": S14AM("9.58.43"),
+    },
+    "bamboo-hat": {
+        "popups": [
+            (S14AM("9.58.54"), "Energy Impact"),
+            (S14AM("9.58.47"), "Weakness Sensing"),
+            (S14AM("9.58.49"), "Energy Overload"),
+            (S14AM("9.58.50"), "Qi Mantra"),
+            (S14AM("9.58.52"), "ATK Amplification"),
+            (S14AM("9.58.53"), "Energy Burst"),
+        ],
+        "artifact": S14AM("9.58.56"),
+        "artifact_box": (200, 244, 505, 530),
+        "artifact_corner_radius": 12,
+        "artifact_popup": S14AM("9.58.57"),
+    },
+    "fire-sorceress": {
+        "popups": [
+            (S14AM("9.59.17"), "Flame Shock"),
+            (S14AM("9.59.02"), "Burn"),
+            (S14AM("9.59.11"), "Blazing Slash"),
+            (S14AM("9.59.13"), "Blaze"),
+            (S14AM("9.59.14"), "ATK Amplification"),
+            (S14AM("9.59.15"), "Enhance Impact"),
+        ],
+        "artifact": S14AM("9.59.18"),
+        "artifact_box": (200, 244, 505, 530),
+        "artifact_corner_radius": 12,
+        "artifact_popup": S14AM("9.59.19"),
+    },
+    "red-hood": {
+        "popups": [
+            (S14AM("9.59.34"), "Mushroom Bomb"),
+            (S14AM("9.59.24"), "Poisoned Shooting"),
+            (S14AM("9.59.25"), "Here comes the bomb"),
+            (S14AM("9.59.26"), "Time Bomb"),
+            (S14AM("9.59.32"), "I am Red Hood"),
+            (S14AM("9.59.33"), "Big-headed Mushroom"),
+        ],
+        "artifact": S14AM("9.59.37"),
+        "artifact_box": (200, 244, 505, 530),
+        "artifact_corner_radius": 12,
+        "artifact_popup": S14AM("9.59.38"),
+    },
+    "little-goblin": {
+        "popups": [
+            (S14AM("9.59.47"), "Master of Machinery"),
+            (S14AM("9.59.41"), "Throw Mastery"),
+            (S14AM("9.59.42"), "Quick Release"),
+            (S14AM("9.59.43"), "DEF Formation"),
+            (S14AM("9.59.45"), "Knockback Boost"),
+            (S14AM("9.59.46"), "Spare Tool"),
+        ],
+        "artifact": S14AM("9.59.50"),
+        "artifact_box": (200, 244, 505, 530),
+        "artifact_corner_radius": 12,
+        "artifact_popup": S14AM("9.59.51"),
+    },
+    "radiant-angel": {
+        "popups": [
+            (S14AM("10.00.02"), "Holy Light Protection"),
+            (S14AM("9.59.55"), "Judgement"),
+            (S14AM("9.59.57"), "Enhance Protection"),
+            (S14AM("9.59.58"), "Holy Light Shines"),
+            (S14AM("10.00.00"), "Holy Soul"),
+            (S14AM("10.00.01"), "Super Protection"),
+        ],
+        "artifact": S14AM("10.00.05"),
+        "artifact_box": (200, 244, 505, 530),
+        "artifact_corner_radius": 12,
+        "artifact_popup": S14AM("10.00.05").replace(".png", " 1.png"),
+    },
+    "diva": {
+        "popups": [
+            (S14AM("10.00.22"), "Protagonist Arrive"),
+            (S14AM("10.00.15"), "Full-out Merrying"),
+            (S14AM("10.00.16"), "Enhance Stage"),
+            (S14AM("10.00.18").replace(".png", " 1.png"), "Revisit"),
+            (S14AM("10.00.18"), "Excited"),
+            (S14AM("10.00.21"), "Plot Armor"),
+        ],
+        "artifact": S14AM("10.00.25"),
+        "artifact_box": (200, 244, 505, 530),
+        "artifact_corner_radius": 12,
+        "artifact_popup": S14AM("10.00.26"),
+    },
+    "little-deer": {
+        "popups": [
+            (S14AM("10.00.42"), "Awaken"),
+            (S14AM("10.00.30"), "Poisoned Spear"),
+            (S14AM("10.00.33"), "Purify"),
+            (S14AM("10.00.34"), "Nourishment"),
+            (S14AM("10.00.39"), "Assist"),
+            (S14AM("10.00.40"), "Cleanse"),
+        ],
+        "artifact": S14AM("10.00.45"),
+        "artifact_box": (200, 244, 505, 530),
+        "artifact_corner_radius": 12,
+        "artifact_popup": S14AM("10.00.46"),
+    },
+    "lucifer": {
+        "popups": [
+            (S14AM("10.01.16").replace(".png", " 1.png"), "Doomsday Curse"),
+            (S14AM("10.01.07").replace(".png", " 1.png"), "Flame Blade"),
+            (S14AM("10.01.09"), "Strengthen Curse"),
+            (S14AM("10.01.10"), "Demon Fire"),
+            (S14AM("10.01.12"), "Demonic Contract"),
+            (S14AM("10.01.13"), "Hatred Deepens"),
+        ],
+        "artifact": S14AM("10.01.19"),
+        "artifact_box": (200, 244, 505, 530),
+        "artifact_corner_radius": 12,
+        "artifact_popup": S14AM("10.01.21").replace(".png", " 1.png"),
+    },
+    "captain-pilot": {
+        "popups": [
+            (S14AM("10.01.35"), "Warrior Strike"),
+            (S14AM("10.01.27"), "Molotov Cocktail"),
+            (S14AM("10.01.28"), "Enhance Bullet"),
+            (S14AM("10.01.29"), "Suppressive Shoot"),
+            (S14AM("10.01.32"), "Weakness Break"),
+            (S14AM("10.01.33"), "Explosive Bullet"),
+        ],
+        "artifact": S14AM("10.01.37"),
+        "artifact_box": (200, 244, 505, 530),
+        "artifact_corner_radius": 12,
+        "artifact_popup": S14AM("10.01.38"),
+    },
+    "li-bai": {
+        "popups": [
+            (S14AM("10.01.50"), "Sky-Splitting Sword"),
+            (S14AM("10.01.42"), "Twin Swords"),
+            (S14AM("10.01.44"), "Sword Breaker"),
+            (S14AM("10.01.45"), "Sword Beam"),
+            (S14AM("10.01.46"), "Lotus Sword"),
+            (S14AM("10.01.48"), "Man and Sword"),
+        ],
+        "artifact": S14AM("10.01.53"),
+        "artifact_box": (200, 244, 505, 530),
+        "artifact_corner_radius": 12,
+        "artifact_popup": S14AM("10.01.54"),
+    },
+    "lady-pan": {
+        "popups": [
+            (S14AM("10.02.07"), "Cutlery Throw"),
+            (S14AM("10.02.00"), "Home Delivery"),
+            (S14AM("10.02.02"), "Precise Throw"),
+            (S14AM("10.02.03"), "Deluxe Cake"),
+            (S14AM("10.02.05"), "Culinary Mastery"),
+            (S14AM("10.02.06"), "Spare Cutlery"),
+        ],
+        "artifact": S14AM("10.02.09"),
+        "artifact_box": (200, 244, 505, 530),
+        "artifact_corner_radius": 12,
+        "artifact_popup": S14AM("10.02.10"),
+    },
     # September 14 8.35–8.45 AM and Jungle Archer 9.01 AM follow-up.
     "skeleton-king": {
         "popups": [
@@ -727,6 +907,7 @@ def main():
     tier_written = set(os.listdir(icons_dir))
     for hero, cfg in LAYOUT.items():
         needed = [f for f, _ in cfg["popups"]] + [cfg["artifact"]]
+        needed.extend(icon["source"] for icon in cfg.get("talent_icons", {}).values())
         if cfg["artifact_popup"]:
             needed.append(cfg["artifact_popup"])
         if any(not os.path.exists(os.path.join(SRC, f)) for f in needed):
@@ -738,7 +919,11 @@ def main():
             path = os.path.join(SRC, file)
             im = Image.open(path).convert("RGB")
             a = np.asarray(im).astype(int)
-            circle(im.crop(TALENT_ICON_BOX)).save(os.path.join(out, f"{slugify(name)}.png"))
+            icon_cfg = cfg.get("talent_icons", {}).get(name, {})
+            icon_source = (Image.open(os.path.join(SRC, icon_cfg["source"])).convert("RGB")
+                           if "source" in icon_cfg else im)
+            circle(icon_source.crop(icon_cfg.get("box", TALENT_ICON_BOX)),
+                   inset=icon_cfg.get("inset", 13)).save(os.path.join(out, f"{slugify(name)}.png"))
             extra = panels(a)[1:]
             found = []
             for top in extra:

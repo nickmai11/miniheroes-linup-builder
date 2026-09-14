@@ -62,6 +62,1330 @@ const talent = (hero: string, slug: string) => `/talents/${hero}/${slug}.png`;
 
 export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 10.10.23 AM.png, 9.58.29 AM.png, 9.58.31 AM.png, 9.58.32 AM.png, 9.58.33 AM.png, 9.58.35 AM.png.
+  // Talent/core continuations: 9.58.30 AM.png, 10.10.23 AM.png, 10.10.48 AM.png.
+  // Artifact tab: 9.58.42 AM.png; abilities: 9.58.43 AM.png.
+  // Blizzard icon uses the fully visible 9.58.26 AM ring; see the crop override.
+  snowoman: {
+    artifact: {
+      name: "Soulseeker Staff",
+      iconUrl: "/artifacts/snowoman.png",
+      bonuses: [
+        {
+          tier: "purple",
+          name: "Ice Seal Technique",
+          description:
+            "Basic ATK will have a 75% chance to freeze the target for 1s",
+        },
+        {
+          tier: "gold",
+          skill: "Blizzard",
+          description:
+            '"Blizzard" Increases the Magic DMG dealt per wave of Blizzard by 50%. Enemies struck by Blizzard has a 50% chance to be frozen for 1s.',
+        },
+        {
+          tier: "red",
+          skill: "Ice Blast",
+          description:
+            '"Ice Blast Technique" Released immediately upon entering the battlefield, then released once every 12s, with a 100% chance to freeze the target for 1.5s.',
+        },
+        {
+          tier: "rainbow",
+          skill: "Glorious Aura",
+          description:
+            '"Glorious Aura" Increases the Energy regen rate every 3s by 15 points, and recovers 30 Energy points for the self.',
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Blizzard",
+        unlockStars: 0,
+        iconUrl: talent("snowoman", "blizzard"),
+        description:
+          'Summon 3 wave of Blizzard to attack enemies within range. Each wave of "Blizzard" will deal Magic DMG equal to 80% of ATK',
+      },
+      {
+        kind: "special",
+        name: "Ice Blast",
+        unlockStars: 2,
+        iconUrl: talent("snowoman", "ice-blast"),
+        description:
+          "Upon entering the Battlefield, release a Frost Explosion toward the enemies. The explosion will deal Magic DMG equal to 120% of ATK to the enemies within range and reduce their MOV SPD by 40% for 3s",
+      },
+      {
+        kind: "enhance",
+        name: "Bone-Chilling Cold",
+        unlockStars: 5,
+        iconUrl: talent("snowoman", "bone-chilling-cold"),
+        description:
+          "Blizzard Reduces the MOV SPD of hit enemies by 35% within 1.5s",
+      },
+      {
+        kind: "aura",
+        name: "Glorious Aura",
+        unlockStars: 8,
+        iconUrl: talent("snowoman", "glorious-aura"),
+        description: "Restore 40 energy to all allied heroes every 3s",
+      },
+      {
+        kind: "attribute",
+        name: "Ice Purification",
+        unlockStars: 12,
+        iconUrl: talent("snowoman", "ice-purification"),
+        description: "HP increased by 15%, Energy Regen SPD increased by 10%",
+      },
+      {
+        kind: "enhance",
+        name: "Storm Domain",
+        unlockStars: 16,
+        iconUrl: talent("snowoman", "storm-domain"),
+        description:
+          "Blizzard Increases the DMG dealt per wave by 30%. Increases the range of Blizzard by 20%.",
+      },
+    ],
+    cores: [
+      {
+        name: "Crystal Staff",
+        skill: "Blizzard",
+        description: '"Blizzard" increases Magic DMG by 20%(60%) of Attack',
+      },
+      {
+        name: "Tome of Radiance",
+        skill: "Ice Blast",
+        description: '"Ice Blast" increases Magic DMG by 50%(150%) of Attack',
+      },
+      {
+        name: "Luminous Visor",
+        skill: "Bone-Chilling Cold",
+        description:
+          '"Bone-Chilling Cold" extends the slow duration by 0.5(1.5) s',
+      },
+      {
+        name: "Resonance Pendant",
+        skill: "Glorious Aura",
+        description:
+          '"Glorious Aura" additionally restores 5(15) Energy each time',
+      },
+    ],
+    divinities: ["support-atk", "melee-dmg-reduction"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 9.58.54 AM.png, 9.58.47 AM.png, 9.58.49 AM.png, 9.58.50 AM.png, 9.58.52 AM.png, 9.58.53 AM.png.
+  // Talent/core continuations: 9.58.48 AM.png.
+  // Artifact tab: 9.58.56 AM.png; abilities: 9.58.57 AM.png.
+  "bamboo-hat": {
+    artifact: {
+      name: "Witherwood Staff",
+      iconUrl: "/artifacts/bamboo-hat.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Weakness Sensing",
+          description:
+            '"Weakness Sensing" Basic ATK will bypass Blocks and EVA.',
+        },
+        {
+          tier: "gold",
+          skill: "Qi Mantra",
+          description:
+            '"Qi Consolidation Mantra" Allied heroes will recover HP equivalent to 200% of the Bamboo Hat’s ATK',
+        },
+        {
+          tier: "red",
+          skill: "Energy Impact",
+          description:
+            '"Energy Impact" Reduces the ATK SPD of targets hit by Energy Impact by 50%, lasting for 5s',
+        },
+        {
+          tier: "rainbow",
+          skill: "Weakness Sensing",
+          description:
+            '"Weakness Sensing" Basic ATK will reduce target\'s Energy by 80 points',
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Energy Impact",
+        unlockStars: 0,
+        iconUrl: talent("bamboo-hat", "energy-impact"),
+        description:
+          "Gather energy to release an attack wave, dealing Magic DMG equal to 180% of ATK to all enemy targets and reduces energy by 80",
+      },
+      {
+        kind: "battle",
+        name: "Weakness Sensing",
+        unlockStars: 2,
+        iconUrl: talent("bamboo-hat", "weakness-sensing"),
+        description:
+          "Basic Attacks additionally shred 3% of the target's Current HP.",
+      },
+      {
+        kind: "enhance",
+        name: "Energy Overload",
+        unlockStars: 5,
+        iconUrl: talent("bamboo-hat", "energy-overload"),
+        description:
+          "Energy Impact Randomly deals 1.2~1.5 times DMG to the target",
+      },
+      {
+        kind: "special",
+        name: "Qi Mantra",
+        unlockStars: 8,
+        iconUrl: talent("bamboo-hat", "qi-mantra"),
+        description:
+          "At set intervals, Bamboo Hat will grant 150 Energy points to the team member with the highest Energy Level",
+      },
+      {
+        kind: "attribute",
+        name: "ATK Amplification",
+        unlockStars: 12,
+        iconUrl: talent("bamboo-hat", "atk-amplification"),
+        description: "Increases ATK by 25%",
+      },
+      {
+        kind: "enhance",
+        name: "Energy Burst",
+        unlockStars: 16,
+        iconUrl: talent("bamboo-hat", "energy-burst"),
+        description:
+          "Energy Impact Increases the Magic DMG dealt by 50%. Increases 80 Energy to all allied heroes when released.",
+      },
+    ],
+    cores: [
+      {
+        name: "Wizard's Wand",
+        skill: "Energy Impact",
+        description:
+          "「Energy Impact」 additionally drains the target's energy by 20(60) points",
+      },
+      {
+        name: "Arcane Hat",
+        skill: "Weakness Sensing",
+        description:
+          "「Weakness Sensing」 additionally reduces the target's Current HP by 0.5%(1.5%) (up to 115%(150%) of Bamboo Hat's Attack)",
+      },
+      {
+        name: "Mage Robe",
+        skill: "Qi Mantra",
+        description: "「Qi Mantra」 additionally restores 30(90) Energy",
+      },
+      {
+        name: "Spell Tome",
+        skill: "Energy Burst",
+        description:
+          "「Energy Burst」 additionally grants all allied Heroes 20(60) Energy",
+      },
+    ],
+    divinities: ["hp", "ranged-dmg-reduction"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 9.59.17 AM.png, 9.59.02 AM.png, 9.59.11 AM.png, 9.59.13 AM.png, 9.59.14 AM.png, 9.59.15 AM.png.
+  // Talent/core continuations: 9.59.09 AM.png.
+  // Artifact tab: 9.59.18 AM.png; abilities: 9.59.19 AM.png, 9.59.20 AM.png.
+  "fire-sorceress": {
+    artifact: {
+      name: "Flame Crown",
+      iconUrl: "/artifacts/fire-sorceress.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Burn",
+          description:
+            '"Burn" Enemies that enter the state of Burn will receive 12% Magic DMG per second.',
+        },
+        {
+          tier: "gold",
+          skill: "Burn",
+          description:
+            '"Burn" Further lowers the Magic RES of the target by 15%',
+        },
+        {
+          tier: "red",
+          name: "Blazing Fire",
+          description:
+            "At set intervals, summon a flame to randomly attack 1 enemy unit(s). The flames will deal Magic DMG equal to 200% of ATK to enemies in the target range with 1s of stun",
+        },
+        {
+          tier: "rainbow",
+          name: "Blazing Fire",
+          description:
+            "Increases the DMG range by 20%, while recovering 40 Energy points within 5s after skill use.",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Flame Shock",
+        unlockStars: 0,
+        iconUrl: talent("fire-sorceress", "flame-shock"),
+        description:
+          "Release Flame Shock to the front and deal Magic DMG equal to 280% of ATK to enemies within the range. The first target hit by the flame will be knocked back substantially",
+      },
+      {
+        kind: "battle",
+        name: "Burn",
+        unlockStars: 2,
+        iconUrl: talent("fire-sorceress", "burn"),
+        description:
+          "Basic ATK will cause target to enter a burn state for 10s, reducing the target’s DEF by 8% (Cooldown: 5s)",
+      },
+      {
+        kind: "enhance",
+        name: "Blazing Slash",
+        unlockStars: 5,
+        iconUrl: talent("fire-sorceress", "blazing-slash"),
+        description:
+          "Flame Shock Enemies hit will reduce an additional 5% of Max HP (must not exceed 200% of the Fire Sorceress’s ATK)",
+      },
+      {
+        kind: "enhance",
+        name: "Blaze",
+        unlockStars: 8,
+        iconUrl: talent("fire-sorceress", "blaze"),
+        description:
+          "Flame Shock Within 15s of release, increases ATK SPD by 8% and CRIT Rate by 15%",
+      },
+      {
+        kind: "attribute",
+        name: "ATK Amplification",
+        unlockStars: 12,
+        iconUrl: talent("fire-sorceress", "atk-amplification"),
+        description: "ATK increased by 15%, ATK SPD increased by 10%",
+      },
+      {
+        kind: "enhance",
+        name: "Enhance Impact",
+        unlockStars: 16,
+        iconUrl: talent("fire-sorceress", "enhance-impact"),
+        description:
+          "Flame Shock Increases the Magic DMG dealt by 100%, stunning hit target for 1s",
+      },
+    ],
+    cores: [
+      {
+        name: "Wizard's Wand",
+        skill: "Flame Shock",
+        description:
+          "「Flame Shock」 Adds 20(60%)% of your Attack as bonus Magic DMG.",
+      },
+      {
+        name: "Arcane Hat",
+        skill: "Burn",
+        description:
+          "「Burn」 additionally reduces the target's DEF by 3%(10%)",
+      },
+      {
+        name: "Mage Robe",
+        skill: "Blaze",
+        description:
+          "「Blaze」 additionally increases ATK SPD and CRIT Rate by 2%(6%)",
+      },
+      {
+        name: "Spell Tome",
+        skill: "Enhance Impact",
+        description: "「Enhance Impact」 increases stun duration by 0.5(1.5) s",
+      },
+    ],
+    divinities: ["mage-atk", "magic-res"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 9.59.34 AM.png, 9.59.24 AM.png, 9.59.25 AM.png, 9.59.26 AM.png, 9.59.32 AM.png, 9.59.33 AM.png.
+  // Talent/core continuations: 9.59.31 AM.png, 9.59.35 AM.png.
+  // Artifact tab: 9.59.37 AM.png; abilities: 9.59.38 AM.png.
+  "red-hood": {
+    artifact: {
+      name: "Captain Headgear",
+      iconUrl: "/artifacts/red-hood.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Poisoned Shooting",
+          description:
+            '"Poisoned Shooting" Increase effect duration by 5s and reduce Magic RES by 8%.',
+        },
+        {
+          tier: "gold",
+          skill: "Time Bomb",
+          description:
+            '"Time Bomb" Increases the explosion range by 25%, inflicting 75% Speed Decrease effects within 2 upon explosion.',
+        },
+        {
+          tier: "red",
+          skill: "Mushroom Bomb",
+          description:
+            '"Mushroom Bomb" Enemies will be stunned for 2.5s when hit.',
+        },
+        {
+          tier: "rainbow",
+          skill: "Mushroom Bomb",
+          description:
+            '"Mushroom Bomb" Summon from 1 to 2 more Mushroom Bombs upon release',
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Mushroom Bomb",
+        unlockStars: 0,
+        iconUrl: talent("red-hood", "mushroom-bomb"),
+        description:
+          "Summon 2 Mushroom Bomb to attack enemies. The Mushroom Bomb will automatically explode when encountering the enemy, dealing Magic DMG equal to 150% of ATK to targets in range, reducing the target’s DEF by 20%, lasting for 5s",
+      },
+      {
+        kind: "battle",
+        name: "Poisoned Shooting",
+        unlockStars: 2,
+        iconUrl: talent("red-hood", "poisoned-shooting"),
+        description:
+          "Basic ATK will reduce the target’s Physical RES by 8%, lasting for 5s, up to 2 stacks",
+      },
+      {
+        kind: "enhance",
+        name: "Here comes the bomb",
+        unlockStars: 5,
+        iconUrl: talent("red-hood", "here-comes-the-bomb"),
+        description: "Mushroom Bomb Summon Count +1",
+      },
+      {
+        kind: "battle",
+        name: "Time Bomb",
+        unlockStars: 8,
+        iconUrl: talent("red-hood", "time-bomb"),
+        description:
+          "At set intervals, place a Mushroom Bomb in front of the enemy at the forefront. It will automatically detonate after 3s, dealing Magic DMG equal to 150% of ATK to targets within range",
+      },
+      {
+        kind: "attribute",
+        name: "I am Red Hood",
+        unlockStars: 12,
+        iconUrl: talent("red-hood", "i-am-red-hood"),
+        description: "ATK increased by 15%, ATK SPD increased by 10%",
+      },
+      {
+        kind: "enhance",
+        name: "Big-headed Mushroom",
+        unlockStars: 16,
+        iconUrl: talent("red-hood", "big-headed-mushroom"),
+        description:
+          "Mushroom Bomb Increases the explosion range by 25%, increasing the Magic DMG dealt by 50%.",
+      },
+    ],
+    cores: [
+      {
+        name: "Wizard's Wand",
+        skill: "Mushroom Bomb",
+        description:
+          "「Mushroom Bomb」 additionally reduces the target's DEF by 10%(30%)",
+      },
+      {
+        name: "Arcane Hat",
+        skill: "Poisoned Shooting",
+        description:
+          "「Poisoned Shooting」 additionally reduces the target's Physical RES by 2%(6%)",
+      },
+      {
+        name: "Mage Robe",
+        skill: "Time Bomb",
+        description:
+          "「Time Bomb」 deals additional Magic DMG equal to 50%(150%) of ATK",
+      },
+      {
+        name: "Spell Tome",
+        skill: "Big-headed Mushroom",
+        description:
+          "「Big-headed Mushroom」 each bomb deals additional Magic DMG equal to 15%(45%) of ATK",
+      },
+    ],
+    divinities: ["receive-healing", "knockback-resist"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 9.59.47 AM.png, 9.59.41 AM.png, 9.59.42 AM.png, 9.59.43 AM.png, 9.59.45 AM.png, 9.59.46 AM.png.
+  // Talent/core continuations: 9.59.44 AM.png, 9.59.48 AM.png.
+  // Artifact tab: 9.59.50 AM.png; abilities: 9.59.51 AM.png.
+  "little-goblin": {
+    artifact: {
+      name: "Goblin Wrench",
+      iconUrl: "/artifacts/little-goblin.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Throw Mastery",
+          description:
+            '"Throw Mastery" Basic ATK has a 30% chance to throw another wrench.',
+        },
+        {
+          tier: "gold",
+          skill: "DEF Formation",
+          description:
+            '"DEF Formation" Increases the Shield\'s greatest HP Effect by 15%',
+        },
+        {
+          tier: "red",
+          skill: "Master of Machinery",
+          description:
+            '"Master of Machinery" Increases the Magic DMG dealt by hammers and wrenches by 30%, and recovers 200 points of Energy once the skill is used.',
+        },
+        {
+          tier: "rainbow",
+          name: "Energy Recharge Shield",
+          description:
+            "Randomly generates a shield equal to 30% of a Little Goblin’s Max HP to an allied hero every 12s.",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Master of Machinery",
+        unlockStars: 0,
+        iconUrl: talent("little-goblin", "master-of-machinery"),
+        description:
+          "Throw 3~5 hammers or wrenches at a random enemy target. Hammer deals Magic DMG and greatly knocks back target equal to 150% of ATK within range. The wrenches deal Magic DMG equal to 80% of ATK and slightly knock back enemies",
+      },
+      {
+        kind: "battle",
+        name: "Throw Mastery",
+        unlockStars: 2,
+        iconUrl: talent("little-goblin", "throw-mastery"),
+        description: "Basic ATK has a 30% chance of throwing out a hammer.",
+      },
+      {
+        kind: "enhance",
+        name: "Quick Release",
+        unlockStars: 5,
+        iconUrl: talent("little-goblin", "quick-release"),
+        description:
+          "Master of Machinery Reduces the Energy for first release by 20%, increases the Knockback Effect by 20%.",
+      },
+      {
+        kind: "special",
+        name: "DEF Formation",
+        unlockStars: 8,
+        iconUrl: talent("little-goblin", "def-formation"),
+        description:
+          "Upon entering the battlefield, grants the allied hero at the very front a shield equal to 35% of the Little Goblin’s Max HP. The shield will increase Physical Res and Magic RES of the allied hero by 10%, lasting for 10s.",
+      },
+      {
+        kind: "attribute",
+        name: "Knockback Boost",
+        unlockStars: 12,
+        iconUrl: talent("little-goblin", "knockback-boost"),
+        description: "Knockback effect increased by 15%, HP increased by 10%",
+      },
+      {
+        kind: "enhance",
+        name: "Spare Tool",
+        unlockStars: 16,
+        iconUrl: talent("little-goblin", "spare-tool"),
+        description: "Master of Machinery No. of weapons per throw+2",
+      },
+    ],
+    cores: [
+      {
+        name: "Wizard's Wand",
+        skill: "Master of Machinery",
+        description:
+          "「Master of Machinery」 increases both the upper and lower limits of throw count by 1(3)",
+      },
+      {
+        name: "Arcane Hat",
+        skill: "Throw Mastery",
+        description:
+          "「Throw Mastery」 increases additional throw chance by 5%(15%)",
+      },
+      {
+        name: "Mage Robe",
+        skill: "Quick Release",
+        description:
+          "「Quick Release」 additionally reduces First release energy cost by 5%(15%)",
+      },
+      {
+        name: "Spell Tome",
+        skill: "DEF Formation",
+        description:
+          "「DEF Formation」 additionally increases Physical RES and Magic RES by 5%(15%)",
+      },
+    ],
+    divinities: ["mage-atk", "heavy-injury"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 10.00.02 AM.png, 9.59.55 AM.png, 9.59.57 AM.png, 9.59.58 AM.png, 10.00.00 AM.png, 10.00.01 AM.png.
+  // Talent/core continuations: 10.00.03 AM.png.
+  // Artifact tab: 10.00.05 AM.png; abilities: 10.00.05 AM 1.png, 10.00.06 AM.png.
+  "radiant-angel": {
+    artifact: {
+      name: "Angel Staff",
+      iconUrl: "/artifacts/radiant-angel.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Judgement",
+          description:
+            '"Judgement" Increases trigger chance by 8%, and increases the Magic ATK DMG dealt by 50%',
+        },
+        {
+          tier: "gold",
+          skill: "Holy Light Protection",
+          description:
+            '"Holy Light Protection" Unable to receive CRIT when the skill is in effect',
+        },
+        {
+          tier: "red",
+          skill: "Holy Light Shines",
+          description:
+            '"Holy Light Shines" When used, recovers an additional 150 Energy points for the target.',
+        },
+        {
+          tier: "rainbow",
+          skill: "Holy Light Protection",
+          description:
+            '"Holy Light Protection" Releases an additional Holy Light Protection that will shield other allied heroes and increase their ATK by 200%. Unable to receive CRIT when the skill is in effect.',
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Holy Light Protection",
+        unlockStars: 0,
+        iconUrl: talent("radiant-angel", "holy-light-protection"),
+        description:
+          "Creates a Holy Light Shield for the weakest allied hero equal to 400% of the Radiant Angel's ATK, lasting for 6s",
+      },
+      {
+        kind: "battle",
+        name: "Judgement",
+        unlockStars: 2,
+        iconUrl: talent("radiant-angel", "judgement"),
+        description:
+          "Basic ATK have a 20% chance to inflict Magic DMG equal to 150% of ATK on the target and reduce the target's Physical and Magic DMG Reduction by 10% for 8s",
+      },
+      {
+        kind: "enhance",
+        name: "Enhance Protection",
+        unlockStars: 5,
+        iconUrl: talent("radiant-angel", "enhance-protection"),
+        description: "Holy Light Protection Shield effect increased by 100%",
+      },
+      {
+        kind: "special",
+        name: "Holy Light Shines",
+        unlockStars: 8,
+        iconUrl: talent("radiant-angel", "holy-light-shines"),
+        description:
+          "At set intervals, restore HP to the weakest allied hero equivalent to 150% of the Radiant Angel's ATK",
+      },
+      {
+        kind: "attribute",
+        name: "Holy Soul",
+        unlockStars: 12,
+        iconUrl: talent("radiant-angel", "holy-soul"),
+        description: "ATK increased by 10%, Knockback Effect increased by 15%",
+      },
+      {
+        kind: "enhance",
+        name: "Super Protection",
+        unlockStars: 16,
+        iconUrl: talent("radiant-angel", "super-protection"),
+        description:
+          "Holy Light Protection Increases the shield effect by 125%, and restores 2.5% of Max HP per second during the shield duration.",
+      },
+    ],
+    cores: [
+      {
+        name: "Crystal Staff",
+        skill: "Holy Light Protection",
+        description: "「Holy Light Protection」 duration increased by 1(3) s",
+      },
+      {
+        name: "Tome of Radiance",
+        skill: "Judgement",
+        description:
+          "「Judgement」 inflicts additional Magic DMG equal to 100%(300%) of Attack",
+      },
+      {
+        name: "Luminous Visor",
+        skill: "Holy Light Shines",
+        description:
+          "「Holy Light Shines」 additionally restores HP equal to 50%(150%) of Attack",
+      },
+      {
+        name: "Resonance Pendant",
+        skill: "Super Protection",
+        description:
+          "「Super Protection」 additionally restores 0.5%(1.5%) of Max HP per second",
+      },
+    ],
+    divinities: ["support-atk", "knockback-resist"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 10.00.22 AM.png, 10.00.15 AM.png, 10.00.16 AM.png, 10.00.18 AM 1.png, 10.00.18 AM.png, 10.00.21 AM.png.
+  // Talent/core continuations: 10.00.15 AM 1.png, 10.00.23 AM.png.
+  // Artifact tab: 10.00.25 AM.png; abilities: 10.00.26 AM.png.
+  diva: {
+    artifact: {
+      name: "Crystal Necklace",
+      iconUrl: "/artifacts/diva.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Full-out Merrying",
+          description: '"Full-out Merrying" Now activates every 12s.',
+        },
+        {
+          tier: "gold",
+          skill: "Protagonist Arrive",
+          description:
+            '"Protagonist Arrive" Increases Max HP Recovery by 5%, and during the duration, increases the Knockback Resist of all heroes by 25%.',
+        },
+        {
+          tier: "red",
+          skill: "Full-out Merrying",
+          description:
+            '"Full-out Merrying" Restores 2.5% of Max HP per second to all heroes during its duration',
+        },
+        {
+          tier: "rainbow",
+          skill: "Protagonist Arrive",
+          description:
+            '"Protagonist Arrive" When in effect, increases the Anti-Control Rate by 30% and Control RES by 30%.',
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Protagonist Arrive",
+        unlockStars: 0,
+        iconUrl: talent("diva", "protagonist-arrive"),
+        description:
+          "Sets up a magnificent stage. Within 5s, increases all allied heroes' DMG Reduction by 10%, and restores HP equal to 10% of the Diva's Max HP",
+      },
+      {
+        kind: "special",
+        name: "Full-out Merrying",
+        unlockStars: 2,
+        iconUrl: talent("diva", "full-out-merrying"),
+        description:
+          "Upon entering the battlefield, at the 10/25/45/70 second, a Melody is played, increasing all allied heroes' MOV SPD by 30% and ATK SPD by 10%, with the effect lasting for 4s.",
+      },
+      {
+        kind: "enhance",
+        name: "Enhance Stage",
+        unlockStars: 5,
+        iconUrl: talent("diva", "enhance-stage"),
+        description: "Protagonist Arrive Increases Max HP Recovery by 5%.",
+      },
+      {
+        kind: "enhance",
+        name: "Revisit",
+        unlockStars: 8,
+        iconUrl: talent("diva", "revisit"),
+        description: '"Full-out Merrying" Increases duration by 2s',
+      },
+      {
+        kind: "attribute",
+        name: "Excited",
+        unlockStars: 12,
+        iconUrl: talent("diva", "excited"),
+        description: "Energy Regen SPD increased by 15%, HP increased by 10%",
+      },
+      {
+        kind: "enhance",
+        name: "Plot Armor",
+        unlockStars: 16,
+        iconUrl: talent("diva", "plot-armor"),
+        description:
+          "Protagonist Arrive Increases Max HP Recovery by 5%. Allied heroes with HP below 35% will receive an additional 50% increase in healing effects.",
+      },
+    ],
+    cores: [
+      {
+        name: "Crystal Staff",
+        skill: "Protagonist Arrive",
+        description:
+          "「Protagonist Arrive」 DMG Reduction increased by 2%(6%), additionally restores 2%(6%) of the Diva's max HP.",
+      },
+      {
+        name: "Tome of Radiance",
+        skill: "Full-out Merrying",
+        description:
+          "「Full-out Merrying」 additionally increases ATK SPD by 10%(30%).",
+      },
+      {
+        name: "Luminous Visor",
+        skill: "Revisit",
+        description:
+          "「Revisit」 duration additionally increased by 0.5(1.5) s.",
+      },
+      {
+        name: "Resonance Pendant",
+        skill: "Plot Armor",
+        description:
+          "「Plot Armor」 triggers additional Healing Effect when HP falls below 40%(50%).",
+      },
+    ],
+    divinities: ["hp", "healing-effect"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 10.00.42 AM.png, 10.00.30 AM.png, 10.00.33 AM.png, 10.00.34 AM.png, 10.00.39 AM.png, 10.00.40 AM.png.
+  // Artifact tab: 10.00.45 AM.png; abilities: 10.00.46 AM.png.
+  "little-deer": {
+    artifact: {
+      name: "Ironskin Staff",
+      iconUrl: "/artifacts/little-deer.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Poisoned Spear",
+          description: '"Poisoned Spear" Increase Knockback Effect by 30%',
+        },
+        {
+          tier: "gold",
+          skill: "Nourishment",
+          description:
+            '"Nourishment" Turns Slow Recovery effects to Immediate Recovery effects',
+        },
+        {
+          tier: "red",
+          skill: "Awaken",
+          description:
+            '"Awaken" When in effect, increases all allied heroes’ DMG Reduction by 12%',
+        },
+        {
+          tier: "rainbow",
+          name: "Divine Light Shelter",
+          description:
+            "Reduces the DMG Result taken by all allied heroes by 10%",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Awaken",
+        unlockStars: 0,
+        iconUrl: talent("little-deer", "awaken"),
+        description:
+          "Summon the power of nature to continuously restore HP equal to 15% of Little Deer's Max HP to all allied heroes over 5s",
+      },
+      {
+        kind: "battle",
+        name: "Poisoned Spear",
+        unlockStars: 2,
+        iconUrl: talent("little-deer", "poisoned-spear"),
+        description:
+          "Basic ATK will reduce the target's MOV SPD by 50%, effect duration 3s",
+      },
+      {
+        kind: "enhance",
+        name: "Purify",
+        unlockStars: 5,
+        iconUrl: talent("little-deer", "purify"),
+        description:
+          "Awaken When healing an allied target, immediately remove certain debuffs from the target and recovers Max HP by 5%",
+      },
+      {
+        kind: "special",
+        name: "Nourishment",
+        unlockStars: 8,
+        iconUrl: talent("little-deer", "nourishment"),
+        description:
+          "At set intervals, slowly restore health to the weakest allied hero equivalent to 15% of Little Deer's Max HP.",
+      },
+      {
+        kind: "attribute",
+        name: "Assist",
+        unlockStars: 12,
+        iconUrl: talent("little-deer", "assist"),
+        description: "Increase healing effect by 25%",
+      },
+      {
+        kind: "enhance",
+        name: "Cleanse",
+        unlockStars: 16,
+        iconUrl: talent("little-deer", "cleanse"),
+        description:
+          "Awaken Increases recovery effects by 25%. When the current HP exceeds Max HP, 50% will be converted to a shield (will not exceed the Max HP of the healed target)",
+      },
+    ],
+    cores: [
+      {
+        name: "Crystal Staff",
+        skill: "Awaken",
+        description:
+          "「Awaken」 additionally restores HP equal to 3%(9%) of Little Deer's Max HP",
+      },
+      {
+        name: "Tome of Radiance",
+        skill: "Poisoned Spear",
+        description:
+          "「Poisoned Spear」 increases the slow duration by 0.5(1.5) s",
+      },
+      {
+        name: "Luminous Visor",
+        skill: "Nourishment",
+        description: "「Nourishment」 increases HP restored by 30%(100%)",
+      },
+      {
+        name: "Resonance Pendant",
+        skill: "Cleanse",
+        description: "「Cleanse」 increases Shield conversion rate by 10%(30%)",
+      },
+    ],
+    divinities: ["hp", "melee-dmg-reduction"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 10.01.16 AM 1.png, 10.01.07 AM 1.png, 10.01.09 AM.png, 10.01.10 AM.png, 10.01.12 AM.png, 10.01.13 AM.png.
+  // Talent/core continuations: 10.01.07 AM.png, 10.01.11 AM.png, 10.01.16 AM.png.
+  // Artifact tab: 10.01.19 AM.png; abilities: 10.01.21 AM 1.png, 10.01.21 AM.png.
+  lucifer: {
+    artifact: {
+      name: "Blood Demon Crystal",
+      iconUrl: "/artifacts/lucifer.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Flame Blade",
+          description:
+            "\"Flame Blade\" The enemy hit will additionally lost 1.5%'s maximum HP (capped at Lucifer's 200% ATK)",
+        },
+        {
+          tier: "gold",
+          skill: "Demon Fire",
+          description:
+            'The Physical DMG caused by "Demon Fire" is increased by 10%, and the Ranged DMG Reduct is increased by 15% when skill taking effect',
+        },
+        {
+          tier: "red",
+          skill: "Doomsday Curse",
+          description:
+            'The duration of "Doomsday Curse" is increased by 3 seconds, and the effect cannot be dispelled',
+        },
+        {
+          tier: "rainbow",
+          skill: "Demon Fire",
+          description:
+            '"Demon Fire" The effect lasts until the end of the battle, and 100% of the DMG caused is converted into self HP. Enemies affected by fire will have their DEF reduced by 8%',
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Doomsday Curse",
+        unlockStars: 0,
+        iconUrl: talent("lucifer", "doomsday-curse"),
+        description:
+          "Releases a doomsday curse on a random enemy hero, removes all its skills for 7s (cannot release any skills), and causes 100% Physical DMG per second",
+      },
+      {
+        kind: "battle",
+        name: "Flame Blade",
+        unlockStars: 2,
+        iconUrl: talent("lucifer", "flame-blade"),
+        description:
+          "Basic ATKs have a 20% chance of wielding the Flame Blade, causing Physical DMG equal to 150% of ATK to enemies within the range, with stun effect of 2s",
+      },
+      {
+        kind: "enhance",
+        name: "Strengthen Curse",
+        unlockStars: 5,
+        iconUrl: talent("lucifer", "strengthen-curse"),
+        description:
+          "Doomsday Curse will reduce the healing effect received by the target by 40%",
+      },
+      {
+        kind: "special",
+        name: "Demon Fire",
+        unlockStars: 8,
+        iconUrl: talent("lucifer", "demon-fire"),
+        description:
+          "After entering the battlefield, it sets the surrounding land on fire to deal Physical DMG equal to 35% of ATK to surrounding enemies for every 0.5s, lasting 30s",
+      },
+      {
+        kind: "attribute",
+        name: "Demonic Contract",
+        unlockStars: 12,
+        iconUrl: talent("lucifer", "demonic-contract"),
+        description: "DEF increased by 10%, HP increased by 15%",
+      },
+      {
+        kind: "enhance",
+        name: "Hatred Deepens",
+        unlockStars: 16,
+        iconUrl: talent("lucifer", "hatred-deepens"),
+        description:
+          "Doomsday Curse will reduce the target's Energy Regen SPD by 50%, and the damage caused will become True DMG (ignoring the target's DEF and DMG Reduction RES)",
+      },
+    ],
+    cores: [
+      {
+        name: "Blade of Valor",
+        skill: "Doomsday Curse",
+        description:
+          "「Doomsday Curse」 inflicts Physical DMG each second equal to 20%(60%) of Attack.",
+      },
+      {
+        name: "Cavalier Helm",
+        skill: "Flame Blade",
+        description:
+          "「Flame Blade」 activation chance raised by 5%(15%), dealing Physical DMG equal to 50%(150%) of Attack.",
+      },
+      {
+        name: "Brawler's Armor",
+        skill: "Strengthen Curse",
+        description:
+          "「Strengthen Curse」 additionally reduces the target's Physical RES by 10%(30%).",
+      },
+      {
+        name: "Brawler's Boots",
+        skill: "Demon Fire",
+        description: "「Demon Fire」 flame range expanded by 15%(45%).",
+      },
+    ],
+    divinities: ["spd-reduction-res", "physical-res"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 10.01.35 AM.png, 10.01.27 AM.png, 10.01.28 AM.png, 10.01.29 AM.png, 10.01.32 AM.png, 10.01.33 AM.png.
+  // Talent/core continuations: 10.01.30 AM.png, 10.01.35 AM 1.png.
+  // Artifact tab: 10.01.37 AM.png; abilities: 10.01.38 AM.png, 10.01.39 AM.png.
+  "captain-pilot": {
+    artifact: {
+      name: "Energy Spring",
+      iconUrl: "/artifacts/captain-pilot.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Molotov Cocktail",
+          description:
+            '"Molotov Cocktail" Deals the same DMG and effects to targets in a small area',
+        },
+        {
+          tier: "gold",
+          skill: "Suppressive Shoot",
+          description:
+            '"Suppressive Shooting" Releases immediately upon entering the battlefield, then releases once per 16s, each bullet dealing 20% Physical DMG.',
+        },
+        {
+          tier: "red",
+          skill: "Warrior Strike",
+          description:
+            '"Warrior Strike" Upon releasing 2 nuclear bomb at enemies, the second nuclear bomb will deal Physical DMG equal to 300% of ATK to enemies',
+        },
+        {
+          tier: "rainbow",
+          name: "Armor PEN Bullet",
+          description:
+            "Basic ATK has a 35% chance to shoot an additional Armor PEN Bullet, piercing all enemies and dealing Physical DMG equal to 150% of ATK",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Warrior Strike",
+        unlockStars: 0,
+        iconUrl: talent("captain-pilot", "warrior-strike"),
+        description:
+          "Use a nuclear bomb to attack the enemy with the lowest DEF, dealing Physical DMG equal to 450% of ATK to all enemies in the area and stunning them for 1s",
+      },
+      {
+        kind: "battle",
+        name: "Molotov Cocktail",
+        unlockStars: 2,
+        iconUrl: talent("captain-pilot", "molotov-cocktail"),
+        description:
+          "Launch a Molotov Cocktail to a single target every 8s, dealing 150% ATK as True DMG and causing a Knockback Effect",
+      },
+      {
+        kind: "enhance",
+        name: "Enhance Bullet",
+        unlockStars: 5,
+        iconUrl: talent("captain-pilot", "enhance-bullet"),
+        description: "Warrior Strike Increases the range of DMG dealt by 20%",
+      },
+      {
+        kind: "special",
+        name: "Suppressive Shoot",
+        unlockStars: 8,
+        iconUrl: talent("captain-pilot", "suppressive-shoot"),
+        description:
+          "Upon entering the battlefield, continuously shoot enemies for 3s, firing 5 bullets per second, each dealing Physical DMG equal to 20% of ATK to the target",
+      },
+      {
+        kind: "attribute",
+        name: "Weakness Break",
+        unlockStars: 12,
+        iconUrl: talent("captain-pilot", "weakness-break"),
+        description: "Increase Armor PEN by 15%, and CRIT Rate by 10%",
+      },
+      {
+        kind: "enhance",
+        name: "Explosive Bullet",
+        unlockStars: 16,
+        iconUrl: talent("captain-pilot", "explosive-bullet"),
+        description:
+          "Warrior Strike Increases the Physical DMG dealt by 150% and extends the stun duration by 2s.",
+      },
+    ],
+    cores: [
+      {
+        name: "Swift Longbow",
+        skill: "Warrior Strike",
+        description:
+          "「Warrior Strike」 increases 60%(180%) of Attack's Physical DMG",
+      },
+      {
+        name: "Arrow Core",
+        skill: "Molotov Cocktail",
+        description:
+          "「Molotov Cocktail」 increases 50%(150%) of Attack's True DMG",
+      },
+      {
+        name: "Hunter's Cloak",
+        skill: "Suppressive Shoot",
+        description:
+          "「Suppressive Shoot」 increases 20%(60%) of Attack's Physical DMG",
+      },
+      {
+        name: "Crystal Pendant",
+        skill: "Explosive Bullet",
+        description:
+          "「Explosive Bullet」 increases 60%(180%) of Attack's Physical DMG",
+      },
+    ],
+    divinities: ["crit-damage", "ranged-dmg-reduction"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 10.01.50 AM.png, 10.01.42 AM.png, 10.01.44 AM.png, 10.01.45 AM.png, 10.01.46 AM.png, 10.01.48 AM.png.
+  // Talent/core continuations: 10.01.51 AM.png.
+  // Artifact tab: 10.01.53 AM.png; abilities: 10.01.54 AM.png, 10.01.55 AM.png.
+  "li-bai": {
+    artifact: {
+      name: "Lotus Nectar",
+      iconUrl: "/artifacts/li-bai.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Twin Swords",
+          description:
+            '"Twin Swords" Each flying sword will randomly deal 1 to 1.5 times DMG to enemies',
+        },
+        {
+          tier: "gold",
+          skill: "Sword Beam",
+          description:
+            '"Sword Beam" Increases physical DMG by 200%. Each time the sword beam hits an enemy, restores 50 energy points',
+        },
+        {
+          tier: "red",
+          skill: "Sky-Splitting Sword",
+          description:
+            "[Sky-Splitting Sword]: Each flying sword inflicts bonus damage equal to 4% of the target's Max HP (up to a maximum of 100% of Li Bai's Attack). Additionally, the user's Attack Speed is increased by 30% for 6 seconds after activation.",
+        },
+        {
+          tier: "rainbow",
+          name: "Hero's Journey",
+          description:
+            "Increases self ATK by 6% for 6s after a Basic ATK or skill release (up to a maximum of 4 stacks).\nPassive: When taking single DMG exceeding 15% of max HP, restores 100 energy points (Cooldown: 2s)",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Sky-Splitting Sword",
+        unlockStars: 0,
+        iconUrl: talent("li-bai", "sky-splitting-sword"),
+        description:
+          "Unleashes 5 flying swords forward, each dealing Physical DMG equal to 125% of ATK to enemy targets. It has a chance to trigger a piercing effect, causing the same DMG and effects to multiple targets\nEffect 1: 30% chance to attack 2 targets in front.\nEffect 2: 15% chance to attack 3 targets in front",
+      },
+      {
+        kind: "battle",
+        name: "Twin Swords",
+        unlockStars: 2,
+        iconUrl: talent("li-bai", "twin-swords"),
+        description:
+          "Basic ATK release 2 flying swords, each dealing Physical DMG equal to 110% of ATK to the target",
+      },
+      {
+        kind: "enhance",
+        name: "Sword Breaker",
+        unlockStars: 5,
+        iconUrl: talent("li-bai", "sword-breaker"),
+        description:
+          "Sky-Splitting Sword increases the DMG of each flying sword by 25% and grants an additional 30% Armor PEN",
+      },
+      {
+        kind: "special",
+        name: "Sword Beam",
+        unlockStars: 8,
+        iconUrl: talent("li-bai", "sword-beam"),
+        description:
+          "Every 3 attacks, unlease a sword beam to attack enemies in front, dealing Physical DMG equal to 3% of ATK. Enemies hit by the sword beam will lose 50 energy",
+      },
+      {
+        kind: "attribute",
+        name: "Lotus Sword",
+        unlockStars: 12,
+        iconUrl: talent("li-bai", "lotus-sword"),
+        description: "ATK increased by 15%, Knockback Effect increased by 10%",
+      },
+      {
+        kind: "enhance",
+        name: "Man and Sword",
+        unlockStars: 16,
+        iconUrl: talent("li-bai", "man-and-sword"),
+        description:
+          "Sky-Splitting Sword Flying swords +1. Convert 30% of DMG of Twin Swords and Sword Beam into HP",
+      },
+    ],
+    cores: [
+      {
+        name: "Swift Longbow",
+        skill: "Sky-Splitting Sword",
+        description:
+          "「Sky-Splitting Sword」 each flying sword deals bonus Physical DMG equal to 16%(48%) of ATK.",
+      },
+      {
+        name: "Arrow Core",
+        skill: "Twin Swords",
+        description:
+          "「Twin Swords」 Each flying sword has a 30%(90%) chance to pierce through a target, dealing equal DMG and effects.",
+      },
+      {
+        name: "Hunter's Cloak",
+        skill: "Sword Beam",
+        description: "「Sword Beam」 Additionally consumes 15(45) less energy.",
+      },
+      {
+        name: "Crystal Pendant",
+        skill: "Man and Sword",
+        description:
+          "「Man and Sword」 Increases the HP conversion ratio by 15%(45%).",
+      },
+    ],
+    divinities: ["physical-res", "ranged-dmg-reduction"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
+  // Talent popups (0/2/5/8/12/16★): 10.02.07 AM.png, 10.02.00 AM.png, 10.02.02 AM.png, 10.02.03 AM.png, 10.02.05 AM.png, 10.02.06 AM.png.
+  // Talent/core continuations: 10.02.01 AM.png, 10.02.04 AM.png.
+  // Artifact tab: 10.02.09 AM.png; abilities: 10.02.10 AM.png, 10.02.11 AM.png.
+  "lady-pan": {
+    artifact: {
+      name: "Nonstick Pan",
+      iconUrl: "/artifacts/lady-pan.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Home Delivery",
+          description:
+            '"Home Delivery" Increase the Magic DMG dealt upon impacting enemies by 35%',
+        },
+        {
+          tier: "gold",
+          skill: "Home Delivery",
+          description:
+            '"Home Delivery" Reduces the intervals of release by 25%',
+        },
+        {
+          tier: "red",
+          skill: "Deluxe Cake",
+          description:
+            '"Deluxe Cake" The success chance of preparation increased to 20%. The duration extended by 2s',
+        },
+        {
+          tier: "rainbow",
+          name: "Random Snack",
+          description:
+            "Basic ATK have a 40% chance to throw a small snack to the weakest ally, restoring HP equal to 180% of their ATK and applying a random buff:\nCustard Tart: Increases ATK SPD and MOV SPD by 25% for 5s\nCake: Increases ATK by 25% for 5s\nBurger: Increases DEF by 25% for 5s",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Cutlery Throw",
+        unlockStars: 0,
+        iconUrl: talent("lady-pan", "cutlery-throw"),
+        description:
+          "Randomly throw 3~6 different pieces of cutlery at enemies. Each piece deals Magic DMG equal to 90% of ATK and additional effects:\nPlate: Increases Knockback Effect by 30%\nPan: Stuns for 1.5s\nFork: Reduces target's DEF by 12% for 5s (stackable)",
+      },
+      {
+        kind: "special",
+        name: "Home Delivery",
+        unlockStars: 2,
+        iconUrl: talent("lady-pan", "home-delivery"),
+        description:
+          "In a set interval, mount the beloved motorcycle and charge forward, dealing Magic DMG equal to 100% of ATK to the all enemies in path. The impacted enemies will suffer from different debuffs:\nEffect 1: Reduced ATK by 10% for 5s\nEffect 2: Reduced MOV SPD by 20% for 3s\nEffect 3: Stunned for 1.5s",
+      },
+      {
+        kind: "enhance",
+        name: "Precise Throw",
+        unlockStars: 5,
+        iconUrl: talent("lady-pan", "precise-throw"),
+        description: "Cutlery Throw Magic DMG of each piece increased by 40%",
+      },
+      {
+        kind: "special",
+        name: "Deluxe Cake",
+        unlockStars: 8,
+        iconUrl: talent("lady-pan", "deluxe-cake"),
+        description:
+          "In a set interval, place a deluxe cake in the middle of the battlefield. The outcome of the preparation determines the effects:\nSuccess: Restores 3.5% of allies' Max HP per second and increases Energy Regen SPD by 8% per second. Additionally, grants allies 10% DMG Reduction for 4s\nFail: Restores 2.5% of allies' Max HP per second and increases allies' DEF by 20% for 3s",
+      },
+      {
+        kind: "attribute",
+        name: "Culinary Mastery",
+        unlockStars: 12,
+        iconUrl: talent("lady-pan", "culinary-mastery"),
+        description: "ATK increased by 15%, HP increased by 10%",
+      },
+      {
+        kind: "enhance",
+        name: "Spare Cutlery",
+        unlockStars: 16,
+        iconUrl: talent("lady-pan", "spare-cutlery"),
+        description:
+          "Cutlery Throw Increases the maximum number of cutlery thrown by 6",
+      },
+    ],
+    cores: [
+      {
+        name: "Crystal Staff",
+        skill: "Cutlery Throw",
+        description:
+          "「Cutlery Throw」 increases Magic DMG by 20%(60%) of Attack",
+      },
+      {
+        name: "Tome of Radiance",
+        skill: "Home Delivery",
+        description:
+          "「Home Delivery」 increases Magic DMG by 50%(150%) of Attack",
+      },
+      {
+        name: "Luminous Visor",
+        skill: "Deluxe Cake",
+        description:
+          "「Deluxe Cake」 increases Max HP Regen per second by 1%(3%) upon either successful creation or Loss",
+      },
+      {
+        name: "Resonance Pendant",
+        skill: "Spare Cutlery",
+        description:
+          "「Spare Cutlery」 increases Cutlery Throw's maximum utensil count by 1(3)",
+      },
+    ],
+    divinities: ["atk", "hp"],
+  },
+  // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
   // Talent popups (0/2/5/8/12/16★): 8.35.46 AM.png, 8.35.38 AM.png, 8.35.40 AM.png, 8.35.41 AM.png, 8.35.42 AM.png, 8.35.44 AM.png.
   // Artifact tab: 8.36.27 AM.png; abilities: 8.36.29 AM.png.
   "skeleton-king": {

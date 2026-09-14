@@ -93,6 +93,17 @@ portrait. **Aura** is a supported talent kind for Bloodthirsty Curse and ATK SPD
 Aura; the shared labels also cover core previews. No I/III screenshots were
 supplied, so those stages retain their empty states.
 
+The **September 14 9.58–10.02 AM import**, including Snowoman's **10.10 AM**
+follow-ups, adds **Snowoman, Bamboo Hat, Fire Sorceress, Red Hood, Little Goblin,
+Radiant Angel, Diva, Little Deer, Lucifer, Captain Pilot, Li Bai, and Lady Pan**.
+Each has six talents, four linked cores, four artifact tiers, two mythic divinities,
+and new talent/artifact images with its existing Archive portrait. Snowoman's
+**Blizzard** icon uses the **9.58.26 AM** ring through a per-talent
+`talent_icons` source/box/inset override in `scripts/slice-talent-icons.py`;
+the **10.10.23 AM** popup supplies its text and core. Its **Glorious Aura** is
+stored as Aura. Fire Sorceress's red/rainbow **Blazing Fire** abilities are both
+standalone. Awakening I/III were not supplied and retain their empty states.
+
 Build imports use an outline button matching **New build**. The picker searches
 hero and build names on the server, loads twelve results per page only when opened,
 and keeps the results in a scrollable panel. Select a build, then choose **Import
@@ -288,25 +299,25 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
 
 ## 6. Known gaps
 
-- **September 14, 9.58–10.02 AM readiness review (not imported):** 162 pending
-  screenshots plus Snowoman's two **10.10 AM** follow-ups cover twelve heroes
-  without detail entries. **Snowoman, Bamboo Hat, Fire
+- **September 14, 9.58–10.02 AM imported batch:** 162 screenshots plus
+  Snowoman's two **10.10 AM** follow-ups supply the recorded details for
+  **Snowoman, Bamboo Hat, Fire
   Sorceress, Red Hood, Little Goblin, Radiant Angel, Diva, Little Deer, Lucifer,
-  Captain Pilot, Li Bai, and Lady Pan** have six complete talents, four linked
+  Captain Pilot, Li Bai, and Lady Pan**. Each has six complete talents, four linked
   cores, artifact artwork/all four abilities, and two catalog-matched mythic
   divinities, with existing owner-sourced Archive portraits. They still need
   **Awakening I (18★) and III (22★)**. No awakening exclusion was applied to
   this batch. **Snowoman's Blizzard/fourth-core gap is resolved:**
   `Screenshot 2026-09-14 at 10.10.23 AM.png` supplies the full ultimate
   description (**3 waves, 80% of ATK as Magic DMG each**) and **Crystal Staff →
-  Blizzard** (**20%(60%) of Attack** as extra Magic DMG). Use the full central
-  icon from **9.58.26 AM** with a dedicated ring crop; the new popup is slightly
+  Blizzard** (**20%(60%) of Attack** as extra Magic DMG). The full central
+  icon from **9.58.26 AM** uses a dedicated ring crop; the new popup is slightly
   scrolled at the top. The **10.10.48 AM** follow-up reconfirms **Tome of
   Radiance → Ice Blast** (**50%(150%) of Attack**). Its earlier captures already
   supply all artifact tiers and Support ATK / Melee DMG Reduction. Only I/III
-  remain missing for Snowoman and the other eleven candidates. Source files,
+  remain missing for Snowoman and the other eleven imported heroes. Source files,
   continuations, and exact title aliases are in the game reference's
-  **September 14 9.58–10.02 AM screenshot review** section.
+  **September 14 9.58–10.02 AM screenshot review and import** section.
 - The same batch's **Witch Dictator, Silver Warrior, and Arcane Saint** captures
   agree with their existing recorded content; their I/III are already recorded.
   Supplied scrolls complete Radiant Angel's rainbow bonus (**10.00.06**),
