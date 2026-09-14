@@ -14,7 +14,9 @@ route loading fallback.
 - Share catalog initialization across requests, retrying if initialization fails.
 - Share metadata and page reads for individual lineups and divinities within a
   request. Mutable builds, notes and lineups retain fresh reads across requests.
-- Add `src/app/loading.tsx` to show a lightweight loading state while routes stream.
+- Add a loading fallback while routes stream. The September 14 skeleton review
+  replaced the root fallback with page-specific leaf boundaries so home/list
+  skeletons cannot precede detail skeletons; see `src/app/README.md`.
 
 Migration `0014_hero_detail_seed_hash` adds the nullable fingerprint column. The
 first visit after migration synchronizes existing heroes once; subsequent visits,

@@ -26,7 +26,6 @@ export default function Loading() {
           <TextSkeleton lines={2} />
         </CardContent>
       </Card>
-      <TextSkeleton lines={2} />
     </LoadingPage>
   );
 }

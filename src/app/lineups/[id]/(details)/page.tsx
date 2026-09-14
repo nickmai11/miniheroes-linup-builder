@@ -13,7 +13,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getLineup } from "@/lib/lineups";
 import { canEditContent } from "@/lib/editing";
-import { deleteLineup } from "../actions";
+import { deleteLineup } from "../../actions";
 
 export const dynamic = "force-dynamic";
 

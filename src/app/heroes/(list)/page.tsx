@@ -2,7 +2,7 @@ import { requirePageAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
 import { PageShell } from "@/components/page-shell";
 import { getHeroesWithDetails } from "@/lib/heroes";
-import { HeroPool } from "./hero-pool";
+import { HeroPool } from "../hero-pool";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Heroes" };

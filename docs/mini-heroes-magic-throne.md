@@ -1272,6 +1272,12 @@ in the lineup list; public URL access remains independent.
 Preserve the normal desktop and mobile navigation links for lineup-scoped
 devices; page access checks enforce their restrictions (owner, 2026-09-14).
 
+### Creator support (owner, 2026-09-14)
+
+The About page offers sponsorship through an in-game top-up for ✨Cmajor✨.
+Use the owner's supplied [top-up link](https://pay.maxngame.com/miniheroes_global/#/?role_id=15298308&lang=en)
+and display player ID **15298308** alongside the sponsorship button.
+
 ### Progression systems (web, unverified)
 
 - Levelling with Hero XP; gear slots unlock at levels 10 / 20 / 40 / 60.
@@ -1289,6 +1295,10 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-14 — The About page should accept sponsorship via in-game top-up.
+  The owner supplied `https://pay.maxngame.com/miniheroes_global/#/?role_id=15298308&lang=en`
+  as the sponsorship destination.
 
 - 2026-09-14 — Preserve the navigation bar when adding lineup-scoped invitation
   access; do not reduce its regular links to only Lineups.
