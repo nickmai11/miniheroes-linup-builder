@@ -22,6 +22,9 @@ Apply it consistently to the hero pool, hero detail pages,
 divinity hero lists, and lineup portraits. The indicator represents any saved
 build for the hero, including heroes without an assigned lineup build; omit it
 when no saved builds exist. Keep the owner's portrait art and divinity overlays.
+Hovering the build badge shows the app's styled tooltip with the hero's build
+availability, not a native HTML title. Render the tooltip outside the portrait's
+clipped bounds and suppress inherited card titles on the badge.
 
 Build names open a stats popover on hover or tap, using the same rune/weapon/core
 layout and priority markers as the saved build. Core names and chips open a

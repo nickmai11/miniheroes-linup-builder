@@ -3,6 +3,7 @@ import { Check, Hammer } from "lucide-react";
 import type { Divinity, Hero } from "@/db/schema";
 import { versioned } from "@/lib/asset-version";
 import { DivinityIcon } from "./divinity-icon";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 function initials(name: string) {
   return name
@@ -58,19 +59,26 @@ export function HeroPortrait({
         </div>
       )}
       {hasBuild && (
-        <span
-          role="img"
-          aria-label={`Build available for ${hero.name}`}
-          title={`${hero.name} has a saved build`}
-          className="absolute top-[max(2%,3px)] left-[max(2%,3px)] flex aspect-square w-[18%] max-w-12 min-w-5 items-center justify-center rounded-[20%] bg-slate-950 text-amber-200 shadow-md ring-2 shadow-black/50 ring-amber-300"
-        >
-          <Hammer className="size-[60%]" aria-hidden />
-          <Check
-            className="absolute -right-[8%] -bottom-[8%] size-[60%] text-emerald-400"
-            strokeWidth={4}
-            aria-hidden
-          />
-        </span>
+        <Tooltip>
+          <TooltipTrigger
+            render={<span />}
+            role="img"
+            aria-label={`Build available for ${hero.name}`}
+            // Suppress any native title inherited from the surrounding hero link.
+            title=""
+            className="absolute top-[max(2%,3px)] left-[max(2%,3px)] flex aspect-square w-[18%] max-w-12 min-w-5 items-center justify-center rounded-[20%] bg-slate-950 text-amber-200 shadow-md ring-2 shadow-black/50 ring-amber-300"
+          >
+            <Hammer className="size-[60%]" aria-hidden />
+            <Check
+              className="absolute -right-[8%] -bottom-[8%] size-[60%] text-emerald-400"
+              strokeWidth={4}
+              aria-hidden
+            />
+          </TooltipTrigger>
+          <TooltipContent side="top" sideOffset={8}>
+            {hero.name} has a saved build
+          </TooltipContent>
+        </Tooltip>
       )}
       {divinities && divinities.length > 0 && (
         <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between p-1.5">

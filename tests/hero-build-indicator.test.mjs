@@ -28,7 +28,10 @@ test("a saved build adds an accessible portrait indicator without replacing the 
     ],
   });
   assert.match(html, /aria-label="Build available for Sea Captain"/);
-  assert.match(html, /title="Sea Captain has a saved build"/);
+  assert.match(html, /data-slot="tooltip-trigger"/);
+  assert.match(html, /title=""/);
+  assert.doesNotMatch(html, /title="Sea Captain has a saved build"/);
+  assert.doesNotMatch(html, /<button/);
   assert.match(html, /alt="Sea Captain"/);
   assert.match(html, /alt="Physical DMG Boost"/);
   assert.match(html, /alt="CRIT Damage"/);

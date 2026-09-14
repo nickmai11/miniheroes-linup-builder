@@ -45,6 +45,8 @@ The build indicator keeps its hammer icon, overlaid with a thick green checkmark
 without a background behind the check. Both scale with the portrait
 (owner, 2026-09-14). The hammer's background must have enough contrast to remain
 noticeable against the hero artwork (owner, 2026-09-14).
+Hovering it shows a styled tooltip rather than a native HTML title
+(owner, 2026-09-14).
 
 Roster as of 2026-09-14 (67 heroes) — see the table at the end of this file. The
 seed data lives in `src/data/heroes.ts`. The September 14 follow-up Archive
@@ -1282,6 +1284,7 @@ daily/weekly missions, limited events, redemption codes.
   for that hero. Keep the build's hammer icon and add a thicker green checkmark
   with no background behind the check; both scale to the portrait. The hammer
   badge's background should contrast more strongly with the hero artwork.
+  Hovering the badge must show a styled tooltip, not an HTML title.
 
 - 2026-09-14 — The owner's eleven **12.58.22–12.58.40 PM Swordmaster**
   screenshots establish the six talents and four linked cores in the reference
