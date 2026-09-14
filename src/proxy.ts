@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ASSET_VERSION } from "@/lib/asset-version";
-import { findRegisteredDevice, newDeviceToken } from "@/lib/invitations";
+import {
+  findRegisteredDevice,
+  newDeviceToken,
+  rotateDeviceToken,
+} from "@/lib/invitations";
 import { isLocalEditingAllowed } from "@/lib/local-edit-policy";
+import { PRODUCTION_APP_URL, isLegacyAppHost } from "@/lib/site-url";
 import { isPublicPage } from "@/lib/public-urls";
 import { isPublicPageAsset } from "@/lib/public-url-assets";
 import {
@@ -12,9 +17,12 @@ import {
 import {
   DEVICE_COOKIE,
   INVITATION_REQUIRED,
+  TRANSFER_PARAM,
   invitationDestination,
   invitationScreen,
   isDeviceToken,
+  isPageNavigation,
+  requestedHost,
 } from "@/lib/invitation-policy";
 import {
   privateInvitationResponse,
@@ -52,6 +60,32 @@ export async function proxy(request: NextRequest) {
     }
     return response;
   };
+  const unavailable = () =>
+    finish(
+      NextResponse.json(
+        { error: "Access is temporarily unavailable. Please try again." },
+        { status: 503 },
+      ),
+    );
+
+  if (isLegacyAppHost(requestedHost(request.headers))) {
+    // The old address keeps every path and query, including unused invitation
+    // links. A registered browser is moved with a one-time token: its old
+    // cookie stops working here and is exchanged for a new one over there.
+    const target = new URL(`${path}${url.search}`, PRODUCTION_APP_URL);
+    target.searchParams.delete(TRANSFER_PARAM);
+    if (isPageNavigation(request, path)) {
+      try {
+        const transfer = await rotateDeviceToken(
+          request.cookies.get(DEVICE_COOKIE)?.value,
+        );
+        if (transfer) target.searchParams.set(TRANSFER_PARAM, transfer);
+      } catch {
+        return unavailable();
+      }
+    }
+    return finish(NextResponse.redirect(target));
+  }
 
   if (
     [
@@ -84,12 +118,32 @@ export async function proxy(request: NextRequest) {
         response = NextResponse.redirect(
           new URL(invitationDestination(url.searchParams.get("next")), url),
         );
-      } else if (request.method === "GET" && url.searchParams.has("ic")) {
+      } else if (
+        request.method === "GET" &&
+        (url.searchParams.has("ic") || url.searchParams.has(TRANSFER_PARAM))
+      ) {
         const clean = url.clone();
         clean.searchParams.delete("ic");
+        clean.searchParams.delete(TRANSFER_PARAM);
         response = NextResponse.redirect(clean);
       } else response = next();
       setDeviceCookie(response, token);
+      return finish(response);
+    }
+
+    if (
+      url.searchParams.has(TRANSFER_PARAM) &&
+      isPageNavigation(request, path)
+    ) {
+      // Exchange the one-time token for this host's own cookie, then drop it
+      // from the address. A used or unknown token simply reaches the gate.
+      const clean = url.clone();
+      clean.searchParams.delete(TRANSFER_PARAM);
+      const response = NextResponse.redirect(clean);
+      const moved = await rotateDeviceToken(
+        url.searchParams.get(TRANSFER_PARAM),
+      );
+      if (moved) setDeviceCookie(response, moved);
       return finish(response);
     }
 
@@ -135,12 +189,7 @@ export async function proxy(request: NextRequest) {
       invite.searchParams.set("ic", url.searchParams.get("ic")!.slice(0, 101));
     return finish(NextResponse.redirect(invite));
   } catch {
-    return finish(
-      NextResponse.json(
-        { error: "Access is temporarily unavailable. Please try again." },
-        { status: 503 },
-      ),
-    );
+    return unavailable();
   }
 }
 

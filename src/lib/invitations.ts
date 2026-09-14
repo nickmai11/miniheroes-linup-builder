@@ -39,6 +39,23 @@ export async function findRegisteredDevice(token: unknown) {
   return device ?? null;
 }
 
+/**
+ * Replace a registered browser's token with a fresh one. The old token stops
+ * working at once, so a token can be handed to another host exactly once.
+ */
+export async function rotateDeviceToken(
+  token: unknown,
+): Promise<string | null> {
+  if (!isDeviceToken(token)) return null;
+  const next = newDeviceToken();
+  const [device] = await db
+    .update(schema.registeredDevices)
+    .set({ tokenHash: hashInvitationSecret(next) })
+    .where(eq(schema.registeredDevices.tokenHash, hashInvitationSecret(token)))
+    .returning({ id: schema.registeredDevices.id });
+  return device ? next : null;
+}
+
 class DeviceAlreadyRegistered extends Error {}
 
 /** Claim the code and register the browser together, including concurrent retries. */

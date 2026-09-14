@@ -1,4 +1,6 @@
 export const DEVICE_COOKIE = "mh_device";
+/** One-time query parameter that moves a registered browser between hosts. */
+export const TRANSFER_PARAM = "mt";
 export const DEVICE_COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 export const INVITATION_REQUIRED = "Enter an invitation code to continue.";
 export const INVALID_INVITATION =
@@ -34,11 +36,28 @@ export function invitationDestination(value: unknown): string {
     )
       return "/";
     url.searchParams.delete("ic");
+    url.searchParams.delete(TRANSFER_PARAM);
     url.searchParams.delete("_rsc");
     return `${url.pathname}${url.search}${url.hash}`;
   } catch {
     return "/";
   }
+}
+
+/** Host the browser actually requested, behind Vercel's proxy or directly. */
+export function requestedHost(headers: Headers): string | null {
+  return headers.get("x-forwarded-host") ?? headers.get("host");
+}
+
+/** A top-level page request, as opposed to an API, asset, RSC, or action call. */
+export function isPageNavigation(request: Request, path: string): boolean {
+  return (
+    ["GET", "HEAD"].includes(request.method) &&
+    !request.headers.has("rsc") &&
+    !request.headers.has("next-action") &&
+    !path.startsWith("/api/") &&
+    !/\.[a-z0-9]+$/i.test(path)
+  );
 }
 
 export function invitationScreen(destination: string): string {

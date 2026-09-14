@@ -15,6 +15,7 @@ function loadTypeScript(path, overrides = {}) {
 
 const policy = loadTypeScript("src/lib/invitation-policy.ts");
 const { ASSET_VERSION } = loadTypeScript("src/lib/asset-version.ts");
+const { PRODUCTION_APP_URL } = loadTypeScript("src/lib/site-url.ts");
 const token = "a".repeat(43);
 const code = "ABCD-1234-EFAB-5678-CDEF-9012";
 
@@ -146,15 +147,127 @@ test("JSON redemption requires the same origin, even for sibling origins", () =>
   }
 });
 
-function routing(registered = false) {
+const rotated = "b".repeat(43);
+
+function routing(registered = false, rotations = []) {
   return loadTypeScript("src/proxy.ts", {
     "@/lib/invitations": {
       findRegisteredDevice: async (value) =>
         registered && value === token ? { id: 1 } : null,
       newDeviceToken: () => token,
+      rotateDeviceToken: async (value) => {
+        rotations.push(value);
+        return registered && value === token ? rotated : null;
+      },
     },
   }).proxy;
 }
+
+const legacy = { host: "miniheroes-linup-builder.vercel.app" };
+const production = new URL(PRODUCTION_APP_URL).origin;
+
+test("the old address forwards every page and moves a registered browser with a one-time token", async () => {
+  const rotations = [];
+  const proxy = routing(true, rotations);
+  const moved = await proxy(
+    request("/heroes/sea-captain?mode=arena&mt=stale#talents", {
+      headers: { ...legacy, cookie: `${policy.DEVICE_COOKIE}=${token}` },
+    }),
+  );
+  assert.equal(moved.status, 307);
+  assert.equal(
+    moved.headers.get("location"),
+    `${production}/heroes/sea-captain?mode=arena&${policy.TRANSFER_PARAM}=${rotated}`,
+  );
+  assert.match(moved.headers.get("cache-control"), /no-store/);
+  assert.deepEqual(rotations, [token]);
+  const forwarded = await proxy(
+    request("/lineups/123", {
+      headers: {
+        host: "localhost:3000",
+        "x-forwarded-host": legacy.host,
+        cookie: `${policy.DEVICE_COOKIE}=${token}`,
+      },
+    }),
+  );
+  assert.equal(
+    forwarded.headers.get("location"),
+    `${production}/lineups/123?${policy.TRANSFER_PARAM}=${rotated}`,
+  );
+  // Assets, APIs, RSC, and actions from a stale tab never spend the token.
+  for (const [path, options] of [
+    ["/heroes/sea-captain.png", {}],
+    ["/api/notes", {}],
+    ["/heroes?_rsc=123", { headers: { RSC: "1" } }],
+    ["/heroes", { method: "POST", headers: { "next-action": "test" } }],
+  ]) {
+    const before = rotations.length;
+    const response = await proxy(
+      request(path, {
+        ...options,
+        headers: {
+          ...legacy,
+          cookie: `${policy.DEVICE_COOKIE}=${token}`,
+          ...options.headers,
+        },
+      }),
+    );
+    assert.equal(response.status, 307, path);
+    assert.equal(new URL(response.headers.get("location")).origin, production);
+    assert.equal(rotations.length, before, path);
+  }
+});
+
+test("unused invitation links on the old address carry their code to the new one", async () => {
+  const proxy = routing();
+  const response = await proxy(request("/?ic=ABCD-1234", { headers: legacy }));
+  assert.equal(response.headers.get("location"), `${production}/?ic=ABCD-1234`);
+  assert.equal(
+    (await proxy(request("/heroes", { headers: legacy }))).headers.get(
+      "location",
+    ),
+    `${production}/heroes`,
+  );
+});
+
+test("the new address exchanges a one-time token for its own cookie exactly once", async () => {
+  const rotations = [];
+  const proxy = routing(true, rotations);
+  const arrived = await proxy(
+    request(`/heroes/sea-captain?${policy.TRANSFER_PARAM}=${token}&mode=arena`),
+  );
+  assert.equal(arrived.status, 307);
+  assert.equal(
+    arrived.headers.get("location"),
+    "http://localhost:3000/heroes/sea-captain?mode=arena",
+  );
+  assert.match(
+    arrived.headers.get("set-cookie"),
+    new RegExp(`${policy.DEVICE_COOKIE}=${rotated}; .*HttpOnly`),
+  );
+  assert.deepEqual(rotations, [token]);
+  // A spent or forged token is dropped and the visit reaches the gate as usual.
+  const spent = await routing(false)(
+    request(`/heroes?${policy.TRANSFER_PARAM}=${rotated}`),
+  );
+  assert.equal(spent.headers.get("location"), "http://localhost:3000/heroes");
+  assert.equal(spent.headers.get("set-cookie"), null);
+  // An already registered browser just loses the parameter.
+  const registered = await proxy(
+    request(`/heroes?${policy.TRANSFER_PARAM}=${token}`, {
+      headers: { cookie: `${policy.DEVICE_COOKIE}=${token}` },
+    }),
+  );
+  assert.equal(
+    registered.headers.get("location"),
+    "http://localhost:3000/heroes",
+  );
+  assert.deepEqual(rotations, [token]);
+  assert.equal(
+    policy.invitationDestination(`/heroes?${policy.TRANSFER_PARAM}=${token}`),
+    "/heroes",
+  );
+});
 
 test("unregistered visits and invitation links reach the gate without consuming a code", async () => {
   const proxy = routing();

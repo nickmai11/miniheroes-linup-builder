@@ -78,6 +78,14 @@ code can register one browser and does not expire before use. An invitation link
 containing `?ic=CODE` is also ready to copy and opens the production app at
 `https://miniheroes-library.vercel.app/`.
 
+The former address `miniheroes-linup-builder.vercel.app` stays attached to the
+same deployment and forwards every page to the new one, keeping unused
+invitation links intact. A browser registered on the old address is moved
+along: the proxy there rotates its device token, sends it once in the redirect,
+and the new address exchanges it for its own cookie. Do not set a Vercel-level
+redirect on the old domain, or that hand-off never runs and existing visitors
+would need a fresh invitation. The hosts are listed in `src/lib/site-url.ts`.
+
 The generator page and its POST endpoint are available only in local development,
 using the same loopback policy as editing. They work before that browser is
 registered, so you can generate the first invitation. Production builds do not

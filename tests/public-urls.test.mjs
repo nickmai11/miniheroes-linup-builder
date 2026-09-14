@@ -12,7 +12,7 @@ test("public URL input accepts app links and normalizes exact page paths", () =>
     "/heroes/sea-captain",
     " /heroes/sea-captain/?ic=secret#cores ",
     "http://127.0.0.1:3000/heroes/sea-captain",
-    "https://miniheroes-linup-builder.vercel.app/heroes/sea-captain?x=1",
+    "https://miniheroes-library.vercel.app/heroes/sea-captain?x=1",
   ]) {
     assert.equal(normalizePublicUrl(value), "/heroes/sea-captain");
   }
@@ -21,7 +21,7 @@ test("public URL input accepts app links and normalizes exact page paths", () =>
   for (const value of [
     "//evil.test",
     "https://evil.test/heroes",
-    "https://user:password@miniheroes-linup-builder.vercel.app/heroes",
+    "https://user:password@miniheroes-library.vercel.app/heroes",
     "/public-urls",
     "/api/public-urls",
     "/api/notes",
