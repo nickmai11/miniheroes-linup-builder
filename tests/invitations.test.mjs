@@ -497,7 +497,7 @@ test("generation is restricted on both the route and the proxy", async () => {
         const response = await routing()(
           request(path, { headers: { host: "localhost:3000" } }),
         );
-        assert.equal(response.status, nodeEnv === "development" ? 200 : 404);
+        assert.equal(response.status, 404);
         const remote = await routing()(
           request(path, {
             headers: {

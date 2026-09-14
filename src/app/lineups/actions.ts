@@ -7,11 +7,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db, schema } from "@/db";
 import { lineupSchema, type LineupInput } from "@/lib/lineup-input";
-import {
-  canEditContent,
-  EDITING_ERROR,
-  requireEditing,
-} from "@/lib/editing";
+import { canEditContent, EDITING_ERROR, requireEditing } from "@/lib/editing";
 
 export type LineupActionState = { error?: string; id?: number };
 
@@ -189,8 +185,7 @@ export async function saveLineup(
   revalidatePath(`/lineups/${lineup.id}`);
   revalidatePath(`/lineups/${lineup.id}/edit`);
   revalidatePath("/heroes/[slug]", "page");
-  // Let the browser navigate with its original host. Next's internal redirect
-  // fetch changes localhost to 127.0.0.1, which fails the local editing guard.
+  // Let the browser navigate to the saved lineup with its original host.
   return { id: lineup.id };
 }
 

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Crown } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { NavLinks } from "@/components/nav-links";
+import { MobileNavigation, NavLinks } from "@/components/nav-links";
 import { canEditContent } from "@/lib/editing";
 import { getPublicPage, hasAppAccess } from "@/lib/app-access";
 import { isAdmin } from "@/lib/admin-access";
@@ -12,28 +12,30 @@ export async function SiteHeader() {
   const signedIn = await isAdmin();
   const access = await hasAppAccess();
   const publicPage = access ? null : await getPublicPage();
+  const showNavigation = Boolean(access || publicPage || canEdit);
+  const navigationProps = {
+    canEdit,
+    allowedPaths: access ? undefined : publicPage ? [publicPage] : [],
+  };
   return (
-    <header className="bg-background/85 supports-[backdrop-filter]:bg-background/70 sticky top-0 z-40 border-b backdrop-blur">
-      <div className="mx-auto flex h-14 w-full max-w-6xl items-center gap-3 px-3 sm:gap-6 sm:px-6">
-        <Link
-          href={access ? "/" : (publicPage ?? "/invite")}
-          className="font-heading flex shrink-0 items-center gap-2 text-base font-semibold whitespace-nowrap"
-        >
-          <Crown className="text-primary size-5" aria-hidden />
-          <span className="hidden sm:inline">Mini Heroes Library</span>
-          <span className="sr-only sm:hidden">Mini Heroes Library</span>
-        </Link>
-        {(access || publicPage || canEdit) && (
-          <NavLinks
-            canEdit={canEdit}
-            allowedPaths={access ? undefined : publicPage ? [publicPage] : []}
-          />
-        )}
-        <div className="ml-auto flex shrink-0 items-center gap-1">
-          <AdminLogin signedIn={signedIn} />
-          <ThemeToggle />
+    <>
+      <header className="bg-background sticky top-0 z-40 border-b md:static">
+        <div className="mx-auto flex h-14 w-full max-w-6xl items-center gap-2 px-3 sm:gap-6 sm:px-6">
+          {showNavigation && <MobileNavigation {...navigationProps} />}
+          <Link
+            href={access ? "/" : (publicPage ?? "/invite")}
+            className="font-heading flex min-w-0 items-center gap-2 text-sm leading-tight font-semibold sm:text-base"
+          >
+            <Crown className="text-primary size-5 shrink-0" aria-hidden />
+            <span>Mini Heroes Library</span>
+          </Link>
+          <div className="ml-auto flex shrink-0 items-center gap-1">
+            <AdminLogin signedIn={signedIn} compact />
+            <ThemeToggle />
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+      {showNavigation && <NavLinks {...navigationProps} />}
+    </>
   );
 }

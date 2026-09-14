@@ -15,7 +15,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { invitationDestination } from "@/lib/invitation-policy";
 
-export function AdminLogin({ signedIn }: { signedIn: boolean }) {
+export function AdminLogin({
+  signedIn,
+  compact = false,
+}: {
+  signedIn: boolean;
+  compact?: boolean;
+}) {
   const [open, setOpen] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
@@ -87,6 +93,9 @@ export function AdminLogin({ signedIn }: { signedIn: boolean }) {
         <Button
           variant="ghost"
           size="sm"
+          className={
+            compact ? "size-9 p-0 sm:h-7 sm:w-auto sm:px-2.5" : undefined
+          }
           disabled={pending}
           onClick={() => void authenticate(null)}
         >
@@ -95,7 +104,9 @@ export function AdminLogin({ signedIn }: { signedIn: boolean }) {
           ) : (
             <LogOut aria-hidden />
           )}
-          <span>Sign out</span>
+          <span className={compact ? "sr-only sm:not-sr-only" : undefined}>
+            Sign out
+          </span>
         </Button>
         {error && (
           <p
@@ -119,8 +130,16 @@ export function AdminLogin({ signedIn }: { signedIn: boolean }) {
         setShowPassword(false);
       }}
     >
-      <Dialog.Trigger render={<Button variant="ghost" size="sm" />}>
-        <ShieldCheck aria-hidden /> Admin login
+      <Dialog.Trigger
+        render={<Button variant="ghost" size="sm" />}
+        className={
+          compact ? "size-9 p-0 sm:h-7 sm:w-auto sm:px-2.5" : undefined
+        }
+      >
+        <ShieldCheck aria-hidden />
+        <span className={compact ? "sr-only sm:not-sr-only" : undefined}>
+          Admin login
+        </span>
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Backdrop className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" />

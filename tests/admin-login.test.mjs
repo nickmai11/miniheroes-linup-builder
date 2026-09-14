@@ -327,6 +327,49 @@ test("proxy preserves refreshed Supabase cookies on pages, images, redirects, an
   assert.match(image.headers.get("cache-control"), /private, max-age=0/);
 });
 
+test("management routes require an admin on local and deployed hosts in every environment", async () => {
+  const previous = process.env.NODE_ENV;
+  try {
+    for (const nodeEnv of ["development", "production"]) {
+      process.env.NODE_ENV = nodeEnv;
+      for (const base of [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        origin,
+      ]) {
+        for (const user of [admin, viewer, null]) {
+          const proxy = routing(refreshFixture({ user }));
+          for (const [path, method] of [
+            ["/invitations/new", "GET"],
+            ["/api/invitations/generate", "POST"],
+            ["/public-urls", "GET"],
+            ["/api/public-urls", "POST"],
+            ["/api/public-urls", "DELETE"],
+          ]) {
+            const response = await proxy(
+              new NextRequest(`${base}${path}`, {
+                method,
+                headers: {
+                  host: new URL(base).host,
+                  cookie: "sb-test-auth-token=expired",
+                },
+              }),
+            );
+            assert.equal(
+              response.status,
+              user === admin ? 200 : 404,
+              `${nodeEnv} ${base}${path} ${method} ${user?.id ?? "anonymous"}`,
+            );
+          }
+        }
+      }
+    }
+  } finally {
+    if (previous === undefined) delete process.env.NODE_ENV;
+    else process.env.NODE_ENV = previous;
+  }
+});
+
 test("login and logout stay reachable without a session, and legacy custom cookies cannot grant access", async () => {
   const proxy = routing({
     "@/lib/supabase/proxy": {

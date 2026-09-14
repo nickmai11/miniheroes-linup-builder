@@ -85,26 +85,23 @@ no application database migration.
 
 ### Local development
 
-The existing local development shortcut also makes editing available through `pnpm dev`
-at `http://localhost:3000` (or `http://127.0.0.1:3000`). The development server binds
-to `127.0.0.1`; restart any already-running dev server after this change. Keep it
-bound to loopback and do not expose it through a tunnel or reverse proxy.
+Run `pnpm dev` and sign in as admin at `http://localhost:3000` (or
+`http://127.0.0.1:3000`) to edit content. The development server binds to
+`127.0.0.1`. Localhost and development mode do not grant feature access; the same
+admin requirement applies on every host and in production.
 
-Production (`pnpm build` / `pnpm start`, including on localhost) is read-only for
-visitors who have not signed in as admin. Every write action and the notes POST
-API check access on the server; request headers cannot enable editing in
-production. The local development shortcut also rejects
-non-local hosts, remote forwarded addresses, proxy chains, and cross-origin
-requests in development. The lineup builder route requires admin login or local
-development access, and registered browsers can read saved lineups and builds. Automatic
-synchronization of the versioned game reference data is unchanged.
+Content writes and management APIs check admin access on the server. The lineup
+builder also requires admin login, and registered browsers can read saved lineups
+and builds. Automatic synchronization of the versioned game reference data is
+unchanged.
 
 Run `pnpm test` (Node 22.6+), `pnpm typecheck`, and `pnpm lint` to check the policy
 and its protected entry points.
 
 ## Invitation access
 
-Run `pnpm dev` and open **http://localhost:3000/invitations/new**. Click
+Sign in as admin and choose **Invitations** (locally,
+**http://localhost:3000/invitations/new**). Click
 **Generate**, then **Copy code**. No input is required. Each randomly generated
 code can register one browser and does not expire before use. An invitation link
 containing `?ic=CODE` is also ready to copy and opens the production app at
@@ -120,14 +117,14 @@ retiring the old one only at that moment. The seal is derived from
 redirect on the old domain, or that hand-off never runs and existing visitors
 would need a fresh invitation. The hosts are listed in `src/lib/site-url.ts`.
 
-The generator page and its POST endpoint are available to signed-in admins and
-in local development, using the same access policy as editing. They work before
-that browser is registered, so you can generate the first invitation.
+The generator page and its POST endpoint are available only to signed-in admins,
+using the same access policy as editing. They work before that browser is
+registered, so you can generate the first invitation.
 
 Saved lineup cards and detail pages have a **Share** menu. **Copy link** copies
 the production lineup URL without invitation codes or other query
 parameters. **Copy link with IC** generates a fresh, single-use code and copies
-the lineup URL with `?ic=CODE`; this option requires admin or local editing access.
+the lineup URL with `?ic=CODE`; this option requires admin access.
 If clipboard access is blocked, the link is shown for manual copying, and
 retrying reuses the invitation that was already generated.
 
@@ -176,9 +173,9 @@ it never uses the app's `DATABASE_URL`.
 
 ## Public URLs
 
-Sign in as admin and choose **Public URLs**, or open
-**http://localhost:3000/public-urls** while running `pnpm dev`. This settings page
-works without an invitation for admins and local development. Paste an app link
+Sign in as admin and choose **Public URLs** (locally,
+**http://localhost:3000/public-urls**). This settings page
+works without an invitation for signed-in admins on every host. Paste an app link
 or a path such as `/lineups/123`, then click **Add public URL**. The list provides
 **Copy link** for the production URL and **Remove** to restore invitation access.
 
@@ -201,5 +198,5 @@ empty `public_urls` table with the existing app-only RLS policy. No pages are
 public by default. Localhost and production use the same database settings;
 production must run the updated code to honor the rules. Changes require no
 redeploy once that code is running. The settings page and its mutation endpoint
-return 404 for visitors without an admin session in production, including with
-forged localhost headers.
+return 404 for visitors without an admin session, including on localhost in
+development.

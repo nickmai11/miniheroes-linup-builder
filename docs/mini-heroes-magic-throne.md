@@ -1193,7 +1193,8 @@ Lineups also include fishes, selected from a database catalog in the builder
 The owner also requested a **Clone** option. It opens an editable copy with the
 same formation, build references, pets, relics, fishes, and notes. The name gets
 a ` (copy)` suffix; saving creates a new lineup, and Cancel returns to the source.
-Clone uses the same local editing access rules as creating and editing lineups.
+Clone requires a signed-in admin, as do creating and editing lineups. Localhost
+does not grant feature access (owner, 2026-09-14).
 
 ### Progression systems (web, unverified)
 
@@ -1212,6 +1213,10 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-14 — Feature access is determined by admin status; localhost is no
+  longer an access condition. Editing, invitation generation, and public URL
+  management require a signed-in admin in every environment.
 
 - 2026-09-14 — After reviewing the 10.40–10.45 AM batch and its
   10.57–10.58 AM/Archive follow-ups, the owner invoked

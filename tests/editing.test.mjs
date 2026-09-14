@@ -3,102 +3,9 @@ import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import test from "node:test";
 import ts from "typescript";
-import { isLocalEditingAllowed } from "../src/lib/local-edit-policy.ts";
 
 const require = createRequire(import.meta.url);
 const deniedMessage = "Sign in as admin to make changes.";
-
-for (const host of [
-  "localhost",
-  "localhost:3000",
-  "127.0.0.1:3000",
-  "[::1]:3000",
-]) {
-  test(`allows local development at ${host}`, () => {
-    assert.equal(
-      isLocalEditingAllowed(
-        new Headers({ host, origin: `http://${host}` }),
-        "development",
-      ),
-      true,
-    );
-  });
-}
-
-test("allows the loopback forwarding headers supplied by Next.js", () => {
-  for (const address of ["127.0.0.1", "::1", "::ffff:127.0.0.1"]) {
-    assert.equal(
-      isLocalEditingAllowed(
-        new Headers({
-          host: "localhost:3000",
-          "x-forwarded-host": "localhost:3000",
-          "x-forwarded-for": address,
-          "sec-fetch-site": "same-origin",
-        }),
-        "development",
-      ),
-      true,
-    );
-  }
-});
-
-for (const nodeEnv of ["production", "test", undefined]) {
-  test(`denies local-looking requests when NODE_ENV is ${nodeEnv}`, () => {
-    assert.equal(
-      isLocalEditingAllowed(new Headers({ host: "localhost:3000" }), nodeEnv),
-      false,
-    );
-  });
-}
-
-for (const host of [
-  "example.com",
-  "192.168.1.10:3000",
-  "localhost.example.com",
-  "example.localhost",
-  "localhost@evil.test",
-  "localhost:3000, example.com",
-  "localhost/path",
-  "localhost:0",
-  "localhost:65536",
-  "127.1",
-  "2130706433",
-  "[::]",
-  "",
-]) {
-  test(`rejects a non-local or malformed host: ${host || "missing"}`, () => {
-    assert.equal(
-      isLocalEditingAllowed(new Headers(host ? { host } : {}), "development"),
-      false,
-    );
-  });
-}
-
-for (const extra of [
-  { "x-forwarded-host": "example.com" },
-  { "x-forwarded-host": "localhost:3000, example.com" },
-  { "x-forwarded-for": "203.0.113.10" },
-  { "x-forwarded-for": "203.0.113.10, 127.0.0.1" },
-  { forwarded: "for=127.0.0.1;host=localhost:3000" },
-  { origin: "https://example.com" },
-  { origin: "http://localhost:4000" },
-  { origin: "http://user@localhost:3000" },
-  { origin: "http://localhost:3000/path" },
-  { origin: "null" },
-  { origin: "not a URL" },
-  { "sec-fetch-site": "cross-site" },
-  { "sec-fetch-site": "same-site" },
-]) {
-  test(`rejects forwarded or cross-origin access: ${JSON.stringify(extra)}`, () => {
-    assert.equal(
-      isLocalEditingAllowed(
-        new Headers({ host: "localhost:3000", ...extra }),
-        "development",
-      ),
-      false,
-    );
-  });
-}
 
 // Exercise the real server modules with request headers and a database tripwire.
 // Transpilation lets Node run the app's TypeScript/path aliases without Next.js.
@@ -127,14 +34,13 @@ function loadServerModule(path, overrides, nodeEnv) {
   return loadedModule.exports;
 }
 
-function serverModules(nodeEnv, requestHeaders) {
+function serverModules(nodeEnv, requestHeaders, admin = false) {
   const access = loadServerModule(
     "src/lib/editing.ts",
     {
       "server-only": {},
       "next/headers": { headers: async () => requestHeaders },
-      "@/lib/admin-access": { isAdmin: async () => false },
-      "@/lib/local-edit-policy": { isLocalEditingAllowed },
+      "@/lib/admin-access": { isAdmin: async () => admin },
     },
     nodeEnv,
   );
@@ -147,6 +53,7 @@ function serverModules(nodeEnv, requestHeaders) {
     },
   );
   const overrides = {
+    "server-only": {},
     "@/lib/app-access": {
       requireAppAccess: async () => {},
       hasAppAccess: async () => ({ id: 1 }),
@@ -157,6 +64,16 @@ function serverModules(nodeEnv, requestHeaders) {
   };
   return {
     access,
+    invitations: loadServerModule(
+      "src/app/api/invitations/generate/route.ts",
+      overrides,
+      nodeEnv,
+    ),
+    publicUrls: loadServerModule(
+      "src/app/api/public-urls/route.ts",
+      overrides,
+      nodeEnv,
+    ),
     lineups: loadServerModule("src/app/lineups/actions.ts", overrides, nodeEnv),
     builds: loadServerModule(
       "src/app/heroes/[slug]/build-actions.ts",
@@ -173,6 +90,21 @@ function serverModules(nodeEnv, requestHeaders) {
 }
 
 for (const [name, nodeEnv, requestHeaders] of [
+  ...["localhost:3000", "127.0.0.1:3000", "[::1]:3000"].map((host) => [
+    `local development at ${host} without admin access`,
+    "development",
+    new Headers({ host, origin: `http://${host}` }),
+  ]),
+  [
+    "local development with Next.js loopback forwarding headers",
+    "development",
+    new Headers({
+      host: "localhost:3000",
+      "x-forwarded-host": "localhost:3000",
+      "x-forwarded-for": "127.0.0.1",
+      "sec-fetch-site": "same-origin",
+    }),
+  ],
   [
     "production with forged localhost headers",
     "production",
@@ -194,11 +126,17 @@ for (const [name, nodeEnv, requestHeaders] of [
   ],
 ]) {
   test(`all write entry points reject ${name} before accessing data`, async () => {
-    const { access, lineups, builds, notes, notesApi } = serverModules(
-      nodeEnv,
-      requestHeaders,
-    );
+    const {
+      access,
+      lineups,
+      builds,
+      notes,
+      notesApi,
+      invitations,
+      publicUrls,
+    } = serverModules(nodeEnv, requestHeaders);
     assert.equal(await access.canEditContent(), false);
+    await assert.rejects(access.requireEditing(), { message: deniedMessage });
     for (const result of [
       await lineups.saveLineup({}),
       await builds.saveHeroBuild({}),
@@ -211,40 +149,51 @@ for (const [name, nodeEnv, requestHeaders] of [
     }
     await assert.rejects(lineups.deleteLineup(1), { message: deniedMessage });
     await assert.rejects(notes.deleteNote(1), { message: deniedMessage });
-    const response = await notesApi.POST({
+    const unauthorizedRequest = {
       json() {
         throw new Error("Unauthorized body parsed");
       },
-    });
+    };
+    const response = await notesApi.POST(unauthorizedRequest);
+    for (const mutate of [
+      invitations.POST,
+      publicUrls.POST,
+      publicUrls.DELETE,
+    ]) {
+      assert.equal((await mutate(unauthorizedRequest)).status, 404);
+    }
     assert.equal(response.status, 403);
     assert.deepEqual(await response.json(), { error: deniedMessage });
   });
 }
 
-test("local write entry points still reach validation without changing any data", async () => {
-  const { access, lineups, builds, notes, notesApi } = serverModules(
-    "development",
-    new Headers({ host: "localhost:3000" }),
-  );
-  assert.equal(await access.canEditContent(), true);
-  for (const result of [
-    await lineups.saveLineup({}),
-    await builds.saveHeroBuild({}),
-    await builds.importHeroBuild({}),
-    await notes.createNote({}, new FormData()),
-  ]) {
-    assert.ok(result.error);
-    assert.notEqual(result.error, deniedMessage);
+for (const nodeEnv of ["development", "production"]) {
+  for (const origin of ["http://localhost:3000", "https://example.com"]) {
+    test(`admins can edit at ${origin} in ${nodeEnv}`, async () => {
+      const { access, lineups, builds, notes, notesApi } = serverModules(
+        nodeEnv,
+        new Headers({ host: new URL(origin).host }),
+        true,
+      );
+      assert.equal(await access.canEditContent(), true);
+      await access.requireEditing();
+      for (const result of [
+        await lineups.saveLineup({}),
+        await builds.saveHeroBuild({}),
+        await builds.importHeroBuild({}),
+        await notes.createNote({}, new FormData()),
+      ]) {
+        assert.ok(result.error);
+        assert.notEqual(result.error, deniedMessage);
+      }
+      const response = await notesApi.POST(
+        new Request(`${origin}/api/notes`, {
+          method: "POST",
+          headers: { "content-type": "application/json", origin },
+          body: "{}",
+        }),
+      );
+      assert.equal(response.status, 400);
+    });
   }
-  const response = await notesApi.POST(
-    new Request("http://localhost:3000/api/notes", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        origin: "http://localhost:3000",
-      },
-      body: "{}",
-    }),
-  );
-  assert.equal(response.status, 400);
-});
+}

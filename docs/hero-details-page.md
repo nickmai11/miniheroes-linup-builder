@@ -158,9 +158,10 @@ Unmatched names are reported after import; an
 import with no usable attributes or cores is rejected.
 
 Build creation, editing, importing, deletion, and the "Start a lineup" link are
-available to signed-in admins and in local development, as described in the
-README's Admin login and editing section. Public visitors can read saved builds
-and lineups; every build write action also enforces this restriction on the server.
+available only to signed-in admins, including in local development, as described
+in the README's Admin login and editing section. Public visitors can read saved
+builds and lineups; every build write action also enforces this restriction on
+the server.
 
 Rules that shape the page:
 

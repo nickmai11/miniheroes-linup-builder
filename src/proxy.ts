@@ -5,7 +5,6 @@ import {
   newDeviceToken,
   rotateDeviceToken,
 } from "@/lib/invitations";
-import { isLocalEditingAllowed } from "@/lib/local-edit-policy";
 import { refreshAdminSession } from "@/lib/supabase/proxy";
 import { openDeviceTransfer, sealDeviceTransfer } from "@/lib/device-transfer";
 import { PRODUCTION_APP_URL, isLegacyAppHost } from "@/lib/site-url";
@@ -130,11 +129,7 @@ export async function proxy(request: NextRequest) {
       "/api/public-urls",
     ].includes(path)
   ) {
-    return finish(
-      isLocalEditingAllowed(request.headers, process.env.NODE_ENV)
-        ? next()
-        : new NextResponse("Not found", { status: 404 }),
-    );
+    return finish(new NextResponse("Not found", { status: 404 }));
   }
   if (path === "/api/invitations/redeem") return finish(next());
   const token = request.cookies.get(DEVICE_COOKIE)?.value;

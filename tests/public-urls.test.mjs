@@ -141,14 +141,16 @@ test("public pages never unlock actions, APIs, admin routes, or forged public co
     401,
   );
   const previous = process.env.NODE_ENV;
-  process.env.NODE_ENV = "production";
   try {
-    for (const path of ["/public-urls", "/api/public-urls"])
-      assert.equal(
-        (await proxy(request(path, { headers: { host: "localhost:3000" } })))
-          .status,
-        404,
-      );
+    for (const nodeEnv of ["development", "production"]) {
+      process.env.NODE_ENV = nodeEnv;
+      for (const path of ["/public-urls", "/api/public-urls"])
+        assert.equal(
+          (await proxy(request(path, { headers: { host: "localhost:3000" } })))
+            .status,
+          404,
+        );
+    }
   } finally {
     if (previous === undefined) delete process.env.NODE_ENV;
     else process.env.NODE_ENV = previous;
@@ -287,11 +289,11 @@ test("page guards accept a public read independently, while action guards still 
   await assert.rejects(requirePageAccess(), /redirect/);
 });
 
-test("public URL management validates localhost, origin, paths and duplicate additions", async () => {
-  let local = false;
+test("public URL management validates admin access, origin, paths and duplicate additions", async () => {
+  let admin = false;
   const paths = new Set();
   const { POST, DELETE } = loadTypeScript("src/app/api/public-urls/route.ts", {
-    "@/lib/editing": { canEditContent: async () => local },
+    "@/lib/editing": { canEditContent: async () => admin },
     "@/lib/public-urls": {
       addPublicUrl: async (path) => {
         if (paths.has(path)) return undefined;
@@ -315,8 +317,9 @@ test("public URL management validates localhost, origin, paths and duplicate add
       body: JSON.stringify(body),
     });
   assert.equal((await POST(post({ url: "/about" }))).status, 404);
+  assert.equal((await DELETE(post({ url: "/about" }))).status, 404);
   assert.equal(paths.size, 0);
-  local = true;
+  admin = true;
   assert.equal(
     (await POST(post({ url: "/about" }, { origin: "https://evil.test" })))
       .status,

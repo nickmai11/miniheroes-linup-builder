@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { KeyRound } from "lucide-react";
 import { hasAppAccess } from "@/lib/app-access";
-import { canEditContent } from "@/lib/editing";
 import { invitationDestination } from "@/lib/invitation-policy";
 import {
   Card,
@@ -23,7 +21,6 @@ export default async function InvitePage(props: PageProps<"/invite">) {
   const params = await props.searchParams;
   const destination = invitationDestination(params.next);
   if (await hasAppAccess()) redirect(destination);
-  const local = await canEditContent();
   return (
     <main className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center gap-5 px-4 py-16">
       <Card>
@@ -46,14 +43,6 @@ export default async function InvitePage(props: PageProps<"/invite">) {
           />
         </CardContent>
       </Card>
-      {local && (
-        <Link
-          href="/invitations/new"
-          className="text-muted-foreground self-center text-sm underline underline-offset-4"
-        >
-          Generate an invitation code
-        </Link>
-      )}
     </main>
   );
 }

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 // Opt-in: run a separate app on port 3111 with a disposable seeded database.
+// Set PUBLIC_URL_TEST_ADMIN_COOKIE to its signed-in admin's Cookie header.
 // The test adds and removes a public rule in that database.
 const testBase = process.env.PUBLIC_URL_TEST_BASE_URL;
 
@@ -15,6 +16,12 @@ test(
       "http://127.0.0.1:3111",
       "Run only against the isolated test app",
     );
+    const adminCookie = process.env.PUBLIC_URL_TEST_ADMIN_COOKIE;
+    assert.ok(
+      adminCookie,
+      "Provide an admin session for the isolated test app",
+    );
+    const adminHeaders = { cookie: adminCookie };
     async function get(path, extra = {}) {
       return fetch(base + path, {
         redirect: "manual",
@@ -25,7 +32,11 @@ test(
     async function update(url, method = "POST") {
       const response = await get("/api/public-urls", {
         method,
-        headers: { origin: base, "content-type": "application/json" },
+        headers: {
+          ...adminHeaders,
+          origin: base,
+          "content-type": "application/json",
+        },
         body: JSON.stringify({ url }),
       });
       const result = await response.json();
@@ -38,7 +49,12 @@ test(
     }
     const page = "/heroes/sea-captain";
     try {
-      const manager = await get("/public-urls");
+      assert.equal((await get("/public-urls")).status, 404);
+      assert.equal(
+        (await get("/api/public-urls", { method: "POST" })).status,
+        404,
+      );
+      const manager = await get("/public-urls", { headers: adminHeaders });
       const managerHtml = await manager.text();
       assert.equal(manager.status, 200);
       assert.ok(
@@ -107,14 +123,14 @@ test(
       assert.equal(rsc.status, 200);
       assert.match(rsc.headers.get("content-type"), /text\/x-component/);
       assert.ok((await rsc.text()).includes("Siren Blade"));
-      const managerAfter = await get("/public-urls");
+      const managerAfter = await get("/public-urls", { headers: adminHeaders });
       assert.ok(
         (await managerAfter.text()).includes(
           "Remove public access to /heroes/sea-captain",
         ),
       );
       console.log(
-        `PASS: localhost manager, public page and RSC, ${sources.length} public artwork requests, private sibling/API/action denial.`,
+        `PASS: admin manager, public page and RSC, ${sources.length} public artwork requests, private sibling/API/action denial.`,
       );
     } finally {
       await update(page, "DELETE");

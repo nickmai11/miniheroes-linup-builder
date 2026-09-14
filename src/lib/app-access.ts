@@ -33,7 +33,7 @@ export const getPublicPage = cache(async (): Promise<string | null> => {
   return path && (await isPublicPage(path)) ? path : null;
 });
 
-/** Page/metadata reads can be public; mutations require admin or local access. */
+/** Page/metadata reads can be public; mutations require admin access. */
 export async function requirePageAccess(): Promise<void> {
   if (await hasAppAccess()) return;
   if (await getPublicPage()) return;
