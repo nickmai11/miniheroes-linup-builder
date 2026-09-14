@@ -64,6 +64,16 @@ on 2026-09-13. Additional awakening screenshots are not required for this update
 The source remains identified as a guide. Its Mage common skills are documented
 separately and are not part of this hero's awakening data.
 
+The **September 14 batch** adds detail entries for **Hela, Shadow Master,
+Medusa, Two-Headed Dragon, Mermaid Princess, Soul Doll, Baphomet, Masked Ninja,
+Whaley Imp, Ironblade Mixed-Race, Roar Warrior, and Monkey King**. Each has six
+talents, four linked cores, four artifact tiers, and two mythic divinities, with
+new talent/artifact crops and its existing Archive portrait. Source ranges,
+talent order, and transcription notes are in the game reference's September 14
+section. Mermaid Princess's **Tome of Radiance → Deep Sea Blessing** core uses
+the **8.05.14 AM** follow-up; its talent icon uses the original **7.55.19 AM**
+popup. Awakening I/III were explicitly excluded from this batch.
+
 Build imports use an outline button matching **New build**. The picker searches
 hero and build names on the server, loads twelve results per page only when opened,
 and keeps the results in a scrollable panel. Select a build, then choose **Import
@@ -255,6 +265,12 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
 
 ## 6. Known gaps
 
+- September 14 batch: **Hela, Shadow Master, Medusa,
+  Two-Headed Dragon, Mermaid Princess, Soul Doll, Baphomet, Masked Ninja, Whaley
+  Imp, Ironblade Mixed-Race, Roar Warrior, and Monkey King** have no recorded
+  Awakening I/III. The owner excluded these stages from the authorized import;
+  the pages retain their 18★/22★ empty states. All supplied non-awakening details,
+  including Mermaid Princess's formerly missing fourth core, are recorded.
 - Necromancer: Ghostlight Bone's rainbow skill **Exhaustion Aura** is partly
   hidden behind the artifact popup's Max Quality footer; its Energy Regen
   reduction value and any following text are not visible. All four cores are now

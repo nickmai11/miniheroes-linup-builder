@@ -63,6 +63,12 @@ Awakening skills are text-only; the owner does not want icons for them.
 The owner confirmed the unlock thresholds: **Awakening I at 18★** and
 **Awakening III at 22★**. Show these alongside the stage labels.
 
+For the **2026-09-14 screenshot review and subsequent import**, the owner explicitly
+excluded Awakening I/III from the requested scope. Those stages do not block
+adding the supplied details; leave unrecorded awakenings empty and preserve any
+existing awakening data. This is a batch-specific scope, not a change to the
+game's awakening rules.
+
 Not part of the hero page: Level / ATK / HP / DEF / power (they depend on the
 player's investment), skins, and the fan "Tank / DPS" label.
 
@@ -282,6 +288,115 @@ Sources: the owner's 12.47.59–12.48.15 PM captures in `gameplay/talents/`.
 completes its description, and 12.48.06 PM completes the Mage Robe core. Preserve
 Spell Tome's exact **27% (80%)** and **Melee DMG Reduction** wording; do not
 normalize it to 81% or to another stat. The existing Archive portrait is retained.
+
+#### September 14 hero details (game, 2026-09-14)
+
+The 171 owner captures in `gameplay/talents/`, **2026-09-14 7.52.49–7.57.51 AM**,
+cover 16 heroes. **Radiant Paladin, Dark Knight, Silence, and Holy Healer** already
+have detail entries. The other 12 now have detail seeds, using their existing
+Archive-derived roster entries and portraits. The follow-up **8.05.14 AM** capture
+completes Mermaid Princess's fourth core. The owner authorized adding these
+heroes after the readiness review.
+
+All 12 have six talent popups, their talent-ring reference, an Artifact tab, and
+all four artifact abilities (combining scrolled continuations). All their red
+badges match the existing divinity catalog. With the Mermaid Princess follow-up,
+**all 12 have four recorded core descriptions**. Their 72 talent icons and 12
+artifact images come from the normal screenshot crop pipeline. Awakening I/III
+remain unrecorded for this batch, as requested by the owner.
+
+| Hero / class | Artifact | Mythic divinities (left → right) | AM source range | Core coverage |
+| --- | --- | --- | --- | --- |
+| Hela / Mage | Spectral Crystal | SPD Reduction RES → CRIT Rate | 7.53.21–7.53.36 | 4 |
+| Shadow Master / Marksman | Grass Cutting Sword | Ranged DMG Boost → Knockback Effect | 7.54.01–7.54.19 | 4 |
+| Medusa / Marksman | Succubus Mask | Ranged DMG Boost → DMG Increase | 7.54.39–7.54.53 | 4 |
+| Two-Headed Dragon / Mage | Icy Heart | HP → Heavy Injury | 7.54.58–7.55.12 | 4 |
+| Mermaid Princess / Support | Shallow Staff | HP → Anti-Control Rate | 7.55.18–7.55.33; 8.05.14 | 4 |
+| Soul Doll / Warrior | Ghost Blade | Receive Healing → Melee DMG Boost | 7.55.38–7.55.51 | 4 |
+| Baphomet / Warrior | Demonic Slash | Heavy Injury → ATK SPD | 7.56.13–7.56.29 | 4 |
+| Masked Ninja / Warrior | Silverwolf Sword | HP → Magic RES | 7.56.31–7.56.46 | 4 |
+| Whaley Imp / Warrior | Trident | HP → Anti-Control Rate | 7.56.50–7.57.03 | 4 |
+| Ironblade Mixed-Race / Warrior | Ironwolf Blade | HP → Control RES | 7.57.07–7.57.18 | 4 |
+| Roar Warrior / Warrior | Blazing Sun Axe | ATK → Heavy Injury | 7.57.22–7.57.34 | 4 |
+| Monkey King / Warrior | Golden Cudgel | Knockback Resist → DMG Reduction | 7.57.37–7.57.51 | 4 |
+
+Mermaid Princess's supplied cores are **Luminous Visor → Sanctus Waterball**
+(7.55.22), **Resonance Pendant → Abyssal Waters** (7.55.26), and **Crystal Staff →
+Tide of Sighs** (7.55.29), plus **Tome of Radiance → Deep Sea Blessing** from
+`Screenshot 2026-09-14 at 8.05.14 AM.png`. This scrolled follow-up completes the
+original 7.55.19 AM popup and shows the fourth core's full description:
+**「Deep Sea Blessing」 additionally increases the DMG Result of the allied Hero
+with the highest Attack by 3%(9%).** All non-awakening screenshot requirements
+for Mermaid Princess are now satisfied and imported.
+
+The recorded talent order is **0 / 2 / 5 / 8 / 12 / 16★**:
+
+| Hero | Talents in unlock order |
+| --- | --- |
+| Hela | Spectral Servant / Dark Swarm / Spectral Drain / Soul Shackles / Undead Corpse / Spectres |
+| Shadow Master | Phantom Slash / Illusory Nightmare / Enhance Slash / Flame Bullet / Weakness Break / Blood Thirst |
+| Medusa | Energy Barrier / Piercing Arrows / Ultimate Empower / Arcane Serpent / Succubus Ancestry / Sharp Arrowhead |
+| Two-Headed Dragon | Frost Domain / Ice and Fire / Enhance Chill / Icy Inferno / Dragon's Blood / Extreme Cold |
+| Mermaid Princess | Tide of Sighs / Deep Sea Blessing / Tidal Phenomenon / Sanctus Waterball / Knockback / Abyssal Waters |
+| Soul Doll | Soul Scissors / ATK Enhancement / Enhance Scissors / Thread Bind / Spiritual Cultivation / Heavy Blow |
+| Baphomet | Demonify / Fanatic / Rebirth / Devil's Entanglement / Devil's Wit / RES Skin |
+| Masked Ninja | Barrier Shield / Silent Movement / Enhance Shield / Power Regen / Protect Charm / Super Barrier |
+| Whaley Imp | Tsunami / Wave Slash / Enhance Tide / Surge Guard / Deep Sea Buildup / Sea God's Wrath |
+| Ironblade Mixed-Race | Sky-Cutting Strike / Armor-Breaking Blow / Enhance Aura / Demonic Lineage / Demonic Boost / Soul Hack |
+| Roar Warrior | Elimination Axe / Thirst / Enhance Great Axe / Roar / Battle Soul / Axe of Greatness |
+| Monkey King | Golden Cudgel / Stabilizing Cudgel / Enhanced Strike / Monkey Clone / Forest Dance / Ruyi Technique |
+
+Core links and exact descriptions are stored in `src/data/hero-details.ts`.
+Not every core follows the usual ultimate/2★/8★/16★ pattern: Hela and Two-Headed
+Dragon link Mage Robe to their 5★ talents; Medusa's Swift Longbow links to
+Piercing Arrows and Arrow Core to Ultimate Empower; Baphomet's Cavalier Helm
+links to Rebirth; Ironblade Mixed-Race's Brawler's Armor links to Enhance Aura
+and Brawler's Boots to Demonic Lineage.
+
+Transcription and source notes:
+
+- Hela's activated **Arcane Hat** and **Wizard's Wand** show single values
+  (**18%** and **15% of ATK**, respectively). Record what is shown; do not derive
+  an unseen parenthesized value.
+- Rainbow bonuses attach to **Medusa's Arcane Serpent**, **Two-Headed Dragon's
+  Frost Domain**, **Mermaid Princess's Deep Sea Blessing**, **Soul Doll's Soul
+  Scissors**, **Masked Ninja's Silent Movement**, and **Monkey King's Monkey
+  Clone**. They belong under their talents as well as Artifacts.
+- **Whaley Imp's gold Siren's Protection** and **Ironblade Mixed-Race's purple
+  Dragon Scale Protection** are standalone artifact abilities.
+- Standalone rainbow skills are Hela's **Aura of Dread**, Shadow Master's
+  **Soulkeeping Technique**, Baphomet's **Soul Absorption**, Whaley Imp's
+  **Siren's Shell**, Ironblade Mixed-Race's **Vampiric Powers**, and Roar
+  Warrior's **Blade Vine Armor**.
+- Monkey King's purple bonus calls its talent **Sea Stabilizing Needle**, but
+  the popup title is **Stabilizing Cudgel**; link to the actual talent title.
+- Medusa's purple text calls **Piercing Arrows** "Piercing Arrow" and contains
+  "DMGto". The red Arcane Serpent text literally shows `Passive</c:`; it is
+  preserved as text. Energy Barrier is labeled Ultimate Skill even though its
+  description begins with Passive.
+- Two-Headed Dragon's Frost Domain says **within 4,** without a unit, and
+  Mermaid Princess's Tide of Sighs says **350 water domain** without a unit.
+  Baphomet's Demonify says **range of 600%**. Roar Warrior's red bonus says
+  **for a set duration** without a number. Do not fill in these source omissions.
+- Soul Doll's Thread Bind core shows **0.3% (1%)**; Baphomet's Rebirth core
+  shows **3% (10%)**. Monkey King's Enhanced Strike and Ruyi Technique both
+  show **140%**; its Cavalier Helm shows **20% (60%)**, and its Monkey Clone
+  core shows **25% (75%)**. Preserve these values without recalculating them.
+- Shadow Master's unscrolled Illusory Nightmare source is **7.54.03 AM 1.png**;
+  the file without ` 1` completes Arrow Core. Flame Bullet uses **7.54.07 AM.png**
+  for its icon and **7.54.07 AM 1.png** for Hunter's Cloak's continuation.
+  Masked Ninja's **7.56.33 AM 1.png** completes Cavalier Helm; use the file
+  without ` 1` for Silent Movement's icon.
+- Other core continuations include Hela **7.53.31**, Medusa **7.54.43**,
+  Two-Headed Dragon **7.55.00 / 7.55.08**, Mermaid Princess **7.55.22 / 7.55.29 /
+  8.05.14**, Soul Doll **7.55.47**, Baphomet **7.56.17 / 7.56.22**, Roar Warrior
+  **7.57.30**, and Monkey King **7.57.43 / 7.57.48**. These scrolled sources
+  complete text; all icon sources in the crop script are original popups.
+- Artifact continuations complete Hela **7.53.36**, Medusa **7.54.53**,
+  Baphomet **7.56.29**, and Roar Warrior **7.57.34**. Existing shared tier and
+  core icons are reused; no portrait or pre-existing image changed.
+- Baphomet's **7.56.26 AM** divinity popup confirms the left red badge's stat
+  **All Heavy Injury**, matching the existing **Heavy Injury** catalog entry.
 
 ### Awakening skills (game, 2026-09-13)
 
@@ -642,6 +757,27 @@ is said. These override anything marked (web).
 - 2026-09-13 — The owner reported layout shifts when a popover opens, suspected
   scrollbar appearance as the cause, and requested a fix. The owner also requested
   wider build popovers.
+
+- 2026-09-14 — The owner requested a readiness review of the new
+  `gameplay/talents/` screenshots **without Awakening I/III**. The 171 supplied
+  captures cover 12 heroes without detail entries and four already recorded
+  heroes. The review establishes six talents, four artifact tiers, and catalog
+  divinities for all 12; Mermaid Princess's fourth core is the only missing
+  non-awakening panel identified. This entry records a review, not an import.
+
+- 2026-09-14 — The owner supplied Mermaid Princess's missing scrolled popup,
+  `Screenshot 2026-09-14 at 8.05.14 AM.png`. It confirms **Tome of Radiance·Core**
+  for **Deep Sea Blessing**: additionally increases the DMG Result of the allied
+  Hero with the highest Attack by **3%(9%)**. This resolves the previous review's
+  fourth-core gap; all 12 new hero entries now have sufficient screenshots when
+  excluding Awakening I/III. This follow-up is a review, not an import.
+
+- 2026-09-14 — The owner authorized adding the 12 reviewed heroes with multiple
+  agents, retaining the batch's exclusion of Awakening I/III. Their screenshots
+  establish the talent order, four core links, four artifact tiers, and two
+  mythic divinities recorded in the September 14 section above. All 12 detail
+  entries are now imported, including Mermaid Princess's fourth core from the
+  8.05.14 AM follow-up; existing Archive portraits are retained.
 
 ## How the app models it
 
