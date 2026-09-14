@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { PRODUCTION_APP_URL } from "@/lib/site-url";
 
 const itemClassName =
   "data-highlighted:bg-accent data-highlighted:text-accent-foreground flex cursor-default items-center gap-2 rounded-md px-3 py-2 text-sm outline-none select-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0";
@@ -38,6 +37,7 @@ export function LineupShare({
     const response = await fetch("/api/invitations/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ lineupId }),
     });
     if (!response.ok)
       throw new Error("Could not generate an invitation. Please try again.");
@@ -61,7 +61,7 @@ export function LineupShare({
 
     const plainLink = new URL(
       `/lineups/${lineupId}`,
-      PRODUCTION_APP_URL,
+      window.location.origin,
     ).toString();
     const link = withInvitation
       ? invitationLink(plainLink)
@@ -150,6 +150,11 @@ export function LineupShare({
               >
                 <KeyRound aria-hidden /> Copy link with IC
               </Menu.Item>
+              {canInvite && (
+                <p className="text-muted-foreground px-3 py-2 text-xs">
+                  The invitation gives access to this lineup only.
+                </p>
+              )}
               {!canInvite && (
                 <p className="text-muted-foreground px-3 py-2 text-xs">
                   Sign in as admin to generate invitation codes.

@@ -69,7 +69,13 @@ test("registered visitors do not add public URL lookups to ordinary navigation",
       },
     },
     "@/lib/public-url-assets": {},
-    "@/lib/invitations": { findRegisteredDevice: async () => ({ id: 1 }) },
+    "@/lib/invitations": {
+      findRegisteredDevice: async () => ({
+        id: 1,
+        fullAccess: true,
+        lineupIds: [],
+      }),
+    },
   });
   const response = await proxy(
     request("/heroes", { headers: { cookie: `mh_device=${"a".repeat(43)}` } }),

@@ -22,8 +22,8 @@ const SLOT_LABELS = ["Slot 1", "Slot 2", "Slot 3", "Slot 4", "Slot 5"];
 export async function generateMetadata(
   props: PageProps<"/lineups/[id]">,
 ): Promise<Metadata> {
-  await requirePageAccess();
   const { id } = await props.params;
+  await requirePageAccess(`/lineups/${id}`);
   const lineup = Number.isInteger(Number(id))
     ? await getLineup(Number(id))
     : undefined;
@@ -31,8 +31,8 @@ export async function generateMetadata(
 }
 
 export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
-  await requirePageAccess();
   const { id } = await props.params;
+  await requirePageAccess(`/lineups/${id}`);
   const numericId = Number(id);
   if (!Number.isInteger(numericId)) notFound();
 

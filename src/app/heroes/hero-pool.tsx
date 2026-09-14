@@ -14,11 +14,13 @@ export function HeroPool({ heroes }: { heroes: HeroWithDivinities[] }) {
 
   const visible = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return heroes.filter(
-      (h) =>
-        (role === "all" || h.role === role) &&
-        (!q || h.name.toLowerCase().includes(q)),
-    );
+    return heroes
+      .filter(
+        (h) =>
+          (role === "all" || h.role === role) &&
+          (!q || h.name.toLowerCase().includes(q)),
+      )
+      .sort((a, b) => Number(b.hasBuild) - Number(a.hasBuild));
   }, [heroes, query, role]);
 
   return (

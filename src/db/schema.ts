@@ -42,19 +42,36 @@ export const invitationCodes = pgTable("invitation_codes", {
     .notNull()
     .defaultNow(),
   usedAt: timestamp("used_at", { withTimezone: true }),
+  // Null means a standalone invitation to the full library.
+  lineupId: integer("lineup_id").references(() => lineups.id, {
+    onDelete: "cascade",
+  }),
 });
 
 export const registeredDevices = pgTable("registered_devices", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   tokenHash: text("token_hash").notNull().unique(),
   invitationId: integer("invitation_id")
-    .notNull()
     .unique()
-    .references(() => invitationCodes.id, { onDelete: "cascade" }),
+    .references(() => invitationCodes.id, { onDelete: "set null" }),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),
 });
+
+/** Each invitation belongs to one device; a device can redeem many invitations. */
+export const invitationRedemptions = pgTable(
+  "invitation_redemptions",
+  {
+    invitationId: integer("invitation_id")
+      .primaryKey()
+      .references(() => invitationCodes.id, { onDelete: "cascade" }),
+    deviceId: integer("device_id")
+      .notNull()
+      .references(() => registeredDevices.id, { onDelete: "cascade" }),
+  },
+  (t) => [index("invitation_redemptions_device_id_idx").on(t.deviceId)],
+);
 
 // The game has exactly four hero classes.
 export const HERO_ROLES = ["warrior", "marksman", "mage", "support"] as const;

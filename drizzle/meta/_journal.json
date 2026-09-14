@@ -183,6 +183,13 @@
       "when": 1789292171189,
       "tag": "0025_rune_important_priority",
       "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1789373859943,
+      "tag": "0026_lineup_invitations",
+      "breakpoints": true
     }
   ]
 }

@@ -14,7 +14,7 @@ export function InvitationForm({
   initialCode: string;
   destination: string;
 }) {
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState(initialCode);
   const [pending, setPending] = useState(Boolean(initialCode));
   const [error, setError] = useState("");
   const started = useRef(false);

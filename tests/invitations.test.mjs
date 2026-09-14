@@ -155,7 +155,9 @@ function routing(registered = false, rotations = []) {
   return loadTypeScript("src/proxy.ts", {
     "@/lib/invitations": {
       findRegisteredDevice: async (value) =>
-        registered && value === token ? { id: 1 } : null,
+        registered && value === token
+          ? { id: 1, fullAccess: true, lineupIds: [] }
+          : null,
       newDeviceToken: () => token,
       rotateDeviceToken: async (value) => {
         rotations.push(value);
@@ -475,17 +477,27 @@ test("authorized image reads cache privately by version, cookie, and referrer", 
   }
 });
 
-test("database failures fail closed without exposing internal errors", async () => {
+test("database failures fail closed without exposing internal errors", async (t) => {
+  const logs = [];
+  t.mock.method(console, "error", (...args) => logs.push(args));
   const { proxy } = loadTypeScript("src/proxy.ts", {
     "@/lib/invitations": {
       findRegisteredDevice: async () => {
-        throw new Error("secret database details");
+        throw new Error("secret database details", {
+          cause: Object.assign(new Error("secret query parameters"), {
+            code: "42P01",
+          }),
+        });
       },
     },
   });
   const response = await proxy(request("/heroes"));
   assert.equal(response.status, 503);
   assert.doesNotMatch(await response.text(), /secret/);
+  assert.equal(logs.length, 1);
+  assert.equal(logs[0][1].code, "42P01");
+  assert.match(logs[0][1].hint, /migrations/);
+  assert.doesNotMatch(JSON.stringify(logs), /secret/);
 });
 
 test("generation is restricted on both the route and the proxy", async () => {
@@ -514,6 +526,7 @@ test("generation is restricted on both the route and the proxy", async () => {
     else process.env.NODE_ENV = previous;
   }
   const { POST } = loadTypeScript("src/app/api/invitations/generate/route.ts", {
+    "@/db": {},
     "@/lib/editing": { canEditContent: async () => false },
     "@/lib/invitations": {
       generateInvitationCode: async () => {
@@ -528,6 +541,11 @@ test("redemption validates input and origin, sets a persistent cookie, and sanit
   let calls = 0;
   const { POST } = loadTypeScript("src/app/api/invitations/redeem/route.ts", {
     "@/lib/invitations": {
+      findRegisteredDevice: async () => ({
+        id: 1,
+        fullAccess: true,
+        lineupIds: [],
+      }),
       redeemInvitationCode: async (value, deviceToken) => {
         calls++;
         assert.equal(deviceToken, token);

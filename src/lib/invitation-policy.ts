@@ -6,6 +6,35 @@ export const INVITATION_REQUIRED = "Enter an invitation code to continue.";
 export const INVALID_INVITATION =
   "This invitation code is invalid or has already been used.";
 
+export type DeviceAccess = {
+  id: number;
+  fullAccess: boolean;
+  lineupIds: number[];
+};
+
+/** Scoped invitations permit the collection and exactly the invited detail pages. */
+export function deviceCanReadPage(
+  device: DeviceAccess,
+  destination: string,
+): boolean {
+  if (device.fullAccess) return true;
+  const path = invitationDestination(destination).split(/[?#]/)[0];
+  if (path === "/lineups") return true;
+  const match = path.match(/^\/lineups\/([1-9][0-9]*)$/);
+  return Boolean(match && device.lineupIds.includes(Number(match[1])));
+}
+
+export function deviceInvitationDestination(
+  device: DeviceAccess,
+  value: unknown,
+): string {
+  const destination = invitationDestination(value);
+  if (deviceCanReadPage(device, destination)) return destination;
+  return device.lineupIds.length === 1
+    ? `/lineups/${device.lineupIds[0]}`
+    : "/lineups";
+}
+
 export function normalizeInvitationCode(value: unknown): string | null {
   if (typeof value !== "string" || value.length > 100) return null;
   const code = value.replace(/[\s-]/g, "").toUpperCase();

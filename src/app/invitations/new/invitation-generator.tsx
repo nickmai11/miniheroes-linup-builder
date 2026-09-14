@@ -5,7 +5,6 @@ import { Check, Copy, KeyRound, LoaderCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { PRODUCTION_APP_URL } from "@/lib/site-url";
 import {
   Card,
   CardContent,
@@ -16,12 +15,10 @@ import {
 
 export function InvitationGenerator() {
   const [code, setCode] = useState("");
+  const [link, setLink] = useState("");
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState("");
-  const invitationUrl = new URL(PRODUCTION_APP_URL);
-  invitationUrl.searchParams.set("ic", code);
-  const link = code ? invitationUrl.toString() : "";
 
   async function generate() {
     if (pending) return;
@@ -39,6 +36,9 @@ export function InvitationGenerator() {
           result.error || "Could not generate a code. Please try again.",
         );
       setCode(result.code);
+      const invitationUrl = new URL("/", window.location.origin);
+      invitationUrl.searchParams.set("ic", result.code);
+      setLink(invitationUrl.toString());
     } catch (reason) {
       setError(
         reason instanceof Error

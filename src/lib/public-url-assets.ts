@@ -1,5 +1,5 @@
 import "server-only";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import { db, schema } from "@/db";
 import { heroSeeds } from "@/data/heroes";
 import { heroDetailSeeds } from "@/data/hero-details";
@@ -37,10 +37,11 @@ function heroAssets(
   return assets;
 }
 
-/** Only artwork belonging to the published page, never an arbitrary public/ file. */
+/** Artwork belonging to a published or invited page, optionally restricted by device. */
 export async function isPublicPageAsset(
   page: string,
   asset: string,
+  allowedLineupIds?: number[],
 ): Promise<boolean> {
   if (
     !/^\/(heroes|badges|divinities|talents|artifacts|icons|pets|relics|fishes)\/[a-z0-9/-]+\.png$/.test(
@@ -75,6 +76,21 @@ export async function isPublicPageAsset(
   if (!lineup) return false;
   const lineupId = lineup[1] ? Number(lineup[1]) : null;
   if (
+    allowedLineupIds &&
+    (allowedLineupIds.length === 0 ||
+      (lineupId !== null && !allowedLineupIds.includes(lineupId)))
+  )
+    return false;
+  const lineupFilter = (
+    column:
+      typeof schema.lineupHeroes.lineupId | typeof schema.lineupFishes.lineupId,
+  ) =>
+    lineupId !== null
+      ? eq(column, lineupId)
+      : allowedLineupIds
+        ? inArray(column, allowedLineupIds)
+        : undefined;
+  if (
     lineupId !== null &&
     (!Number.isSafeInteger(lineupId) || lineupId > 2147483647)
   )
@@ -91,11 +107,7 @@ export async function isPublicPageAsset(
         schema.lineupHeroes,
         eq(schema.lineupHeroPets.lineupHeroId, schema.lineupHeroes.id),
       )
-      .where(
-        lineupId === null
-          ? undefined
-          : eq(schema.lineupHeroes.lineupId, lineupId),
-      );
+      .where(lineupFilter(schema.lineupHeroes.lineupId));
     return rows.some((row) => row.iconUrl === asset);
   }
   if (asset.startsWith("/relics/")) {
@@ -110,11 +122,7 @@ export async function isPublicPageAsset(
         schema.lineupHeroes,
         eq(schema.lineupHeroRelics.lineupHeroId, schema.lineupHeroes.id),
       )
-      .where(
-        lineupId === null
-          ? undefined
-          : eq(schema.lineupHeroes.lineupId, lineupId),
-      );
+      .where(lineupFilter(schema.lineupHeroes.lineupId));
     return rows.some((row) => row.iconUrl === asset);
   }
   if (asset.startsWith("/fishes/")) {
@@ -125,21 +133,13 @@ export async function isPublicPageAsset(
         schema.fishes,
         eq(schema.lineupFishes.fishId, schema.fishes.id),
       )
-      .where(
-        lineupId === null
-          ? undefined
-          : eq(schema.lineupFishes.lineupId, lineupId),
-      );
+      .where(lineupFilter(schema.lineupFishes.lineupId));
     return rows.some((row) => row.iconUrl === asset);
   }
   const heroes = await db
     .selectDistinct({ slug: schema.heroes.slug })
     .from(schema.lineupHeroes)
     .innerJoin(schema.heroes, eq(schema.lineupHeroes.heroId, schema.heroes.id))
-    .where(
-      lineupId === null
-        ? undefined
-        : eq(schema.lineupHeroes.lineupId, lineupId),
-    );
+    .where(lineupFilter(schema.lineupHeroes.lineupId));
   return heroes.some(({ slug }) => heroAssets(slug, true, false).has(asset));
 }

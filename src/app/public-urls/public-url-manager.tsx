@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PRODUCTION_APP_URL } from "@/lib/site-url";
 
 export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
   const [paths, setPaths] = useState(initialPaths);
@@ -62,7 +61,7 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
   async function copy(path: string) {
     try {
       await navigator.clipboard.writeText(
-        new URL(path, PRODUCTION_APP_URL).toString(),
+        new URL(path, window.location.origin).toString(),
       );
       setCopied(path);
       setError("");
@@ -148,11 +147,11 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
                     <p className="font-medium break-all">{path}</p>
                     <a
                       className="text-muted-foreground hover:text-foreground mt-1 inline-flex items-center gap-1 text-xs break-all"
-                      href={new URL(path, PRODUCTION_APP_URL).toString()}
+                      href={path}
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {new URL(path, PRODUCTION_APP_URL).toString()}
+                      {path}
                       <ExternalLink className="size-3 shrink-0" aria-hidden />
                     </a>
                   </div>

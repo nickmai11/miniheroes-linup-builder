@@ -157,11 +157,17 @@ async function loadSlots(lineupIds: number[]) {
     .orderBy(asc(schema.lineupHeroes.position));
 }
 
-export async function getAllLineups(): Promise<LineupWithHeroes[]> {
+export async function getAllLineups(
+  lineupIds: number[] | null = null,
+): Promise<LineupWithHeroes[]> {
+  if (lineupIds?.length === 0) return [];
   await syncSeededHeroDetails();
   const lineupRows = await db
     .select()
     .from(schema.lineups)
+    .where(
+      lineupIds === null ? undefined : inArray(schema.lineups.id, lineupIds),
+    )
     .orderBy(desc(schema.lineups.createdAt));
   const slotRows = await loadSlots(lineupRows.map((l) => l.id));
   return assemble(lineupRows, slotRows);

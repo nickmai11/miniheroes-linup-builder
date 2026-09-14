@@ -1,4 +1,8 @@
-import { hasAppAccess, requirePageAccess } from "@/lib/app-access";
+import {
+  accessibleLineupIds,
+  hasAppAccess,
+  requirePageAccess,
+} from "@/lib/app-access";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Copy, Plus } from "lucide-react";
@@ -23,9 +27,10 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Lineups" };
 
 export default async function LineupsPage() {
-  await requirePageAccess();
+  await requirePageAccess("/lineups");
+  const lineupIds = await accessibleLineupIds();
   const [lineups, canEdit] = await Promise.all([
-    getAllLineups(),
+    getAllLineups(lineupIds),
     canEditContent().then(async (allowed) => allowed && (await hasAppAccess())),
   ]);
 
@@ -33,6 +38,11 @@ export default async function LineupsPage() {
     <PageShell
       title="Lineups"
       width="max-w-4xl"
+      description={
+        lineupIds !== null
+          ? "Lineups shared with you. Open another invitation link to add a lineup."
+          : undefined
+      }
       actions={
         canEdit && (
           <Link href="/lineups/new" className={buttonVariants()}>

@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { redeemInvitationCode } from "@/lib/invitations";
+import { reportAccessError } from "@/lib/access-error";
+import { findRegisteredDevice, redeemInvitationCode } from "@/lib/invitations";
 import {
   DEVICE_COOKIE,
   INVALID_INVITATION,
-  invitationDestination,
+  deviceInvitationDestination,
   isDeviceToken,
   isSameOriginInvitationRequest,
 } from "@/lib/invitation-policy";
@@ -36,12 +37,15 @@ export async function POST(request: NextRequest) {
   try {
     if (!(await redeemInvitationCode(body.code, token)))
       return reply(INVALID_INVITATION, 400);
+    const device = await findRegisteredDevice(token);
+    if (!device) return reply(INVALID_INVITATION, 400);
     const response = NextResponse.json({
-      destination: invitationDestination(body.next),
+      destination: deviceInvitationDestination(device, body.next),
     });
     setDeviceCookie(response, token);
     return privateInvitationResponse(response);
-  } catch {
+  } catch (error) {
+    reportAccessError("invitation-redemption", error);
     return reply("Could not check your invitation. Please try again.", 503);
   }
 }

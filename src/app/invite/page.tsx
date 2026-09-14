@@ -29,11 +29,11 @@ export default async function InvitePage(props: PageProps<"/invite">) {
             <KeyRound className="size-6" aria-hidden />
           </div>
           <CardTitle>
-            <h1 className="text-2xl">Access the full library</h1>
+            <h1 className="text-2xl">Invitation access</h1>
           </CardTitle>
           <CardDescription>
-            Enter an invitation code to view pages that aren’t public. This
-            browser will remember your access.
+            Enter your invitation code. A lineup invitation adds that lineup to
+            this browser’s access. You can use more codes to add more lineups.
           </CardDescription>
         </CardHeader>
         <CardContent>

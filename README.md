@@ -103,9 +103,9 @@ and its protected entry points.
 Sign in as admin and choose **Invitations** (locally,
 **http://localhost:3000/invitations/new**). Click
 **Generate**, then **Copy code**. No input is required. Each randomly generated
-code can register one browser and does not expire before use. An invitation link
-containing `?ic=CODE` is also ready to copy and opens the production app at
-`https://miniheroes-library.vercel.app/`.
+standalone code grants one browser full-library access and does not expire
+before use. An invitation link containing `?ic=CODE` is also ready to copy and
+opens the app on the browser's current origin, including its port.
 
 The former address `miniheroes-linup-builder.vercel.app` stays attached to the
 same deployment and forwards every page to the new one, keeping unused
@@ -122,9 +122,14 @@ using the same access policy as editing. They work before that browser is
 registered, so you can generate the first invitation.
 
 Saved lineup cards and detail pages have a **Share** menu. **Copy link** copies
-the production lineup URL without invitation codes or other query
+the lineup URL on the browser's current origin without invitation codes or other query
 parameters. **Copy link with IC** generates a fresh, single-use code and copies
-the lineup URL with `?ic=CODE`; this option requires admin access.
+the lineup URL with `?ic=CODE`; this option requires admin access. This code grants
+access only to that lineup. A browser can redeem codes for multiple lineups,
+and `/lineups` shows its invited lineups. Other private pages and APIs stay
+locked. The lineup’s formation, assigned build previews, pets, relics, fishes,
+and artwork remain viewable. Standalone codes can upgrade a scoped browser
+to full-library access.
 If clipboard access is blocked, the link is shown for manual copying, and
 retrying reuses the invitation that was already generated.
 
@@ -133,8 +138,10 @@ as admin. Opening
 an app URL with `?ic=CODE` submits the code automatically through a POST, then
 replaces the address with the original page without `ic`. Other query parameters
 and fragments are preserved. Ordinary GET requests and link previews do not redeem
-codes. Registered browsers keep access even if a link contains an invalid or used
-code; they do not consume additional codes.
+codes. Browsers with full-library access do not consume additional codes.
+Scoped browsers redeem new codes to add access, and a retry of a redeemed code
+works only for its original browser. Existing access survives an invalid code.
+If automatic redemption fails, the supplied code remains in the form for retry.
 
 Access is remembered by a random HTTP-only cookie for one year, renewed on visits,
 and verified against `registered_devices`. Clearing cookies, using a different
@@ -142,14 +149,24 @@ browser profile, or switching domains requires a new code. Only hashes of codes
 and device tokens are stored. Redemption and registration are atomic, and retries
 from the same browser are safe. Deleting a registered-device row revokes its access.
 
-Apply `drizzle/0019_invitation_access.sql` with the normal migration workflow
-before running the updated app. It includes RLS policies and grants for
+Apply migrations through `drizzle/0026_lineup_invitations.sql` with the normal
+migration workflow before running the updated app. Migration 0026 adds scoped
+invitations and a device-to-invitation redemption table, backfills existing
+devices with their full-library grants, and includes RLS policies and grants for
 `lineup_app`; follow the transaction-pooler fallback in
 [the database notes](docs/mini-heroes-magic-throne.md#how-the-app-models-it)
 if needed. Local generation and the deployed app must use the same `DATABASE_URL`.
 
+If pages return **Access is temporarily unavailable**, check the server log's
+`Access operation failed` entry. Codes `42P01` (missing table) or `42703`
+(missing column) indicate an unapplied schema migration. In particular, running
+the scoped-invitation code before migration 0026 breaks device lookups.
+Diagnostics omit invitation codes, device cookies, and SQL parameters.
+
 Pages, metadata, APIs (including health), actions, and original game images require
-registration or an admin session unless a page is explicitly made public as described below.
+the appropriate invitation scope or an admin session unless a page is explicitly
+made public as described below. Scoped artwork access is limited to the invited
+lineup or filtered lineup list identified by a same-origin referrer.
 Framework CSS, JavaScript, fonts, and the favicon remain accessible
 to render the invitation screen. Images use their original authenticated URLs;
 the shared Next.js image optimizer is disabled to avoid caching private artwork.
@@ -171,13 +188,27 @@ INVITATION_TEST_DATABASE_URL=postgres://invitation_test@127.0.0.1:55441/invitati
 The integration test requires this isolated host, port, user, and database name;
 it never uses the app's `DATABASE_URL`.
 
+To exercise the complete lineup invitation flow, run a separate app at
+`http://127.0.0.1:3111` against that same disposable database with Supabase Auth
+disabled, then run:
+
+```bash
+INVITATION_TEST_BASE_URL=http://127.0.0.1:3111 \
+INVITATION_TEST_DATABASE_URL=postgres://invitation_test@127.0.0.1:55441/invitation_access_test \
+  node --experimental-strip-types --test tests/lineup-invitations.http.test.mjs
+```
+
+This test creates temporary lineups and invitations, redeems two links through
+the real HTTP endpoint, and checks filtered HTML/RSC, assigned builds, artwork,
+private-page denial, single-use codes, and retry behavior. It cleans up its fixtures.
+
 ## Public URLs
 
 Sign in as admin and choose **Public URLs** (locally,
 **http://localhost:3000/public-urls**). This settings page
 works without an invitation for signed-in admins on every host. Paste an app link
 or a path such as `/lineups/123`, then click **Add public URL**. The list provides
-**Copy link** for the production URL and **Remove** to restore invitation access.
+**Copy link** for the browser's current origin and **Remove** to restore invitation access.
 
 Each entry publishes one exact page path, including its query variations;
 `/lineups` does not publish `/lineups/123`. Query strings, fragments and invitation

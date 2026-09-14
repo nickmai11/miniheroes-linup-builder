@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ASSET_VERSION } from "@/lib/asset-version";
+import { reportAccessError } from "@/lib/access-error";
 import {
   findRegisteredDevice,
   newDeviceToken,
@@ -19,6 +20,7 @@ import {
   DEVICE_COOKIE,
   INVITATION_REQUIRED,
   TRANSFER_PARAM,
+  deviceCanReadPage,
   invitationDestination,
   invitationScreen,
   isDeviceToken,
@@ -93,7 +95,8 @@ export async function proxy(request: NextRequest) {
       try {
         if (isDeviceToken(token) && (await findRegisteredDevice(token)))
           target.searchParams.set(TRANSFER_PARAM, sealDeviceTransfer(token));
-      } catch {
+      } catch (error) {
+        reportAccessError("legacy-device-transfer", error);
         return unavailable();
       }
     }
@@ -137,7 +140,7 @@ export async function proxy(request: NextRequest) {
     // Files in public/ have no page or data layer, so validate their access here
     // too. Pages, metadata, APIs, and actions also check their own entry points.
     const device = await findRegisteredDevice(token);
-    if (device && isDeviceToken(token)) {
+    if (device?.fullAccess && isDeviceToken(token)) {
       let response: NextResponse;
       if (path === "/invite") {
         response = NextResponse.redirect(
@@ -166,11 +169,56 @@ export async function proxy(request: NextRequest) {
       const clean = url.clone();
       clean.searchParams.delete(TRANSFER_PARAM);
       const response = NextResponse.redirect(clean);
-      const moved = await rotateDeviceToken(
-        openDeviceTransfer(url.searchParams.get(TRANSFER_PARAM)),
-      );
+      const moved =
+        device && isDeviceToken(token)
+          ? token
+          : await rotateDeviceToken(
+              openDeviceTransfer(url.searchParams.get(TRANSFER_PARAM)),
+            );
       if (moved) setDeviceCookie(response, moved);
       return finish(response);
+    }
+
+    // Scoped devices must redeem additional codes, even when already registered.
+    // Route through the POST form before public-page checks so a public share
+    // link can also establish persistent access to its lineup.
+    if (
+      path !== "/invite" &&
+      url.searchParams.has("ic") &&
+      isPageNavigation(request, path)
+    ) {
+      const invite = new URL(invitationScreen(`${path}${url.search}`), url);
+      invite.searchParams.set("ic", url.searchParams.get("ic")!.slice(0, 101));
+      return finish(NextResponse.redirect(invite));
+    }
+
+    if (
+      device &&
+      isDeviceToken(token) &&
+      isPublicRead(request.method, request.headers)
+    ) {
+      if (path === "/") {
+        return finish(NextResponse.redirect(new URL("/lineups", url)));
+      }
+      if (deviceCanReadPage(device, `${path}${url.search}`)) {
+        const response = next();
+        setDeviceCookie(response, token);
+        finish(response);
+        response.headers.set("Referrer-Policy", "same-origin");
+        return response;
+      }
+      if (/\.png$/.test(path)) {
+        const page = publicAssetReferrer(request);
+        if (
+          page &&
+          deviceCanReadPage(device, page) &&
+          (await isPublicPageAsset(page, path, device.lineupIds))
+        ) {
+          const response = next();
+          setDeviceCookie(response, token);
+          return finish(response);
+        }
+      }
     }
 
     if (isPublicRead(request.method, request.headers)) {
@@ -214,7 +262,8 @@ export async function proxy(request: NextRequest) {
     if (url.searchParams.has("ic"))
       invite.searchParams.set("ic", url.searchParams.get("ic")!.slice(0, 101));
     return finish(NextResponse.redirect(invite));
-  } catch {
+  } catch (error) {
+    reportAccessError("page-access", error);
     return unavailable();
   }
 }

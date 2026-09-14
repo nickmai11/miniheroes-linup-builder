@@ -1,6 +1,6 @@
 import { hasAppAccess, requirePageAccess } from "@/lib/app-access";
 import Link from "next/link";
-import { ArrowRight, Hammer, ListOrdered, Users } from "lucide-react";
+import { ArrowRight, Hammer, ListOrdered, Sparkles, Users } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { canEditContent } from "@/lib/editing";
 import {
@@ -15,19 +15,29 @@ const SECTIONS = [
     href: "/heroes",
     icon: Users,
     title: "Hero pool",
-    description: "Explore heroes with recorded talents, artifacts, and builds.",
+    description:
+      "Explore recorded talents, artifacts, awakenings, and builds with rune, weapon, and core priorities.",
   },
   {
-    href: "/lineups/new",
-    icon: Hammer,
-    title: "Build a lineup",
-    description: "Pick five heroes and write up why the team works.",
+    href: "/divinities",
+    icon: Sparkles,
+    title: "Divinities",
+    description:
+      "Browse mythic divinities by category and find heroes with each recorded divinity.",
   },
   {
     href: "/lineups",
     icon: ListOrdered,
     title: "Saved lineups",
-    description: "Browse and share the lineups you have recorded.",
+    description:
+      "View team notes, assigned hero builds, pets, relics, and fishes. Share a lineup by link.",
+  },
+  {
+    href: "/lineups/new",
+    icon: Hammer,
+    title: "Build a lineup",
+    description:
+      "Choose five heroes, assign builds, pets, and relics, then add fishes and team notes.",
   },
 ] as const;
 
@@ -44,13 +54,13 @@ export default async function Home() {
           Mini Heroes: Magic Throne
         </p>
         <h1 className="max-w-2xl text-3xl font-semibold">
-          Lineup knowledge, straight from the Archive.
+          Heroes, builds, and lineups in one place.
         </h1>
         <p className="text-muted-foreground max-w-2xl">
-          A place to record which five heroes go together, why, and what they
-          counter. Portraits and class badges come from the game itself.
+          Explore hero details and saved builds, look up mythic divinities, and
+          browse five-hero teams with their pets, relics, and fishes.
         </p>
-        <div>
+        <div className="flex flex-wrap gap-3">
           <Link
             href={canEdit ? "/lineups/new" : "/lineups"}
             className={buttonVariants({ size: "lg" })}
@@ -58,23 +68,40 @@ export default async function Home() {
             {canEdit ? "Build a lineup" : "Browse lineups"}{" "}
             <ArrowRight data-icon="inline-end" />
           </Link>
+          <Link
+            href="/heroes"
+            className={buttonVariants({ variant: "outline", size: "lg" })}
+          >
+            Explore heroes
+          </Link>
         </div>
       </section>
       <section
-        className={`grid gap-4 ${canEdit ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}
+        aria-label="Explore the library"
+        className={`grid gap-4 ${canEdit ? "sm:grid-cols-2 lg:grid-cols-4" : "sm:grid-cols-3"}`}
       >
         {sections.map(({ href, icon: Icon, title, description }) => (
-          <Link key={href} href={href} className="group">
-            <Card className="group-hover:border-primary/60 h-full transition-colors">
+          <Link
+            key={href}
+            href={href}
+            className="group focus-visible:outline-ring rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2"
+          >
+            <Card className="group-hover:ring-primary/60 h-full transition-shadow">
               <CardHeader>
                 <Icon className="text-primary mb-2 size-5" aria-hidden />
-                <CardTitle>{title}</CardTitle>
+                <CardTitle>
+                  <h2>{title}</h2>
+                </CardTitle>
                 <CardDescription>{description}</CardDescription>
               </CardHeader>
             </Card>
           </Link>
         ))}
       </section>
+      <p className="text-muted-foreground max-w-2xl text-sm">
+        Game details and artwork are recorded from in-game screenshots. Coverage
+        varies by hero as more details are added.
+      </p>
     </main>
   );
 }

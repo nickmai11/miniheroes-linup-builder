@@ -16,7 +16,8 @@ export const metadata: Metadata = {
     default: "Mini Heroes Library",
     template: "%s · Mini Heroes Library",
   },
-  description: "Lineup knowledge base for Mini Heroes: Magic Throne",
+  description:
+    "Hero details, builds, divinities, and shared lineups for Mini Heroes: Magic Throne.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
