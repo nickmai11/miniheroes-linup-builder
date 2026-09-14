@@ -138,7 +138,7 @@ export function AdminLogin({
       >
         <ShieldCheck aria-hidden />
         <span className={compact ? "sr-only sm:not-sr-only" : undefined}>
-          Admin login
+          Admin access
         </span>
       </Dialog.Trigger>
       <Dialog.Portal>
@@ -151,7 +151,7 @@ export function AdminLogin({
             <Dialog.Close
               render={<Button variant="ghost" size="icon" />}
               disabled={pending}
-              aria-label="Close admin login"
+              aria-label="Close admin access"
               className="absolute top-3 right-3"
             >
               <X aria-hidden />
@@ -160,7 +160,7 @@ export function AdminLogin({
               <ShieldCheck className="size-5" aria-hidden />
             </div>
             <Dialog.Title className="font-heading text-xl font-semibold">
-              Admin login
+              Admin access
             </Dialog.Title>
             <Dialog.Description className="text-muted-foreground mt-1 text-sm">
               Sign in to manage Mini Heroes Library.
