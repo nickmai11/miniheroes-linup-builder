@@ -1,3 +1,4 @@
+import { getI18n } from "@/lib/i18n/server";
 import {
   accessibleLineupIds,
   hasAppAccess,
@@ -24,9 +25,15 @@ import { getAllLineups } from "@/lib/lineups";
 import { canEditContent } from "@/lib/editing";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Lineups" };
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getI18n();
+
+  return { title: t("Lineups") };
+}
 
 export default async function LineupsPage() {
+  const { t, formatDate } = await getI18n();
+
   await requirePageAccess("/lineups");
   const lineupIds = await accessibleLineupIds();
   const [lineups, canEdit] = await Promise.all([
@@ -36,17 +43,19 @@ export default async function LineupsPage() {
 
   return (
     <PageShell
-      title="Lineups"
+      title={t("Lineups")}
       width="max-w-4xl"
       description={
         lineupIds !== null
-          ? "Lineups shared with you. Open another invitation link to add a lineup."
+          ? t(
+              "Lineups shared with you. Open another invitation link to add a lineup.",
+            )
           : undefined
       }
       actions={
         canEdit && (
           <Link href="/lineups/new" className={buttonVariants()}>
-            <Plus data-icon="inline-start" /> New lineup
+            <Plus data-icon="inline-start" /> {t("New lineup")}
           </Link>
         )
       }
@@ -54,12 +63,12 @@ export default async function LineupsPage() {
       {lineups.length === 0 ? (
         <Card>
           <CardContent className="text-muted-foreground py-10 text-center">
-            No lineups yet.
+            {t("No lineups yet.")}{" "}
             {canEdit && (
               <>
                 {" "}
                 <Link href="/lineups/new" className="text-primary underline">
-                  Build the first one.
+                  {t("Build the first one.")}
                 </Link>
               </>
             )}
@@ -78,7 +87,7 @@ export default async function LineupsPage() {
                     <CardTitle className="flex items-baseline justify-between gap-4">
                       <span>{lineup.name}</span>
                       <span className="text-muted-foreground text-xs font-normal">
-                        {lineup.createdAt.toLocaleDateString()}
+                        {formatDate(lineup.createdAt)}
                       </span>
                     </CardTitle>
                   </CardHeader>
@@ -90,7 +99,7 @@ export default async function LineupsPage() {
                         {hero ? (
                           <Link
                             href={`/heroes/${hero.slug}`}
-                            aria-label={`View ${hero.name}`}
+                            aria-label={t("View {name}", { name: hero.name })}
                             className="focus-visible:outline-ring rounded-md focus-visible:outline-2 focus-visible:outline-offset-2"
                           >
                             <HeroPortrait hero={hero} sizes="64px" />
@@ -120,10 +129,10 @@ export default async function LineupsPage() {
                   {canEdit && (
                     <Link
                       href={`/lineups/new?clone=${lineup.id}`}
-                      aria-label={`Clone ${lineup.name}`}
+                      aria-label={t("Clone {name}", { name: lineup.name })}
                       className={buttonVariants({ variant: "outline" })}
                     >
-                      <Copy data-icon="inline-start" /> Clone
+                      <Copy data-icon="inline-start" /> {t("Clone")}
                     </Link>
                   )}
                   <LineupShare lineupId={lineup.id} canInvite={canEdit} />

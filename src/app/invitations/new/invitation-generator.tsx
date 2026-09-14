@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18n } from "@/lib/i18n/client";
 import { useState } from "react";
 import { Check, Copy, KeyRound, LoaderCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,8 @@ import {
 } from "@/components/ui/card";
 
 export function InvitationGenerator() {
+  const { t } = useI18n();
+
   const [code, setCode] = useState("");
   const [link, setLink] = useState("");
   const [pending, setPending] = useState(false);
@@ -65,9 +68,11 @@ export function InvitationGenerator() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Invite someone</CardTitle>
+        <CardTitle>{t("Invite someone")}</CardTitle>
         <CardDescription>
-          Each code unlocks access for one browser. Unused codes do not expire.
+          {t(
+            "Each code unlocks access for one browser. Unused codes do not expire.",
+          )}
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-6">
@@ -82,12 +87,14 @@ export function InvitationGenerator() {
           ) : (
             <KeyRound aria-hidden />
           )}
-          {pending ? "Generating…" : "Generate"}
+          {pending ? t("Generating…") : t("Generate")}
         </Button>
         {code && (
           <div className="flex flex-col gap-5" aria-live="polite">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="generated-code">Your invitation code</Label>
+              <Label htmlFor="generated-code">
+                {t("Your invitation code")}
+              </Label>
               <Input
                 id="generated-code"
                 value={code}
@@ -105,19 +112,21 @@ export function InvitationGenerator() {
                 ) : (
                   <Copy aria-hidden />
                 )}
-                {copied === "code" ? "Copied code" : "Copy code"}
+                {copied === "code" ? t("Copied code") : t("Copy code")}
               </Button>
             </div>
             <div className="flex flex-col gap-2 border-t pt-5">
-              <Label htmlFor="invitation-link">Invitation link</Label>
+              <Label htmlFor="invitation-link">{t("Invitation link")}</Label>
               <p className="text-muted-foreground text-xs">
-                This link opens the app and enters the code automatically.
+                {t(
+                  "This link opens the app and enters the code automatically.",
+                )}
               </p>
               {link && (
                 <>
                   <Input
                     id="invitation-link"
-                    aria-label="Invitation link"
+                    aria-label={t("Invitation link")}
                     value={link}
                     readOnly
                     onFocus={(event) => event.target.select()}
@@ -132,7 +141,9 @@ export function InvitationGenerator() {
                     ) : (
                       <Copy aria-hidden />
                     )}
-                    {copied === "link" ? "Copied link" : "Copy invitation link"}
+                    {copied === "link"
+                      ? t("Copied link")
+                      : t("Copy invitation link")}
                   </Button>
                 </>
               )}
@@ -141,7 +152,7 @@ export function InvitationGenerator() {
         )}
         {error && (
           <p role="alert" className="text-destructive text-sm">
-            {error}
+            {t(error)}
           </p>
         )}
       </CardContent>

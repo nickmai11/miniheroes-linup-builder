@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18n } from "@/lib/i18n/client";
 import type { ReactNode } from "react";
 import { cn } from "cn";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,14 +24,16 @@ export function LoadingPage({
   children: ReactNode;
   className?: string;
 }) {
+  const { t } = useI18n();
+
   return (
     <main
       aria-busy="true"
-      aria-label={`Loading ${label}`}
+      aria-label={t("Loading {page}", { page: t(label) })}
       className={cn("mx-auto flex w-full flex-col", className)}
     >
       <p role="status" className="sr-only">
-        Loading {label}…
+        {t("Loading {page}…", { page: t(label) })}
       </p>
       <div aria-hidden="true" className="contents">
         {children}

@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18n } from "@/lib/i18n/client";
 import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -23,6 +24,8 @@ export function HeroBuildImport({
   onImport,
   onCancel,
 }: Props) {
+  const { t } = useI18n();
+
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(0);
   const [retry, setRetry] = useState(0);
@@ -80,7 +83,7 @@ export function HeroBuildImport({
   return (
     <form
       id="hero-build-import"
-      aria-label="Import a build from another hero"
+      aria-label={t("Import a build from another hero")}
       className="bg-background flex min-w-0 flex-col gap-4 rounded-lg border p-3"
       onSubmit={(event) => {
         event.preventDefault();
@@ -94,12 +97,12 @@ export function HeroBuildImport({
       }}
     >
       <p className="text-muted-foreground text-sm">
-        Copy a build from another hero. Matching cores use this hero&apos;s own
-        bonuses; cores not recorded for this hero are skipped. You can edit your
-        copy after importing.
+        {t(
+          "Copy a build from another hero. Matching cores use this hero's own bonuses; cores not recorded for this hero are skipped. You can edit your copy after importing.",
+        )}
       </p>
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="import-build-search">Search builds</Label>
+        <Label htmlFor="import-build-search">{t("Search builds")}</Label>
         <div className="relative">
           <Search
             aria-hidden
@@ -108,7 +111,7 @@ export function HeroBuildImport({
           <Input
             id="import-build-search"
             type="search"
-            placeholder="Search by hero or build name…"
+            placeholder={t("Search by hero or build name…")}
             className="pl-8"
             autoFocus
             maxLength={200}
@@ -129,32 +132,32 @@ export function HeroBuildImport({
       >
         {loading ? (
           <p role="status" className="text-muted-foreground p-4 text-sm">
-            Loading builds…
+            {t("Loading builds…")}
           </p>
         ) : current.error ? (
           <div className="flex flex-col items-start gap-3 p-4">
             <p role="alert" className="text-destructive text-sm">
-              {current.error}
+              {t(current.error)}
             </p>
             <Button
               type="button"
               variant="outline"
               onClick={() => setRetry((v) => v + 1)}
             >
-              Try again
+              {t("Try again")}
             </Button>
           </div>
         ) : current.data?.builds.length === 0 ? (
           <p role="status" className="text-muted-foreground p-4 text-sm">
             {search
-              ? "No builds match your search."
+              ? t("No builds match your search.")
               : page > 0
-                ? "No more builds. Go back to the previous page."
-                : "No builds from other heroes yet."}
+                ? t("No more builds. Go back to the previous page.")
+                : t("No builds from other heroes yet.")}
           </p>
         ) : (
           <fieldset disabled={pending} className="min-w-0 disabled:opacity-60">
-            <legend className="sr-only">Choose a build to import</legend>
+            <legend className="sr-only">{t("Choose a build to import")}</legend>
             {current.data?.builds.map((build) => (
               <label
                 key={build.id}
@@ -186,7 +189,7 @@ export function HeroBuildImport({
 
       {(page > 0 || current?.data?.hasNextPage) && (
         <nav
-          aria-label="Build search pages"
+          aria-label={t("Build search pages")}
           className="flex items-center justify-between gap-2"
         >
           <Button
@@ -196,9 +199,11 @@ export function HeroBuildImport({
             disabled={pending || loading || page === 0}
             onClick={() => changePage(page - 1)}
           >
-            <ChevronLeft data-icon="inline-start" /> Previous
+            <ChevronLeft data-icon="inline-start" /> {t("Previous")}
           </Button>
-          <span className="text-muted-foreground text-xs">Page {page + 1}</span>
+          <span className="text-muted-foreground text-xs">
+            {t("Page {page}", { page: page + 1 })}
+          </span>
           <Button
             type="button"
             variant="outline"
@@ -206,19 +211,19 @@ export function HeroBuildImport({
             disabled={pending || loading || !current?.data?.hasNextPage}
             onClick={() => changePage(page + 1)}
           >
-            Next <ChevronRight data-icon="inline-end" />
+            {t("Next")} <ChevronRight data-icon="inline-end" />
           </Button>
         </nav>
       )}
 
       {error && (
         <p role="alert" className="text-destructive text-sm">
-          {error}
+          {t(error)}
         </p>
       )}
       <div className="flex items-center gap-2">
         <Button type="submit" disabled={pending || !selected}>
-          {pending ? "Importing…" : "Import build"}
+          {pending ? t("Importing…") : t("Import build")}
         </Button>
         <Button
           type="button"
@@ -226,7 +231,7 @@ export function HeroBuildImport({
           disabled={pending}
           onClick={onCancel}
         >
-          Cancel
+          {t("Cancel")}
         </Button>
       </div>
     </form>

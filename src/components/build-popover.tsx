@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18n } from "@/lib/i18n/client";
 import type { ReactElement } from "react";
 import { Eye } from "lucide-react";
 import { InfoPopover } from "@/components/info-popover";
@@ -17,9 +18,11 @@ export function BuildPopover({
   nativeButton?: boolean;
   triggerRole?: "option";
 }) {
+  const { t } = useI18n();
+
   return (
     <InfoPopover
-      label={`${build.name} build stats`}
+      label={t("{name} build stats", { name: build.name })}
       nativeButton={nativeButton}
       triggerRole={triggerRole}
       popupClassName="w-[min(40rem,calc(100vw-2rem))]"
@@ -27,7 +30,7 @@ export function BuildPopover({
         trigger ?? (
           <button
             type="button"
-            aria-label={`Preview ${build.name} build stats`}
+            aria-label={t("Preview {name} build stats", { name: build.name })}
             className="text-primary focus-visible:ring-ring/50 flex w-full min-w-0 items-center gap-1.5 rounded text-left text-xs font-medium underline decoration-dotted underline-offset-4 focus-visible:ring-3"
           >
             <span className="truncate">{build.name}</span>

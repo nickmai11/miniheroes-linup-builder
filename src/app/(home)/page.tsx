@@ -1,3 +1,4 @@
+import { getI18n } from "@/lib/i18n/server";
 import { hasAppAccess, requirePageAccess } from "@/lib/app-access";
 import Link from "next/link";
 import { ArrowRight, Hammer, ListOrdered, Sparkles, Users } from "lucide-react";
@@ -42,6 +43,8 @@ const SECTIONS = [
 ] as const;
 
 export default async function Home() {
+  const { t } = await getI18n();
+
   await requirePageAccess();
   const canEdit = (await canEditContent()) && (await hasAppAccess());
   const sections = SECTIONS.filter(
@@ -54,30 +57,31 @@ export default async function Home() {
           Mini Heroes: Magic Throne
         </p>
         <h1 className="max-w-2xl text-3xl font-semibold">
-          Heroes, builds, and lineups in one place.
+          {t("Heroes, builds, and lineups in one place.")}
         </h1>
         <p className="text-muted-foreground max-w-2xl">
-          Explore hero details and saved builds, look up mythic divinities, and
-          browse five-hero teams with their pets, relics, and fishes.
+          {t(
+            "Explore hero details and saved builds, look up mythic divinities, and browse five-hero teams with their pets, relics, and fishes.",
+          )}
         </p>
         <div className="flex flex-wrap gap-3">
           <Link
             href={canEdit ? "/lineups/new" : "/lineups"}
             className={buttonVariants({ size: "lg" })}
           >
-            {canEdit ? "Build a lineup" : "Browse lineups"}{" "}
+            {canEdit ? t("Build a lineup") : t("Browse lineups")}{" "}
             <ArrowRight data-icon="inline-end" />
           </Link>
           <Link
             href="/heroes"
             className={buttonVariants({ variant: "outline", size: "lg" })}
           >
-            Explore heroes
+            {t("Explore heroes")}
           </Link>
         </div>
       </section>
       <section
-        aria-label="Explore the library"
+        aria-label={t("Explore the library")}
         className={`grid gap-4 ${canEdit ? "sm:grid-cols-2 lg:grid-cols-4" : "sm:grid-cols-3"}`}
       >
         {sections.map(({ href, icon: Icon, title, description }) => (
@@ -90,17 +94,18 @@ export default async function Home() {
               <CardHeader>
                 <Icon className="text-primary mb-2 size-5" aria-hidden />
                 <CardTitle>
-                  <h2>{title}</h2>
+                  <h2>{t(title)}</h2>
                 </CardTitle>
-                <CardDescription>{description}</CardDescription>
+                <CardDescription>{t(description)}</CardDescription>
               </CardHeader>
             </Card>
           </Link>
         ))}
       </section>
       <p className="text-muted-foreground max-w-2xl text-sm">
-        Game details and artwork are recorded from in-game screenshots. Coverage
-        varies by hero as more details are added.
+        {t(
+          "Game details and artwork are recorded from in-game screenshots. Coverage varies by hero as more details are added.",
+        )}
       </p>
     </main>
   );

@@ -1,3 +1,4 @@
+import { getI18n } from "@/lib/i18n/server";
 import { requireAppAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -12,9 +13,15 @@ import { getBuildsForHeroes } from "@/lib/builds";
 import { LineupBuilder } from "./lineup-builder";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Build a lineup" };
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getI18n();
+
+  return { title: t("Build a lineup") };
+}
 
 export default async function NewLineupPage(props: PageProps<"/lineups/new">) {
+  const { t } = await getI18n();
+
   await requireAppAccess();
   if (!(await canEditContent())) notFound();
   const searchParams = await props.searchParams;
@@ -44,11 +51,16 @@ export default async function NewLineupPage(props: PageProps<"/lineups/new">) {
   ]);
   return (
     <PageShell
-      title={cloneFrom ? "Clone lineup" : "Build a lineup"}
+      title={cloneFrom ? t("Clone lineup") : t("Build a lineup")}
       description={
         cloneFrom
-          ? `Start with a copy of ${cloneFrom.name}, make your changes, and save a new lineup.`
-          : "Choose your heroes, assign their pets and relics, choose fishes, then write up why the team works."
+          ? t(
+              "Start with a copy of {name}, make your changes, and save a new lineup.",
+              { name: cloneFrom.name },
+            )
+          : t(
+              "Choose your heroes, assign their pets and relics, choose fishes, then write up why the team works.",
+            )
       }
     >
       <LineupBuilder

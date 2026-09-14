@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18n } from "@/lib/i18n/client";
 import { useState } from "react";
 import {
   Check,
@@ -15,6 +16,8 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
+  const { t } = useI18n();
+
   const [paths, setPaths] = useState(initialPaths);
   const [url, setUrl] = useState("");
   const [pending, setPending] = useState<string | null>(null);
@@ -44,8 +47,8 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
       if (!remove) setUrl("");
       setMessage(
         remove
-          ? `${result.path} now requires an invitation.`
-          : `${result.path} is now public.`,
+          ? t("{path} now requires an invitation.", { path: result.path })
+          : t("{path} is now public.", { path: result.path }),
       );
     } catch (reason) {
       setError(
@@ -74,7 +77,7 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
     <div className="flex flex-col gap-6">
       <Card>
         <CardHeader>
-          <CardTitle>Make a page public</CardTitle>
+          <CardTitle>{t("Make a page public")}</CardTitle>
         </CardHeader>
         <CardContent>
           <form
@@ -84,13 +87,13 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
               void update(url);
             }}
           >
-            <Label htmlFor="public-url">Page URL</Label>
+            <Label htmlFor="public-url">{t("Page URL")}</Label>
             <div className="flex flex-col gap-3 sm:flex-row">
               <Input
                 id="public-url"
                 value={url}
                 onChange={(event) => setUrl(event.target.value)}
-                placeholder="/lineups/123 or paste a page link"
+                placeholder={t("/lineups/123 or paste a page link")}
                 required
                 maxLength={4096}
                 autoComplete="off"
@@ -102,20 +105,20 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
                 ) : (
                   <Globe aria-hidden />
                 )}
-                Add public URL
+                {t("Add public URL")}
               </Button>
             </div>
             <p id="public-url-help" className="text-muted-foreground text-sm">
-              Only this page becomes public, including its query variations and
-              images. Linked pages keep their own access settings. Changes apply
-              immediately.
+              {t(
+                "Only this page becomes public, including its query variations and images. Linked pages keep their own access settings. Changes apply immediately.",
+              )}
             </p>
           </form>
         </CardContent>
       </Card>
       {error && (
         <p role="alert" className="text-destructive text-sm">
-          {error}
+          {t(error)}
         </p>
       )}
       <p role="status" className="text-muted-foreground text-sm empty:hidden">
@@ -124,7 +127,7 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
       <Card>
         <CardHeader>
           <CardTitle>
-            Public pages{" "}
+            {t("Public pages")}{" "}
             <span className="text-muted-foreground font-normal">
               ({paths.length})
             </span>
@@ -133,8 +136,9 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
         <CardContent>
           {paths.length === 0 ? (
             <p className="text-muted-foreground py-4 text-sm">
-              No public URLs yet. Add a page above to share it without an
-              invitation.
+              {t(
+                "No public URLs yet. Add a page above to share it without an invitation.",
+              )}
             </p>
           ) : (
             <ul className="divide-y">
@@ -160,14 +164,14 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
                     variant="outline"
                     size="sm"
                     onClick={() => void copy(path)}
-                    aria-label={`Copy public link for ${path}`}
+                    aria-label={t("Copy public link for {path}", { path })}
                   >
                     {copied === path ? (
                       <Check aria-hidden />
                     ) : (
                       <Copy aria-hidden />
                     )}
-                    {copied === path ? "Copied" : "Copy link"}
+                    {copied === path ? t("Copied") : t("Copy link")}
                   </Button>
                   <Button
                     type="button"
@@ -175,14 +179,14 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
                     size="sm"
                     disabled={pending !== null}
                     onClick={() => void update(path, true)}
-                    aria-label={`Remove public access to ${path}`}
+                    aria-label={t("Remove public access to {path}", { path })}
                   >
                     {pending === path ? (
                       <LoaderCircle className="animate-spin" aria-hidden />
                     ) : (
                       <Trash2 aria-hidden />
                     )}
-                    Remove
+                    {t("Remove")}
                   </Button>
                 </li>
               ))}

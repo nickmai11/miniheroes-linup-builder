@@ -1,3 +1,4 @@
+import { getI18n } from "@/lib/i18n/server";
 import { hasAppAccess, requirePageAccess } from "@/lib/app-access";
 import { desc } from "drizzle-orm";
 import { db, schema } from "@/db";
@@ -8,6 +9,8 @@ import { NoteForm } from "./note-form";
 export const dynamic = "force-dynamic";
 
 export default async function NotesPage() {
+  const { t, formatDate } = await getI18n();
+
   await requirePageAccess();
   const canEdit = (await canEditContent()) && (await hasAppAccess());
   const rows = await db
@@ -17,11 +20,11 @@ export default async function NotesPage() {
 
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-col gap-8 p-8">
-      <h1 className="text-2xl font-semibold">Notes</h1>
+      <h1 className="text-2xl font-semibold">{t("Notes")}</h1>
       {canEdit && <NoteForm />}
       <ul className="flex flex-col gap-3">
         {rows.length === 0 && (
-          <li className="text-muted-foreground">No notes yet.</li>
+          <li className="text-muted-foreground">{t("No notes yet.")}</li>
         )}
         {rows.map((note) => (
           <li
@@ -36,13 +39,13 @@ export default async function NotesPage() {
                 </p>
               )}
               <p className="text-muted-foreground mt-2 text-xs">
-                {note.createdAt.toLocaleString()}
+                {formatDate(note.createdAt, true)}
               </p>
             </div>
             {canEdit && (
               <form action={deleteNote.bind(null, note.id)}>
                 <button className="text-destructive text-sm hover:underline">
-                  Delete
+                  {t("Delete")}
                 </button>
               </form>
             )}

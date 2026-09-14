@@ -1,6 +1,10 @@
+"use client";
+
+import { useI18n } from "@/lib/i18n/client";
 import Image from "next/image";
 import { Check, Hammer } from "lucide-react";
 import type { Divinity, Hero } from "@/db/schema";
+import { ROLE_LABELS } from "@/lib/hero-labels";
 import { versioned } from "@/lib/asset-version";
 import { DivinityIcon } from "./divinity-icon";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
@@ -37,6 +41,8 @@ export function HeroPortrait({
   /** Eager-load above-the-fold portraits (first row of a grid). */
   priority?: boolean;
 }) {
+  const { t } = useI18n();
+
   return (
     <div
       className={`ring-border relative aspect-[81/100] w-full overflow-hidden rounded-md ring-1 ${className}`}
@@ -63,7 +69,7 @@ export function HeroPortrait({
           <TooltipTrigger
             render={<span />}
             role="img"
-            aria-label={`Build available for ${hero.name}`}
+            aria-label={t("Build available for {name}", { name: hero.name })}
             // Suppress any native title inherited from the surrounding hero link.
             title=""
             className="absolute top-[max(2%,3px)] left-[max(2%,3px)] flex aspect-square w-[18%] max-w-12 min-w-5 items-center justify-center rounded-[20%] bg-slate-950 text-amber-200 shadow-md ring-2 shadow-black/50 ring-amber-300"
@@ -76,7 +82,7 @@ export function HeroPortrait({
             />
           </TooltipTrigger>
           <TooltipContent role="tooltip" side="top" sideOffset={8}>
-            {hero.name} has a saved build
+            {t("{name} has a saved build", { name: hero.name })}
           </TooltipContent>
         </Tooltip>
       )}
@@ -121,11 +127,12 @@ export function RoleBadge({
   size?: number;
   className?: string;
 }) {
+  const { t } = useI18n();
   return (
     <Image
       src={versioned(BADGE_SRC[role])}
-      alt={role}
-      title={role}
+      alt={t(ROLE_LABELS[role])}
+      title={t(ROLE_LABELS[role])}
       width={size}
       height={size}
       className={`inline-block shrink-0 ${className}`}

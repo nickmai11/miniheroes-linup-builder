@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18n } from "@/lib/i18n/client";
 import type { ReactElement } from "react";
 import { InfoPopover } from "@/components/info-popover";
 import type { Fish } from "@/db/schema";
@@ -11,9 +12,11 @@ export function FishPopover({
   fish: Pick<Fish, "name" | "area" | "bait">;
   trigger?: ReactElement;
 }) {
+  const { t } = useI18n();
+
   return (
     <InfoPopover
-      label={`Where to get ${fish.name}`}
+      label={t("Where to get {name}", { name: fish.name })}
       popupClassName="w-64"
       trigger={
         trigger ?? (
@@ -29,12 +32,14 @@ export function FishPopover({
       <div className="flex flex-col gap-3 text-sm">
         <h3 className="font-semibold">{fish.name}</h3>
         <div>
-          <p className="text-muted-foreground text-xs">Where to get it</p>
+          <p className="text-muted-foreground text-xs">
+            {t("Where to get it")}
+          </p>
           <p>{fish.area || "Location not recorded yet."}</p>
         </div>
         {fish.bait && (
           <div>
-            <p className="text-muted-foreground text-xs">Bait</p>
+            <p className="text-muted-foreground text-xs">{t("Bait")}</p>
             <p>{fish.bait}</p>
           </div>
         )}

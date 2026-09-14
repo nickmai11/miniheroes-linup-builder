@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18n } from "@/lib/i18n/client";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -9,6 +10,8 @@ import { Input } from "@/components/ui/input";
 import type { HeroWithDivinities } from "@/lib/heroes";
 
 export function HeroPool({ heroes }: { heroes: HeroWithDivinities[] }) {
+  const { t } = useI18n();
+
   const [query, setQuery] = useState("");
   const [role, setRole] = useState<RoleFilter>("all");
 
@@ -31,7 +34,8 @@ export function HeroPool({ heroes }: { heroes: HeroWithDivinities[] }) {
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search heroes…"
+            placeholder={t("Search heroes…")}
+            aria-label={t("Search heroes")}
             className="w-56 pl-8"
           />
         </div>
@@ -39,7 +43,7 @@ export function HeroPool({ heroes }: { heroes: HeroWithDivinities[] }) {
       </div>
 
       {visible.length === 0 ? (
-        <p className="text-muted-foreground">No heroes match.</p>
+        <p className="text-muted-foreground">{t("No heroes match.")}</p>
       ) : (
         <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
           {visible.map((hero, i) => (

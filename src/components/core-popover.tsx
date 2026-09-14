@@ -1,11 +1,14 @@
 "use client";
 
+import { useI18n } from "@/lib/i18n/client";
 import Image from "next/image";
 import type { CoreWithSkill } from "@/lib/build-types";
 import { SKILL_KIND_LABELS } from "@/lib/hero-labels";
 import { versioned } from "@/lib/asset-version";
 
 export function CoreDetails({ core }: { core: CoreWithSkill }) {
+  const { t } = useI18n();
+
   const skill = core.skill;
   return (
     <div className="flex flex-col gap-3 text-left">
@@ -29,9 +32,9 @@ export function CoreDetails({ core }: { core: CoreWithSkill }) {
             )}
             <div>
               <p className="text-primary text-xs">
-                {SKILL_KIND_LABELS[skill.kind]}
+                {t(SKILL_KIND_LABELS[skill.kind])}
                 {skill.unlockStars !== null
-                  ? ` · ${skill.unlockStars === 0 ? "Start" : `${skill.unlockStars}★`}`
+                  ? ` · ${skill.unlockStars === 0 ? t("Start") : `${skill.unlockStars}★`}`
                   : ""}
               </p>
               <h5 className="text-sm font-semibold">{skill.name}</h5>
@@ -43,7 +46,7 @@ export function CoreDetails({ core }: { core: CoreWithSkill }) {
         </div>
       ) : (
         <p className="text-muted-foreground text-sm">
-          Linked skill not recorded yet.
+          {t("Linked skill not recorded yet.")}
         </p>
       )}
     </div>

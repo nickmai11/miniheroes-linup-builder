@@ -1,3 +1,5 @@
+import { getI18n } from "@/lib/i18n/server";
+import { LanguageSwitcher } from "@/components/language-switcher";
 import Link from "next/link";
 import { Crown } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -12,6 +14,8 @@ import { isAdmin } from "@/lib/admin-access";
 import { AdminLogin } from "@/components/admin-login";
 
 export async function SiteHeader() {
+  const { t } = await getI18n();
+
   const canEdit = await canEditContent();
   const signedIn = await isAdmin();
   const access = await hasAppAccess();
@@ -28,11 +32,15 @@ export async function SiteHeader() {
             }
             className="font-heading flex min-w-0 items-center gap-2 text-sm leading-tight font-semibold sm:text-base"
           >
-            <Crown className="text-primary size-5 shrink-0" aria-hidden />
-            <span>Mini Heroes Library</span>
+            <Crown
+              className="text-primary hidden size-5 shrink-0 sm:block"
+              aria-hidden
+            />
+            <span>{t("Mini Heroes Library")}</span>
           </Link>
           <div className="ml-auto flex shrink-0 items-center gap-1">
             <AdminLogin signedIn={signedIn} compact />
+            <LanguageSwitcher />
             <ThemeToggle />
           </div>
         </div>

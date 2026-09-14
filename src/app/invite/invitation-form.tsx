@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18n } from "@/lib/i18n/client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowRight, LoaderCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,8 @@ export function InvitationForm({
   initialCode: string;
   destination: string;
 }) {
+  const { t } = useI18n();
+
   const [code, setCode] = useState(initialCode);
   const [pending, setPending] = useState(Boolean(initialCode));
   const [error, setError] = useState("");
@@ -74,13 +77,13 @@ export function InvitationForm({
       }}
     >
       <div className="flex flex-col gap-2">
-        <Label htmlFor="invitation-code">Invitation code</Label>
+        <Label htmlFor="invitation-code">{t("Invitation code")}</Label>
         <Input
           id="invitation-code"
           name="code"
           value={code}
           onChange={(event) => setCode(event.target.value)}
-          placeholder="Paste your invitation code"
+          placeholder={t("Paste your invitation code")}
           autoComplete="off"
           autoCapitalize="characters"
           spellCheck={false}
@@ -98,7 +101,7 @@ export function InvitationForm({
           role="alert"
           className="text-destructive text-sm"
         >
-          {error}
+          {t(error)}
         </p>
       )}
       <Button
@@ -110,21 +113,21 @@ export function InvitationForm({
         {pending ? (
           <>
             <LoaderCircle className="animate-spin" aria-hidden />
-            Checking invitation…
+            {t("Checking invitation…")}
           </>
         ) : (
           <>
-            Continue
-            <ArrowRight aria-hidden />
+            {t("Continue")} <ArrowRight aria-hidden />
           </>
         )}
       </Button>
       <p className="text-muted-foreground text-xs">
-        Each code can be used once. Ask the person who invited you for a new
-        code if yours has already been used.
+        {t(
+          "Each code can be used once. Ask the person who invited you for a new code if yours has already been used.",
+        )}
       </p>
       <noscript>
-        <p>Enable JavaScript to use your invitation code.</p>
+        <p>{t("Enable JavaScript to use your invitation code.")}</p>
       </noscript>
     </form>
   );

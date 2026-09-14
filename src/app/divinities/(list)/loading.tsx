@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18n } from "@/lib/i18n/client";
 import {
   LoadingPage,
   PageHeadingSkeleton,
@@ -5,9 +8,11 @@ import {
 } from "@/components/loading-skeleton";
 
 export default function Loading() {
+  const { t } = useI18n();
+
   return (
-    <LoadingPage label="divinities">
-      <PageHeadingSkeleton title="Divinities" description />
+    <LoadingPage label={t("divinities")}>
+      <PageHeadingSkeleton title={t("Divinities")} description />
       <div className="flex flex-col gap-8">
         {Array.from({ length: 4 }, (_, group) => (
           <section key={group} className="flex flex-col gap-3">

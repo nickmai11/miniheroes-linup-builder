@@ -1,3 +1,4 @@
+import { getI18n } from "@/lib/i18n/server";
 import { hasAppAccess, requirePageAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -22,15 +23,18 @@ const SLOT_LABELS = ["Slot 1", "Slot 2", "Slot 3", "Slot 4", "Slot 5"];
 export async function generateMetadata(
   props: PageProps<"/lineups/[id]">,
 ): Promise<Metadata> {
+  const { t } = await getI18n();
   const { id } = await props.params;
   await requirePageAccess(`/lineups/${id}`);
   const lineup = Number.isInteger(Number(id))
     ? await getLineup(Number(id))
     : undefined;
-  return { title: lineup?.name ?? "Lineup" };
+  return { title: lineup?.name ?? t("Lineup") };
 }
 
 export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
+  const { t, formatDate } = await getI18n();
+
   const { id } = await props.params;
   await requirePageAccess(`/lineups/${id}`);
   const numericId = Number(id);
@@ -45,7 +49,9 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
   return (
     <PageShell
       title={lineup.name}
-      description={`Saved ${lineup.createdAt.toLocaleString()}`}
+      description={t("Saved {date}", {
+        date: formatDate(lineup.createdAt, true),
+      })}
       width="max-w-4xl"
     >
       <div className="flex flex-wrap items-start gap-2">
@@ -56,23 +62,23 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
               href={`/lineups/${lineup.id}/edit`}
               className={buttonVariants()}
             >
-              <Pencil data-icon="inline-start" /> Edit lineup
+              <Pencil data-icon="inline-start" /> {t("Edit lineup")}
             </Link>
             <Link
               href={`/lineups/new?clone=${lineup.id}`}
               className={buttonVariants({ variant: "outline" })}
             >
-              <Copy data-icon="inline-start" /> Clone lineup
+              <Copy data-icon="inline-start" /> {t("Clone lineup")}
             </Link>
             <Link
               href="/lineups/new"
               className={buttonVariants({ variant: "outline" })}
             >
-              <Plus data-icon="inline-start" /> New lineup
+              <Plus data-icon="inline-start" /> {t("New lineup")}
             </Link>
             <form action={deleteLineup.bind(null, lineup.id)}>
               <Button type="submit" variant="destructive">
-                <Trash2 data-icon="inline-start" /> Delete
+                <Trash2 data-icon="inline-start" /> {t("Delete")}
               </Button>
             </form>
           </>
@@ -88,7 +94,7 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
             {hero ? (
               <Link
                 href={`/heroes/${hero.slug}`}
-                aria-label={`View ${hero.name}`}
+                aria-label={t("View {name}", { name: hero.name })}
                 className="hover:text-primary focus-visible:outline-ring flex w-full min-w-0 flex-col items-center gap-1.5 rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
               >
                 <HeroPortrait
@@ -101,12 +107,12 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
               <div className="aspect-[81/100] w-full rounded-md border border-dashed" />
             )}
             <span className="text-muted-foreground text-xs">
-              {SLOT_LABELS[i]}
+              {t(SLOT_LABELS[i])}
             </span>
             {hero?.build && (
               <div className="mt-1 w-full border-t pt-2 text-left">
                 <p className="text-muted-foreground mb-1 text-xs font-medium">
-                  Build
+                  {t("Build")}
                 </p>
                 <BuildPopover build={hero.build} />
               </div>
@@ -125,7 +131,7 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
       {lineup.description ? (
         <Card>
           <CardHeader>
-            <CardTitle>Why it works</CardTitle>
+            <CardTitle>{t("Why it works")}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm whitespace-pre-wrap">{lineup.description}</p>
@@ -136,7 +142,7 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
       {lineup.slots.some((h) => h?.notes) && (
         <Card>
           <CardHeader>
-            <CardTitle>Hero notes</CardTitle>
+            <CardTitle>{t("Hero notes")}</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-2">
             {lineup.slots.map(

@@ -4,7 +4,10 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { loadTypeScript } from "./load-typescript.mjs";
 
-const { HeroPortrait } = loadTypeScript("src/components/hero-portrait.tsx");
+const i18n = loadTypeScript("src/lib/i18n/client.tsx");
+const { HeroPortrait } = loadTypeScript("src/components/hero-portrait.tsx", {
+  "@/lib/i18n/client": i18n,
+});
 const hero = {
   name: "Sea Captain",
   role: "warrior",
@@ -12,9 +15,22 @@ const hero = {
   imageUrl: "/heroes/sea-captain.png",
 };
 
-function portrait(props) {
-  return renderToStaticMarkup(createElement(HeroPortrait, props));
+function portrait(props, locale = "en") {
+  return renderToStaticMarkup(
+    createElement(
+      i18n.I18nProvider,
+      { locale },
+      createElement(HeroPortrait, props),
+    ),
+  );
 }
+
+test("Vietnamese build indicators preserve the recorded hero name and artwork", () => {
+  const html = portrait({ hero: { ...hero, hasBuild: true } }, "vi");
+  assert.match(html, /aria-label="Có cách xây dựng cho Sea Captain"/);
+  assert.match(html, /alt="Sea Captain"/);
+  assert.match(html, /heroes(?:\/|%2F)sea-captain\.png/);
+});
 
 test("a saved build adds an accessible portrait indicator without replacing the art or divinities", () => {
   const html = portrait({

@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18n } from "@/lib/i18n/client";
 import {
   LoadingPage,
   SectionSkeleton,
@@ -6,9 +9,11 @@ import {
 } from "@/components/loading-skeleton";
 
 export default function Loading() {
+  const { t } = useI18n();
+
   return (
     <LoadingPage
-      label="hero details"
+      label={t("hero details")}
       className="max-w-5xl gap-6 px-4 py-8 sm:px-6"
     >
       <Skeleton className="h-5.5 w-24" />
@@ -26,7 +31,7 @@ export default function Loading() {
             <Skeleton className="h-[1.55rem] w-24" />
           </header>
 
-          <SectionSkeleton title="Talents">
+          <SectionSkeleton title={t("Talents")}>
             <ul className="grid gap-3 sm:grid-cols-2">
               {Array.from({ length: 6 }, (_, i) => (
                 <li
@@ -52,7 +57,7 @@ export default function Loading() {
             </ul>
           </SectionSkeleton>
 
-          <SectionSkeleton title="Awakening skills">
+          <SectionSkeleton title={t("Awakening skills")}>
             <ul className="grid gap-3 sm:grid-cols-2">
               {Array.from({ length: 2 }, (_, i) => (
                 <li
@@ -67,7 +72,7 @@ export default function Loading() {
             </ul>
           </SectionSkeleton>
 
-          <SectionSkeleton title="Artifacts">
+          <SectionSkeleton title={t("Artifacts")}>
             <div className="flex flex-col gap-4">
               <div className="flex items-center gap-3">
                 <Skeleton className="size-16 shrink-0" />
@@ -91,7 +96,7 @@ export default function Loading() {
             </div>
           </SectionSkeleton>
 
-          <SectionSkeleton title="Divinities">
+          <SectionSkeleton title={t("Divinities")}>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {Array.from({ length: 2 }, (_, i) => (
                 <div
@@ -105,27 +110,30 @@ export default function Loading() {
             </div>
           </SectionSkeleton>
 
-          <SectionSkeleton title="Builds">
+          <SectionSkeleton title={t("Builds")}>
             <div className="bg-background flex flex-col gap-8 rounded-lg border p-3">
               <Skeleton className="h-6 w-40" />
-              {["Runes", "Weapons", "Cores"].map((section) => (
+              {[t("Runes"), t("Weapons"), t("Cores")].map((section) => (
                 <div key={section} className="flex flex-col gap-3">
                   <div className="border-primary bg-primary/10 text-foreground rounded-r-md border-l-4 px-3 py-1.5 text-base font-bold">
                     {section}
                   </div>
                   {section === "Runes" ? (
                     <div className="flex flex-col gap-4">
-                      {["Attack", "Effect", "Energy", "Survival"].map(
-                        (type) => (
-                          <div key={type} className="flex flex-col gap-1.5">
-                            <p className="text-xs font-medium">{type}</p>
-                            <div className="flex flex-wrap gap-1.5">
-                              <Skeleton className="h-7 w-24" />
-                              <Skeleton className="h-7 w-20" />
-                            </div>
+                      {[
+                        t("Attack"),
+                        t("Effect"),
+                        t("Energy"),
+                        t("Survival"),
+                      ].map((type) => (
+                        <div key={type} className="flex flex-col gap-1.5">
+                          <p className="text-xs font-medium">{type}</p>
+                          <div className="flex flex-wrap gap-1.5">
+                            <Skeleton className="h-7 w-24" />
+                            <Skeleton className="h-7 w-20" />
                           </div>
-                        ),
-                      )}
+                        </div>
+                      ))}
                     </div>
                   ) : (
                     <div className="flex flex-wrap gap-1.5">
@@ -138,7 +146,7 @@ export default function Loading() {
             </div>
           </SectionSkeleton>
 
-          <SectionSkeleton title="Lineups">
+          <SectionSkeleton title={t("Lineups")}>
             <div className="flex flex-col divide-y">
               {Array.from({ length: 2 }, (_, i) => (
                 <div

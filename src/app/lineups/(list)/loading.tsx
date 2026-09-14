@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18n } from "@/lib/i18n/client";
 import {
   LoadingPage,
   PageHeadingSkeleton,
@@ -12,9 +15,14 @@ import {
 } from "@/components/ui/card";
 
 export default function Loading() {
+  const { t } = useI18n();
+
   return (
-    <LoadingPage label="lineups" className="max-w-4xl gap-6 px-4 py-8 sm:px-6">
-      <PageHeadingSkeleton title="Lineups" actions />
+    <LoadingPage
+      label={t("lineups")}
+      className="max-w-4xl gap-6 px-4 py-8 sm:px-6"
+    >
+      <PageHeadingSkeleton title={t("Lineups")} actions />
       <ul className="flex flex-col gap-3">
         {Array.from({ length: 3 }, (_, i) => (
           <li key={i}>

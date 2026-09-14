@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18n } from "@/lib/i18n/client";
 import { useEffect, useRef, useState } from "react";
 import { Dialog } from "@base-ui/react/dialog";
 import {
@@ -22,6 +23,8 @@ export function AdminLogin({
   signedIn: boolean;
   compact?: boolean;
 }) {
+  const { t } = useI18n();
+
   const [open, setOpen] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
@@ -58,7 +61,9 @@ export function AdminLogin({
       if (!response.ok)
         throw new Error(
           result?.error ||
-            `Could not ${signedIn ? "sign out" : "sign in"}. Please try again.`,
+            (signedIn
+              ? "Could not sign out. Please try again."
+              : "Could not sign in. Please try again."),
         );
       if (passwordRef.current) passwordRef.current.value = "";
       // A fresh document also clears previously cached admin navigation on logout.
@@ -88,7 +93,7 @@ export function AdminLogin({
     return (
       <div className="relative flex items-center gap-2">
         <span className="text-primary hidden items-center gap-1 text-xs font-medium lg:flex">
-          <ShieldCheck className="size-3.5" aria-hidden /> Admin
+          <ShieldCheck className="size-3.5" aria-hidden /> {t("Admin")}
         </span>
         <Button
           variant="ghost"
@@ -105,7 +110,7 @@ export function AdminLogin({
             <LogOut aria-hidden />
           )}
           <span className={compact ? "sr-only sm:not-sr-only" : undefined}>
-            Sign out
+            {t("Sign out")}
           </span>
         </Button>
         {error && (
@@ -113,7 +118,7 @@ export function AdminLogin({
             role="alert"
             className="bg-popover text-destructive absolute top-full right-0 mt-2 w-64 rounded-lg border p-3 text-sm shadow-lg"
           >
-            {error}
+            {t(error)}
           </p>
         )}
       </div>
@@ -138,7 +143,7 @@ export function AdminLogin({
       >
         <ShieldCheck aria-hidden />
         <span className={compact ? "sr-only sm:not-sr-only" : undefined}>
-          Admin access
+          {t("Admin access")}
         </span>
       </Dialog.Trigger>
       <Dialog.Portal>
@@ -151,7 +156,7 @@ export function AdminLogin({
             <Dialog.Close
               render={<Button variant="ghost" size="icon" />}
               disabled={pending}
-              aria-label="Close admin access"
+              aria-label={t("Close admin access")}
               className="absolute top-3 right-3"
             >
               <X aria-hidden />
@@ -160,10 +165,10 @@ export function AdminLogin({
               <ShieldCheck className="size-5" aria-hidden />
             </div>
             <Dialog.Title className="font-heading text-xl font-semibold">
-              Admin access
+              {t("Admin access")}
             </Dialog.Title>
             <Dialog.Description className="text-muted-foreground mt-1 text-sm">
-              Sign in to manage Mini Heroes Library.
+              {t("Sign in to manage Mini Heroes Library.")}
             </Dialog.Description>
             <form
               className="mt-6 flex flex-col gap-4"
@@ -173,7 +178,7 @@ export function AdminLogin({
               }}
             >
               <div className="flex flex-col gap-2">
-                <Label htmlFor="admin-email">Email</Label>
+                <Label htmlFor="admin-email">{t("Email")}</Label>
                 <Input
                   ref={emailRef}
                   id="admin-email"
@@ -191,7 +196,7 @@ export function AdminLogin({
                 />
               </div>
               <div className="flex flex-col gap-2">
-                <Label htmlFor="admin-password">Password</Label>
+                <Label htmlFor="admin-password">{t("Password")}</Label>
                 <div className="relative">
                   <Input
                     ref={passwordRef}
@@ -211,7 +216,7 @@ export function AdminLogin({
                     variant="ghost"
                     size="icon"
                     aria-label={
-                      showPassword ? "Hide password" : "Show password"
+                      showPassword ? t("Hide password") : t("Show password")
                     }
                     aria-pressed={showPassword}
                     onClick={() => setShowPassword(!showPassword)}
@@ -231,7 +236,7 @@ export function AdminLogin({
                   role="alert"
                   className="text-destructive text-sm"
                 >
-                  {error}
+                  {t(error)}
                 </p>
               )}
               <Button
@@ -243,7 +248,7 @@ export function AdminLogin({
                 {pending && (
                   <LoaderCircle className="animate-spin" aria-hidden />
                 )}
-                {pending ? "Signing in…" : "Sign in"}
+                {pending ? t("Signing in…") : t("Sign in")}
               </Button>
             </form>
           </Dialog.Popup>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18n } from "@/lib/i18n/client";
 import { Download, Pencil, Plus, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
@@ -94,6 +95,8 @@ export function HeroBuilds({
   weaponAttributes,
   cores,
 }: Props) {
+  const { t } = useI18n();
+
   const [draft, setDraft] = useState<Draft | null>(null);
   const [importing, setImporting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -207,7 +210,8 @@ export function HeroBuilds({
   }
 
   function remove(build: HeroBuild) {
-    if (!window.confirm(`Delete the build "${build.name}"?`)) return;
+    if (!window.confirm(t('Delete the build "{name}"?', { name: build.name })))
+      return;
     setError(null);
     startTransition(async () => {
       const result = await deleteHeroBuild(build.id);
@@ -224,12 +228,25 @@ export function HeroBuilds({
       {(builds.length > 0 || draft) && <PriorityLegend />}
       {notice && (
         <p role="status" className="text-muted-foreground text-sm">
-          {notice}
+          {notice.startsWith(
+            "Build imported. Cores not recorded for this hero were skipped: ",
+          )
+            ? t(
+                "Build imported. Cores not recorded for this hero were skipped: {cores}.",
+                {
+                  cores: notice.slice(
+                    "Build imported. Cores not recorded for this hero were skipped: "
+                      .length,
+                    -1,
+                  ),
+                },
+              )
+            : t(notice)}
         </p>
       )}
       {builds.length === 0 && !draft && (
         <p className="text-muted-foreground text-sm">
-          No builds recorded for {heroName} yet.
+          {t("No builds recorded for {name} yet.", { name: heroName })}
         </p>
       )}
 
@@ -264,7 +281,7 @@ export function HeroBuilds({
                     size="icon-sm"
                     onClick={() => startEdit(build)}
                     disabled={pending}
-                    aria-label={`Edit ${build.name}`}
+                    aria-label={t("Edit {name}", { name: build.name })}
                   >
                     <Pencil />
                   </Button>
@@ -273,7 +290,7 @@ export function HeroBuilds({
                     size="icon-sm"
                     onClick={() => remove(build)}
                     disabled={pending}
-                    aria-label={`Delete ${build.name}`}
+                    aria-label={t("Delete {name}", { name: build.name })}
                   >
                     <Trash2 />
                   </Button>
@@ -297,37 +314,39 @@ export function HeroBuilds({
           >
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="flex flex-col gap-1.5">
-                <Label htmlFor="build-name">Name</Label>
+                <Label htmlFor="build-name">{t("Name")}</Label>
                 <Input
                   id="build-name"
+                  maxLength={120}
                   value={draft.name}
                   onChange={(e) =>
                     setDraft((d) => d && { ...d, name: e.target.value })
                   }
-                  placeholder="e.g. Arena frontline"
+                  placeholder={t("e.g. Arena frontline")}
                   autoFocus
                 />
               </div>
               <div className="flex flex-col gap-1.5 sm:row-span-2">
-                <Label htmlFor="build-notes">Notes</Label>
+                <Label htmlFor="build-notes">{t("Notes")}</Label>
                 <Textarea
                   id="build-notes"
+                  maxLength={5000}
                   value={draft.notes}
                   onChange={(e) =>
                     setDraft((d) => d && { ...d, notes: e.target.value })
                   }
-                  placeholder="Priorities, what to lock first, trade-offs…"
+                  placeholder={t("Priorities, what to lock first, trade-offs…")}
                   rows={4}
                 />
               </div>
             </div>
 
             <p className="text-muted-foreground text-sm">
-              Click a chip to change its priority or remove it.
+              {t("Click a chip to change its priority or remove it.")}
             </p>
 
             <BuildSection
-              title="Runes"
+              title={t("Runes")}
               onReset={() => resetSelections("runeIds")}
               resetDisabled={pending || draft.runeIds.length === 0}
             >
@@ -352,7 +371,7 @@ export function HeroBuilds({
                   >
                     {attributes.length === 0 && (
                       <BuildPlaceholder>
-                        No attributes available.
+                        {t("No attributes available.")}
                       </BuildPlaceholder>
                     )}
                     {attributes.map((r) => (
@@ -372,13 +391,13 @@ export function HeroBuilds({
               })}
             </BuildSection>
             <BuildSection
-              title="Weapons"
+              title={t("Weapons")}
               onReset={() => resetSelections("weaponIds")}
               resetDisabled={pending || draft.weaponIds.length === 0}
             >
               {weaponAttributes.length === 0 && (
                 <BuildPlaceholder>
-                  No weapon attributes available.
+                  {t("No weapon attributes available.")}
                 </BuildPlaceholder>
               )}
               <div className="flex flex-wrap gap-1.5">
@@ -395,7 +414,7 @@ export function HeroBuilds({
             </BuildSection>
 
             <BuildSection
-              title="Cores"
+              title={t("Cores")}
               onReset={() => resetSelections("coreIds")}
               resetDisabled={pending || draft.coreIds.length === 0}
             >
@@ -414,18 +433,22 @@ export function HeroBuilds({
                 </div>
               ) : (
                 <BuildPlaceholder>
-                  No cores recorded for {heroName} yet.
+                  {t("No cores recorded for {name} yet.", { name: heroName })}
                 </BuildPlaceholder>
               )}
             </BuildSection>
 
-            {error && <p className="text-destructive text-sm">{error}</p>}
+            {error && <p className="text-destructive text-sm">{t(error)}</p>}
             <div className="flex items-center gap-2">
               <Button
                 type="submit"
                 disabled={pending || !draft.name.trim() || picked === 0}
               >
-                {pending ? "Saving…" : draft.id ? "Save changes" : "Save build"}
+                {pending
+                  ? t("Saving…")
+                  : draft.id
+                    ? t("Save changes")
+                    : t("Save build")}
               </Button>
               <Button
                 type="button"
@@ -433,14 +456,14 @@ export function HeroBuilds({
                 onClick={cancel}
                 disabled={pending}
               >
-                Cancel
+                {t("Cancel")}
               </Button>
             </div>
           </form>
         ) : (
           <div className="flex flex-col gap-3">
             {error && !importing && (
-              <p className="text-destructive text-sm">{error}</p>
+              <p className="text-destructive text-sm">{t(error)}</p>
             )}
             <div className="flex flex-wrap items-center gap-2">
               <Button
@@ -449,7 +472,7 @@ export function HeroBuilds({
                 disabled={pending}
                 className="w-fit"
               >
-                <Plus data-icon="inline-start" /> New build
+                <Plus data-icon="inline-start" /> {t("New build")}
               </Button>
               <Button
                 ref={importButton}
@@ -463,7 +486,7 @@ export function HeroBuilds({
                 aria-controls="hero-build-import"
                 className="w-fit"
               >
-                <Download data-icon="inline-start" /> Import build
+                <Download data-icon="inline-start" /> {t("Import build")}
               </Button>
             </div>
 

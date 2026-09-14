@@ -1,3 +1,4 @@
+import { getI18n } from "@/lib/i18n/server";
 import { requireAppAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -12,11 +13,17 @@ import { getBuildsForHeroes } from "@/lib/builds";
 import { LineupBuilder } from "../../new/lineup-builder";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Edit lineup" };
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getI18n();
+
+  return { title: t("Edit lineup") };
+}
 
 export default async function EditLineupPage(
   props: PageProps<"/lineups/[id]/edit">,
 ) {
+  const { t } = await getI18n();
+
   await requireAppAccess();
   if (!(await canEditContent())) notFound();
   const { id } = await props.params;
@@ -40,8 +47,10 @@ export default async function EditLineupPage(
 
   return (
     <PageShell
-      title={`Edit ${lineup.name}`}
-      description="Update the formation, pets, relics, fishes, and notes for this lineup."
+      title={t("Edit {name}", { name: lineup.name })}
+      description={t(
+        "Update the formation, pets, relics, fishes, and notes for this lineup.",
+      )}
     >
       <LineupBuilder
         key={lineup.id}

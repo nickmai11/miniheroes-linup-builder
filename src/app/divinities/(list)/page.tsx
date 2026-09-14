@@ -1,3 +1,4 @@
+import { getI18n } from "@/lib/i18n/server";
 import { requirePageAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -7,7 +8,11 @@ import type { Divinity } from "@/db/schema";
 import { getAllDivinities } from "@/lib/divinities";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Divinities" };
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getI18n();
+
+  return { title: t("Divinities") };
+}
 
 /** Group by kind, keeping the catalog order for both kinds and members. */
 function groupByKind(list: Divinity[]): [string, Divinity[]][] {
@@ -21,23 +26,29 @@ function groupByKind(list: Divinity[]): [string, Divinity[]][] {
 }
 
 export default async function DivinitiesPage() {
+  const { t } = await getI18n();
+
   await requirePageAccess();
   const divinities = await getAllDivinities();
   const groups = groupByKind(divinities);
 
   return (
     <PageShell
-      title="Divinities"
-      description="Stat badges from the divine weapon screen, grouped by category."
+      title={t("Divinities")}
+      description={t(
+        "Stat badges from the divine weapon screen, grouped by category.",
+      )}
     >
       {groups.length === 0 ? (
-        <p className="text-muted-foreground">No divinities recorded yet.</p>
+        <p className="text-muted-foreground">
+          {t("No divinities recorded yet.")}
+        </p>
       ) : (
         <div className="flex flex-col gap-8">
           {groups.map(([kind, members]) => (
-            <section key={kind} className="flex flex-col gap-3">
+            <section key={t(kind)} className="flex flex-col gap-3">
               <h2 className="text-primary text-xs font-medium tracking-wide uppercase">
-                {kind}
+                {t(kind)}
               </h2>
               <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                 {members.map((d) => (

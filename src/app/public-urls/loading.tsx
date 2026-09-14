@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18n } from "@/lib/i18n/client";
 import {
   LoadingPage,
   PageHeadingSkeleton,
@@ -7,14 +10,16 @@ import {
 } from "@/components/loading-skeleton";
 
 export default function Loading() {
+  const { t } = useI18n();
+
   return (
     <LoadingPage
-      label="public URLs"
+      label={t("public URLs")}
       className="max-w-3xl gap-6 px-4 py-8 sm:px-6"
     >
-      <PageHeadingSkeleton title="Public URLs" description />
+      <PageHeadingSkeleton title={t("Public URLs")} description />
       <div className="flex flex-col gap-6">
-        <SectionSkeleton title="Make a page public">
+        <SectionSkeleton title={t("Make a page public")}>
           <div className="flex flex-col gap-3">
             <Skeleton className="h-4 w-20" />
             <div className="flex flex-col gap-3 sm:flex-row">
@@ -24,7 +29,7 @@ export default function Loading() {
             <TextSkeleton lines={2} />
           </div>
         </SectionSkeleton>
-        <SectionSkeleton title="Public pages">
+        <SectionSkeleton title={t("Public pages")}>
           <ul className="divide-y">
             {Array.from({ length: 3 }, (_, i) => (
               <li

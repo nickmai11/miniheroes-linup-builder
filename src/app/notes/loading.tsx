@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18n } from "@/lib/i18n/client";
 import {
   LoadingPage,
   Skeleton,
@@ -5,9 +8,11 @@ import {
 } from "@/components/loading-skeleton";
 
 export default function Loading() {
+  const { t } = useI18n();
+
   return (
-    <LoadingPage label="notes" className="max-w-2xl gap-8 p-8">
-      <h1 className="text-2xl font-semibold">Notes</h1>
+    <LoadingPage label={t("notes")} className="max-w-2xl gap-8 p-8">
+      <h1 className="text-2xl font-semibold">{t("Notes")}</h1>
       <div className="flex flex-col gap-3">
         <Skeleton className="h-8 w-full" />
         <Skeleton className="h-20 w-full" />

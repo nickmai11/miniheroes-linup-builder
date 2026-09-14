@@ -1,3 +1,4 @@
+import { getI18n } from "@/lib/i18n/server";
 import { requirePageAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -15,15 +16,18 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata(
   props: PageProps<"/divinities/[slug]">,
 ): Promise<Metadata> {
+  const { t } = await getI18n();
   await requirePageAccess();
   const { slug } = await props.params;
   const divinity = await getDivinityBySlug(slug);
-  return { title: divinity?.name ?? "Divinity" };
+  return { title: divinity?.name ?? t("Divinity") };
 }
 
 export default async function DivinityPage(
   props: PageProps<"/divinities/[slug]">,
 ) {
+  const { t } = await getI18n();
+
   await requirePageAccess();
   const { slug } = await props.params;
   const divinity = await getDivinityBySlug(slug);
@@ -36,24 +40,24 @@ export default async function DivinityPage(
         href="/divinities"
         className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-1 text-sm"
       >
-        <ArrowLeft className="size-4" /> Divinities
+        <ArrowLeft className="size-4" /> {t("Divinities")}
       </Link>
 
       <header className="flex items-center gap-4">
         <DivinityIcon divinity={divinity} size={72} />
         <div className="flex flex-col gap-1">
           <h1 className="text-3xl font-semibold">{divinity.name}</h1>
-          <p className="text-muted-foreground">{divinity.kind}</p>
+          <p className="text-muted-foreground">{t(divinity.kind)}</p>
         </div>
       </header>
 
       <section className="flex flex-col gap-3">
         <h2 className="text-primary text-xs font-medium tracking-wide uppercase">
-          Heroes
+          {t("Heroes")}
         </h2>
         {heroes.length === 0 ? (
           <p className="text-muted-foreground text-sm">
-            No recorded hero has {divinity.name} yet.
+            {t("No recorded hero has {name} yet.", { name: divinity.name })}
           </p>
         ) : (
           <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">

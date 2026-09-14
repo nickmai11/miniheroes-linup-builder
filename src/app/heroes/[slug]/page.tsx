@@ -1,3 +1,4 @@
+import { getI18n } from "@/lib/i18n/server";
 import { hasAppAccess, requirePageAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -30,13 +31,16 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata(
   props: PageProps<"/heroes/[slug]">,
 ): Promise<Metadata> {
+  const { t } = await getI18n();
   await requirePageAccess();
   const { slug } = await props.params;
   const hero = await getHeroDetail(slug);
-  return { title: hero?.name ?? "Hero" };
+  return { title: hero?.name ?? t("Hero") };
 }
 
 export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
+  const { t, formatDate } = await getI18n();
+
   await requirePageAccess();
   const { slug } = await props.params;
   const hero = await getHeroDetail(slug);
@@ -54,7 +58,7 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
         href="/heroes"
         className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-1 text-sm"
       >
-        <ArrowLeft className="size-4" /> Hero pool
+        <ArrowLeft className="size-4" /> {t("Hero pool")}
       </Link>
 
       <div className="grid gap-8 md:grid-cols-[260px_1fr]">
@@ -72,8 +76,8 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
               href={`/lineups/new?hero=${hero.slug}`}
               className={buttonVariants({ variant: "outline" })}
             >
-              <Hammer data-icon="inline-start" /> Start a lineup with{" "}
-              {hero.name}
+              <Hammer data-icon="inline-start" />{" "}
+              {t("Start a lineup with {name}", { name: hero.name })}
             </Link>
           )}
         </div>
@@ -84,13 +88,13 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
               <RoleBadge role={hero.role} size={32} />
               {hero.name}
             </h1>
-            <p className="text-muted-foreground">{ROLE_LABELS[hero.role]}</p>
+            <p className="text-muted-foreground">{t(ROLE_LABELS[hero.role])}</p>
           </header>
 
           {hero.notes && (
             <Card>
               <CardHeader>
-                <CardTitle>Notes</CardTitle>
+                <CardTitle>{t("Notes")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm whitespace-pre-wrap">{hero.notes}</p>
@@ -100,12 +104,14 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
 
           <Card>
             <CardHeader>
-              <CardTitle>Talents</CardTitle>
+              <CardTitle>{t("Talents")}</CardTitle>
             </CardHeader>
             <CardContent>
               {hero.skills.length === 0 ? (
                 <p className="text-muted-foreground text-sm">
-                  No talents recorded for {hero.name} yet.
+                  {t("No talents recorded for {name} yet.", {
+                    name: hero.name,
+                  })}
                 </p>
               ) : (
                 <ul className="grid gap-3 sm:grid-cols-2">
@@ -138,7 +144,7 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
                           )}
                           <div className="flex min-w-0 flex-col">
                             <span className="text-primary text-xs font-medium tracking-wide uppercase">
-                              {SKILL_KIND_LABELS[skill.kind]}
+                              {t(SKILL_KIND_LABELS[skill.kind])}
                               {skill.unlockStars
                                 ? ` · ${skill.unlockStars}★`
                                 : ""}
@@ -159,7 +165,7 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
                             <TierIcon tier={bonus.tier} />
                             <span>
                               <span className="font-medium">
-                                Artifact Bonus:{" "}
+                                {t("Artifact Bonus:")}
                               </span>
                               <span className="text-muted-foreground">
                                 {bonus.description}
@@ -174,20 +180,20 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
                           >
                             <Image
                               src={versioned("/icons/core.png")}
-                              alt="core"
+                              alt={t("core")}
                               width={22}
                               height={22}
                               className="mt-0.5 size-5.5 shrink-0"
                             />
                             <span>
                               <InfoPopover
-                                label={`${core.name} skill`}
+                                label={t("{name} skill", { name: core.name })}
                                 trigger={
                                   <button
                                     type="button"
                                     className="font-medium underline decoration-dotted underline-offset-4"
                                   >
-                                    {core.name} Core
+                                    {t("{name} Core", { name: core.name })}
                                   </button>
                                 }
                               >
@@ -210,7 +216,7 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
 
           <Card>
             <CardHeader>
-              <CardTitle>Awakening skills</CardTitle>
+              <CardTitle>{t("Awakening skills")}</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="grid gap-3 sm:grid-cols-2">
@@ -225,7 +231,7 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
                     >
                       <div className="flex min-w-0 flex-col">
                         <span className="text-primary text-xs font-medium tracking-wide uppercase">
-                          Awakening {stage} · {unlockStars}★
+                          {t("Awakening")} {stage} · {unlockStars}★
                         </span>
                         {skill && (
                           <span className="font-medium">{skill.name}</span>
@@ -233,7 +239,10 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
                       </div>
                       <p className="text-muted-foreground text-sm">
                         {skill?.description ??
-                          `Awakening ${stage} has not been recorded for ${hero.name} yet.`}
+                          t(
+                            "Awakening {stage} has not been recorded for {name} yet.",
+                            { stage, name: hero.name },
+                          )}
                       </p>
                     </li>
                   );
@@ -244,12 +253,14 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
 
           <Card>
             <CardHeader>
-              <CardTitle>Artifacts</CardTitle>
+              <CardTitle>{t("Artifacts")}</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
               {!hero.artifactName ? (
                 <p className="text-muted-foreground text-sm">
-                  No artifact recorded for {hero.name} yet.
+                  {t("No artifact recorded for {name} yet.", {
+                    name: hero.name,
+                  })}
                 </p>
               ) : (
                 <>
@@ -280,10 +291,10 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
                           <TierIcon tier={bonus.tier} size={28} />
                           <div className="flex min-w-0 flex-col gap-0.5">
                             <span className="text-primary text-xs font-medium tracking-wide uppercase">
-                              {ARTIFACT_TIER_LABELS[bonus.tier]}
+                              {t(ARTIFACT_TIER_LABELS[bonus.tier])}
                               {skill
-                                ? " · Artifact Bonus"
-                                : " · Artifact Skill"}
+                                ? ` · ${t("Artifact Bonus")}`
+                                : ` · ${t("Artifact Skill")}`}
                             </span>
                             <span className="font-medium">
                               {skill?.name ?? bonus.name}
@@ -303,12 +314,14 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
 
           <Card>
             <CardHeader>
-              <CardTitle>Divinities</CardTitle>
+              <CardTitle>{t("Divinities")}</CardTitle>
             </CardHeader>
             <CardContent>
               {hero.divinities.length === 0 ? (
                 <p className="text-muted-foreground text-sm">
-                  No divinities recorded for {hero.name} yet.
+                  {t("No divinities recorded for {name} yet.", {
+                    name: hero.name,
+                  })}
                 </p>
               ) : (
                 <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -333,7 +346,7 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
 
           <Card>
             <CardHeader>
-              <CardTitle>Builds</CardTitle>
+              <CardTitle>{t("Builds")}</CardTitle>
             </CardHeader>
             <CardContent>
               <HeroBuilds
@@ -360,12 +373,12 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
 
           <Card>
             <CardHeader>
-              <CardTitle>Lineups</CardTitle>
+              <CardTitle>{t("Lineups")}</CardTitle>
             </CardHeader>
             <CardContent>
               {hero.lineups.length === 0 ? (
                 <p className="text-muted-foreground text-sm">
-                  Not in any saved lineup yet.
+                  {t("Not in any saved lineup yet.")}
                 </p>
               ) : (
                 <ul className="flex flex-col divide-y">
@@ -377,7 +390,7 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
                       >
                         <span className="font-medium">{lineup.name}</span>
                         <span className="text-muted-foreground text-xs">
-                          {lineup.createdAt.toLocaleDateString()}
+                          {formatDate(lineup.createdAt)}
                         </span>
                       </Link>
                     </li>
@@ -392,11 +405,19 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
   );
 }
 
-function TierIcon({ tier, size = 22 }: { tier: ArtifactTier; size?: number }) {
+async function TierIcon({
+  tier,
+  size = 22,
+}: {
+  tier: ArtifactTier;
+  size?: number;
+}) {
+  const { t } = await getI18n();
+
   return (
     <Image
       src={versioned(`/icons/artifact-${tier}.png`)}
-      alt={`${ARTIFACT_TIER_LABELS[tier]} tier`}
+      alt={t("{tier} tier", { tier: t(ARTIFACT_TIER_LABELS[tier]) })}
       width={size}
       height={size}
       className="mt-0.5 shrink-0"

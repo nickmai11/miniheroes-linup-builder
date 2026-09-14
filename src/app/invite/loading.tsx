@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18n } from "@/lib/i18n/client";
 import {
   LoadingPage,
   Skeleton,
@@ -6,9 +9,11 @@ import {
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 export default function Loading() {
+  const { t } = useI18n();
+
   return (
     <LoadingPage
-      label="invitation form"
+      label={t("invitation form")}
       className="max-w-md flex-1 justify-center gap-5 px-4 py-16"
     >
       <Card>

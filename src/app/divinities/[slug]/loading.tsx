@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18n } from "@/lib/i18n/client";
 import {
   HeroGridSkeleton,
   LoadingPage,
@@ -5,9 +8,11 @@ import {
 } from "@/components/loading-skeleton";
 
 export default function Loading() {
+  const { t } = useI18n();
+
   return (
     <LoadingPage
-      label="divinity details"
+      label={t("divinity details")}
       className="max-w-5xl gap-6 px-4 py-8 sm:px-6"
     >
       <Skeleton className="h-5.5 w-24" />
@@ -20,7 +25,7 @@ export default function Loading() {
       </header>
       <section className="flex flex-col gap-3">
         <h2 className="text-primary text-xs font-medium tracking-wide uppercase">
-          Heroes
+          {t("Heroes")}
         </h2>
         <HeroGridSkeleton count={6} />
       </section>

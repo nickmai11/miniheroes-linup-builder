@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18n } from "@/lib/i18n/client";
 import {
   LoadingPage,
   Skeleton,
@@ -6,9 +9,11 @@ import {
 import { Card, CardHeader } from "@/components/ui/card";
 
 export default function Loading() {
+  const { t } = useI18n();
+
   return (
     <LoadingPage
-      label="home"
+      label={t("home")}
       className="max-w-6xl flex-1 gap-10 px-4 py-12 sm:px-6"
     >
       <section className="flex flex-col gap-4">

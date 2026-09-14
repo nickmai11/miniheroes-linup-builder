@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18n } from "@/lib/i18n/client";
 import {
   HeroFiltersSkeleton,
   HeroGridSkeleton,
@@ -9,6 +12,8 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function LineupFishesSkeleton({ picker = false }: { picker?: boolean }) {
+  const { t } = useI18n();
+
   return (
     <section className="flex min-w-0 flex-col gap-3">
       <h2
@@ -16,12 +21,12 @@ export function LineupFishesSkeleton({ picker = false }: { picker?: boolean }) {
           picker ? "font-semibold" : "text-muted-foreground text-xs font-medium"
         }
       >
-        Fishes
+        {t("Fishes")}
       </h2>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {["Small", "Medium", "Large", "Aquatic"].map((category) => (
+        {[t("Small"), t("Medium"), t("Large"), t("Aquatic")].map((category) => (
           <div key={category} className="flex min-w-0 flex-col gap-1.5">
-            <p className="text-muted-foreground text-xs">{category}</p>
+            <p className="text-muted-foreground text-xs">{t(category)}</p>
             <Skeleton className={picker ? "h-10 w-full" : "h-7 w-4/5"} />
           </div>
         ))}
@@ -35,13 +40,15 @@ export function LineupBuilderSkeleton({
 }: {
   editing?: boolean;
 }) {
+  const { t } = useI18n();
+
   return (
     <LoadingPage label={editing ? "lineup editor" : "lineup builder"}>
       <PageHeadingSkeleton description />
       <div className="flex min-w-0 flex-col gap-8">
         <section className="flex flex-col gap-3">
           <div className="flex items-baseline justify-between gap-3">
-            <h2 className="font-semibold">Your lineup</h2>
+            <h2 className="font-semibold">{t("Your lineup")}</h2>
             <Skeleton className="h-5 w-20" />
           </div>
           <ul className="grid grid-cols-2 items-start gap-3 sm:grid-cols-3 lg:grid-cols-5">
@@ -72,7 +79,7 @@ export function LineupBuilderSkeleton({
 
         <div className="grid items-start gap-8 lg:grid-cols-[1fr_300px]">
           <section className="flex min-w-0 flex-col gap-4">
-            <h2 className="font-semibold">Choose heroes</h2>
+            <h2 className="font-semibold">{t("Choose heroes")}</h2>
             <HeroFiltersSkeleton />
             <Skeleton className="h-5.5 w-44" />
             <HeroGridSkeleton
@@ -83,7 +90,7 @@ export function LineupBuilderSkeleton({
           </section>
           <Card className="lg:sticky lg:top-20">
             <CardHeader>
-              <CardTitle>Lineup details</CardTitle>
+              <CardTitle>{t("Lineup details")}</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
               <div className="flex flex-col gap-1.5">

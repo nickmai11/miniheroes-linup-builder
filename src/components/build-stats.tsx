@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18n } from "@/lib/i18n/client";
 import { Plus, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RUNE_TYPES, type RuneType, type RuneAttribute } from "@/db/schema";
@@ -29,9 +30,11 @@ function groupRunes<T extends RuneAttribute>(runes: T[]): [RuneType, T[]][] {
 }
 
 export function BuildStats({ build }: { build: HeroBuild }) {
+  const { t } = useI18n();
+
   return (
     <div className="flex flex-col gap-8">
-      <BuildSection title="Runes">
+      <BuildSection title={t("Runes")}>
         {groupRunes(sortByBuildPriority(build.runes)).map(([type, list]) => (
           <AttributeGroup key={type} title={runeTypeShort(type)}>
             {list.length > 0 ? (
@@ -41,12 +44,14 @@ export function BuildStats({ build }: { build: HeroBuild }) {
                 </Chip>
               ))
             ) : (
-              <BuildPlaceholder>No attributes selected.</BuildPlaceholder>
+              <BuildPlaceholder>
+                {t("No attributes selected.")}
+              </BuildPlaceholder>
             )}
           </AttributeGroup>
         ))}
       </BuildSection>
-      <BuildSection title="Weapons">
+      <BuildSection title={t("Weapons")}>
         {build.weapons.length > 0 ? (
           <div className="flex flex-wrap gap-1.5">
             {sortByBuildPriority(build.weapons).map((w) => (
@@ -56,10 +61,12 @@ export function BuildStats({ build }: { build: HeroBuild }) {
             ))}
           </div>
         ) : (
-          <BuildPlaceholder>No weapon attributes selected.</BuildPlaceholder>
+          <BuildPlaceholder>
+            {t("No weapon attributes selected.")}
+          </BuildPlaceholder>
         )}
       </BuildSection>
-      <BuildSection title="Cores">
+      <BuildSection title={t("Cores")}>
         {build.cores.length > 0 ? (
           <div className="flex flex-wrap gap-1.5">
             {sortByBuildPriority(build.cores).map((core) => (
@@ -73,7 +80,7 @@ export function BuildStats({ build }: { build: HeroBuild }) {
             ))}
           </div>
         ) : (
-          <BuildPlaceholder>No cores selected.</BuildPlaceholder>
+          <BuildPlaceholder>{t("No cores selected.")}</BuildPlaceholder>
         )}
       </BuildSection>
     </div>
@@ -100,13 +107,14 @@ export function BuildSection({
   onReset?: () => void;
   resetDisabled?: boolean;
 }) {
+  const { t } = useI18n();
   return (
     <div className="flex flex-col gap-3">
       <div className="border-primary bg-primary/10 text-foreground flex items-center justify-between gap-2 rounded-r-md border-l-4 px-3 py-1.5">
-        <h4 className="text-base font-bold">{title}</h4>
+        <h4 className="text-base font-bold">{t(title)}</h4>
         {onReset && (
           <ResetButton
-            group={title}
+            group={t(title)}
             onClick={onReset}
             disabled={resetDisabled}
           />
@@ -128,15 +136,16 @@ export function AttributeGroup({
   onReset?: () => void;
   resetDisabled?: boolean;
 }) {
+  const { t } = useI18n();
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex items-center justify-between gap-2">
         <span className="text-primary text-xs font-medium tracking-wide uppercase">
-          {title}
+          {t(title)}
         </span>
         {onReset && (
           <ResetButton
-            group={`${title} runes`}
+            group={t("{type} runes", { type: t(title) })}
             onClick={onReset}
             disabled={resetDisabled}
           />
@@ -156,6 +165,8 @@ function ResetButton({
   onClick: () => void;
   disabled?: boolean;
 }) {
+  const { t } = useI18n();
+
   return (
     <Button
       type="button"
@@ -163,12 +174,12 @@ function ResetButton({
       size="xs"
       onClick={onClick}
       disabled={disabled}
-      aria-label={`Reset ${group}`}
-      title={`Clear ${group.toLowerCase()} selections`}
+      aria-label={t("Reset {group}", { group })}
+      title={t("Clear {group} selections", { group })}
       className="text-muted-foreground"
     >
       <RotateCcw aria-hidden data-icon="inline-start" />
-      Reset
+      {t("Reset")}
     </Button>
   );
 }
@@ -196,15 +207,17 @@ function PriorityMarker({ priority }: { priority: BuildPriority }) {
 }
 
 export function PriorityLegend() {
+  const { t } = useI18n();
+
   return (
     <ul
-      aria-label="Attribute priority"
+      aria-label={t("Attribute priority")}
       className="text-muted-foreground flex flex-wrap gap-x-4 gap-y-2 text-xs"
     >
       {BUILD_PRIORITIES.map((priority) => (
         <li key={priority} className="flex items-center gap-2">
           <PriorityMarker priority={priority} />
-          {BUILD_PRIORITY_LABELS[priority]}
+          {t(BUILD_PRIORITY_LABELS[priority])}
         </li>
       ))}
     </ul>
@@ -225,11 +238,17 @@ export function Chip({
   title?: string;
   popover?: React.ReactNode;
 }) {
+  const { t } = useI18n();
+
   const base =
     "inline-flex min-h-7 max-w-full items-center gap-2 rounded-md border px-2 py-1 text-left text-xs leading-4 font-medium";
-  const label = priority ? BUILD_PRIORITY_LABELS[priority] : "Not selected";
+  const label = priority
+    ? t(BUILD_PRIORITY_LABELS[priority])
+    : t("Not selected");
   const next = nextBuildPriority(priority);
-  const action = next ? `Set to ${BUILD_PRIORITY_LABELS[next]}` : "Remove";
+  const action = next
+    ? t("Set to {priority}", { priority: t(BUILD_PRIORITY_LABELS[next]) })
+    : t("Remove");
   const description = [`${children} — ${label}`, title, onClick ? action : null]
     .filter(Boolean)
     .join("\n");
@@ -252,7 +271,7 @@ export function Chip({
   if (popover) {
     return (
       <InfoPopover
-        label={`${children} skill`}
+        label={t("{name} skill", { name: children })}
         trigger={
           <button
             type="button"

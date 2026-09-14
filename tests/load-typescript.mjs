@@ -22,6 +22,11 @@ export function loadTypeScript(path, overrides = {}) {
     modules.set(url.href, loaded);
     const resolve = (name) => {
       if (Object.hasOwn(overrides, name)) return overrides[name];
+      if (name.endsWith(".json") && name.startsWith(".")) {
+        return {
+          default: JSON.parse(readFileSync(new URL(name, url), "utf8")),
+        };
+      }
       // Server-only modules are exercised directly here, outside Next.js.
       if (name === "server-only") return {};
       if (name.startsWith("@/") || name.startsWith(".")) {

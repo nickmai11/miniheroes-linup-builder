@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18n } from "@/lib/i18n/client";
 import { useRef, useState } from "react";
 import { Menu } from "@base-ui/react/menu";
 import {
@@ -23,6 +24,8 @@ export function LineupShare({
   lineupId: number;
   canInvite: boolean;
 }) {
+  const { t } = useI18n();
+
   const [open, setOpen] = useState(false);
   const [pending, setPending] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -131,7 +134,7 @@ export function LineupShare({
           ) : (
             <Share2 aria-hidden />
           )}
-          {pending ? "Preparing link…" : copied ? "Copied!" : "Share"}
+          {pending ? t("Preparing link…") : copied ? t("Copied!") : t("Share")}
           <ChevronDown aria-hidden />
         </Menu.Trigger>
         <Menu.Portal>
@@ -141,23 +144,23 @@ export function LineupShare({
                 className={itemClassName}
                 onClick={() => void copy(false)}
               >
-                <Link2 aria-hidden /> Copy link
+                <Link2 aria-hidden /> {t("Copy link")}
               </Menu.Item>
               <Menu.Item
                 className={itemClassName}
                 disabled={!canInvite}
                 onClick={() => void copy(true)}
               >
-                <KeyRound aria-hidden /> Copy link with IC
+                <KeyRound aria-hidden /> {t("Copy link with IC")}
               </Menu.Item>
               {canInvite && (
                 <p className="text-muted-foreground px-3 py-2 text-xs">
-                  The invitation gives access to this lineup only.
+                  {t("The invitation gives access to this lineup only.")}
                 </p>
               )}
               {!canInvite && (
                 <p className="text-muted-foreground px-3 py-2 text-xs">
-                  Sign in as admin to generate invitation codes.
+                  {t("Sign in as admin to generate invitation codes.")}
                 </p>
               )}
             </Menu.Popup>
@@ -166,19 +169,19 @@ export function LineupShare({
       </Menu.Root>
       <span role="status" className="sr-only">
         {copied
-          ? "Link copied to clipboard."
+          ? t("Link copied to clipboard.")
           : pending
-            ? "Preparing share link."
+            ? t("Preparing share link.")
             : ""}
       </span>
       {error && (
         <div className="flex w-full max-w-xs flex-col gap-2">
           <p role="alert" className="text-destructive text-xs">
-            {error}
+            {t(error)}
           </p>
           {fallbackLink && (
             <Input
-              aria-label="Share link"
+              aria-label={t("Share link")}
               value={fallbackLink}
               readOnly
               onFocus={(event) => event.target.select()}

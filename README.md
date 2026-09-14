@@ -231,3 +231,25 @@ production must run the updated code to honor the rules. Changes require no
 redeploy once that code is running. The settings page and its mutation endpoint
 return 404 for visitors without an admin session, including on localhost in
 development.
+
+## Languages
+
+The interface supports English and Vietnamese. The header language selector saves
+`mini-heroes-locale` for one year. On a first visit, the app uses the browser's
+`Accept-Language` preference, falling back to English. The server and client use
+the same resolved locale, including page metadata and the document's `lang`.
+Switching language refreshes server content while preserving client form state,
+the current URL, query parameters, and hash. Invitation and shared lineup URLs
+remain language-independent.
+
+Translations live in `src/lib/i18n/vi.json`, keyed by the English source message.
+Use `getI18n()` from `src/lib/i18n/server.ts` in Server Components and `useI18n()`
+from `src/lib/i18n/client.tsx` in Client Components. Wrap whole sentences with
+`t("View {name}", { name })` so translations can reorder values. Add Vietnamese
+translations for every new interface message. Dates use locale-specific formatting
+in the app's Asia/Ho_Chi_Minh timezone.
+
+Hero and item names, screenshot-transcribed descriptions, and user-written notes
+remain in their original language. Database IDs, enum values, URLs, source data,
+and portrait assets are not translated. Run `pnpm test` for locale negotiation,
+dictionary coverage, interpolation, rendering, and existing access-policy checks.

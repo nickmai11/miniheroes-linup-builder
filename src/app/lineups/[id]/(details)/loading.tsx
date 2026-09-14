@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18n } from "@/lib/i18n/client";
 import {
   LineupFishesSkeleton,
   LineupSlotsSkeleton,
@@ -11,9 +14,11 @@ import {
 } from "@/components/loading-skeleton";
 
 export default function Loading() {
+  const { t } = useI18n();
+
   return (
     <LoadingPage
-      label="lineup details"
+      label={t("lineup details")}
       className="max-w-4xl gap-6 px-4 py-8 sm:px-6"
     >
       <PageHeadingSkeleton description />
@@ -24,10 +29,10 @@ export default function Loading() {
       </div>
       <LineupSlotsSkeleton />
       <LineupFishesSkeleton />
-      <SectionSkeleton title="Why it works">
+      <SectionSkeleton title={t("Why it works")}>
         <TextSkeleton lines={4} />
       </SectionSkeleton>
-      <SectionSkeleton title="Hero notes">
+      <SectionSkeleton title={t("Hero notes")}>
         <TextSkeleton />
       </SectionSkeleton>
     </LoadingPage>

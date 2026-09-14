@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18n } from "@/lib/i18n/client";
 import Image from "next/image";
 import { versioned } from "@/lib/asset-version";
 
@@ -31,11 +34,13 @@ export function LineupAssignments({
   relics: AssignmentItem[];
   compact?: boolean;
 }) {
+  const { t } = useI18n();
+
   return (
     <div className="flex w-full flex-col gap-2 text-left">
       {[
-        { label: "Pets", items: pets },
-        { label: "Relics", items: relics },
+        { label: t("Pets"), items: pets },
+        { label: t("Relics"), items: relics },
       ].map(
         ({ label, items }) =>
           items.length > 0 && (

@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18n } from "@/lib/i18n/client";
 import { Popover } from "@base-ui/react/popover";
 import { ChevronDown, Search } from "lucide-react";
 import { useState } from "react";
@@ -23,6 +24,8 @@ export function FishPicker({
   onChange: (selections: FishSelection[]) => void;
   disabled: boolean;
 }) {
+  const { t } = useI18n();
+
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const query = search.trim().toLowerCase();
@@ -48,8 +51,14 @@ export function FishPicker({
   }
 
   return (
-    <section aria-label="Lineup fishes" className="flex min-w-0 flex-col gap-3">
-      <h2 className="font-semibold">Fishes{total ? ` (${total})` : ""}</h2>
+    <section
+      aria-label={t("Lineup fishes")}
+      className="flex min-w-0 flex-col gap-3"
+    >
+      <h2 className="font-semibold">
+        {t("Fishes")}
+        {total ? ` (${total})` : ""}
+      </h2>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {FISH_CATEGORIES.map((category) => {
           const items = fishes.filter((fish) => fish.fishType === category);
@@ -67,7 +76,7 @@ export function FishPicker({
           return (
             <div key={category} className="flex min-w-0 flex-col gap-1.5">
               <span className="text-muted-foreground text-xs font-medium">
-                {category}
+                {t(category)}
                 {count ? ` (${count})` : ""}
               </span>
               <Popover.Root
@@ -82,7 +91,9 @@ export function FishPicker({
               >
                 <Popover.Trigger
                   disabled={disabled || items.length === 0}
-                  aria-label={`Select ${category.toLowerCase()} fishes`}
+                  aria-label={t("Select {category} fishes", {
+                    category: t(category),
+                  })}
                   title={summary || undefined}
                   className="bg-background hover:bg-muted focus-visible:ring-ring/50 flex h-10 w-full items-center justify-between gap-2 rounded-md border px-3 text-left text-sm focus-visible:ring-3 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                 >
@@ -100,8 +111,8 @@ export function FishPicker({
                     ) : (
                       <span className="text-muted-foreground">
                         {items.length
-                          ? "Select fishes…"
-                          : "No fishes available"}
+                          ? t("Select fishes…")
+                          : t("No fishes available")}
                       </span>
                     )}
                   </span>
@@ -114,7 +125,9 @@ export function FishPicker({
                     className="z-50 outline-none data-closed:invisible"
                   >
                     <Popover.Popup
-                      aria-label={`${category} fishes`}
+                      aria-label={t("{category} fishes", {
+                        category: t(category),
+                      })}
                       initialFocus={(type) => type === "keyboard"}
                       className="bg-popover text-popover-foreground flex max-h-[min(24rem,var(--available-height))] w-80 max-w-(--available-width) min-w-(--anchor-width) flex-col overflow-hidden rounded-md border p-1 shadow-lg outline-none"
                     >
@@ -125,8 +138,10 @@ export function FishPicker({
                         />
                         <Input
                           type="search"
-                          aria-label={`Search ${category.toLowerCase()} fishes`}
-                          placeholder="Search fishes…"
+                          aria-label={t("Search {category} fishes", {
+                            category: t(category),
+                          })}
+                          placeholder={t("Search fishes…")}
                           value={search}
                           onChange={(event) => setSearch(event.target.value)}
                           disabled={disabled}
@@ -156,7 +171,9 @@ export function FishPicker({
                               />
                               <FishPopover fish={fish} />
                               <select
-                                aria-label={`Quantity of ${fish.name}`}
+                                aria-label={t("Quantity of {name}", {
+                                  name: fish.name,
+                                })}
                                 value={quantity || 1}
                                 disabled={disabled || quantity === 0}
                                 onChange={(event) =>
@@ -185,7 +202,7 @@ export function FishPicker({
                           role="status"
                           className="text-muted-foreground px-3 py-4 text-sm"
                         >
-                          No fishes found.
+                          {t("No fishes found.")}
                         </p>
                       )}
                     </Popover.Popup>
@@ -197,8 +214,10 @@ export function FishPicker({
         })}
       </div>
       <p className="text-muted-foreground text-sm">
-        Select multiple fishes in each category, with 1–{MAX_FISH_QUANTITY}{" "}
-        copies of each.
+        {t(
+          "Select multiple fishes in each category, with 1–{max} copies of each.",
+          { max: MAX_FISH_QUANTITY },
+        )}
       </p>
     </section>
   );

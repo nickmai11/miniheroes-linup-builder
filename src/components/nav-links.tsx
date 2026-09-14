@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18n } from "@/lib/i18n/client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -41,6 +42,7 @@ function NavigationItems({
   mobile?: boolean;
   onSelect?: () => void;
 }) {
+  const { t } = useI18n();
   const pathname = usePathname();
   return LINKS.map(({ href, label, icon: Icon }) => {
     const adminRoute = href === "/invitations/new" || href === "/public-urls";
@@ -65,16 +67,18 @@ function NavigationItems({
           className={cn("shrink-0", mobile ? "size-5" : "size-4")}
           aria-hidden
         />
-        {label}
+        {t(label)}
       </Link>
     );
   });
 }
 
 export function NavLinks(props: NavigationProps) {
+  const { t } = useI18n();
+
   return (
     <nav
-      aria-label="Main navigation"
+      aria-label={t("Main navigation")}
       className="bg-background/85 supports-[backdrop-filter]:bg-background/70 sticky top-0 z-40 hidden border-b backdrop-blur md:block"
     >
       <div className="mx-auto flex min-h-12 w-full max-w-6xl min-w-0 items-center gap-1 overflow-x-auto px-6 py-2 text-sm">
@@ -85,6 +89,8 @@ export function NavLinks(props: NavigationProps) {
 }
 
 export function MobileNavigation(props: NavigationProps) {
+  const { t } = useI18n();
+
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -100,7 +106,7 @@ export function MobileNavigation(props: NavigationProps) {
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger
         render={<Button variant="ghost" size="icon" />}
-        aria-label="Open navigation"
+        aria-label={t("Open navigation")}
         className="size-11 md:hidden"
       >
         <Menu className="size-5" aria-hidden />
@@ -112,21 +118,21 @@ export function MobileNavigation(props: NavigationProps) {
             <div className="flex items-center justify-between gap-3 border-b pb-3">
               <Dialog.Title className="font-heading flex min-w-0 items-center gap-2 text-base leading-tight font-semibold">
                 <Crown className="text-primary size-5 shrink-0" aria-hidden />
-                <span>Mini Heroes Library</span>
+                <span>{t("Mini Heroes Library")}</span>
               </Dialog.Title>
               <Dialog.Close
                 render={<Button variant="ghost" size="icon" />}
-                aria-label="Close navigation"
+                aria-label={t("Close navigation")}
                 className="size-11"
               >
                 <X className="size-5" aria-hidden />
               </Dialog.Close>
             </div>
             <Dialog.Description className="sr-only">
-              Browse Mini Heroes Library.
+              {t("Browse Mini Heroes Library.")}
             </Dialog.Description>
             <nav
-              aria-label="Main navigation"
+              aria-label={t("Main navigation")}
               className="mt-4 flex flex-col gap-1 text-sm"
             >
               <NavigationItems
