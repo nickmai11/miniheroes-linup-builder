@@ -137,6 +137,8 @@ export async function saveHeroBuild(
   if (buildId === null) return { error: "Build not found" };
 
   revalidatePath(`/heroes/${hero.slug}`);
+  revalidatePath("/heroes");
+  revalidatePath("/divinities", "layout");
   revalidatePath("/lineups", "layout");
   return { id: buildId };
 }
@@ -272,6 +274,8 @@ export async function importHeroBuild(
   });
 
   revalidatePath(`/heroes/${hero.slug}`);
+  revalidatePath("/heroes");
+  revalidatePath("/divinities", "layout");
   revalidatePath("/lineups", "layout");
   return {
     id: newId,
@@ -295,6 +299,8 @@ export async function deleteHeroBuild(id: number): Promise<BuildActionState> {
     .from(schema.heroes)
     .where(eq(schema.heroes.id, deleted.heroId));
   if (hero) revalidatePath(`/heroes/${hero.slug}`);
+  revalidatePath("/heroes");
+  revalidatePath("/divinities", "layout");
   revalidatePath("/lineups", "layout");
   return {};
 }

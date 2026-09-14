@@ -7,6 +7,7 @@ import { heroDetailSeeds, type HeroAwakeningSkill } from "@/data/hero-details";
 import { heroSeeds } from "@/data/heroes";
 import { ensureDivinitiesSeeded } from "./divinities";
 import { onceAsync } from "@/lib/once-async";
+import { getHeroIdsWithBuilds } from "./builds";
 import type {
   Divinity,
   Hero,
@@ -62,6 +63,8 @@ export const ensureHeroesSeeded = onceAsync(async () => {
 export type HeroWithDivinities = Hero & {
   /** Mythic divinities in slot order (bottom-left, bottom-right). */
   divinities: Divinity[];
+  /** Whether this hero has any saved build, regardless of lineup assignments. */
+  hasBuild: boolean;
 };
 
 /**
@@ -111,16 +114,21 @@ export async function divinitiesByHeroIds(
 }
 
 /**
- * Attach each hero's mythic divinities for portrait overlays. Callers that may
+ * Attach each hero's mythic divinities and build availability for portrait overlays. Callers that may
  * run against an unsynced DB should `syncSeededHeroDetails()` first.
  */
 export async function attachDivinities(
   heroes: Hero[],
 ): Promise<HeroWithDivinities[]> {
-  const byHero = await divinitiesByHeroIds(heroes.map((h) => h.id));
+  const ids = heroes.map((hero) => hero.id);
+  const [byHero, heroIdsWithBuilds] = await Promise.all([
+    divinitiesByHeroIds(ids),
+    getHeroIdsWithBuilds(ids),
+  ]);
   return heroes.map((hero) => ({
     ...hero,
     divinities: byHero.get(hero.id) ?? [],
+    hasBuild: heroIdsWithBuilds.has(hero.id),
   }));
 }
 

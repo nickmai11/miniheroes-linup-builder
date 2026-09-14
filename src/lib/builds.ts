@@ -3,6 +3,18 @@ import { and, asc, eq, ilike, inArray, ne, or, type SQL } from "drizzle-orm";
 import { db, schema } from "@/db";
 import type { HeroBuild, ImportableBuildPage } from "@/lib/build-types";
 
+/** Build availability for a set of portraits, without loading build contents. */
+export async function getHeroIdsWithBuilds(
+  heroIds: number[],
+): Promise<Set<number>> {
+  if (heroIds.length === 0) return new Set();
+  const rows = await db
+    .selectDistinct({ heroId: schema.heroBuilds.heroId })
+    .from(schema.heroBuilds)
+    .where(inArray(schema.heroBuilds.heroId, heroIds));
+  return new Set(rows.map((row) => row.heroId));
+}
+
 /**
  * A hero's builds, oldest first, each with its chosen rune attributes, weapon
  * attributes and cores in pick order, with each selection's saved priority tier.

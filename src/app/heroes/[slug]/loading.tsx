@@ -106,7 +106,7 @@ export default function Loading() {
           </SectionSkeleton>
 
           <SectionSkeleton title="Builds">
-            <div className="bg-background flex flex-col gap-6 rounded-lg border p-3">
+            <div className="bg-background flex flex-col gap-8 rounded-lg border p-3">
               <Skeleton className="h-6 w-40" />
               {["Runes", "Weapons", "Cores"].map((section) => (
                 <div key={section} className="flex flex-col gap-3">

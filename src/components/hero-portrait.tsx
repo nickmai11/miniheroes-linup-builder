@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Check, Hammer } from "lucide-react";
 import type { Divinity, Hero } from "@/db/schema";
 import { versioned } from "@/lib/asset-version";
 import { DivinityIcon } from "./divinity-icon";
@@ -15,13 +16,18 @@ function initials(name: string) {
 /** Square portrait tile: real image when available, initials placeholder otherwise. */
 export function HeroPortrait({
   hero,
+  hasBuild = hero.hasBuild ?? false,
   divinities,
   divinitySize = 36,
   className = "",
   sizes = "96px",
   priority = false,
 }: {
-  hero: Pick<Hero, "name" | "imageUrl" | "role" | "rarity">;
+  hero: Pick<Hero, "name" | "imageUrl" | "role" | "rarity"> & {
+    hasBuild?: boolean;
+  };
+  /** Override when the caller already has the hero's saved builds loaded. */
+  hasBuild?: boolean;
   /** Mythic divinities in slot order; [0] overlays bottom-left, [1] bottom-right. */
   divinities?: Pick<Divinity, "name" | "iconUrl">[];
   divinitySize?: number;
@@ -50,6 +56,21 @@ export function HeroPortrait({
         >
           {initials(hero.name)}
         </div>
+      )}
+      {hasBuild && (
+        <span
+          role="img"
+          aria-label={`Build available for ${hero.name}`}
+          title={`${hero.name} has a saved build`}
+          className="absolute top-[max(2%,3px)] left-[max(2%,3px)] flex aspect-square w-[18%] max-w-12 min-w-5 items-center justify-center rounded-[20%] bg-slate-950 text-amber-200 shadow-md ring-2 shadow-black/50 ring-amber-300"
+        >
+          <Hammer className="size-[60%]" aria-hidden />
+          <Check
+            className="absolute -right-[8%] -bottom-[8%] size-[60%] text-emerald-400"
+            strokeWidth={4}
+            aria-hidden
+          />
+        </span>
       )}
       {divinities && divinities.length > 0 && (
         <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between p-1.5">

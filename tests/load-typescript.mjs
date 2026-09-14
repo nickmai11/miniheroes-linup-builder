@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import ts from "typescript";
 
@@ -11,9 +11,11 @@ export function loadTypeScript(path, overrides = {}) {
     if (modules.has(url.href)) return modules.get(url.href).exports;
     const source = readFileSync(url, "utf8");
     const { outputText } = ts.transpileModule(source, {
+      fileName: url.pathname,
       compilerOptions: {
         module: ts.ModuleKind.CommonJS,
         target: ts.ScriptTarget.ES2022,
+        jsx: ts.JsxEmit.ReactJSX,
       },
     });
     const loaded = { exports: {} };
@@ -22,9 +24,14 @@ export function loadTypeScript(path, overrides = {}) {
       if (Object.hasOwn(overrides, name)) return overrides[name];
       // Server-only modules are exercised directly here, outside Next.js.
       if (name === "server-only") return {};
-      if (name.startsWith("@/"))
-        return load(new URL(`../src/${name.slice(2)}.ts`, import.meta.url));
-      if (name.startsWith(".")) return load(new URL(`${name}.ts`, url));
+      if (name.startsWith("@/") || name.startsWith(".")) {
+        const sourceUrl = name.startsWith("@/")
+          ? new URL(`../src/${name.slice(2)}.ts`, import.meta.url)
+          : new URL(`${name}.ts`, url);
+        return load(
+          existsSync(sourceUrl) ? sourceUrl : new URL(`${sourceUrl.href}x`),
+        );
+      }
       return require(name);
     };
     new Function("require", "module", "exports", outputText)(

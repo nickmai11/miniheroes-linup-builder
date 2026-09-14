@@ -61,6 +61,7 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
         <div className="flex flex-col gap-4 md:sticky md:top-20 md:self-start">
           <HeroPortrait
             hero={hero}
+            hasBuild={builds.length > 0}
             divinities={hero.divinities}
             divinitySize={56}
             sizes="260px"

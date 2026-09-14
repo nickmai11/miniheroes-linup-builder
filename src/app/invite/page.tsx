@@ -13,7 +13,7 @@ import {
 import { InvitationForm } from "./invitation-form";
 
 export const metadata: Metadata = {
-  title: "Invitation required",
+  title: "Invitation access",
   robots: { index: false, follow: false },
 };
 
@@ -29,10 +29,10 @@ export default async function InvitePage(props: PageProps<"/invite">) {
             <KeyRound className="size-6" aria-hidden />
           </div>
           <CardTitle>
-            <h1 className="text-2xl">You’re invited</h1>
+            <h1 className="text-2xl">Access the full library</h1>
           </CardTitle>
           <CardDescription>
-            Enter your invitation code to explore Mini Heroes Library. This
+            Enter an invitation code to view pages that aren’t public. This
             browser will remember your access.
           </CardDescription>
         </CardHeader>

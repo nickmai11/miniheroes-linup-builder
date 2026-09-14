@@ -12,6 +12,17 @@ heroes with an entry in `heroDetailSeeds`. Partly recorded heroes remain visible
 adding a detail entry automatically makes a hero eligible for these lists.
 Saved lineup slots and direct hero lookups retain the full roster.
 
+Hero portraits display a build-availability indicator whenever the hero has at
+least one saved build, using a dark navy badge with a pale-gold hammer and bright
+gold outline at the top-left so it stands out against the hero art. A thick
+green checkmark overlays its bottom-right, with an accessible "Build available"
+label. Keep the hammer; the checkmark has no background of its own. The badge and
+icons scale with the portrait; use 18% of its width, bounded to 20–48px for readability.
+Apply it consistently to the hero pool, hero detail pages,
+divinity hero lists, and lineup portraits. The indicator represents any saved
+build for the hero, including heroes without an assigned lineup build; omit it
+when no saved builds exist. Keep the owner's portrait art and divinity overlays.
+
 Build names open a stats popover on hover or tap, using the same rune/weapon/core
 layout and priority markers as the saved build. Core names and chips open a
 popover showing the core's recorded bonus and linked talent (name, kind, unlock
@@ -155,7 +166,8 @@ saved have disabled Reset buttons.
 Runes, Weapons, and Cores have bold headings on a subtle gold background with a
 gold left border, in both saved builds and the editor. Build names are larger to
 keep them distinct from these section headings and the smaller rune-type labels.
-Sections have 1.5rem of vertical separation, with 1rem between rune-type groups.
+Top-level sections use `gap-8` (2rem) of vertical separation in saved builds,
+the editor, previews, and loading placeholders, with 1rem between rune-type groups.
 
 Builds also include **Cores**, picked from this hero's recorded cores with the same
 priority tiers as Weapons. Core descriptions appear on

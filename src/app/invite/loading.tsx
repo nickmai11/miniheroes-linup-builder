@@ -14,7 +14,7 @@ export default function Loading() {
       <Card>
         <CardHeader className="gap-3">
           <Skeleton className="size-12 rounded-xl" />
-          <Skeleton className="h-8 w-44" />
+          <Skeleton className="h-8 w-64 max-w-full" />
           <TextSkeleton lines={3} />
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
@@ -26,6 +26,7 @@ export default function Loading() {
           <TextSkeleton lines={2} />
         </CardContent>
       </Card>
+      <TextSkeleton lines={2} />
     </LoadingPage>
   );
 }

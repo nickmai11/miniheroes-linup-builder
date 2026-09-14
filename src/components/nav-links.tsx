@@ -31,12 +31,10 @@ const LINKS = [
 
 type NavigationProps = {
   canEdit: boolean;
-  allowedPaths?: string[];
 };
 
 function NavigationItems({
   canEdit,
-  allowedPaths,
   mobile = false,
   onSelect,
 }: NavigationProps & {
@@ -46,12 +44,6 @@ function NavigationItems({
   const pathname = usePathname();
   return LINKS.map(({ href, label, icon: Icon }) => {
     const adminRoute = href === "/invitations/new" || href === "/public-urls";
-    if (
-      allowedPaths &&
-      !allowedPaths.includes(href) &&
-      !(canEdit && adminRoute)
-    )
-      return null;
     if ((href === "/lineups/new" || adminRoute) && !canEdit) return null;
     const active =
       href === "/lineups"

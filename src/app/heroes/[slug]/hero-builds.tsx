@@ -237,7 +237,7 @@ export function HeroBuilds({
         draft?.id === build.id ? null : (
           <article
             key={build.id}
-            className="bg-background flex flex-col gap-6 rounded-lg border p-3"
+            className="bg-background flex flex-col gap-8 rounded-lg border p-3"
           >
             <div className="flex items-start justify-between gap-3">
               <div className="flex min-w-0 flex-col gap-1">
@@ -289,7 +289,7 @@ export function HeroBuilds({
       {canEdit &&
         (draft ? (
           <form
-            className="bg-background flex flex-col gap-6 rounded-lg border p-3"
+            className="bg-background flex flex-col gap-8 rounded-lg border p-3"
             onSubmit={(e) => {
               e.preventDefault();
               submit();

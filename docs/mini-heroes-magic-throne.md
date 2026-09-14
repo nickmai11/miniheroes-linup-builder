@@ -38,6 +38,14 @@ the in-game **Archive** screen:
 The small **diamond in the bottom-left of a card is artifact progress**, not part of
 the hero art. It is removed from the portraits in this app.
 
+Hero portraits show an indicator when that hero has at least one saved build
+(owner, 2026-09-14). This indicates build availability for the hero, independent
+of whether a build is assigned to a particular lineup slot.
+The build indicator keeps its hammer icon, overlaid with a thick green checkmark
+without a background behind the check. Both scale with the portrait
+(owner, 2026-09-14). The hammer's background must have enough contrast to remain
+noticeable against the hero artwork (owner, 2026-09-14).
+
 Roster as of 2026-09-14 (67 heroes) — see the table at the end of this file. The
 seed data lives in `src/data/heroes.ts`. The September 14 follow-up Archive
 capture `gameplay/heroes/image copy 9.png` shows an **Eternal 2/2** section:
@@ -1269,6 +1277,11 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-14 — A hero's portrait should indicate when a saved build is available
+  for that hero. Keep the build's hammer icon and add a thicker green checkmark
+  with no background behind the check; both scale to the portrait. The hammer
+  badge's background should contrast more strongly with the hero artwork.
 
 - 2026-09-14 — The owner's eleven **12.58.22–12.58.40 PM Swordmaster**
   screenshots establish the six talents and four linked cores in the reference

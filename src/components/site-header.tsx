@@ -12,16 +12,11 @@ export async function SiteHeader() {
   const signedIn = await isAdmin();
   const access = await hasAppAccess();
   const publicPage = access ? null : await getPublicPage();
-  const showNavigation = Boolean(access || publicPage || canEdit);
-  const navigationProps = {
-    canEdit,
-    allowedPaths: access ? undefined : publicPage ? [publicPage] : [],
-  };
   return (
     <>
       <header className="bg-background sticky top-0 z-40 border-b md:static">
         <div className="mx-auto flex h-14 w-full max-w-6xl items-center gap-2 px-3 sm:gap-6 sm:px-6">
-          {showNavigation && <MobileNavigation {...navigationProps} />}
+          <MobileNavigation canEdit={canEdit} />
           <Link
             href={access ? "/" : (publicPage ?? "/invite")}
             className="font-heading flex min-w-0 items-center gap-2 text-sm leading-tight font-semibold sm:text-base"
@@ -35,7 +30,7 @@ export async function SiteHeader() {
           </div>
         </div>
       </header>
-      {showNavigation && <NavLinks {...navigationProps} />}
+      <NavLinks canEdit={canEdit} />
     </>
   );
 }

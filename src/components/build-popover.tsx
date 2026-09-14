@@ -36,7 +36,7 @@ export function BuildPopover({
         )
       }
     >
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-8">
         <div>
           <h3 className="font-semibold">{build.name}</h3>
           {build.notes && (
