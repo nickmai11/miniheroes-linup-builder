@@ -33,7 +33,7 @@ export async function generateMetadata(
 }
 
 export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
-  const { t, formatDate } = await getI18n();
+  const { gameLabel, t, formatDate } = await getI18n();
 
   const { id } = await props.params;
   await requirePageAccess(`/lineups/${id}`);
@@ -94,7 +94,7 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
             {hero ? (
               <Link
                 href={`/heroes/${hero.slug}`}
-                aria-label={t("View {name}", { name: hero.name })}
+                aria-label={t("View {name}", { name: gameLabel("hero", hero) })}
                 className="hover:text-primary focus-visible:outline-ring flex w-full min-w-0 flex-col items-center gap-1.5 rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
               >
                 <HeroPortrait

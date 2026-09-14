@@ -95,7 +95,7 @@ export function HeroBuilds({
   weaponAttributes,
   cores,
 }: Props) {
-  const { t } = useI18n();
+  const { gameLabel, t } = useI18n();
 
   const [draft, setDraft] = useState<Draft | null>(null);
   const [importing, setImporting] = useState(false);
@@ -234,11 +234,15 @@ export function HeroBuilds({
             ? t(
                 "Build imported. Cores not recorded for this hero were skipped: {cores}.",
                 {
-                  cores: notice.slice(
-                    "Build imported. Cores not recorded for this hero were skipped: "
-                      .length,
-                    -1,
-                  ),
+                  cores: notice
+                    .slice(
+                      "Build imported. Cores not recorded for this hero were skipped: "
+                        .length,
+                      -1,
+                    )
+                    .split(", ")
+                    .map((name) => gameLabel("core", name))
+                    .join(", "),
                 },
               )
             : t(notice)}
@@ -246,7 +250,9 @@ export function HeroBuilds({
       )}
       {builds.length === 0 && !draft && (
         <p className="text-muted-foreground text-sm">
-          {t("No builds recorded for {name} yet.", { name: heroName })}
+          {t("No builds recorded for {name} yet.", {
+            name: gameLabel("hero", heroName),
+          })}
         </p>
       )}
 
@@ -383,7 +389,7 @@ export function HeroBuilds({
                           .filter(Boolean)
                           .join("\n")}
                       >
-                        {r.name}
+                        {gameLabel("rune", r)}
                       </Chip>
                     ))}
                   </AttributeGroup>
@@ -407,7 +413,7 @@ export function HeroBuilds({
                     priority={draft.weaponPriorities[w.id]}
                     onClick={() => cyclePriority("weaponIds", w.id)}
                   >
-                    {w.name}
+                    {gameLabel("weapon", w)}
                   </Chip>
                 ))}
               </div>
@@ -427,13 +433,15 @@ export function HeroBuilds({
                       onClick={() => cyclePriority("coreIds", core.id)}
                       popover={<CoreDetails core={core} />}
                     >
-                      {core.name}
+                      {gameLabel("core", core)}
                     </Chip>
                   ))}
                 </div>
               ) : (
                 <BuildPlaceholder>
-                  {t("No cores recorded for {name} yet.", { name: heroName })}
+                  {t("No cores recorded for {name} yet.", {
+                    name: gameLabel("hero", heroName),
+                  })}
                 </BuildPlaceholder>
               )}
             </BuildSection>

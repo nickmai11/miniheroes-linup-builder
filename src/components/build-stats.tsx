@@ -30,7 +30,7 @@ function groupRunes<T extends RuneAttribute>(runes: T[]): [RuneType, T[]][] {
 }
 
 export function BuildStats({ build }: { build: HeroBuild }) {
-  const { t } = useI18n();
+  const { gameLabel, t } = useI18n();
 
   return (
     <div className="flex flex-col gap-8">
@@ -40,7 +40,7 @@ export function BuildStats({ build }: { build: HeroBuild }) {
             {list.length > 0 ? (
               list.map((r) => (
                 <Chip key={r.id} title={r.description} priority={r.priority}>
-                  {r.name}
+                  {gameLabel("rune", r)}
                 </Chip>
               ))
             ) : (
@@ -56,7 +56,7 @@ export function BuildStats({ build }: { build: HeroBuild }) {
           <div className="flex flex-wrap gap-1.5">
             {sortByBuildPriority(build.weapons).map((w) => (
               <Chip key={w.id} priority={w.priority}>
-                {w.name}
+                {gameLabel("weapon", w)}
               </Chip>
             ))}
           </div>
@@ -75,7 +75,7 @@ export function BuildStats({ build }: { build: HeroBuild }) {
                 popover={<CoreDetails core={core} />}
                 priority={core.priority}
               >
-                {core.name}
+                {gameLabel("core", core)}
               </Chip>
             ))}
           </div>

@@ -16,17 +16,17 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata(
   props: PageProps<"/divinities/[slug]">,
 ): Promise<Metadata> {
-  const { t } = await getI18n();
+  const { gameLabel, t } = await getI18n();
   await requirePageAccess();
   const { slug } = await props.params;
   const divinity = await getDivinityBySlug(slug);
-  return { title: divinity?.name ?? t("Divinity") };
+  return { title: divinity ? gameLabel("divinity", divinity) : t("Divinity") };
 }
 
 export default async function DivinityPage(
   props: PageProps<"/divinities/[slug]">,
 ) {
-  const { t } = await getI18n();
+  const { gameLabel, t } = await getI18n();
 
   await requirePageAccess();
   const { slug } = await props.params;
@@ -46,7 +46,9 @@ export default async function DivinityPage(
       <header className="flex items-center gap-4">
         <DivinityIcon divinity={divinity} size={72} />
         <div className="flex flex-col gap-1">
-          <h1 className="text-3xl font-semibold">{divinity.name}</h1>
+          <h1 className="text-3xl font-semibold">
+            {gameLabel("divinity", divinity)}
+          </h1>
           <p className="text-muted-foreground">{t(divinity.kind)}</p>
         </div>
       </header>
@@ -57,7 +59,9 @@ export default async function DivinityPage(
         </h2>
         {heroes.length === 0 ? (
           <p className="text-muted-foreground text-sm">
-            {t("No recorded hero has {name} yet.", { name: divinity.name })}
+            {t("No recorded hero has {name} yet.", {
+              name: gameLabel("divinity", divinity),
+            })}
           </p>
         ) : (
           <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
@@ -65,7 +69,7 @@ export default async function DivinityPage(
               <li key={hero.id}>
                 <Link
                   href={`/heroes/${hero.slug}`}
-                  title={hero.notes || hero.name}
+                  title={hero.notes || gameLabel("hero", hero)}
                   className="bg-card hover:border-primary/60 flex flex-col gap-1.5 rounded-lg border p-1.5 shadow-xs transition-colors"
                 >
                   <HeroPortrait

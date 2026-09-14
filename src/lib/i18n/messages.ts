@@ -1,3 +1,8 @@
+import {
+  translateGameLabel,
+  type GameLabel,
+  type GameLabelKind,
+} from "./game-labels";
 import vietnamese from "./vi.json";
 import type { Locale } from "./config";
 
@@ -26,5 +31,8 @@ export function createI18n(locale: Locale) {
   function formatNumber(value: number) {
     return new Intl.NumberFormat(intlLocale).format(value);
   }
-  return { locale, t, formatDate, formatNumber };
+  function gameLabel(kind: GameLabelKind, value: GameLabel) {
+    return translateGameLabel(locale, kind, value);
+  }
+  return { locale, t, gameLabel, formatDate, formatNumber };
 }

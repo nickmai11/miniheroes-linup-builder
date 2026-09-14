@@ -32,7 +32,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function LineupsPage() {
-  const { t, formatDate } = await getI18n();
+  const { gameLabel, t, formatDate } = await getI18n();
 
   await requirePageAccess("/lineups");
   const lineupIds = await accessibleLineupIds();
@@ -99,7 +99,9 @@ export default async function LineupsPage() {
                         {hero ? (
                           <Link
                             href={`/heroes/${hero.slug}`}
-                            aria-label={t("View {name}", { name: hero.name })}
+                            aria-label={t("View {name}", {
+                              name: gameLabel("hero", hero),
+                            })}
                             className="focus-visible:outline-ring rounded-md focus-visible:outline-2 focus-visible:outline-offset-2"
                           >
                             <HeroPortrait hero={hero} sizes="64px" />

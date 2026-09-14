@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 import postgres from "postgres";
 import { drizzle } from "drizzle-orm/postgres-js";
-import { eq, inArray } from "drizzle-orm";
+import { inArray } from "drizzle-orm";
 import { loadTypeScript } from "./load-typescript.mjs";
 
 const testUrl = process.env.LINEUP_TEST_DATABASE_URL;
@@ -48,7 +48,7 @@ test(
     );
     const { createLineupDraft } = loadTypeScript("src/lib/lineup-draft.ts");
     const lineupIds = [];
-    let hero;
+    let heroes = [];
     let fishes = [];
     try {
       await sql`create schema ${sql(namespace)}`;
@@ -61,14 +61,16 @@ test(
         unique (lineup_id, fish_id)
       )
     `;
-      [hero] = await db
+      heroes = await db
         .insert(schema.heroes)
-        .values({
-          slug: namespace,
-          name: "Migration test hero",
-          role: "warrior",
-          rarity: "mythic",
-        })
+        .values(
+          Array.from({ length: 5 }, (_, i) => ({
+            slug: `${namespace}-hero-${i}`,
+            name: `Migration test hero ${i}`,
+            role: "warrior",
+            rarity: "mythic",
+          })),
+        )
         .returning();
       fishes = await db
         .insert(schema.fishes)
@@ -82,7 +84,7 @@ test(
         .returning();
       const input = {
         name: "Before fish migration",
-        slots: [{ heroId: hero.id }, null, null, null, null],
+        slots: heroes.map((hero) => ({ heroId: hero.id })),
         fishSelections: fishes.map((fish) => ({
           fishId: fish.id,
           quantity: 1,
@@ -158,8 +160,13 @@ test(
             fishes.map((fish) => fish.id),
           ),
         );
-      if (hero)
-        await db.delete(schema.heroes).where(eq(schema.heroes.id, hero.id));
+      if (heroes.length)
+        await db.delete(schema.heroes).where(
+          inArray(
+            schema.heroes.id,
+            heroes.map((hero) => hero.id),
+          ),
+        );
       await sql`drop schema if exists ${sql(namespace)} cascade`;
       await sql.end({ timeout: 1 });
     }

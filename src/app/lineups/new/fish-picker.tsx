@@ -1,5 +1,6 @@
 "use client";
 
+import { matchesGameLabel } from "@/lib/i18n/game-labels";
 import { useI18n } from "@/lib/i18n/client";
 import { Popover } from "@base-ui/react/popover";
 import { ChevronDown, Search } from "lucide-react";
@@ -24,7 +25,7 @@ export function FishPicker({
   onChange: (selections: FishSelection[]) => void;
   disabled: boolean;
 }) {
-  const { t } = useI18n();
+  const { gameLabel, t } = useI18n();
 
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [search, setSearch] = useState("");
@@ -63,7 +64,7 @@ export function FishPicker({
         {FISH_CATEGORIES.map((category) => {
           const items = fishes.filter((fish) => fish.fishType === category);
           const matches = items.filter((fish) =>
-            fish.name.toLowerCase().includes(query),
+            matchesGameLabel("fish", fish, query),
           );
           const selected = selections.flatMap(({ fishId, quantity }) => {
             const fish = items.find((item) => item.id === fishId);
@@ -71,7 +72,7 @@ export function FishPicker({
           });
           const count = selected.reduce((sum, fish) => sum + fish.quantity, 0);
           const summary = selected
-            .map((fish) => `${fish.name} ×${fish.quantity}`)
+            .map((fish) => `${gameLabel("fish", fish)} ×${fish.quantity}`)
             .join(", ");
           return (
             <div key={category} className="flex min-w-0 flex-col gap-1.5">
@@ -101,7 +102,8 @@ export function FishPicker({
                     {selected.length ? (
                       <>
                         <span aria-hidden="true">
-                          {selected[0].name} ×{selected[0].quantity}
+                          {gameLabel("fish", selected[0])} ×
+                          {selected[0].quantity}
                           {selected.length > 1
                             ? ` +${selected.length - 1}`
                             : ""}
@@ -158,7 +160,7 @@ export function FishPicker({
                             >
                               <input
                                 type="checkbox"
-                                aria-label={fish.name}
+                                aria-label={gameLabel("fish", fish)}
                                 checked={quantity > 0}
                                 disabled={disabled}
                                 onChange={(event) =>
@@ -172,7 +174,7 @@ export function FishPicker({
                               <FishPopover fish={fish} />
                               <select
                                 aria-label={t("Quantity of {name}", {
-                                  name: fish.name,
+                                  name: gameLabel("fish", fish),
                                 })}
                                 value={quantity || 1}
                                 disabled={disabled || quantity === 0}

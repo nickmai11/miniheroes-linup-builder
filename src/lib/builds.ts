@@ -1,4 +1,5 @@
 import "server-only";
+import { matchingGameSlugs } from "@/lib/i18n/game-labels";
 import { and, asc, eq, ilike, inArray, ne, or, type SQL } from "drizzle-orm";
 import { db, schema } from "@/db";
 import type { HeroBuild, ImportableBuildPage } from "@/lib/build-types";
@@ -141,9 +142,13 @@ export async function getOtherHeroBuilds(
   const matches = terms.map((term) => {
     // Search literal text: SQL LIKE wildcards in a name aren't search operators.
     const pattern = `%${term.replace(/[\\%_]/g, "\\$&")}%`;
+    const translatedHeroes = matchingGameSlugs("hero", term);
     return or(
       ilike(schema.heroBuilds.name, pattern),
       ilike(schema.heroes.name, pattern),
+      translatedHeroes.length
+        ? inArray(schema.heroes.slug, translatedHeroes)
+        : undefined,
     );
   });
   const rows = await db

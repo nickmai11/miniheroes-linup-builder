@@ -8,14 +8,14 @@ const valid = () => ({
   name: "Arena",
   slots: [
     { heroId: 1, petIds: [2, 3], relicIds: [4, 5] },
-    null,
-    null,
-    null,
-    null,
+    { heroId: 2 },
+    { heroId: 3 },
+    { heroId: 4 },
+    { heroId: 5 },
   ],
 });
 
-test("lineups support multiple assignments, empty slots, and optional assignments", () => {
+test("five-hero lineups support multiple assignments and optional assignments", () => {
   assert.equal(lineupSchema.safeParse(valid()).success, true);
   const input = valid();
   input.slots[1] = { heroId: 2 };
@@ -25,6 +25,43 @@ test("lineups support multiple assignments, empty slots, and optional assignment
     petIds: [],
     relicIds: [],
   });
+});
+
+test("creating and editing require all five heroes, with optional details left empty", () => {
+  for (const id of [undefined, 42]) {
+    // Exercise every incomplete arrangement, including an empty last slot.
+    for (let mask = 0; mask < 31; mask++) {
+      const slots = Array.from({ length: 5 }, (_, i) =>
+        mask & (1 << i) ? { heroId: i + 1 } : null,
+      );
+      const result = lineupSchema.safeParse({ name: "Arena", id, slots });
+      assert.equal(result.success, false);
+      assert.equal(
+        result.error.issues[0].message,
+        "Pick all five heroes before saving",
+      );
+    }
+    const slots = Array.from({ length: 5 }, (_, i) => ({ heroId: i + 1 }));
+    const result = lineupSchema.parse({ name: "Arena", id, slots });
+    assert.equal(result.description, "");
+    assert.deepEqual(result.fishSelections, []);
+    assert.ok(
+      result.slots.every(
+        (slot) =>
+          slot.buildId === null &&
+          slot.petIds.length === 0 &&
+          slot.relicIds.length === 0,
+      ),
+    );
+    assert.equal(
+      lineupSchema.safeParse({
+        name: "Arena",
+        id,
+        slots: [...slots, { heroId: 6 }],
+      }).success,
+      false,
+    );
+  }
 });
 
 test("a lineup hero may have one saved build, or clear it", () => {
@@ -179,6 +216,9 @@ test("cloning preserves all ordered assignments and notes without the source sav
     null,
     null,
   ]);
+  assert.equal(lineupSchema.safeParse(draft).success, false);
+  // Older incomplete lineups still open as drafts; fill their empty slots to save.
+  for (const i of [1, 3, 4]) draft.slots[i] = { heroId: i + 10 };
   assert.equal(lineupSchema.safeParse(draft).success, true);
   const original = structuredClone(source);
   draft.name = "Different lineup";
@@ -204,5 +244,6 @@ test("edit drafts retain their save target while clone names fit the name limit"
   const clone = createLineupDraft(source, true);
   assert.equal(clone.name.length, 120);
   assert.ok(clone.name.endsWith(" (copy)"));
+  for (const i of [1, 3, 4]) clone.slots[i] = { heroId: i + 10 };
   assert.equal(lineupSchema.safeParse(clone).success, true);
 });

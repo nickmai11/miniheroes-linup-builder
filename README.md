@@ -249,7 +249,18 @@ from `src/lib/i18n/client.tsx` in Client Components. Wrap whole sentences with
 translations for every new interface message. Dates use locale-specific formatting
 in the app's Asia/Ho_Chi_Minh timezone.
 
-Hero and item names, screenshot-transcribed descriptions, and user-written notes
-remain in their original language. Database IDs, enum values, URLs, source data,
-and portrait assets are not translated. Run `pnpm test` for locale negotiation,
-dictionary coverage, interpolation, rendering, and existing access-policy checks.
+Game names and labels use namespaced keys in `src/lib/i18n/game-en.json` and
+`game-vi.json`. For example, `hero.sea-captain` and `fish.lemon-fish` reuse the
+slugs already stored in the database; no schema migration or data rewrite is
+needed. Call `gameLabel("hero", hero)` (or a source name when a projection has no
+slug). Talents, awakenings, artifacts, cores, attributes, fishing areas,
+collections, and bait have their own namespaces, so similarly named labels do
+not collide. Both dictionaries must be updated when catalog labels change.
+Vietnamese translations are app translations of the recorded English labels.
+
+Hero and fish searches match both languages with or without Vietnamese accents.
+Build-import search also matches translated hero names. User-written build and
+lineup names, notes, and screenshot-transcribed description paragraphs retain
+their source text. Database IDs, enum values, URLs, and portrait assets remain
+stable. Run `pnpm test` for complete game-label coverage, bilingual search,
+rendering, and the existing access-policy checks.

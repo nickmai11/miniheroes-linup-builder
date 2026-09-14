@@ -7,6 +7,12 @@ facts behind these rules are in `mini-heroes-magic-throne.md` (Owner-stated fact
 
 ## 1. What the page shows
 
+Names of heroes, talents, awakenings, cores, artifacts, and divinities display
+through `gameLabel()` in the selected language (owner, 2026-09-14). Keep original
+English names in seeds and the database so talent links, core matching, and seed
+fingerprints remain stable. Add corresponding keys to `game-en.json` and
+`game-vi.json` when importing new names. Descriptions remain source transcriptions.
+
 Hero listings (the hero pool, lineup picker, and divinity hero lists) show only
 heroes with an entry in `heroDetailSeeds`. Partly recorded heroes remain visible;
 adding a detail entry automatically makes a hero eligible for these lists.

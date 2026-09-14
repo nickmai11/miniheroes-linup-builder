@@ -41,7 +41,7 @@ export function HeroPortrait({
   /** Eager-load above-the-fold portraits (first row of a grid). */
   priority?: boolean;
 }) {
-  const { t } = useI18n();
+  const { gameLabel, t } = useI18n();
 
   return (
     <div
@@ -50,7 +50,7 @@ export function HeroPortrait({
       {hero.imageUrl ? (
         <Image
           src={versioned(hero.imageUrl)}
-          alt={hero.name}
+          alt={gameLabel("hero", hero)}
           fill
           sizes={sizes}
           priority={priority}
@@ -59,9 +59,9 @@ export function HeroPortrait({
       ) : (
         <div
           className="bg-muted text-muted-foreground flex h-full w-full items-center justify-center text-lg font-semibold"
-          aria-label={hero.name}
+          aria-label={gameLabel("hero", hero)}
         >
-          {initials(hero.name)}
+          {initials(gameLabel("hero", hero))}
         </div>
       )}
       {hasBuild && (
@@ -69,7 +69,9 @@ export function HeroPortrait({
           <TooltipTrigger
             render={<span />}
             role="img"
-            aria-label={t("Build available for {name}", { name: hero.name })}
+            aria-label={t("Build available for {name}", {
+              name: gameLabel("hero", hero),
+            })}
             // Suppress any native title inherited from the surrounding hero link.
             title=""
             className="absolute top-[max(2%,3px)] left-[max(2%,3px)] flex aspect-square w-[18%] max-w-12 min-w-5 items-center justify-center rounded-[20%] bg-slate-950 text-amber-200 shadow-md ring-2 shadow-black/50 ring-amber-300"
@@ -82,7 +84,7 @@ export function HeroPortrait({
             />
           </TooltipTrigger>
           <TooltipContent role="tooltip" side="top" sideOffset={8}>
-            {t("{name} has a saved build", { name: hero.name })}
+            {t("{name} has a saved build", { name: gameLabel("hero", hero) })}
           </TooltipContent>
         </Tooltip>
       )}
@@ -148,9 +150,11 @@ export function HeroName({
   hero: Pick<Hero, "name">;
   className?: string;
 }) {
+  const { gameLabel } = useI18n();
+
   return (
     <span className={`min-w-0 leading-snug break-words ${className}`}>
-      {hero.name}
+      {gameLabel("hero", hero)}
     </span>
   );
 }

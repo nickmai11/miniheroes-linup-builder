@@ -1235,6 +1235,11 @@ the earlier fishing collectibles sheet must not be imported as fishes.
 A battle lineup is **5 heroes**. Conventional wisdom (web) is one of each role plus a
 flex pick, but the whole point of this app is to record the owner's better answers.
 
+Lineups can be **partially saved** and completed later (owner, 2026-09-14), but
+the owner clarified that saving requires **at least five heroes**. The app has
+five slots, so all five must contain distinct heroes before saving. A name is
+also required; builds, pets, relics, fishes, and notes can be left empty.
+
 There is **no "Front 1 / Front 2 / Back" slot naming** in the game (owner, 2026-09-12).
 The app labels slots plainly _Slot 1–5_ until the owner describes the real formation.
 
@@ -1295,6 +1300,17 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-14 — Lineups can be partially saved.
+- 2026-09-14 — Clarification: saving a lineup requires at least five heroes.
+  Partial saving refers to optional details and assignments, not fewer heroes;
+  this corrects the earlier assistant interpretation that one hero was enough.
+
+- 2026-09-14 — The owner requires English/Vietnamese localization for hero
+  names, fish names, and all game-related labels, not only the surrounding
+  interface. They suggested storing translation keys in the database and
+  resolving them through i18n. Preserve screenshot source text and stable record
+  IDs while localizing display names.
 
 - 2026-09-14 — The About page should accept sponsorship via in-game top-up.
   The owner supplied `https://pay.maxngame.com/miniheroes_global/#/?role_id=15298308&lang=en`
@@ -1741,7 +1757,9 @@ is said. These override anything marked (web).
   `public/badges/<role>.png`. The same visibility rule applies to the hero picker
   and divinity hero lists, using `getRecordedHeroSlugs()` on the server.
 - `/lineups/new` — pick heroes with recorded details into slots, add name + notes,
-  save. Existing saved lineups still show their complete recorded formation.
+  save. A name and all five distinct heroes are required; optional assignments
+  and notes can be completed later.
+  Existing saved lineups retain their recorded formation, including empty slots.
 - `/lineups/new?clone=<id>` — initialize a new draft from a saved lineup, including
   heroes that are no longer in the picker. The draft omits the source lineup ID
   and saves through the existing create action. Build and catalog references are
@@ -1780,6 +1798,19 @@ shadcn/ui components (`src/components/ui/`, base-nova style) themed in
 0.75rem radius, slightly enlarged type scale. Light/dark follows the system and can
 be toggled in the header (`next-themes`, class strategy). Add components with
 `pnpm dlx shadcn@latest add <name>`.
+
+### Game label localization
+
+Hero, fish, pet, relic, divinity, talent, awakening, core, artifact, attribute,
+and fishing labels must support English and Vietnamese (owner, 2026-09-14).
+Translations are display content; recorded source text, IDs, and relationships
+remain stable. The owner suggested translation keys as the storage boundary.
+The app uses namespaced translation keys derived from existing catalog slugs
+(e.g. `hero.sea-captain`, `fish.lemon-fish`) without replacing recorded names in
+the database. Labels without a stored slug have explicit dictionary keys and a
+source-name lookup. Vietnamese game names are display translations of the
+recorded English names, not new screenshot transcriptions. Hero/fish searches
+and build-import hero searches match both languages, including accentless input.
 
 ## Portrait pipeline
 

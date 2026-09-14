@@ -6,7 +6,7 @@ import { FISH_CATEGORIES } from "@/lib/fish-selection";
 import type { LineupFish } from "@/lib/lineups";
 
 export function LineupFishes({ fishes }: { fishes: LineupFish[] }) {
-  const { t } = useI18n();
+  const { gameLabel, t } = useI18n();
 
   if (fishes.length === 0) return null;
   return (
@@ -36,7 +36,7 @@ export function LineupFishes({ fishes }: { fishes: LineupFish[] }) {
                           type="button"
                           className="bg-muted hover:bg-accent focus-visible:ring-ring/50 max-w-full rounded-md border px-2 py-1 text-left text-sm break-words focus-visible:ring-3 focus-visible:outline-none"
                         >
-                          {fish.name}{" "}
+                          {gameLabel("fish", fish)}{" "}
                           <span className="font-medium whitespace-nowrap">
                             ×{fish.quantity}
                           </span>

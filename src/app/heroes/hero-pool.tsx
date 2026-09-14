@@ -1,5 +1,6 @@
 "use client";
 
+import { matchesGameLabel } from "@/lib/i18n/game-labels";
 import { useI18n } from "@/lib/i18n/client";
 import { Search } from "lucide-react";
 import Link from "next/link";
@@ -10,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import type { HeroWithDivinities } from "@/lib/heroes";
 
 export function HeroPool({ heroes }: { heroes: HeroWithDivinities[] }) {
-  const { t } = useI18n();
+  const { gameLabel, t } = useI18n();
 
   const [query, setQuery] = useState("");
   const [role, setRole] = useState<RoleFilter>("all");
@@ -21,7 +22,7 @@ export function HeroPool({ heroes }: { heroes: HeroWithDivinities[] }) {
       .filter(
         (h) =>
           (role === "all" || h.role === role) &&
-          (!q || h.name.toLowerCase().includes(q)),
+          (!q || matchesGameLabel("hero", h, q)),
       )
       .sort((a, b) => Number(b.hasBuild) - Number(a.hasBuild));
   }, [heroes, query, role]);
@@ -50,7 +51,7 @@ export function HeroPool({ heroes }: { heroes: HeroWithDivinities[] }) {
             <li key={hero.id}>
               <Link
                 href={`/heroes/${hero.slug}`}
-                title={hero.notes || hero.name}
+                title={hero.notes || gameLabel("hero", hero)}
                 className="bg-card hover:border-primary/60 flex flex-col gap-1.5 rounded-lg border p-1.5 shadow-xs transition-colors"
               >
                 <HeroPortrait

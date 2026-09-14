@@ -1,3 +1,6 @@
+"use client";
+
+import { useI18n } from "@/lib/i18n/client";
 import Image from "next/image";
 import type { Divinity } from "@/db/schema";
 import { versioned } from "@/lib/asset-version";
@@ -12,10 +15,12 @@ export function DivinityIcon({
   size?: number;
   className?: string;
 }) {
+  const { gameLabel } = useI18n();
+
   return (
     <Image
       src={versioned(divinity.iconUrl)}
-      alt={divinity.name}
+      alt={gameLabel("divinity", divinity)}
       width={size}
       height={size}
       className={`shrink-0 ${className}`}

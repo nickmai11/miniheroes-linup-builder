@@ -19,7 +19,7 @@ export function BuildPicker({
   onChange: (id: number | null) => void;
   disabled: boolean;
 }) {
-  const { t } = useI18n();
+  const { gameLabel, t } = useI18n();
 
   const selected = builds.find((build) => build.id === selectedId);
   return (
@@ -54,7 +54,9 @@ export function BuildPicker({
             />
           )}
           <Select.Trigger
-            aria-label={t("Choose build for {name}", { name: heroName })}
+            aria-label={t("Choose build for {name}", {
+              name: gameLabel("hero", heroName),
+            })}
             className={`hover:bg-muted focus-visible:ring-ring/50 flex h-full items-center justify-between gap-2 rounded-md px-2 text-left text-xs focus-visible:ring-3 focus-visible:outline-none disabled:opacity-50 ${selected ? "shrink-0 border-l" : "w-full"}`}
           >
             <Select.Value
@@ -78,7 +80,9 @@ export function BuildPicker({
             className="z-50 outline-none data-closed:invisible"
           >
             <Select.Popup
-              aria-label={t("Builds for {name}", { name: heroName })}
+              aria-label={t("Builds for {name}", {
+                name: gameLabel("hero", heroName),
+              })}
               className="bg-popover text-popover-foreground max-h-[min(18rem,var(--available-height))] w-64 max-w-(--available-width) overflow-y-auto overscroll-contain rounded-md border p-1 shadow-lg outline-none"
             >
               <Select.Item

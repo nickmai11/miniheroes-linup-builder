@@ -24,7 +24,7 @@ export function HeroBuildImport({
   onImport,
   onCancel,
 }: Props) {
-  const { t } = useI18n();
+  const { gameLabel, t } = useI18n();
 
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(0);
@@ -178,7 +178,10 @@ export function HeroBuildImport({
                 <span className="flex min-w-0 flex-col gap-0.5 [overflow-wrap:anywhere]">
                   <span className="text-sm font-medium">{build.name}</span>
                   <span className="text-muted-foreground text-xs">
-                    {build.heroName}
+                    {gameLabel("hero", {
+                      name: build.heroName,
+                      slug: build.heroSlug,
+                    })}
                   </span>
                 </span>
               </label>

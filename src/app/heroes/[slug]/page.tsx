@@ -31,15 +31,15 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata(
   props: PageProps<"/heroes/[slug]">,
 ): Promise<Metadata> {
-  const { t } = await getI18n();
+  const { gameLabel, t } = await getI18n();
   await requirePageAccess();
   const { slug } = await props.params;
   const hero = await getHeroDetail(slug);
-  return { title: hero?.name ?? t("Hero") };
+  return { title: hero ? gameLabel("hero", hero) : t("Hero") };
 }
 
 export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
-  const { t, formatDate } = await getI18n();
+  const { gameLabel, t, formatDate } = await getI18n();
 
   await requirePageAccess();
   const { slug } = await props.params;
@@ -77,7 +77,9 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
               className={buttonVariants({ variant: "outline" })}
             >
               <Hammer data-icon="inline-start" />{" "}
-              {t("Start a lineup with {name}", { name: hero.name })}
+              {t("Start a lineup with {name}", {
+                name: gameLabel("hero", hero),
+              })}
             </Link>
           )}
         </div>
@@ -86,7 +88,7 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
           <header className="flex flex-col gap-2">
             <h1 className="flex items-center gap-2 text-3xl font-semibold">
               <RoleBadge role={hero.role} size={32} />
-              {hero.name}
+              {gameLabel("hero", hero)}
             </h1>
             <p className="text-muted-foreground">{t(ROLE_LABELS[hero.role])}</p>
           </header>
@@ -110,7 +112,7 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
               {hero.skills.length === 0 ? (
                 <p className="text-muted-foreground text-sm">
                   {t("No talents recorded for {name} yet.", {
-                    name: hero.name,
+                    name: gameLabel("hero", hero),
                   })}
                 </p>
               ) : (
@@ -149,7 +151,9 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
                                 ? ` · ${skill.unlockStars}★`
                                 : ""}
                             </span>
-                            <span className="font-medium">{skill.name}</span>
+                            <span className="font-medium">
+                              {gameLabel("skill", skill)}
+                            </span>
                           </div>
                         </div>
                         {skill.description && (
@@ -187,13 +191,17 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
                             />
                             <span>
                               <InfoPopover
-                                label={t("{name} skill", { name: core.name })}
+                                label={t("{name} skill", {
+                                  name: gameLabel("core", core),
+                                })}
                                 trigger={
                                   <button
                                     type="button"
                                     className="font-medium underline decoration-dotted underline-offset-4"
                                   >
-                                    {t("{name} Core", { name: core.name })}
+                                    {t("{name} Core", {
+                                      name: gameLabel("core", core),
+                                    })}
                                   </button>
                                 }
                               >
@@ -234,14 +242,16 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
                           {t("Awakening")} {stage} · {unlockStars}★
                         </span>
                         {skill && (
-                          <span className="font-medium">{skill.name}</span>
+                          <span className="font-medium">
+                            {gameLabel("skill", skill)}
+                          </span>
                         )}
                       </div>
                       <p className="text-muted-foreground text-sm">
                         {skill?.description ??
                           t(
                             "Awakening {stage} has not been recorded for {name} yet.",
-                            { stage, name: hero.name },
+                            { stage, name: gameLabel("hero", hero) },
                           )}
                       </p>
                     </li>
@@ -259,7 +269,7 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
               {!hero.artifactName ? (
                 <p className="text-muted-foreground text-sm">
                   {t("No artifact recorded for {name} yet.", {
-                    name: hero.name,
+                    name: gameLabel("hero", hero),
                   })}
                 </p>
               ) : (
@@ -275,7 +285,7 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
                       />
                     )}
                     <span className="text-lg font-medium">
-                      {hero.artifactName}
+                      {gameLabel("artifact", hero.artifactName)}
                     </span>
                   </div>
                   <ul className="flex flex-col gap-2">
@@ -297,7 +307,11 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
                                 : ` · ${t("Artifact Skill")}`}
                             </span>
                             <span className="font-medium">
-                              {skill?.name ?? bonus.name}
+                              {skill
+                                ? gameLabel("skill", skill)
+                                : bonus.name
+                                  ? gameLabel("skill", bonus.name)
+                                  : ""}
                             </span>
                             <p className="text-muted-foreground text-sm">
                               {bonus.description}
@@ -320,7 +334,7 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
               {hero.divinities.length === 0 ? (
                 <p className="text-muted-foreground text-sm">
                   {t("No divinities recorded for {name} yet.", {
-                    name: hero.name,
+                    name: gameLabel("hero", hero),
                   })}
                 </p>
               ) : (
@@ -329,12 +343,12 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
                     <li key={`${d.id}-${i}`}>
                       <Link
                         href={`/divinities/${d.slug}`}
-                        title={d.name}
+                        title={gameLabel("divinity", d)}
                         className="flex h-12 items-center gap-2 rounded-lg border border-red-500/50 bg-red-500/10 px-3 py-1 transition-colors hover:border-red-500"
                       >
                         <DivinityIcon divinity={d} size={32} />
                         <span className="line-clamp-2 min-w-0 text-sm leading-4 font-medium break-words">
-                          {d.name}
+                          {gameLabel("divinity", d)}
                         </span>
                       </Link>
                     </li>
@@ -352,7 +366,7 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
               <HeroBuilds
                 canEdit={canEdit}
                 heroId={hero.id}
-                heroName={hero.name}
+                heroName={gameLabel("hero", hero)}
                 builds={builds}
                 runeAttributes={runeAttributes}
                 weaponAttributes={weaponAttributes}

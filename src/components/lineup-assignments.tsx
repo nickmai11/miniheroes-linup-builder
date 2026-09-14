@@ -8,15 +8,19 @@ export type AssignmentItem = { id: number; name: string; iconUrl: string };
 
 export function AssignmentIcon({
   item,
+  kind,
   size = 32,
 }: {
   item: AssignmentItem;
+  kind: "pet" | "relic";
   size?: number;
 }) {
+  const { gameLabel } = useI18n();
+
   return (
     <Image
       src={versioned(item.iconUrl)}
-      alt={item.name}
+      alt={gameLabel(kind, item)}
       width={size}
       height={size}
       className="shrink-0 rounded object-contain"
@@ -34,15 +38,15 @@ export function LineupAssignments({
   relics: AssignmentItem[];
   compact?: boolean;
 }) {
-  const { t } = useI18n();
+  const { gameLabel, t } = useI18n();
 
   return (
     <div className="flex w-full flex-col gap-2 text-left">
       {[
-        { label: t("Pets"), items: pets },
-        { label: t("Relics"), items: relics },
+        { label: t("Pets"), kind: "pet" as const, items: pets },
+        { label: t("Relics"), kind: "relic" as const, items: relics },
       ].map(
-        ({ label, items }) =>
+        ({ label, kind, items }) =>
           items.length > 0 && (
             <div key={label}>
               {!compact && (
@@ -54,16 +58,22 @@ export function LineupAssignments({
                 {items.map((item) => (
                   <li
                     key={item.id}
-                    title={item.name}
+                    title={gameLabel(kind, item)}
                     className={
                       compact
                         ? ""
                         : "bg-muted/50 flex w-full items-center gap-1.5 rounded p-1 text-xs"
                     }
                   >
-                    <AssignmentIcon item={item} size={compact ? 24 : 28} />
+                    <AssignmentIcon
+                      kind={kind}
+                      item={item}
+                      size={compact ? 24 : 28}
+                    />
                     {!compact && (
-                      <span className="min-w-0 break-words">{item.name}</span>
+                      <span className="min-w-0 break-words">
+                        {gameLabel(kind, item)}
+                      </span>
                     )}
                   </li>
                 ))}

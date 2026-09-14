@@ -48,7 +48,10 @@ export const lineupSchema = z
           .nullable(),
       )
       .length(LINEUP_SIZE)
-      .refine((slots) => slots.some(Boolean), "Pick at least one hero")
+      .refine(
+        (slots) => slots.every(Boolean),
+        "Pick all five heroes before saving",
+      )
       .refine((slots) => {
         const ids = slots.flatMap((slot) => (slot ? [slot.heroId] : []));
         return new Set(ids).size === ids.length;

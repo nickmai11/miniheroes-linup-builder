@@ -1,5 +1,6 @@
 "use client";
 
+import { matchesGameLabel } from "@/lib/i18n/game-labels";
 import { useI18n } from "@/lib/i18n/client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -47,7 +48,7 @@ export function LineupBuilder({
   lineup?: LineupWithHeroes;
   cloneFrom?: LineupWithHeroes;
 }) {
-  const { t } = useI18n();
+  const { gameLabel, t } = useI18n();
 
   const router = useRouter();
   const sourceLineup = lineup ?? cloneFrom;
@@ -98,7 +99,7 @@ export function LineupBuilder({
     return heroes.filter(
       (hero) =>
         (role === "all" || hero.role === role) &&
-        (!q || hero.name.toLowerCase().includes(q)),
+        (!q || matchesGameLabel("hero", hero, q)),
     );
   }, [heroes, query, role]);
 
@@ -194,7 +195,9 @@ export function LineupBuilder({
                     <button
                       type="button"
                       onClick={() => clearSlot(i)}
-                      aria-label={t("Remove {name}", { name: hero.name })}
+                      aria-label={t("Remove {name}", {
+                        name: gameLabel("hero", hero),
+                      })}
                       className="hover:bg-muted hover:text-foreground rounded p-1"
                     >
                       <X className="size-3.5" />
@@ -207,7 +210,7 @@ export function LineupBuilder({
                   aria-pressed={active}
                   aria-label={t("{slot}: {hero}", {
                     slot: t(SLOT_LABELS[i]),
-                    hero: hero?.name ?? t("Empty"),
+                    hero: hero ? gameLabel("hero", hero) : t("Empty"),
                   })}
                   className="hover:border-primary/60 focus-visible:ring-ring/50 relative aspect-[81/100] w-full overflow-hidden rounded-md border border-dashed focus-visible:ring-3"
                 >
@@ -229,7 +232,7 @@ export function LineupBuilder({
                     />
                     <div className="flex flex-col gap-2 border-t pt-2">
                       <BuildPicker
-                        heroName={hero.name}
+                        heroName={gameLabel("hero", hero)}
                         builds={builds.filter(
                           (build) => build.heroId === hero.id,
                         )}
@@ -248,7 +251,7 @@ export function LineupBuilder({
                       />
                       <AssignmentPicker
                         label="Pets"
-                        heroName={hero.name}
+                        heroName={gameLabel("hero", hero)}
                         items={pets}
                         selectedIds={slot.petIds}
                         disabled={pending}
@@ -256,7 +259,7 @@ export function LineupBuilder({
                       />
                       <AssignmentPicker
                         label="Relics"
-                        heroName={hero.name}
+                        heroName={gameLabel("hero", hero)}
                         items={relics}
                         selectedIds={slot.relicIds}
                         disabled={pending}
@@ -334,7 +337,7 @@ export function LineupBuilder({
                       filled === LINEUP_SIZE &&
                       activeSlot === null
                     }
-                    title={hero.notes || hero.name}
+                    title={hero.notes || gameLabel("hero", hero)}
                     aria-pressed={isSelected}
                     className={cn(
                       "bg-card hover:border-primary/60 focus-visible:ring-ring/50 flex w-full flex-col gap-1 rounded-lg border p-1 text-left shadow-xs transition-all focus-visible:ring-3 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-40",
@@ -395,9 +398,14 @@ export function LineupBuilder({
                 {t(error)}
               </p>
             )}
+            {filled < LINEUP_SIZE && (
+              <p className="text-muted-foreground text-sm">
+                {t("Pick all five heroes before saving")}
+              </p>
+            )}
             <Button
               onClick={submit}
-              disabled={pending || filled === 0 || !name.trim()}
+              disabled={pending || filled !== LINEUP_SIZE || !name.trim()}
               size="lg"
             >
               {pending

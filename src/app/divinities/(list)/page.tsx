@@ -26,7 +26,7 @@ function groupByKind(list: Divinity[]): [string, Divinity[]][] {
 }
 
 export default async function DivinitiesPage() {
-  const { t } = await getI18n();
+  const { gameLabel, t } = await getI18n();
 
   await requirePageAccess();
   const divinities = await getAllDivinities();
@@ -55,12 +55,12 @@ export default async function DivinitiesPage() {
                   <li key={d.id}>
                     <Link
                       href={`/divinities/${d.slug}`}
-                      title={d.name}
+                      title={gameLabel("divinity", d)}
                       className="bg-card hover:border-primary/60 flex h-12 items-center gap-2 rounded-lg border px-3 py-1 shadow-xs transition-colors"
                     >
                       <DivinityIcon divinity={d} size={32} />
                       <span className="line-clamp-2 min-w-0 text-sm leading-4 font-medium break-words">
-                        {d.name}
+                        {gameLabel("divinity", d)}
                       </span>
                     </Link>
                   </li>

@@ -25,10 +25,10 @@ function portrait(props, locale = "en") {
   );
 }
 
-test("Vietnamese build indicators preserve the recorded hero name and artwork", () => {
+test("Vietnamese build indicators translate the hero name while preserving artwork", () => {
   const html = portrait({ hero: { ...hero, hasBuild: true } }, "vi");
-  assert.match(html, /aria-label="Có cách xây dựng cho Sea Captain"/);
-  assert.match(html, /alt="Sea Captain"/);
+  assert.match(html, /aria-label="Có cách xây dựng cho Thuyền Trưởng"/);
+  assert.match(html, /alt="Thuyền Trưởng"/);
   assert.match(html, /heroes(?:\/|%2F)sea-captain\.png/);
 });
 

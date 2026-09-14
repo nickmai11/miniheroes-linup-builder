@@ -72,7 +72,7 @@ test(
     try {
       const prefix = `lineup-test-${Date.now()}`;
       for (const [table, count] of [
-        [schema.heroes, 3],
+        [schema.heroes, 5],
         [schema.pets, 2],
         [schema.relics, 2],
         [schema.fishes, 3],
@@ -145,7 +145,13 @@ test(
           { fishId: fishes[0].id, quantity: 3 },
         ],
         description: "Keep notes",
-        slots: [selection, null, { heroId: heroes[1].id }, null, null],
+        slots: [
+          selection,
+          { heroId: heroes[3].id },
+          { heroId: heroes[1].id },
+          { heroId: heroes[2].id },
+          { heroId: heroes[4].id },
+        ],
       };
       const id = await save(original);
       const first = await getLineup(id);
@@ -158,7 +164,7 @@ test(
         original.fishSelections,
       );
       assert.ok(first.fishes.every((fish) => fish.fishType === "Small"));
-      assert.equal(first.slots[1], null);
+      assert.equal(first.slots[1].id, heroes[3].id);
       assert.deepEqual(
         first.slots[0].pets.map((pet) => pet.id),
         selection.petIds,
@@ -188,14 +194,14 @@ test(
         ...createLineupDraft(clone),
         name: "Changed copy",
         fishSelections: [],
-        slots: [null, null, { heroId: heroes[1].id }, null, null],
+        slots: heroes.map((hero) => ({ heroId: hero.id })),
       });
       assert.deepEqual(await getLineup(id), first);
       assert.deepEqual((await getLineup(cloneId)).fishes, []);
 
       const otherId = await save({
         name: "Other lineup",
-        slots: [{ heroId }, null, null, null, null],
+        slots: heroes.map((hero) => ({ heroId: hero.id })),
       });
       const edited = {
         id,
@@ -206,11 +212,11 @@ test(
         ],
         description: "Changed notes",
         slots: [
-          null,
+          { heroId: heroes[3].id },
           { ...selection, petIds: [pets[0].id] },
-          null,
+          { heroId: heroes[1].id },
           { heroId: heroes[2].id },
-          null,
+          { heroId: heroes[4].id },
         ],
       };
       assert.equal(await save(edited), id);
@@ -230,8 +236,8 @@ test(
         after.fishes,
       );
       assert.equal(after.description, "Changed notes");
-      assert.equal(after.slots[0], null);
-      assert.equal(after.slots[2], null);
+      assert.equal(after.slots[0].id, heroes[3].id);
+      assert.equal(after.slots[2].id, heroes[1].id);
       assert.equal(
         after.slots[1].build.id,
         build.id,
@@ -253,6 +259,17 @@ test(
         3,
       );
       assert.ok(invalidated.some(([path]) => path === `/lineups/${id}/edit`));
+
+      for (const saveId of [undefined, id]) {
+        const input = structuredClone(edited);
+        input.id = saveId;
+        input.slots[4] = null;
+        assert.equal(
+          (await actions.saveLineup(input)).error,
+          "Pick all five heroes before saving",
+        );
+        assert.deepEqual(await getLineup(id), after);
+      }
 
       for (const [field, value, message] of [
         ["heroId", 2147483647, "heroes"],
@@ -342,7 +359,10 @@ test(
         "An assignment failure must roll back name, formation and all assignments",
       );
       failRelicInsert = false;
-      await save({ ...edited, slots: [null, { heroId }, null, null, null] });
+      await save({
+        ...edited,
+        slots: edited.slots.map((slot) => ({ heroId: slot.heroId })),
+      });
       assert.deepEqual((await getLineup(id)).slots[1].pets, []);
       assert.deepEqual((await getLineup(id)).slots[1].relics, []);
       assert.equal((await getLineup(id)).slots[1].build, null);

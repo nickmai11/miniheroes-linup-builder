@@ -7,13 +7,13 @@ import { SKILL_KIND_LABELS } from "@/lib/hero-labels";
 import { versioned } from "@/lib/asset-version";
 
 export function CoreDetails({ core }: { core: CoreWithSkill }) {
-  const { t } = useI18n();
+  const { gameLabel, t } = useI18n();
 
   const skill = core.skill;
   return (
     <div className="flex flex-col gap-3 text-left">
       <div>
-        <h4 className="font-semibold">{core.name}</h4>
+        <h4 className="font-semibold">{gameLabel("core", core)}</h4>
         <p className="text-muted-foreground mt-1 text-sm whitespace-pre-wrap">
           {core.description}
         </p>
@@ -37,7 +37,9 @@ export function CoreDetails({ core }: { core: CoreWithSkill }) {
                   ? ` · ${skill.unlockStars === 0 ? t("Start") : `${skill.unlockStars}★`}`
                   : ""}
               </p>
-              <h5 className="text-sm font-semibold">{skill.name}</h5>
+              <h5 className="text-sm font-semibold">
+                {gameLabel("skill", skill)}
+              </h5>
             </div>
           </div>
           <p className="text-muted-foreground text-sm whitespace-pre-wrap">

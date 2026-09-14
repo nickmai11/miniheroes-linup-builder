@@ -23,8 +23,9 @@ export function AssignmentPicker({
   onChange: (ids: number[]) => void;
   disabled?: boolean;
 }) {
-  const { t } = useI18n();
+  const { gameLabel, t } = useI18n();
 
+  const kind = label === "Pets" ? "pet" : "relic";
   const selected = selectedIds.flatMap((id) => {
     const item = items.find((item) => item.id === id);
     return item ? [item] : [];
@@ -42,14 +43,20 @@ export function AssignmentPicker({
         disabled={disabled || items.length === 0}
         value={selectedIds}
         onValueChange={onChange}
-        items={items.map((item) => ({ value: item.id, label: item.name }))}
+        items={items.map((item) => ({
+          value: item.id,
+          label: gameLabel(kind, item),
+        }))}
       >
         <Select.Trigger
           aria-label={t("Assign {group} to {name}", {
             group: t(label),
-            name: heroName,
+            name: gameLabel("hero", heroName),
           })}
-          title={selected.map((item) => item.name).join(", ") || undefined}
+          title={
+            selected.map((item) => gameLabel(kind, item)).join(", ") ||
+            undefined
+          }
           className="bg-background hover:bg-muted focus-visible:ring-ring/50 flex h-10 w-full items-center justify-between gap-2 rounded-md border px-2 text-left text-xs focus-visible:ring-3 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Select.Value className="flex min-w-0 items-center gap-1">
@@ -57,14 +64,19 @@ export function AssignmentPicker({
               <>
                 <span aria-hidden="true" className="flex shrink-0 gap-1">
                   {selected.slice(0, 2).map((item) => (
-                    <AssignmentIcon key={item.id} item={item} size={24} />
+                    <AssignmentIcon
+                      kind={kind}
+                      key={item.id}
+                      item={item}
+                      size={24}
+                    />
                   ))}
                 </span>
                 {selected.length > 2 && (
                   <span aria-hidden="true">+{selected.length - 2}</span>
                 )}
                 <span className="sr-only">
-                  {selected.map((item) => item.name).join(", ")}
+                  {selected.map((item) => gameLabel(kind, item)).join(", ")}
                 </span>
               </>
             ) : (
@@ -89,7 +101,7 @@ export function AssignmentPicker({
             <Select.Popup
               aria-label={t("{group} for {name}", {
                 group: t(label),
-                name: heroName,
+                name: gameLabel("hero", heroName),
               })}
               className="bg-popover text-popover-foreground max-h-[min(18rem,var(--available-height))] w-64 max-w-(--available-width) min-w-(--anchor-width) overflow-y-auto overscroll-contain rounded-md border p-1 shadow-lg outline-none"
             >
@@ -97,7 +109,7 @@ export function AssignmentPicker({
                 <Select.Item
                   key={item.id}
                   value={item.id}
-                  label={item.name}
+                  label={gameLabel(kind, item)}
                   className="data-highlighted:bg-accent data-highlighted:text-accent-foreground flex min-h-10 cursor-default items-center gap-2 rounded px-2 py-1.5 text-sm outline-none select-none"
                 >
                   <span className="flex size-4 shrink-0 items-center justify-center">
@@ -105,8 +117,8 @@ export function AssignmentPicker({
                       <Check className="size-4" />
                     </Select.ItemIndicator>
                   </span>
-                  <AssignmentIcon item={item} size={28} />
-                  <Select.ItemText>{item.name}</Select.ItemText>
+                  <AssignmentIcon kind={kind} item={item} size={28} />
+                  <Select.ItemText>{gameLabel(kind, item)}</Select.ItemText>
                 </Select.Item>
               ))}
             </Select.Popup>
