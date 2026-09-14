@@ -1,5 +1,34 @@
 # Page performance review — 2026-09-13
 
+## Deployment follow-up — 2026-09-14
+
+The deployed app's `/invite` response reported
+`x-vercel-id: hkg1::iad1::…`: traffic entered through Hong Kong and the page
+function executed in Washington, D.C. The configured database pooler is in
+`ap-northeast-1` (Tokyo), matching the database location documented in README.
+There was no repository-level function region configuration.
+
+Added `vercel.json` with `regions: ["hnd1"]` to place server functions in Tokyo
+with the database. Vercel documents this as an override of the project's function
+region; it takes effect on a new deployment:
+[region configuration](https://vercel.com/docs/functions/configuring-functions/region),
+[region identifiers](https://vercel.com/docs/regions).
+
+Before the change, four unauthenticated `/invite` GETs returned HTTP 200 with
+time to first byte of 1.308, 3.108, 1.018 and 1.011 seconds. Total response times
+were 1.333, 3.135, 1.044 and 1.014 seconds. A `/heroes` request redirected to the
+invitation gate in 0.908 seconds. These client-observed timings include network,
+proxy and rendering time; they do not isolate database or authentication latency.
+The invitation page is only a baseline, not a signed-in API benchmark.
+
+The region mismatch adds distance to each database round trip, but the exact
+improvement remains unmeasured until deployment. Verify the new deployment's
+response headers show `hnd1` and repeat timings for signed-in pages and APIs.
+The proxy and server entry points also independently verify Supabase admin
+sessions; this remains a potential contributor to signed-in request latency.
+
+## Original query review
+
 Hero listings, divinity hero listings and lineup pages synchronized every recorded
 hero before returning content. Each synchronization rewrote talents, cores,
 artifact bonuses and divinity links, even when the source data was unchanged.

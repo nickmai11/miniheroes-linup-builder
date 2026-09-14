@@ -52,6 +52,12 @@ Schema changes: edit `src/db/schema.ts`, run `pnpm db:generate`, then `pnpm db:m
 
 Set `DATABASE_URL` to the Supabase pooler string on the host (Vercel or any Node host) and deploy. Uploaded hero portraits are written to `public/heroes/`, which only persists on a host with a writable disk.
 
+`vercel.json` pins server functions to Tokyo (`hnd1`), alongside the Supabase
+database in `ap-northeast-1`. Keep the function region aligned with the database
+if it moves: repeated queries across continents add latency to pages and APIs.
+Region changes take effect on the next deployment. See
+[the performance review](docs/page-performance.md) for deployment measurements.
+
 ## Admin login and editing
 
 Click **Admin login** in the header and enter your Supabase Auth email and
