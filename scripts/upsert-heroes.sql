@@ -64,6 +64,8 @@ INSERT INTO heroes (slug, name, role, rarity, image_url) VALUES
 ('loli','Loli','marksman','epic','/heroes/loli.png'),
 ('fire-sorceress','Fire Sorceress','mage','epic','/heroes/fire-sorceress.png'),
 ('little-goblin','Little Goblin','mage','epic','/heroes/little-goblin.png'),
-('bamboo-hat','Bamboo Hat','mage','epic','/heroes/bamboo-hat.png')
+('bamboo-hat','Bamboo Hat','mage','epic','/heroes/bamboo-hat.png'),
+('hellscream','Hellscream','warrior','eternal','/heroes/hellscream.png'),
+('dark-queen','Dark Queen','marksman','eternal','/heroes/dark-queen.png')
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, role = EXCLUDED.role, rarity = EXCLUDED.rarity, image_url = EXCLUDED.image_url;

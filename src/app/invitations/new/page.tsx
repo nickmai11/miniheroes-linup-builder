@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { canEditLocally } from "@/lib/local-editing";
+import { canEditContent } from "@/lib/editing";
 import { PageShell } from "@/components/page-shell";
 import { InvitationGenerator } from "./invitation-generator";
 
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function NewInvitationPage() {
-  if (!(await canEditLocally())) notFound();
+  if (!(await canEditContent())) notFound();
   return (
     <PageShell
       title="Invitation codes"

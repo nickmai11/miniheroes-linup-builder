@@ -1,4 +1,4 @@
-import { getRegisteredDevice, requirePageAccess } from "@/lib/app-access";
+import { hasAppAccess, requirePageAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -13,7 +13,7 @@ import { HERO_AWAKENING_STAGES } from "@/data/hero-details";
 import { versioned } from "@/lib/asset-version";
 import { getHeroBuilds } from "@/lib/builds";
 import { getHeroDetail } from "@/lib/heroes";
-import { canEditLocally } from "@/lib/local-editing";
+import { canEditContent } from "@/lib/editing";
 import { getAllRuneAttributes } from "@/lib/runes";
 import { getAllWeaponAttributes } from "@/lib/weapons";
 import { HeroBuilds } from "./hero-builds";
@@ -41,8 +41,7 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
   const { slug } = await props.params;
   const hero = await getHeroDetail(slug);
   if (!hero) notFound();
-  const canEdit =
-    (await canEditLocally()) && Boolean(await getRegisteredDevice());
+  const canEdit = (await canEditContent()) && (await hasAppAccess());
   const [builds, runeAttributes, weaponAttributes] = await Promise.all([
     getHeroBuilds(hero.id),
     canEdit ? getAllRuneAttributes() : [],

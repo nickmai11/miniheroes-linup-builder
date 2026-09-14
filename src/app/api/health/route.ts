@@ -1,11 +1,11 @@
 import { sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { db } from "@/db";
-import { getRegisteredDevice } from "@/lib/app-access";
+import { hasAppAccess } from "@/lib/app-access";
 import { INVITATION_REQUIRED } from "@/lib/invitation-policy";
 
 export async function GET() {
-  if (!(await getRegisteredDevice()))
+  if (!(await hasAppAccess()))
     return NextResponse.json({ error: INVITATION_REQUIRED }, { status: 401 });
   try {
     await db.execute(sql`select 1`);

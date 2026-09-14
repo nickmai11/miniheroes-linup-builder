@@ -6,7 +6,7 @@ import ts from "typescript";
 import { isLocalEditingAllowed } from "../src/lib/local-edit-policy.ts";
 
 const require = createRequire(import.meta.url);
-const deniedMessage = "Changes are only allowed on localhost.";
+const deniedMessage = "Sign in as admin to make changes.";
 
 for (const host of [
   "localhost",
@@ -129,10 +129,11 @@ function loadServerModule(path, overrides, nodeEnv) {
 
 function serverModules(nodeEnv, requestHeaders) {
   const access = loadServerModule(
-    "src/lib/local-editing.ts",
+    "src/lib/editing.ts",
     {
       "server-only": {},
       "next/headers": { headers: async () => requestHeaders },
+      "@/lib/admin-access": { isAdmin: async () => false },
       "@/lib/local-edit-policy": { isLocalEditingAllowed },
     },
     nodeEnv,
@@ -148,9 +149,9 @@ function serverModules(nodeEnv, requestHeaders) {
   const overrides = {
     "@/lib/app-access": {
       requireAppAccess: async () => {},
-      getRegisteredDevice: async () => ({ id: 1 }),
+      hasAppAccess: async () => ({ id: 1 }),
     },
-    "@/lib/local-editing": access,
+    "@/lib/editing": access,
     "@/db": { db: databaseTripwire, schema: databaseTripwire },
     "@/db/schema": { LINEUP_SIZE: 5 },
   };
@@ -197,7 +198,7 @@ for (const [name, nodeEnv, requestHeaders] of [
       nodeEnv,
       requestHeaders,
     );
-    assert.equal(await access.canEditLocally(), false);
+    assert.equal(await access.canEditContent(), false);
     for (const result of [
       await lineups.saveLineup({}),
       await builds.saveHeroBuild({}),
@@ -225,7 +226,7 @@ test("local write entry points still reach validation without changing any data"
     "development",
     new Headers({ host: "localhost:3000" }),
   );
-  assert.equal(await access.canEditLocally(), true);
+  assert.equal(await access.canEditContent(), true);
   for (const result of [
     await lineups.saveLineup({}),
     await builds.saveHeroBuild({}),
@@ -238,7 +239,10 @@ test("local write entry points still reach validation without changing any data"
   const response = await notesApi.POST(
     new Request("http://localhost:3000/api/notes", {
       method: "POST",
-      headers: { "content-type": "application/json" },
+      headers: {
+        "content-type": "application/json",
+        origin: "http://localhost:3000",
+      },
       body: "{}",
     }),
   );

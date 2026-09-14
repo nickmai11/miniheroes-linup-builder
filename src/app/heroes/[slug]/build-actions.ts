@@ -9,7 +9,7 @@ import { db, schema } from "@/db";
 import { matchBuildCores } from "@/lib/build-cores";
 import { buildSchema, type BuildInput } from "@/lib/build-input";
 import { DEFAULT_BUILD_PRIORITY } from "@/lib/build-priorities";
-import { canEditLocally, LOCAL_EDITING_ERROR } from "@/lib/local-editing";
+import { canEditContent, EDITING_ERROR } from "@/lib/editing";
 
 export type BuildActionState = { error?: string; id?: number; notice?: string };
 export type { BuildInput } from "@/lib/build-input";
@@ -29,7 +29,7 @@ async function allKnown(
 export async function saveHeroBuild(
   input: BuildInput,
 ): Promise<BuildActionState> {
-  if (!(await canEditLocally())) return { error: LOCAL_EDITING_ERROR };
+  if (!(await canEditContent())) return { error: EDITING_ERROR };
   await requireAppAccess();
   const parsed = buildSchema.safeParse(input);
   if (!parsed.success) {
@@ -152,7 +152,7 @@ export type ImportBuildInput = z.input<typeof importSchema>;
 export async function importHeroBuild(
   input: ImportBuildInput,
 ): Promise<BuildActionState> {
-  if (!(await canEditLocally())) return { error: LOCAL_EDITING_ERROR };
+  if (!(await canEditContent())) return { error: EDITING_ERROR };
   await requireAppAccess();
   const parsed = importSchema.safeParse(input);
   if (!parsed.success) {
@@ -283,7 +283,7 @@ export async function importHeroBuild(
 }
 
 export async function deleteHeroBuild(id: number): Promise<BuildActionState> {
-  if (!(await canEditLocally())) return { error: LOCAL_EDITING_ERROR };
+  if (!(await canEditContent())) return { error: EDITING_ERROR };
   await requireAppAccess();
   const [deleted] = await db
     .delete(schema.heroBuilds)

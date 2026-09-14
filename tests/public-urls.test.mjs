@@ -291,7 +291,7 @@ test("public URL management validates localhost, origin, paths and duplicate add
   let local = false;
   const paths = new Set();
   const { POST, DELETE } = loadTypeScript("src/app/api/public-urls/route.ts", {
-    "@/lib/local-editing": { canEditLocally: async () => local },
+    "@/lib/editing": { canEditContent: async () => local },
     "@/lib/public-urls": {
       addPublicUrl: async (path) => {
         if (paths.has(path)) return undefined;

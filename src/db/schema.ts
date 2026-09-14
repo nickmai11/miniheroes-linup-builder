@@ -60,7 +60,7 @@ export const registeredDevices = pgTable("registered_devices", {
 export const HERO_ROLES = ["warrior", "marksman", "mage", "support"] as const;
 export type HeroRole = (typeof HERO_ROLES)[number];
 
-export const HERO_RARITIES = ["mythic", "legend", "epic"] as const;
+export const HERO_RARITIES = ["eternal", "mythic", "legend", "epic"] as const;
 export type HeroRarity = (typeof HERO_RARITIES)[number];
 
 export const heroes = pgTable("heroes", {

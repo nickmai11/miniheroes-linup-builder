@@ -28,15 +28,15 @@ export function NavLinks({
       className="flex min-w-0 items-center gap-0.5 overflow-x-auto text-sm sm:gap-1"
     >
       {LINKS.map(({ href, label }) => {
-        const localAdmin =
+        const adminRoute =
           href === "/invitations/new" || href === "/public-urls";
         if (
           allowedPaths &&
           !allowedPaths.includes(href) &&
-          !(canEdit && localAdmin)
+          !(canEdit && adminRoute)
         )
           return null;
-        if ((href === "/lineups/new" || localAdmin) && !canEdit) return null;
+        if ((href === "/lineups/new" || adminRoute) && !canEdit) return null;
         const active =
           href === "/lineups"
             ? pathname === "/lineups" || /^\/lineups\/\d+/.test(pathname)

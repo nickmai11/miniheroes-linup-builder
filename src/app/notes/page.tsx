@@ -1,7 +1,7 @@
-import { getRegisteredDevice, requirePageAccess } from "@/lib/app-access";
+import { hasAppAccess, requirePageAccess } from "@/lib/app-access";
 import { desc } from "drizzle-orm";
 import { db, schema } from "@/db";
-import { canEditLocally } from "@/lib/local-editing";
+import { canEditContent } from "@/lib/editing";
 import { deleteNote } from "./actions";
 import { NoteForm } from "./note-form";
 
@@ -9,8 +9,7 @@ export const dynamic = "force-dynamic";
 
 export default async function NotesPage() {
   await requirePageAccess();
-  const canEdit =
-    (await canEditLocally()) && Boolean(await getRegisteredDevice());
+  const canEdit = (await canEditContent()) && (await hasAppAccess());
   const rows = await db
     .select()
     .from(schema.notes)

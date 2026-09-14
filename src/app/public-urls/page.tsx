@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { canEditLocally } from "@/lib/local-editing";
+import { canEditContent } from "@/lib/editing";
 import { getPublicUrls } from "@/lib/public-urls";
 import { PageShell } from "@/components/page-shell";
 import { PublicUrlManager } from "./public-url-manager";
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default async function PublicUrlsPage() {
-  if (!(await canEditLocally())) notFound();
+  if (!(await canEditContent())) notFound();
   const urls = await getPublicUrls();
   return (
     <PageShell

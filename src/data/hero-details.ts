@@ -61,6 +61,1504 @@ export type HeroDetailSeed = {
 const talent = (hero: string, slug: string) => `/talents/${hero}/${slug}.png`;
 
 export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
+  // September 14 10.40–10.45 AM screenshots and 10.57–10.58 AM follow-ups.
+  // Full source mapping and exact transcription notes are in the game reference.
+  "wine-immortal": {
+    artifact: {
+      name: "Dragon's Secret",
+      iconUrl: "/artifacts/wine-immortal.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Ground-Shaking Hit",
+          description:
+            'Increase the chance of triggering "Ground-Shaking Hit" by 5%, and increase Knockback Effect by 100%.',
+        },
+        {
+          tier: "gold",
+          skill: "Wine Mist Flame",
+          description:
+            '"Mist Flames" Enemies hit by flames have their healing effect reduced by 50%',
+        },
+        {
+          tier: "red",
+          skill: "Storm Warrior",
+          description:
+            '"Storm Warrior" During the effect, Knockback Resist is increased by 100%, and the effect gradually weakens over time',
+        },
+        {
+          tier: "rainbow",
+          skill: "Storm Warrior",
+          description:
+            '"Storm Warrior" Extends its duration by 10, but will be unable to recover Energy during this period.',
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Storm Warrior",
+        description:
+          "Clears the debuffs of self, and transforms into a powerful Storm Warrior. Increases the DMG Reduction by 30% and deals Physical DMG equal to 50% of ATK to surrounding targets per second, lasting for 6s",
+        unlockStars: 0,
+        iconUrl: "/talents/wine-immortal/storm-warrior.png",
+      },
+      {
+        kind: "battle",
+        name: "Ground-Shaking Hit",
+        description:
+          "Basic ATK have a 25% chance to hit the ground, dealing Physical DMG equal to 150% of ATK to surrounding targets and decreases MOV SPD by 30% for 3s",
+        unlockStars: 2,
+        iconUrl: "/talents/wine-immortal/ground-shaking-hit.png",
+      },
+      {
+        kind: "enhance",
+        name: "Swift Steps",
+        description:
+          "Storm Warrior During the transformation, MOV SPD is increased by 20%",
+        unlockStars: 5,
+        iconUrl: "/talents/wine-immortal/swift-steps.png",
+      },
+      {
+        kind: "special",
+        name: "Wine Mist Flame",
+        description:
+          "At regular intervals, exhale a bust of flames forward and deal Physical DMG equal to 100% of ATK per second to targets within the range, lasting for 5s",
+        unlockStars: 8,
+        iconUrl: "/talents/wine-immortal/wine-mist-flame.png",
+      },
+      {
+        kind: "attribute",
+        name: "Drunken Dance",
+        description: "EVA increased by 10%, HP increased by 15%",
+        unlockStars: 12,
+        iconUrl: "/talents/wine-immortal/drunken-dance.png",
+      },
+      {
+        kind: "enhance",
+        name: "Earth Element",
+        description:
+          "Storm Warrior During the transformation, Anti-Control Rate is increased by 75%. Receive healing 1% of maximum health per second",
+        unlockStars: 16,
+        iconUrl: "/talents/wine-immortal/earth-element.png",
+      },
+    ],
+    cores: [
+      {
+        name: "Blade of Valor",
+        skill: "Storm Warrior",
+        description:
+          "「Storm Warrior」 increases DMG Reduction by 6%(18%) and deals Physical DMG equal to 20%(60%) of Attack each second",
+      },
+      {
+        name: "Cavalier Helm",
+        skill: "Ground-Shaking Hit",
+        description:
+          "「Ground-Shaking Hit」 deals 150%(450%) of Attack as bonus Physical DMG",
+      },
+      {
+        name: "Brawler's Armor",
+        skill: "Wine Mist Flame",
+        description: "「Wine Mist Flame」 increases its DMG duration by 1(3) s",
+      },
+      {
+        name: "Brawler's Boots",
+        skill: "Earth Element",
+        description:
+          "「Earth Element」 additionally restores 0.5%(1.5%) of Max HP per second",
+      },
+    ],
+    divinities: ["spd-reduction-res", "control-res"],
+  },
+  "abyssal-queen": {
+    artifact: {
+      name: "Sickle of Fear",
+      iconUrl: "/artifacts/abyssal-queen.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Poisoned Blade",
+          description:
+            '"Poisoned Blade" Penetrate enemies, dealing equal damage and effects to 2 enemy unit(s) in the front.',
+        },
+        {
+          tier: "gold",
+          skill: "Abyss Roar",
+          description:
+            '"Abyss Roar" Deals an additional True DMG equal to 100% of ATK to enemies',
+        },
+        {
+          tier: "red",
+          skill: "Abyss Roar",
+          description:
+            '"Abyss Roar" DMG range increased by 30%, and the Magic DMG dealt is increased by 65%',
+        },
+        {
+          tier: "rainbow",
+          skill: "Queen's Shriek",
+          description: '"Queen\'s Shriek" Now activates every 13s.',
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Abyss Roar",
+        description:
+          "The Abyssal Queen emits a super sonic wave, dealing Magic ATK 220% to targets in the front area, with Interrupt and Knockback effects",
+        unlockStars: 0,
+        iconUrl: "/talents/abyssal-queen/abyss-roar.png",
+      },
+      {
+        kind: "battle",
+        name: "Poisoned Blade",
+        description:
+          "Basic ATK have a 30% chance to shoot a poisoned dagger, dealing Magic ATK 200% to the target and reducing the target's 20% Knockback Resist for 3s.",
+        unlockStars: 2,
+        iconUrl: "/talents/abyssal-queen/poisoned-blade.png",
+      },
+      {
+        kind: "enhance",
+        name: "Sonic Enhance",
+        description: "Abyss Roar Increases Knockback Effect by 30%",
+        unlockStars: 5,
+        iconUrl: "/talents/abyssal-queen/sonic-enhance.png",
+      },
+      {
+        kind: "special",
+        name: "Queen's Shriek",
+        description:
+          "At the 20-second mark in battle, the Abyssal Queen will scream, causing all enemy targets to lose 18% of their current HP, with a 2 second stun (can only be triggered 1 time(s) per battle, cannot exceed 350% of the Abyssal Queen’s ATK).",
+        unlockStars: 8,
+        iconUrl: "/talents/abyssal-queen/queen-s-shriek.png",
+      },
+      {
+        kind: "attribute",
+        name: "ATK Amplification",
+        description: "Increases ATK by 25%",
+        unlockStars: 12,
+        iconUrl: "/talents/abyssal-queen/atk-amplification.png",
+      },
+      {
+        kind: "enhance",
+        name: "Super Sonic Wave",
+        description:
+          "Abyss Roar Increases the Magic DMG dealt by 65%, decreases the DMG Result of hit targets by 25% within 5s",
+        unlockStars: 16,
+        iconUrl: "/talents/abyssal-queen/super-sonic-wave.png",
+      },
+    ],
+    cores: [
+      {
+        name: "Wizard's Wand",
+        skill: "Abyss Roar",
+        description:
+          "「Abyss Roar」 inflicts additional Magic DMG equal to 25%(75%) of ATK",
+      },
+      {
+        name: "Arcane Hat",
+        skill: "Poisoned Blade",
+        description: "「Poisoned Blade」 Trigger Chance increased by 8%(24%)",
+      },
+      {
+        name: "Mage Robe",
+        skill: "Queen's Shriek",
+        description:
+          "「Queen's Shriek」 now also drains 2%(6%) of the target's Current HP (up to 400%(500%) of the Abyssal Queen's ATK)",
+      },
+      {
+        name: "Spell Tome",
+        skill: "Super Sonic Wave",
+        description:
+          "「Super Sonic Wave」 DMG Result Reduction enhanced by 3%(9%)",
+      },
+    ],
+    divinities: ["hp", "dmg-reduction"],
+  },
+  "iron-fan-princess": {
+    artifact: {
+      name: "Palm-Leaf Fan",
+      iconUrl: "/artifacts/iron-fan-princess.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Palm-Leaf Fan·Power",
+          description:
+            '"Palm-Leaf Fan·Power" Tornado deals additional DMG equal to 6% of the enemy\'s maximum HP (up to 250% of Iron Fan Princess attack)',
+        },
+        {
+          tier: "gold",
+          skill: "Palm-Leaf Fan·Fire",
+          description:
+            '"Palm-Leaf Fan·Fire" converts DMG dealt to enemies into True DMG. The targets hit will have their healing effects reduced by 35%. The effect lasts for 5s',
+        },
+        {
+          tier: "red",
+          skill: "Palm-Leaf Fan·Wind",
+          description:
+            '"Palm-Leaf Fan·Wind" increases ATK SPD by 100% after casting. The effect lasts for 5s',
+        },
+        {
+          tier: "rainbow",
+          name: "Wind Mastery",
+          description:
+            "Upon entering combat, nearby allied units gain 20% ATK SPD and 20% Knockback Resist",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Palm-Leaf Fan·Wind",
+        description:
+          "Instantly remove all debuffs and swing the fan to release a hurricane forward. The hurricane moves slowly and continuously knocks back enemies. The hurricane can deal up to 4 segments of 45% Magic DMG to enemies",
+        unlockStars: 0,
+        iconUrl: "/talents/iron-fan-princess/palm-leaf-fan-wind.png",
+      },
+      {
+        kind: "battle",
+        name: "Palm-Leaf Fan·Power",
+        description:
+          "Basic ATK has a 30% chance to swing the fan and release a powerful whirlwind. The whirlwind deals Magic DMG equal to 250% of ATK and significantly knocks enemies back",
+        unlockStars: 2,
+        iconUrl: "/talents/iron-fan-princess/palm-leaf-fan-power.png",
+      },
+      {
+        kind: "enhance",
+        name: "Windborne Steps",
+        description:
+          "After casting Palm-Leaf Fan·Wind, increase the MOV SPD of all allied heroes by 50% for 3s",
+        unlockStars: 5,
+        iconUrl: "/talents/iron-fan-princess/windborne-steps.png",
+      },
+      {
+        kind: "special",
+        name: "Palm-Leaf Fan·Fire",
+        description:
+          "At set intervals,, swing the fan to unleash a flame tornado forward to attack all enemies along the path, dealing Magic DMG equal to 125% of ATK. Enemies hit by the flame will have their Magic RES reduced by 20% for 5s",
+        unlockStars: 8,
+        iconUrl: "/talents/iron-fan-princess/palm-leaf-fan-fire.png",
+      },
+      {
+        kind: "attribute",
+        name: "Wind Guardian",
+        description:
+          "HP increased by 10%, Energy Recovery SPD increased by 15%",
+        unlockStars: 12,
+        iconUrl: "/talents/iron-fan-princess/wind-guardian.png",
+      },
+      {
+        kind: "enhance",
+        name: "Wind Fury",
+        description:
+          "Palm-Leaf Fan·Wind briefly stuns enemies when hitting them. The knockback effect and the flight distance of the hurricane increase by 25%",
+        unlockStars: 16,
+        iconUrl: "/talents/iron-fan-princess/wind-fury.png",
+      },
+    ],
+    cores: [
+      {
+        name: "Wizard's Wand",
+        skill: "Palm-Leaf Fan·Wind",
+        description:
+          "「Palm-Leaf Fan·Wind」 Each hit deals additional Magic DMG equal to 13%(40%) of ATK",
+      },
+      {
+        name: "Arcane Hat",
+        skill: "Palm-Leaf Fan·Power",
+        description:
+          "「Palm-Leaf Fan·Force」 Trigger Chance increased by 10%(30%)",
+      },
+      {
+        name: "Mage Robe",
+        skill: "Windborne Steps",
+        description:
+          "「Windborne Steps」 Additionally increases Physical RES for all allied Heroes by 12%(36%)",
+      },
+      {
+        name: "Spell Tome",
+        skill: "Palm-Leaf Fan·Fire",
+        description:
+          "「Palm-Leaf Fan·Fire」 Deals additional True DMG equal to 30%(90%) of ATK",
+      },
+    ],
+    divinities: ["ranged-dmg-boost", "dmg-increase"],
+  },
+  "otherworld-prisoner": {
+    artifact: {
+      name: "Magic Oath Mask",
+      iconUrl: "/artifacts/otherworld-prisoner.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Ignite",
+          description:
+            '"Ignite" Targets inflicted with the Ignite effect will receive Magic DMG equal to 10% of ATK per second for 10s (stackable)',
+        },
+        {
+          tier: "gold",
+          skill: "Flame Impact",
+          description:
+            '"Flame Impact" Inflict 40% Speed Decrease effect within 3s of hitting the target.',
+        },
+        {
+          tier: "red",
+          skill: "Ignite",
+          description:
+            '"Ignite" Detonating conditions decreased to at least 2 stacks, stun duration increased to 1s',
+        },
+        {
+          tier: "rainbow",
+          name: "Energy Contract",
+          description:
+            "When an allied hero is defeated, increases an additional 45% of Energy.",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Flame Impact",
+        description:
+          "Launch a fireball to the front, which will bounce among enemy targets for 3 time(s), dealing Magic DMG equal to 220% of ATK to enemies every time",
+        unlockStars: 0,
+        iconUrl: "/talents/otherworld-prisoner/flame-impact.png",
+      },
+      {
+        kind: "battle",
+        name: "Ignite",
+        description:
+          "Basic ATK will Ignite target and explode once it reaches 3 stacks, dealing Magic DMG equal to 200% of ATK and inflicting Stun for 1s. Each stack of Ignite will reduce the healing effect received by 20%",
+        unlockStars: 2,
+        iconUrl: "/talents/otherworld-prisoner/ignite.png",
+      },
+      {
+        kind: "enhance",
+        name: "Flame Enhancement",
+        description: "Flame Impact Increases the Magic DMG dealt by 40%",
+        unlockStars: 5,
+        iconUrl: "/talents/otherworld-prisoner/flame-enhancement.png",
+      },
+      {
+        kind: "enhance",
+        name: "Imprint",
+        description:
+          "Flame Impact Increases the Magic DMG dealt by 40%, enemies hit by the flames will be inflicted with 1 stacks of Ignite effects.",
+        unlockStars: 8,
+        iconUrl: "/talents/otherworld-prisoner/imprint.png",
+      },
+      {
+        kind: "attribute",
+        name: "Passionate Soul",
+        description: "ATK increased by 10%, CRIT Rate increased by 15%",
+        unlockStars: 12,
+        iconUrl: "/talents/otherworld-prisoner/passionate-soul.png",
+      },
+      {
+        kind: "enhance",
+        name: "Blazing Flames",
+        description: "Flame Impact Release Flame Bullets’ Bounce Count +2",
+        unlockStars: 16,
+        iconUrl: "/talents/otherworld-prisoner/blazing-flames.png",
+      },
+    ],
+    cores: [
+      {
+        name: "Wizard's Wand",
+        skill: "Flame Impact",
+        description:
+          "「Flame Impact」 deals additional Magic DMG equal to 15%(45%) of ATK",
+      },
+      {
+        name: "Arcane Hat",
+        skill: "Ignite",
+        description:
+          "「Ignite」 upon detonation inflicts additional Magic DMG equal to 30%(90%) of ATK",
+      },
+      {
+        name: "Mage Robe",
+        skill: "Flame Enhancement",
+        description:
+          "「Flame Enhancement」 inflicts additional Magic DMG equal to 15%(45%) of ATK",
+      },
+      {
+        name: "Spell Tome",
+        skill: "Imprint",
+        description:
+          "「Imprint」 inflicts additional Magic DMG equal to 15%(45%) of ATK",
+      },
+    ],
+    divinities: ["hp", "magic-dmg-boost"],
+  },
+  wizard: {
+    artifact: {
+      name: "Dark Codex",
+      iconUrl: "/artifacts/wizard.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Poison",
+          description:
+            '"Poison" Enemies entering a poisoned state will receive Magic DMG equal to 20% of ATK per second',
+        },
+        {
+          tier: "gold",
+          skill: "Curse",
+          description:
+            '"Curse" The Knockback Resist of cursed targets will be further reduced by 15%',
+        },
+        {
+          tier: "red",
+          skill: "Paralysis Potion",
+          description:
+            '"Paralysis Potion" Each hit on an enemy reduces their ATK by 15%, lasting for 8s (stackable)',
+        },
+        {
+          tier: "rainbow",
+          skill: "Curse",
+          description:
+            '"Curse" Cursed targets lose 50 energy points per second',
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Paralysis Potion",
+        description:
+          "Throws a Paralysis Potion forward, which will bounce among enemy targets 3 times, dealing Magic DMG equal to 3% of ATK and stunning enemy targets for 1s",
+        unlockStars: 0,
+        iconUrl: "/talents/wizard/paralysis-potion.png",
+      },
+      {
+        kind: "battle",
+        name: "Poison",
+        description:
+          "Basic ATK will inflict a poisoned state lasting for 10s, reducing the target’s Physical RES by 8% (Cooldown: 5s)",
+        unlockStars: 2,
+        iconUrl: "/talents/wizard/poison.png",
+      },
+      {
+        kind: "enhance",
+        name: "Enhance Potion",
+        description: "Paralysis Potion Enemies hit will lose 60 Energy points.",
+        unlockStars: 5,
+        iconUrl: "/talents/wizard/enhance-potion.png",
+      },
+      {
+        kind: "special",
+        name: "Curse",
+        description:
+          "At a set interval, curses 2 enemy target(s) nearest to the front. Increases the DMG received by the cursed target(s) by 20%, lasting for 6s.",
+        unlockStars: 8,
+        iconUrl: "/talents/wizard/curse.png",
+      },
+      {
+        kind: "attribute",
+        name: "Energy Regen",
+        description: "Increases Energy Regen SPD by 25%",
+        unlockStars: 12,
+        iconUrl: "/talents/wizard/energy-regen.png",
+      },
+      {
+        kind: "enhance",
+        name: "Potent Potion",
+        description:
+          "Paralysis Potion Bounce count +2, stun duration extended by 0.5s",
+        unlockStars: 16,
+        iconUrl: "/talents/wizard/potent-potion.png",
+      },
+    ],
+    cores: [
+      {
+        name: "Crystal Staff",
+        skill: "Paralysis Potion",
+        description:
+          "「Paralysis Potion」 adds 30%(90%) of Attack as additional Magic DMG",
+      },
+      {
+        name: "Tome of Radiance",
+        skill: "Poison",
+        description:
+          "「Poison」 additionally reduces the target's Physical RES by 3%(10%)",
+      },
+      {
+        name: "Luminous Visor",
+        skill: "Enhance Potion",
+        description:
+          "「Enhance Potion」 additionally drains 10(30) points of enemy energy",
+      },
+      {
+        name: "Resonance Pendant",
+        skill: "Curse",
+        description:
+          "「Curse」 causes the target to suffer 3%(10%) additional DMG",
+      },
+    ],
+    divinities: ["support-atk", "heavy-injury"],
+  },
+  templar: {
+    artifact: {
+      name: "Spectral Blade",
+      iconUrl: "/artifacts/templar.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Phase Shift",
+          description:
+            "[Refraction] increases knockback effect by 10% for 8s after activation",
+        },
+        {
+          tier: "gold",
+          skill: "Psi Blade",
+          description:
+            "[Psi Blade] attacks have 50% chance to pierce 1 extra targets, and 30% chance to pierce 2 extra targets",
+        },
+        {
+          tier: "red",
+          skill: "Mind Trap",
+          description:
+            "[Mind Trap] auto-activates at battle start (unaffected by Illusory Nightmare on first use), trap radius +30%, and reduces target’s DMG reduction by 40% and healing received by 60% for 3s",
+        },
+        {
+          tier: "rainbow",
+          skill: "Phase Shift",
+          description:
+            "[Refraction] fires 1 more Psi Blades; shield duration increases 2.5s",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Phase Shift",
+        description:
+          "Creates a psychic shield around you for 5s, granting the following effects (recasting resets duration): Psi Blade: Fires 2 energy blades at enemies, each dealing 480% ATK as physical DMG and knocking them back. (Can trigger Psi Blade effect) Phase Deflect: While the shield is active, if a single hit exceeds 5% of your max HP, reduce its DMG by 80%",
+        unlockStars: 0,
+        iconUrl: "/talents/templar/phase-shift.png",
+      },
+      {
+        kind: "battle",
+        name: "Psi Blade",
+        description:
+          "After entering battle, gain 10% extra attack range and 30% chance to pierce through 1 additional enemies when attacking",
+        unlockStars: 2,
+        iconUrl: "/talents/templar/psi-blade.png",
+      },
+      {
+        kind: "enhance",
+        name: "Phase Boost",
+        description: "Refraction Psi Blades deal 120% more physical DMG",
+        unlockStars: 5,
+        iconUrl: "/talents/templar/phase-boost.png",
+      },
+      {
+        kind: "special",
+        name: "Mind Trap",
+        description:
+          "Every 6s, places a psychic trap under the frontmost enemy. Affected enemies in range have their MOV SPD reduced by 25% for 3s",
+        unlockStars: 8,
+        iconUrl: "/talents/templar/mind-trap.png",
+      },
+      {
+        kind: "passive",
+        name: "Assassin Pact",
+        description: "ATK increased by 10%, HP increased by 15%",
+        unlockStars: 12,
+        iconUrl: "/talents/templar/assassin-pact.png",
+      },
+      {
+        kind: "enhance",
+        name: "Shadow Rush",
+        description:
+          "Refraction energy cost for first release is reduced by 40%. Upon activation, increases ATK SPD by 60% for 8s",
+        unlockStars: 16,
+        iconUrl: "/talents/templar/shadow-rush.png",
+      },
+    ],
+    cores: [
+      {
+        name: "Swift Longbow",
+        skill: "Phase Shift",
+        description:
+          "「Phase Shift」 Phase Deflection: Triggers DMG reduction when a single hit exceeds 4.5(3.5)% of your max HP.",
+      },
+      {
+        name: "Arrow Core",
+        skill: "Phase Boost",
+        description:
+          "「Phase Boost」 Adds 30(90%)% of your Attack as bonus Physical DMG.",
+      },
+      {
+        name: "Hunter's Cloak",
+        skill: "Mind Trap",
+        description:
+          "「Mind Trap」 Additionally drains 1(3%)% of the enemy's max HP per second (cannot exceed 20(60%)% of the Templar's Attack).",
+      },
+      {
+        name: "Crystal Pendant",
+        skill: "Shadow Rush",
+        description:
+          "「Shadow Rush」 The first cast of Phase Shift additionally reduces its energy cost by 5(15%)% and grants an additional 10(30%)% attack speed.",
+      },
+    ],
+    divinities: ["dmg-increase", "physical-dmg-boost"],
+  },
+  warlock: {
+    artifact: {
+      name: "Demon's Cloak",
+      iconUrl: "/artifacts/warlock.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Cataclysm",
+          description:
+            '"Cataclysm" Further reduces all enemies\' Control RES by 30%',
+        },
+        {
+          tier: "gold",
+          skill: "Dark Word",
+          description:
+            '"Dark Word" If the target is an enemy unit, additionally reduces the enemy\'s Energy Regen SPD by 35%',
+        },
+        {
+          tier: "red",
+          skill: "Infernal",
+          description:
+            "[Infernal] Infernal immune to all skill damage and debuffs except for Basic ATK. The energy required to summon Infernal for the first time is reduced by 25%",
+        },
+        {
+          tier: "rainbow",
+          name: "Deadly Curse",
+          description:
+            "Curses an random enemy unit every 6s. The cursed unit takes 40% Magic DMG per second, and healing effect received by the unit is reduced by 80%. Effects last for 12s (Effect does not stack, and prioritizes uncursed enemies)",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Infernal",
+        description:
+          "Summons an Infernal from the Abyss, inheriting 70% of self base attributes. Upon appearance, the Infernal knocks back and stuns all enemies for 2s. The Infernal remains active for 10s",
+        unlockStars: 0,
+        iconUrl: "/talents/warlock/infernal.png",
+      },
+      {
+        kind: "special",
+        name: "Cataclysm",
+        description:
+          "Upon entering battle, triggers a fierce gust of wind, reducing the MOV SPD of all enemies by 20% per second for 5s (Cooldown: 13s)",
+        unlockStars: 2,
+        iconUrl: "/talents/warlock/cataclysm.png",
+      },
+      {
+        kind: "enhance",
+        name: "Hell Harbinger",
+        description:
+          "Infernal additionally inherits 70% of self special attributes, and surrounding flames can deal 150% Magic DMG per second to nearby enemies",
+        unlockStars: 5,
+        iconUrl: "/talents/warlock/hell-harbinger.png",
+      },
+      {
+        kind: "special",
+        name: "Dark Word",
+        description:
+          "Every 10s, casts Dark Word on the hero currently with the lowest HP. If the target is an enemy, it deals Magic DMG equal to 65% of ATK per second. If the target is an ally, it restores ally's HP equal to 65% of the Magic DMG per second, lasting for 6s",
+        unlockStars: 8,
+        iconUrl: "/talents/warlock/dark-word.png",
+      },
+      {
+        kind: "attribute",
+        name: "Corrupting Heart",
+        description: "ATK increased by 10%, HP increased by 15%",
+        unlockStars: 12,
+        iconUrl: "/talents/warlock/corrupting-heart.png",
+      },
+      {
+        kind: "enhance",
+        name: "Hell Fist",
+        description:
+          "Infernal Damage dealt by Basic ATKs is converted to True DMG, and there is a 20% chance to stun the enemy for 1.5s",
+        unlockStars: 16,
+        iconUrl: "/talents/warlock/hell-fist.png",
+      },
+    ],
+    cores: [
+      {
+        name: "Crystal Staff",
+        skill: "Infernal",
+        description:
+          "「Infernal」 additionally inherits 10%(30%) of Base Attributes",
+      },
+      {
+        name: "Tome of Radiance",
+        skill: "Cataclysm",
+        description:
+          "「Cataclysm」 additionally reduces enemy Energy Regen by 5%(15%)",
+      },
+      {
+        name: "Luminous Visor",
+        skill: "Hell Harbinger",
+        description:
+          "「Hell Harbinger」 additionally inherits 5%(15%) of Special Attributes",
+      },
+      {
+        name: "Resonance Pendant",
+        skill: "Dark Word",
+        description:
+          "「Dark Word」 increases DMG and healing effects by 30%(90%) of Attack",
+      },
+    ],
+    divinities: ["control-res", "healing-effect"],
+  },
+  "darkin-hunter": {
+    artifact: {
+      name: "Shadow Bow",
+      iconUrl: "/artifacts/darkin-hunter.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Blight Quiver",
+          description:
+            "Increases the trigger chance for Withering Arrows from [Blight Quiver] by 5%.",
+        },
+        {
+          tier: "gold",
+          skill: "Pierce Bolt",
+          description:
+            "Piercing Arrows from [Pierce Bolt] apply 1 stack(s) of Blight Mark to all enemies.",
+        },
+        {
+          tier: "red",
+          skill: "Corrupt Chains",
+          description:
+            "The corrupting vine from [Corrupt Chains] spreads to nearby enemies, applying the same binding effect (including Blight Mark and Bonus Reduction) and dealing Physical DMG equal to 600% of ATK.",
+        },
+        {
+          tier: "rainbow",
+          name: "Ghost Rain",
+          description:
+            "Entering battle fires a volley dealing 250% ATK Physical DMG with knockback effect to frontal enemies. Applies 1 Blight Mark stacks. Ground is polluted for 15s, reducing enemy Healing by 50% and Energy Regen by 25%. Triggers again when self HP first falls below 45%.",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Corrupt Chains",
+        description:
+          "Darkin Hunter hurls corrupt vines, dealing 880% ATK Physical DMG to 1 frontal enemies and Ensnaring them for 2s. Applies 1 Blight Mark stacks. At 4 stacks, marks detonate for 16% Max HP DMG to the target and nearby enemies (max 500% ATK). DMG triggers once per 0.5s",
+        unlockStars: 0,
+        iconUrl: "/talents/darkin-hunter/corrupt-chains.png",
+      },
+      {
+        kind: "battle",
+        name: "Blight Quiver",
+        description:
+          "Basic ATK have a 25% chance to fire Blight Arrows, dealing 8% Max HP DMG to 1 frontal enemies (max 250% ATK) with knockback. Applies 1 Blight Mark stacks",
+        unlockStars: 2,
+        iconUrl: "/talents/darkin-hunter/blight-quiver.png",
+      },
+      {
+        kind: "enhance",
+        name: "Chain Power",
+        description: "Corrupt Chains Physical DMG increased 250%",
+        unlockStars: 5,
+        iconUrl: "/talents/darkin-hunter/chain-power.png",
+      },
+      {
+        kind: "special",
+        name: "Pierce Bolt",
+        description:
+          "Every 12s, fires a Pierce Bolt dealing 350% ATK Physical DMG to all enemies with Knockback effect.",
+        unlockStars: 8,
+        iconUrl: "/talents/darkin-hunter/pierce-bolt.png",
+      },
+      {
+        kind: "passive",
+        name: "Darkin Blood",
+        description: "ATK increased by 10%, HP increased by 15%",
+        unlockStars: 12,
+        iconUrl: "/talents/darkin-hunter/darkin-blood.png",
+      },
+      {
+        kind: "enhance",
+        name: "Vine Bind",
+        description:
+          "Corrupt Chains Ensnare duration increase 1s. Hit targets lose 20% Ranged DMG Reduction for 6s",
+        unlockStars: 16,
+        iconUrl: "/talents/darkin-hunter/vine-bind.png",
+      },
+    ],
+    cores: [
+      {
+        name: "Swift Longbow",
+        skill: "Corrupt Chains",
+        description:
+          "[Corrupt Chains] increases Physical DMG by 150%(450%) of ATK",
+      },
+      {
+        name: "Arrow Core",
+        skill: "Blight Quiver",
+        description:
+          '"Blight Quiver" increases the trigger chance of Blight Arrow by 5%(15%)',
+      },
+      {
+        name: "Hunter's Cloak",
+        skill: "Pierce Bolt",
+        description: "[Pierce Bolt] reduces the cooldown by 1(3)s",
+      },
+      {
+        name: "Crystal Pendant",
+        skill: "Vine Bind",
+        description:
+          "[Vine Bind] additionally reduces the target's Ranged DMG Reduction by 5%(15%)",
+      },
+    ],
+    divinities: ["dmg-increase", "crit-rate"],
+  },
+  earthbreaker: {
+    artifact: {
+      name: "Battle Chant Drum",
+      iconUrl: "/artifacts/earthbreaker.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Empowered Totem",
+          description:
+            "[Empowered Totem] reduces the target’s Energy Regen SPD by 20% per second for 6s",
+        },
+        {
+          tier: "gold",
+          skill: "Aftershock",
+          description:
+            "[Aftershock] Deals 300% ATK as Physical DMG to nearby enemies whenever any skill is cast",
+        },
+        {
+          tier: "red",
+          skill: "Empowered Totem",
+          description:
+            "[Empowered Totem] Converts its DMG into True DMG, and 80% of the DMG dealt is converted as Self HP",
+        },
+        {
+          tier: "rainbow",
+          name: "Echoing Slam",
+          description:
+            "Triggers 17s after entering battle, releasing an echo shockwave from beneath. Enemies within range with HP below 12% are instantly executed (execution ignores all statuses and revival effects; ineffective against bosses). Enemies not meeting the execution condition take 1350% ATK as Physical DMG with Knockback Effect. CD: 20s",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Fissure",
+        description:
+          "Smashes the ground with a totem, creating a rocky ridge that deals 560% ATK as Physical DMG to all enemies and stuns them for 1.5s",
+        unlockStars: 0,
+        iconUrl: "/talents/earthbreaker/fissure.png",
+      },
+      {
+        kind: "battle",
+        name: "Empowered Totem",
+        description:
+          "After 6s into battle, summons a totem to strike the frontmost enemy, dealing 400% ATK as Physical DMG with Knockback Effect. CD: 8s",
+        unlockStars: 2,
+        iconUrl: "/talents/earthbreaker/empowered-totem.png",
+      },
+      {
+        kind: "enhance",
+        name: "Rupture",
+        description: "Fissure Increases the Physical DMG dealt by 140%",
+        unlockStars: 5,
+        iconUrl: "/talents/earthbreaker/rupture.png",
+      },
+      {
+        kind: "special",
+        name: "Aftershock",
+        description:
+          "When casting any skill, instantly stuns nearby enemies for 1s",
+        unlockStars: 8,
+        iconUrl: "/talents/earthbreaker/aftershock.png",
+      },
+      {
+        kind: "passive",
+        name: "Brawny",
+        description: "ATK increased by 10%, HP increased by 15%",
+        unlockStars: 12,
+        iconUrl: "/talents/earthbreaker/brawny.png",
+      },
+      {
+        kind: "enhance",
+        name: "Shattered Ground",
+        description:
+          "Fissure Stun duration is increased by 1s. Enemies hit by Fissure additionally lose 17% Physical RES and 17% Magic RES for 8s",
+        unlockStars: 16,
+        iconUrl: "/talents/earthbreaker/shattered-ground.png",
+      },
+    ],
+    cores: [
+      {
+        name: "Blade of Valor",
+        skill: "Fissure",
+        description:
+          "「Fissure」 increases Physical DMG dealt by 80%(240%) of Attack",
+      },
+      {
+        name: "Cavalier Helm",
+        skill: "Empowered Totem",
+        description:
+          "「Empowered Totem」 increases Physical DMG dealt by 60%(180%) of Attack",
+      },
+      {
+        name: "Brawler's Armor",
+        skill: "Aftershock",
+        description: "「Aftershock」 extends Stun duration by 0.3(1)s",
+      },
+      {
+        name: "Brawler's Boots",
+        skill: "Shattered Ground",
+        description:
+          "「Shattered Ground」 additionally reduces Enemies' Physical RES and Magic RES by 5%(15%)",
+      },
+    ],
+    divinities: ["atk", "melee-dmg-boost"],
+  },
+  observer: {
+    artifact: {
+      name: "Shadow Pendant",
+      iconUrl: "/artifacts/observer.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Ion Split",
+          description:
+            "[Ion Split] reduces hit enemies’ Energy Regen SPD by 15% per second for 5s",
+        },
+        {
+          tier: "gold",
+          skill: "Void Rift",
+          description:
+            "[Void Rift] is cast immediately upon entering combat, and also reduces enemies’ healing received by 60% for 5s",
+        },
+        {
+          tier: "red",
+          skill: "Annihilator",
+          description:
+            "[Annihilator] hits reduce enemies’ DMG Reduction by 20% for 6s; the ray then rebounds, dealing half of the Magic DMG in a sweeping attack to enemies along its path (enemies around the rebound point are unaffected)",
+        },
+        {
+          tier: "rainbow",
+          name: "Area Break",
+          description:
+            "triggers 6s after entering battle, decomposing and detonating an area 450 yards in front. All enemies within the area take Magic DMG equal to 200% ATK, CD: 13s",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Annihilator",
+        description:
+          "Fires 1 Annihilator rays forward, dealing Magic DMG equal to 330% ATK and Knockback",
+        unlockStars: 0,
+        iconUrl: "/talents/observer/annihilator.png",
+      },
+      {
+        kind: "battle",
+        name: "Ion Split",
+        description:
+          "Basic ATK have a 40% chance to launch a plasma. On hit, it splits, dealing Magic DMG equal to 200% ATK and Knockback enemies in the small area",
+        unlockStars: 2,
+        iconUrl: "/talents/observer/ion-split.png",
+      },
+      {
+        kind: "enhance",
+        name: "Ray Boost",
+        description: "Annihilator Magic DMG increased by 80%",
+        unlockStars: 5,
+        iconUrl: "/talents/observer/ray-boost.png",
+      },
+      {
+        kind: "special",
+        name: "Void Rift",
+        description:
+          "Every 13s, creates a Void Rift, dealing True DMG equal to 90% ATK to all enemies",
+        unlockStars: 8,
+        iconUrl: "/talents/observer/void-rift.png",
+      },
+      {
+        kind: "passive",
+        name: "Void Force",
+        description: "ATK increased by 10%, HP increased by 15%",
+        unlockStars: 12,
+        iconUrl: "/talents/observer/void-force.png",
+      },
+      {
+        kind: "enhance",
+        name: "Ray Charge",
+        description:
+          "Annihilator initial cast energy cost reduced by 15%. When the ray hits enemies, 15% of the DMG dealt is converted to self HP",
+        unlockStars: 16,
+        iconUrl: "/talents/observer/ray-charge.png",
+      },
+    ],
+    cores: [
+      {
+        name: "Wizard's Wand",
+        skill: "Annihilator",
+        description:
+          "「Annihilator」 unleashes Magic DMG equal to 20%(60%) of ATK",
+      },
+      {
+        name: "Arcane Hat",
+        skill: "Ion Split",
+        description:
+          "「Ion Split」 inflicts Magic DMG equal to 50%(150%) of ATK",
+      },
+      {
+        name: "Mage Robe",
+        skill: "Void Rift",
+        description:
+          "Upon casting 「Void Rift」, all allied units gain 3%(10%) increased Ranged DMG Reduct for 10s",
+      },
+      {
+        name: "Spell Tome",
+        skill: "Ray Charge",
+        description:
+          "「Ray Charge」 additionally boosts the HP conversion ratio by 3%(9%)",
+      },
+    ],
+    divinities: ["heavy-injury", "ranged-dmg-boost"],
+  },
+  "dark-shaman": {
+    artifact: {
+      name: "Voodoo Staff",
+      iconUrl: "/artifacts/dark-shaman.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Celestial Shock",
+          description:
+            '"Celestial Shock" Hit targets\' DMG Bonus reduced by 10% for 4s.',
+        },
+        {
+          tier: "gold",
+          skill: "Hex",
+          description: "[Hex] Target additionally loses 120 energy.",
+        },
+        {
+          tier: "red",
+          skill: "Serpent Ward",
+          description:
+            "[Serpent Ward] Summoned Serpent Ward count increased by 1. Each attack additionally reduces target's max HP by 1% (up to 24% of Serpent Ward's ATK).",
+        },
+        {
+          tier: "rainbow",
+          skill: "Hex",
+          description:
+            "[Hex] Number of transformed targets increased by 1. First cast time reduced by 4s. Transformed targets' Ranged DMG Reduct reduced by 20%.",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Serpent Ward",
+        description:
+          "Summon 2 Serpent Ward(s) from behind. Serpent Wards inherit 80% of the caster's ATK and 80% of special stats. Serpent Wards deal Magic DMG equal to 130% ATK to a random enemy per second with Knockback effect, lasting 5s. Serpent Wards are immobile and untargetable.",
+        unlockStars: 0,
+        iconUrl: "/talents/dark-shaman/serpent-ward.png",
+      },
+      {
+        kind: "battle",
+        name: "Celestial Shock",
+        description:
+          "Unleashed 4s after battle starts, uses void energy to create forked lightning, striking all enemies, dealing Magic DMG equal to 200% ATK with Knockback effect, subsequent cooldown 11s.",
+        unlockStars: 2,
+        iconUrl: "/talents/dark-shaman/celestial-shock.png",
+      },
+      {
+        kind: "enhance",
+        name: "Enhanced Ward",
+        description:
+          "Serpent Ward Damage per second dealt by Serpent Wards increased by 30%.",
+        unlockStars: 5,
+        iconUrl: "/talents/dark-shaman/enhanced-ward.png",
+      },
+      {
+        kind: "special",
+        name: "Hex",
+        description:
+          "Every 10s, affect 1 random enemy heroes, turning them into harmless chickens, unable to move or attack for 3s. Duration of transformation on Support heroes is doubled (if multiple transformation effects exist, show the transformation animation with longer duration; all attached debuffs take effect).",
+        unlockStars: 8,
+        iconUrl: "/talents/dark-shaman/hex.png",
+      },
+      {
+        kind: "passive",
+        name: "Troll Bloodline",
+        description: "ATK increased by 10%, HP increased by 15%.",
+        unlockStars: 12,
+        iconUrl: "/talents/dark-shaman/troll-bloodline.png",
+      },
+      {
+        kind: "enhance",
+        name: "Serpent Urn",
+        description:
+          "Serpent Ward Serpent Wards' inherited ATK and special stat bonus increased by 20%, duration increased by 2s.",
+        unlockStars: 16,
+        iconUrl: "/talents/dark-shaman/serpent-urn.png",
+      },
+    ],
+    cores: [
+      {
+        name: "Crystal Staff",
+        skill: "Serpent Ward",
+        description:
+          "「Serpent Wards」 Serpent Ward's damage per second increased by 20%(60%) of Attack as Magic DMG",
+      },
+      {
+        name: "Tome of Radiance",
+        skill: "Celestial Shock",
+        description:
+          "「Celestial Shock」 Subsequent cooldown reduced by 1(3) seconds",
+      },
+      {
+        name: "Luminous Visor",
+        skill: "Hex",
+        description:
+          "「Hex」 Transformation duration increased by 0.5(1.5) seconds",
+      },
+      {
+        name: "Resonance Pendant",
+        skill: "Serpent Urn",
+        description:
+          "「Serpent Urn」 Serpent Ward's inherited Attack attribute increased by 7%(20%)",
+      },
+    ],
+    divinities: ["support-atk", "magic-dmg-boost"],
+  },
+  hellscream: {
+    artifact: {
+      name: "Tribe's Judgment",
+      iconUrl: "/artifacts/hellscream.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Earth Shatter",
+          description:
+            "「Earth Shatter」 additionally reduces target's DEF by 8%.",
+        },
+        {
+          tier: "gold",
+          skill: "Bloodlust",
+          description: "Reduces the recast interval of 「Bloodlust」 by 3.5s.",
+        },
+        {
+          tier: "red",
+          skill: "War Cry",
+          description:
+            "After casting 「War Cry」, Hellscream is surrounded by the power of Y'Shaarj, becoming immune to control effects and critical strikes for 6s, while increasing his Armor Break Resistance by 15%.",
+        },
+        {
+          tier: "rainbow",
+          name: "Heart of Y'Shaarj",
+          description:
+            "[New] 「Heart of Y'Shaarj」 triggers upon taking fatal damage, restoring 25% HP and knocking back nearby enemies, entering Corrupted Form: ATK increases by 35% and gains immunity to all Skill DMG and negative effects except basic attacks for 5s. Each enemy death during this period, the duration is extended by 1s, up to a maximum of 2s. (Triggers at most once per battle.)",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "War Cry",
+        description:
+          "Unleashes a battlefield-shaking roar, dealing Physical DMG equal to 480% of ATK to all enemies and knocking them back. Taunts enemies for 1.5s. While taunted, enemies can only use basic attacks. Additionally, taunted enemies deal 15% less DMG to Hellscream for 6s.",
+        unlockStars: 0,
+        iconUrl: "/talents/hellscream/war-cry.png",
+      },
+      {
+        kind: "battle",
+        name: "Bloodlust",
+        description:
+          "6s after battle starts, unleashes Bloodlust Strike, dealing True DMG equal to 300% of ATK to the front 1 enemies and knocking them back, while restoring 6% of Max HP. If own HP is below 40%, the healing effect is doubled. Cooldown: 12s.",
+        unlockStars: 2,
+        iconUrl: "/talents/hellscream/bloodlust.png",
+      },
+      {
+        kind: "enhance",
+        name: "For the Tribe",
+        description: "Increases Physical DMG dealt by War Cry by 120%.",
+        unlockStars: 5,
+        iconUrl: "/talents/hellscream/for-the-tribe.png",
+      },
+      {
+        kind: "special",
+        name: "Earth Shatter",
+        description:
+          "Every 11s, swings his battleaxe to shatter the ground, causing rocks to burst forward, dealing Physical DMG equal to 450% of ATK to enemies in a frontal area and knocking them back, while reducing their DEF by 12% for 5s.",
+        unlockStars: 8,
+        iconUrl: "/talents/hellscream/earth-shatter.png",
+      },
+      {
+        kind: "passive",
+        name: "Orc Bloodline",
+        description: "Increases ATK by 10% and HP by 15%.",
+        unlockStars: 12,
+        iconUrl: "/talents/hellscream/orc-bloodline.png",
+      },
+      {
+        kind: "enhance",
+        name: "Ancient Energy",
+        description:
+          "Reduces the Energy required to cast War Cry by 10%. After casting, Hellscream gains 15% DMG reduction and 15% knockback resistance for 6s.",
+        unlockStars: 16,
+        iconUrl: "/talents/hellscream/ancient-energy.png",
+      },
+    ],
+    cores: [
+      {
+        name: "Blade of Valor",
+        skill: "War Cry",
+        description:
+          "「War Cry」 increases Physical DMG by 70%(210%) of ATK, and taunt duration increases by 0.3(1)s",
+      },
+      {
+        name: "Cavalier Helm",
+        skill: "Bloodlust",
+        description:
+          "「Bloodlust」 increases True damage by 40%(120%) of ATK, and additionally restores 1%(3%) of Max HP",
+      },
+      {
+        name: "Brawler's Armor",
+        skill: "Earth Shatter",
+        description:
+          "「Earth Shatter」 reduces initial cast interval by 1(3)s, and hit targets additionally lose 6%(18%) Physical Resistance",
+      },
+      {
+        name: "Brawler's Boots",
+        skill: "Ancient Energy",
+        description:
+          "「Ancient Energy」 additionally reduces required Energy by 2%(6%), and additionally increases DMG Reduction after casting by 3%(10%)",
+      },
+    ],
+    divinities: ["melee-dmg-reduction", "knockback-effect"],
+  },
+  "bone-archer": {
+    artifact: {
+      name: "Blood Bow",
+      iconUrl: "/artifacts/bone-archer.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Specter Curse",
+          description:
+            '"Specter Curse" When dealing damage to enemies, reduces their healing received by 40% for 6s',
+        },
+        {
+          tier: "gold",
+          skill: "Rapid Fire",
+          description:
+            '"Rapid Fire" Immediately releases Rapid Fire once upon entering battle, and increases MOV SPD by 40% for the duration of Rapid Fire',
+        },
+        {
+          tier: "red",
+          skill: "Deathly Pact",
+          description:
+            '"Deathly Pact" When firing flaming arrows, there is a 65% chance to launch an additional flaming arrow (the extra arrow does not consume energy). Enemies hit by the flaming arrow will lose 70 energy',
+        },
+        {
+          tier: "rainbow",
+          name: "Shadows Veil",
+          description:
+            "[New] [Shadows Veil] Increases 2% DMG Reduction and 3% CRIT Rate for every 10% of max HP lost. Reduces DMG by 35% when taking single DMG exceeding 25% of max HP (Cooldown: 10s)",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Deathly Pact",
+        description:
+          "Activates Deathly Pact when energy is full, increasing ATK SPD by 250% / ATK Range by 30% / ATK by 20%. Basic ATKs convert to flaming arrow, dealing Physical DMG equal to 150% of ATK to enemies. Flaming arrows inherit 75% of self knockback effect, consuming 170 energy with each shot. Deathly Pact deactivates when energy falls below 170",
+        unlockStars: 0,
+        iconUrl: "/talents/bone-archer/deathly-pact.png",
+      },
+      {
+        kind: "battle",
+        name: "Specter Curse",
+        description:
+          "When dealing DMG to enemies, ignores 40% of the enemy's DEF",
+        unlockStars: 2,
+        iconUrl: "/talents/bone-archer/specter-curse.png",
+      },
+      {
+        kind: "enhance",
+        name: "Flaming Arrow",
+        description:
+          "Deathly Pact Physical DMG dealt by flaming arrows increased by 45%",
+        unlockStars: 5,
+        iconUrl: "/talents/bone-archer/flaming-arrow.png",
+      },
+      {
+        kind: "special",
+        name: "Rapid Fire",
+        description:
+          "Every 9s, increases ATK SPD by 200% and Physical DMG Boost by 12% for 6s",
+        unlockStars: 8,
+        iconUrl: "/talents/bone-archer/rapid-fire.png",
+      },
+      {
+        kind: "passive",
+        name: "Undead Body",
+        description: "Armor PEN increased by 10%, ATK increased by 15%",
+        unlockStars: 12,
+        iconUrl: "/talents/bone-archer/undead-body.png",
+      },
+      {
+        kind: "enhance",
+        name: "Revenant Pact",
+        description:
+          "Deathly Pact Grants immunity to most debuffs and control effects during its duration. Upon the first activation, permanently increases HP Regen effect by 1.8%",
+        unlockStars: 16,
+        iconUrl: "/talents/bone-archer/revenant-pact.png",
+      },
+    ],
+    cores: [
+      {
+        name: "Swift Longbow",
+        skill: "Deathly Pact",
+        description:
+          "「Deathly Pact」 Reduces the flaming arrow's energy cost by 10(30) points.",
+      },
+      {
+        name: "Arrow Core",
+        skill: "Specter Curse",
+        description: "「Specter Curse」 Ignores 10%(30%) of Enemies' DEF Boost",
+      },
+      {
+        name: "Hunter's Cloak",
+        skill: "Flaming Arrow",
+        description:
+          "「Flaming arrow」 Increases Attack's Physical DMG by 20%(60%)",
+      },
+      {
+        name: "Crystal Pendant",
+        skill: "Revenant Pact",
+        description:
+          "「Revenant Pact」 Upon taking cumulative DMG equal to 25% of Max HP, instantly restores 4%(12%) of Max HP. Permanent.",
+      },
+    ],
+    divinities: ["marksman-def", "crit-rate"],
+  },
+  "dark-queen": {
+    artifact: {
+      name: "Whispers of Death",
+      iconUrl: "/artifacts/dark-queen.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Dark Arrow",
+          description:
+            "Increases the knockback effect of 「Dark Arrow」 by 60%.",
+        },
+        {
+          tier: "gold",
+          skill: "Dread Arrow",
+          description:
+            "After casting 「Dread Arrow」, Dark Queen gains 50% ATK SPD and 100% control immunity for 6s. During this period, her basic attacks become Split Arrows, attacking 3 enemies in front, with each Split Arrow dealing Physical DMG equal to 100% of ATK.",
+        },
+        {
+          tier: "red",
+          skill: "Withering Shot",
+          description:
+            "「Withering Shot」 converts 35% of the DMG dealt by each Withering Arrow into HP for Dark Queen.",
+        },
+        {
+          tier: "rainbow",
+          name: "Banshee Form",
+          description:
+            "[New] 「Banshee Form」 triggers when HP first drops below 55%. Dark Queen restores 35% of Max HP and enters Banshee Form for 8s: increasing ATK by 30% and reducing DMG taken by 30%.",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Dread Arrow",
+        description:
+          "Dark Queen fires a Dread Arrow forward, targeting the 1 enemy with the highest ATK, dealing Physical DMG equal to 520% of ATK to that target and 2 random enemies within 200 yards, and spreading a fearful aura that reduces enemy ATK SPD by 20% for 6s. DMG from Dread Arrow does not grant enemies Energy.",
+        unlockStars: 0,
+        iconUrl: "/talents/dark-queen/dread-arrow.png",
+      },
+      {
+        kind: "battle",
+        name: "Dark Arrow",
+        description:
+          "6s after battle starts, Dark Queen fires 1 Dark Arrows, dealing Physical DMG equal to 450% of ATK to the front 1 enemies and knocking them back, while silencing them for 3s. Cooldown: 12s.",
+        unlockStars: 2,
+        iconUrl: "/talents/dark-queen/dark-arrow.png",
+      },
+      {
+        kind: "enhance",
+        name: "Wail of the Dead",
+        description:
+          "Increases Physical DMG dealt by Dread Arrow by 140% of ATK.",
+        unlockStars: 5,
+        iconUrl: "/talents/dark-queen/wail-of-the-dead.png",
+      },
+      {
+        kind: "special",
+        name: "Withering Shot",
+        description:
+          "Every 11s, Dark Queen rapidly fires 5 Withering Arrows. Each arrow deals True DMG equal to 80% of ATK to 1 random enemies (prioritizing ranged) and knocks them back.",
+        unlockStars: 8,
+        iconUrl: "/talents/dark-queen/withering-shot.png",
+      },
+      {
+        kind: "passive",
+        name: "Ranger General",
+        description: "Increases ATK by 10% and HP by 15%.",
+        unlockStars: 12,
+        iconUrl: "/talents/dark-queen/ranger-general.png",
+      },
+      {
+        kind: "enhance",
+        name: "Surging Energy",
+        description:
+          "Reduces the Energy required to initial cast Dread Arrow by 20%. Hit enemies' energy recovery rate is additionally reduced by 15% for 6s.",
+        unlockStars: 16,
+        iconUrl: "/talents/dark-queen/surging-energy.png",
+      },
+    ],
+    cores: [
+      {
+        name: "Swift Longbow",
+        skill: "Dread Arrow",
+        description:
+          "「Dread Arrow」 increases Physical DMG by 80%(240%) of ATK, and additionally reduces target's ATK SPD by 5%(15%)",
+      },
+      {
+        name: "Arrow Core",
+        skill: "Dark Arrow",
+        description:
+          "「Dark Arrow」 increases DMG by 100%(300%), and reduces subsequent cooldown by 1(3)s",
+      },
+      {
+        name: "Hunter's Cloak",
+        skill: "Withering Shot",
+        description:
+          "「Withering Shot」 increases the number of Withering Arrows by 1(3)",
+      },
+      {
+        name: "Crystal Pendant",
+        skill: "Surging Energy",
+        description:
+          "「Surging Energy」 additionally reduces initial required energy by 3%(10%), and hit enemies' energy recovery rate is additionally reduced by 2%(6%)",
+      },
+    ],
+    divinities: ["physical-dmg-boost", "dmg-reduction"],
+  },
   // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
   // Talent popups (0/2/5/8/12/16★): 10.10.23 AM.png, 9.58.29 AM.png, 9.58.31 AM.png, 9.58.32 AM.png, 9.58.33 AM.png, 9.58.35 AM.png.
   // Talent/core continuations: 9.58.30 AM.png, 10.10.23 AM.png, 10.10.48 AM.png.

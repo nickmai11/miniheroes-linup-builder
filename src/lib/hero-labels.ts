@@ -15,6 +15,7 @@ export const ROLE_LABELS: Record<HeroRole, string> = {
 };
 
 export const RARITY_LABELS: Record<HeroRarity, string> = {
+  eternal: "Eternal",
   mythic: "Mythic",
   legend: "Legend",
   epic: "Epic",

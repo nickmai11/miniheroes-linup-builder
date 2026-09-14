@@ -30,6 +30,7 @@ the in-game **Archive** screen:
 
 | Rarity | Card background | Count |
 | ------ | --------------- | ----- |
+| Eternal | cyan/blue-to-purple gradient | 2 |
 | Mythic | red             | 40    |
 | Legend | gold            | 14    |
 | Epic   | purple          | 11    |
@@ -37,8 +38,16 @@ the in-game **Archive** screen:
 The small **diamond in the bottom-left of a card is artifact progress**, not part of
 the hero art. It is removed from the portraits in this app.
 
-Roster as of 2026-09-12 (65 heroes) — see the table at the end of this file. The
-seed data lives in `src/data/heroes.ts`.
+Roster as of 2026-09-14 (67 heroes) — see the table at the end of this file. The
+seed data lives in `src/data/heroes.ts`. The September 14 follow-up Archive
+capture `gameplay/heroes/image copy 9.png` shows an **Eternal 2/2** section:
+**Hellscream (Warrior)** and **Dark Queen (Marksman)**. This establishes two
+additional heroes and Eternal as an Archive rarity, bringing screenshot-backed
+coverage to **67 heroes**, now included in the seed. The rarity model, sorting,
+and portrait pipeline support Eternal. Their owner-supplied Archive cards supply
+the whole colored art panels; the portrait pipeline removes their bottom-left
+artifact-progress diamonds. Do not substitute Mythic or Epic for the displayed
+Eternal rarity.
 
 ### Hero details (owner-defined, 2026-09-12)
 
@@ -743,6 +752,229 @@ Review and transcription notes:
   **10.02.21 AM 1.png**, with the file without ` 1` completing Blade of Valor.
   Arcane Saint's **10.02.38** scroll fully shows Summon Beast, matching its seed.
 
+#### September 14 10.40–10.45 AM screenshot review and import (game, 2026-09-14)
+
+The owner authorized importing the reviewed batch using multiple agents. The
+**179** original owner screenshots, **10.40.34–10.45.03 AM**, cover **16 heroes**:
+twelve existing roster heroes previously without detail entries, two new heroes
+(**Hellscream** and **Dark Queen**), and two already recorded heroes
+(**Thrall** and **Radiant Envoy**). All captures are 706×1255. The pending-file
+inventory included staged, unstaged, and untracked images; this batch was untracked.
+
+**Follow-up review, 2026-09-14:** four **10.57.41–10.58.01 AM** talent-folder
+captures plus `gameplay/heroes/image copy 9.png` resolve all of the original
+non-awakening screenshot gaps. The review now covers **184 source images**
+(183 in `gameplay/talents/` and one new Archive capture), supplying this import.
+
+**Awakening I (18★) and III (22★) remain required.** No Hero Awaken screen
+appears in this batch, and none of the fourteen new detail candidates has an
+existing awakening entry. Earlier batches' exclusions do not apply. Thrall's
+I/III are already screenshot-backed; Radiant Envoy retains its owner-approved
+guide source. Their repeated talents, cores, artifact abilities, and divinities
+agree with the existing seeds.
+
+**All fourteen new detail candidates now have complete non-awakening screenshot
+evidence.** Abyssal Queen's fourth core is supplied, and Templar now has its
+Artifact tab and full ability popup. Hellscream and Dark Queen's new Archive
+capture supplies whole-card portrait sources and establishes **Eternal** rarity,
+with Warrior and Marksman class badges respectively. They are now included in
+the roster and crop-script layout, with Eternal rarity support and new portraits.
+The other fourteen heroes' existing portraits retain the whole owner-sourced
+card art with the artifact-progress diamond removed.
+
+The import adds **84 talents, 56 linked cores, 56 artifact abilities, 28 mythic
+divinity links, and 100 new images** (84 talents, 14 artifacts, two portraits).
+All 496 existing PNGs remain byte-identical, so no asset-version bump is needed.
+The app now has 67 roster heroes and 66 detail entries; Swordmaster still has
+no recorded details. Hellscream and Dark Queen use `eternal` rarity in the
+existing text-backed rarity column, labels, sort order, and portrait pipeline;
+this addition requires no database migration.
+
+Sickle of Fear uses its unobscured **10.41.04 AM** ability-popup artwork:
+progress stars overlap its upper blade tip on the Artifact tab. Earthbreaker's
+artifact polygon excludes nearby stars while retaining its upper ember.
+Observer and Dark Queen have taller artifact boxes to preserve their lower tips. Other
+portrait and talent sources follow the mapping below, including original
+unscrolled popups for all icons. No saved builds or awakenings are inferred.
+
+Verification on 2026-09-14: all fourteen imports synchronized through the
+existing `getHeroDetail` flow, with exact talent descriptions, core/artifact
+links, and divinity order checked against the seeds. All 52 prior detail entries
+and 65 prior roster entries remain unchanged. Isolated rendering of the real
+hero page passed for all fourteen, including the five attached rainbow bonuses
+in both sections, core previews, and I/III empty states at 18★/22★. Typecheck,
+lint, and diff checks passed; tests reported **234 passed, 5 skipped** in the
+shared workspace. All 138 referenced disk images validated. Authenticated live
+page/image responses remain unverified: the existing local server on port 4000
+redirected the hero route to the invitation screen and returned 401 for the new
+artifact image without a registered session.
+
+All supplied bottom red badges, now including Templar's **DMG Increase →
+Physical DMG Boost**, match `src/data/divinities.ts` and the actual
+`public/divinities/` icons. Only I/III remain missing for the fourteen candidates.
+
+| Hero / class | Artifact | Mythic divinities, left → right | Additional gap beyond I/III |
+| --- | --- | --- | --- |
+| Wine Immortal / Warrior | Dragon's Secret | SPD Reduction RES → Control RES | None |
+| Abyssal Queen / Mage | Sickle of Fear | HP → DMG Reduction | None; fourth core resolved by 10.57.41 AM |
+| Iron Fan Princess / Mage | Palm-Leaf Fan | Ranged DMG Boost → DMG Increase | None |
+| Otherworld Prisoner / Mage | Magic Oath Mask | HP → Magic DMG Boost | None |
+| Wizard / Support | Dark Codex | Support ATK → Heavy Injury | None |
+| Templar / Marksman | Spectral Blade | DMG Increase → Physical DMG Boost | None; 10.57.58–10.58.01 AM follow-ups |
+| Warlock / Support | Demon's Cloak | Control RES → Healing Effect | None |
+| Darkin Hunter / Marksman | Shadow Bow | DMG Increase → CRIT Rate | None |
+| Earthbreaker / Warrior | Battle Chant Drum | ATK → Melee DMG Boost | None |
+| Observer / Mage | Shadow Pendant | Heavy Injury → Ranged DMG Boost | None |
+| Dark Shaman / Support | Voodoo Staff | Support ATK → Magic DMG Boost | None |
+| Hellscream / Warrior | Tribe's Judgment | Melee DMG Reduction → Knockback Effect | None; Eternal Archive portrait imported |
+| Bone Archer / Marksman | Blood Bow | Marksman DEF → CRIT Rate | None |
+| Dark Queen / Marksman | Whispers of Death | Physical DMG Boost → DMG Reduction | None; Eternal Archive portrait imported |
+| Thrall / Support | Hammer of Destruction | Knockback Effect → Anti-CRIT Rate | Already recorded, including I/III |
+| Radiant Envoy / Mage | Wand of Light | DMG Increase → Magic DMG Boost | Already recorded, including approved I/III |
+
+The six talent names and kinds below are in **0 / 2 / 5 / 8 / 12 / 16★** order,
+verified against each ring. Kinds: **U** Ultimate Skill, **B** Battle Skill,
+**S** Special Skill, **E** Enhance, **A** Attribute, **P** Passive. Every candidate
+has six complete talent descriptions and usable original popup icons.
+
+| Hero | Talents in unlock order |
+| --- | --- |
+| Wine Immortal | Storm Warrior (U) / Ground-Shaking Hit (B) / Swift Steps (E) / Wine Mist Flame (S) / Drunken Dance (A) / Earth Element (E) |
+| Abyssal Queen | Abyss Roar (U) / Poisoned Blade (B) / Sonic Enhance (E) / Queen's Shriek (S) / ATK Amplification (A) / Super Sonic Wave (E) |
+| Iron Fan Princess | Palm-Leaf Fan·Wind (U) / Palm-Leaf Fan·Power (B) / Windborne Steps (E) / Palm-Leaf Fan·Fire (S) / Wind Guardian (A) / Wind Fury (E) |
+| Otherworld Prisoner | Flame Impact (U) / Ignite (B) / Flame Enhancement (E) / Imprint (E) / Passionate Soul (A) / Blazing Flames (E) |
+| Wizard | Paralysis Potion (U) / Poison (B) / Enhance Potion (E) / Curse (S) / Energy Regen (A) / Potent Potion (E) |
+| Templar | Phase Shift (U) / Psi Blade (B) / Phase Boost (E) / Mind Trap (S) / Assassin Pact (P) / Shadow Rush (E) |
+| Warlock | Infernal (U) / Cataclysm (S) / Hell Harbinger (E) / Dark Word (S) / Corrupting Heart (A) / Hell Fist (E) |
+| Darkin Hunter | Corrupt Chains (U) / Blight Quiver (B) / Chain Power (E) / Pierce Bolt (S) / Darkin Blood (P) / Vine Bind (E) |
+| Earthbreaker | Fissure (U) / Empowered Totem (B) / Rupture (E) / Aftershock (S) / Brawny (P) / Shattered Ground (E) |
+| Observer | Annihilator (U) / Ion Split (B) / Ray Boost (E) / Void Rift (S) / Void Force (P) / Ray Charge (E) |
+| Dark Shaman | Serpent Ward (U) / Celestial Shock (B) / Enhanced Ward (E) / Hex (S) / Troll Bloodline (P) / Serpent Urn (E) |
+| Hellscream | War Cry (U) / Bloodlust (B) / For the Tribe (E) / Earth Shatter (S) / Orc Bloodline (P) / Ancient Energy (E) |
+| Bone Archer | Deathly Pact (U) / Specter Curse (B) / Flaming Arrow (E) / Rapid Fire (S) / Undead Body (P) / Revenant Pact (E) |
+| Dark Queen | Dread Arrow (U) / Dark Arrow (B) / Wail of the Dead (E) / Withering Shot (S) / Ranger General (P) / Surging Energy (E) |
+
+Source key: every item below is the exact suffix after
+`gameplay/talents/Screenshot 2026-09-14 at ` and before `.png`. The narrow
+no-break space before **AM** and any trailing **` 1`** are part of the filename.
+Original popup columns use the same six-talent order above (and the existing
+seed order for Thrall/Radiant Envoy). Continuations complete text, not icon crops.
+
+| Hero | Ring | Six original talent popups | Talent/core continuations |
+| --- | --- | --- | --- |
+| Wine Immortal | 10.40.34 AM | 10.40.44 AM / 10.40.36 AM / 10.40.39 AM / 10.40.40 AM / 10.40.42 AM / 10.40.43 AM | 10.40.46 AM |
+| Abyssal Queen | 10.40.52 AM | 10.41.00 AM / 10.40.53 AM / 10.40.54 AM / 10.40.55 AM / 10.40.57 AM / 10.40.59 AM | 10.40.56 AM / 10.57.41 AM |
+| Iron Fan Princess | 10.41.11 AM | 10.41.19 AM / 10.41.12 AM / 10.41.14 AM / 10.41.15 AM / 10.41.17 AM / 10.41.18 AM | 10.41.13 AM / 10.41.16 AM / 10.41.20 AM |
+| Thrall | 10.41.30 AM | 10.41.41 AM / 10.41.32 AM / 10.41.34 AM / 10.41.36 AM / 10.41.38 AM / 10.41.39 AM | 10.41.32 AM 1 / 10.41.36 AM 1 |
+| Otherworld Prisoner | 10.41.49 AM | 10.41.57 AM / 10.41.50 AM / 10.41.52 AM / 10.41.53 AM / 10.41.54 AM / 10.41.56 AM | 10.41.50 AM 1 |
+| Wizard | 10.42.03 AM | 10.42.13 AM / 10.42.04 AM / 10.42.06 AM / 10.42.07 AM / 10.42.09 AM / 10.42.11 AM | 10.42.08 AM |
+| Templar | 10.42.20 AM | 10.42.29 AM / 10.42.22 AM / 10.42.23 AM / 10.42.25 AM 1 / 10.42.26 AM / 10.42.27 AM | 10.42.25 AM / 10.42.31 AM |
+| Warlock | 10.42.35 AM | 10.42.44 AM / 10.42.36 AM / 10.42.38 AM / 10.42.39 AM / 10.42.41 AM / 10.42.43 AM | 10.42.40 AM / 10.42.44 AM 1 |
+| Darkin Hunter | 10.42.54 AM | 10.43.03 AM / 10.42.55 AM / 10.42.57 AM / 10.42.58 AM / 10.43.00 AM / 10.43.01 AM | 10.43.03 AM 1 |
+| Earthbreaker | 10.43.10 AM | 10.43.20 AM / 10.43.11 AM / 10.43.13 AM / 10.43.14 AM / 10.43.17 AM / 10.43.18 AM | 10.43.12 AM |
+| Observer | 10.43.27 AM | 10.43.36 AM / 10.43.28 AM / 10.43.30 AM / 10.43.31 AM / 10.43.33 AM / 10.43.34 AM | 10.43.37 AM |
+| Radiant Envoy | 10.43.43 AM | 10.43.52 AM / 10.43.44 AM / 10.43.46 AM / 10.43.47 AM / 10.43.50 AM / 10.43.51 AM | 10.43.48 AM |
+| Dark Shaman | 10.43.58 AM | 10.44.06 AM / 10.44.00 AM / 10.44.01 AM / 10.44.02 AM / 10.44.04 AM / 10.44.05 AM | 10.44.03 AM / 10.44.08 AM |
+| Hellscream | 10.44.16 AM | 10.44.25 AM / 10.44.17 AM / 10.44.19 AM / 10.44.20 AM / 10.44.22 AM / 10.44.24 AM | 10.44.18 AM / 10.44.21 AM / 10.44.26 AM |
+| Bone Archer | 10.44.35 AM | 10.44.43 AM / 10.44.36 AM / 10.44.38 AM / 10.44.39 AM / 10.44.40 AM / 10.44.41 AM | 10.44.44 AM |
+| Dark Queen | 10.44.50 AM | 10.44.59 AM / 10.44.51 AM / 10.44.53 AM / 10.44.54 AM / 10.44.56 AM / 10.44.57 AM | 10.44.52 AM / 10.44.55 AM / 10.44.59 AM 1 |
+
+| Hero | Artifact tab | Ability popup → continuation |
+| --- | --- | --- |
+| Wine Immortal | 10.40.48 AM; repeated 10.41.08 AM | 10.40.49 AM |
+| Abyssal Queen | 10.41.03 AM | 10.41.04 AM |
+| Iron Fan Princess | 10.41.22 AM | 10.41.23 AM |
+| Thrall | 10.41.43 AM | 10.41.44 AM → 10.41.45 AM |
+| Otherworld Prisoner | 10.41.59 AM | 10.42.00 AM |
+| Wizard | 10.42.16 AM | 10.42.17 AM |
+| Templar | 10.57.58 AM | 10.58.00 AM → 10.58.01 AM |
+| Warlock | 10.42.47 AM | 10.42.48 AM → 10.42.49 AM |
+| Darkin Hunter | 10.43.05 AM | 10.43.06 AM → 10.43.07 AM |
+| Earthbreaker | 10.43.23 AM | 10.43.24 AM → 10.43.24 AM 1 |
+| Observer | 10.43.39 AM | 10.43.40 AM → 10.43.41 AM |
+| Radiant Envoy | 10.43.54 AM | 10.43.55 AM → 10.43.56 AM |
+| Dark Shaman | 10.44.09 AM | 10.44.10 AM → 10.44.13 AM |
+| Hellscream | 10.44.31 AM | 10.44.32 AM → 10.44.33 AM |
+| Bone Archer | 10.44.46 AM | 10.44.47 AM → 10.44.47 AM 1 |
+| Dark Queen | 10.45.01 AM | 10.45.02 AM → 10.45.03 AM |
+
+All fourteen candidates now have four complete gear-core descriptions.
+`Screenshot 2026-09-14 at 10.57.41 AM.png` completes the earlier **10.41.00 AM**
+Abyss Roar popup and reveals **Wizard's Wand·Core → Abyss Roar**:
+**「Abyss Roar」 inflicts additional Magic DMG equal to 25%(75%) of ATK**.
+Its gold/red bonuses agree with the original popup. Keep the unscrolled
+**10.41.00 AM** capture as the icon source; the follow-up is for the core text.
+
+| Hero | Verified core → talent links |
+| --- | --- |
+| Wine Immortal | Blade of Valor → Storm Warrior; Cavalier Helm → Ground-Shaking Hit; Brawler's Armor → Wine Mist Flame; Brawler's Boots → Earth Element |
+| Abyssal Queen | Wizard's Wand → Abyss Roar; Arcane Hat → Poisoned Blade; Mage Robe → Queen's Shriek; Spell Tome → Super Sonic Wave |
+| Iron Fan Princess | Wizard's Wand → Palm-Leaf Fan·Wind; Arcane Hat → Palm-Leaf Fan·Power; Mage Robe → Windborne Steps; Spell Tome → Palm-Leaf Fan·Fire |
+| Otherworld Prisoner | Wizard's Wand → Flame Impact; Arcane Hat → Ignite; Mage Robe → Flame Enhancement; Spell Tome → Imprint |
+| Wizard | Crystal Staff → Paralysis Potion; Tome of Radiance → Poison; Luminous Visor → Enhance Potion; Resonance Pendant → Curse |
+| Templar | Swift Longbow → Phase Shift; Arrow Core → Phase Boost; Hunter's Cloak → Mind Trap; Crystal Pendant → Shadow Rush |
+| Warlock | Crystal Staff → Infernal; Tome of Radiance → Cataclysm; Luminous Visor → Hell Harbinger; Resonance Pendant → Dark Word |
+| Darkin Hunter | Swift Longbow → Corrupt Chains; Arrow Core → Blight Quiver; Hunter's Cloak → Pierce Bolt; Crystal Pendant → Vine Bind |
+| Earthbreaker | Blade of Valor → Fissure; Cavalier Helm → Empowered Totem; Brawler's Armor → Aftershock; Brawler's Boots → Shattered Ground |
+| Observer | Wizard's Wand → Annihilator; Arcane Hat → Ion Split; Mage Robe → Void Rift; Spell Tome → Ray Charge |
+| Dark Shaman | Crystal Staff → Serpent Ward; Tome of Radiance → Celestial Shock; Luminous Visor → Hex; Resonance Pendant → Serpent Urn |
+| Hellscream | Blade of Valor → War Cry; Cavalier Helm → Bloodlust; Brawler's Armor → Earth Shatter; Brawler's Boots → Ancient Energy |
+| Bone Archer | Swift Longbow → Deathly Pact; Arrow Core → Specter Curse; Hunter's Cloak → Flaming Arrow; Crystal Pendant → Revenant Pact |
+| Dark Queen | Swift Longbow → Dread Arrow; Arrow Core → Dark Arrow; Hunter's Cloak → Withering Shot; Crystal Pendant → Surging Energy |
+
+Artifact links and transcription cautions for a later authorized import:
+
+- Rainbow modifies **Storm Warrior** (Wine Immortal), **Queen's Shriek**
+  (Abyssal Queen), **Curse** (Wizard), **Phase Shift** (Templar), and **Hex**
+  (Dark Shaman). Thrall's already recorded rainbow still modifies Thunder Strike.
+- Standalone rainbow abilities are **Wind Mastery** (Iron Fan Princess),
+  **Energy Contract** (Otherworld Prisoner), **Deadly Curse** (Warlock),
+  **Ghost Rain** (Darkin Hunter), **Echoing Slam** (Earthbreaker), **Area Break**
+  (Observer), **Heart of Y'Shaarj** (Hellscream), **Shadows Veil** (Bone Archer),
+  and **Banshee Form** (Dark Queen). Their complete endings are in the popup
+  continuations above. Radiant Envoy's **Lucent Singularity** is reconfirmed.
+- Templar's original talent captures already supply all four tier texts:
+  purple **Refraction → Phase Shift** is in 10.42.29/10.42.31; gold **Psi Blade**
+  in 10.42.22; red **Mind Trap** in the 10.42.25 pair; rainbow
+  **Refraction → Phase Shift** in 10.42.31. The **10.57.58 AM** follow-up
+  supplies **Spectral Blade**, clean artwork without the progress star, and
+  both mythic badges. The **10.58.00 / 10.58.01 AM** popup pair reconfirms every
+  tier, including the full rainbow ending: **fires 1 more Psi Blades; shield
+  duration increases 2.5s**. No new contradiction or artifact gap remains.
+- Preserve aliases while linking to popup titles: Wine Immortal's gold
+  **Mist Flames → Wine Mist Flame**; Iron Fan Princess's Arcane Hat says
+  **Palm-Leaf Fan·Force → Palm-Leaf Fan·Power**; Templar's **Refraction → Phase
+  Shift**; Dark Shaman's Crystal Staff says **Serpent Wards → Serpent Ward**.
+  Templar's red text mentions **Illusory Nightmare**; do not invent another
+  talent or change the Mind Trap link. Strip only the final `·Core` from
+  **Arrow Core·Core**, retaining the gear name **Arrow Core**.
+- Wine Immortal's rainbow extends Storm Warrior **by 10** without a displayed
+  unit. Iron Fan Princess's ultimate says **4 segments of 45% Magic DMG**,
+  with no ATK basis, and its Wizard's Wand shows **13%(40%) of ATK**. Wizard's
+  Paralysis Potion literally deals **3% of ATK**; its Poison and Curse cores
+  show **3%(10%)**. These are visible source wording, not clipped passages.
+- Abyssal Queen's Mage Robe continuation is complete at **10.40.56 AM**:
+  Queen's Shriek also drains **2%(6%)** of current HP, capped at
+  **400%(500%)** of her ATK. The separate **10.57.41 AM** follow-up supplies
+  Wizard's Wand as the fourth core.
+- Templar's Hunter's Cloak shows **1(3%)%** and **20(60%)%**; Swift Longbow
+  shows **4.5(3.5)%**; Arrow Core shows **30(90%)%**. Preserve the displayed
+  parentheses instead of normalizing or recalculating them.
+- Warlock's Hell Harbinger says **150% Magic DMG per second**, and Deadly Curse
+  says **40% Magic DMG per second**, without an ATK basis. Dark Word's healing
+  wording is **65% of the Magic DMG per second**. Darkin Hunter's Ghost Rain
+  literally says **reducing enemy Healing by 50% and Energy Regen by 25%**.
+- Hellscream's Heart of Y'Shaarj says its **5s** duration is extended by **1s**
+  per enemy death, **up to a maximum of 2s**; preserve that wording rather than
+  deriving a total duration. Dark Queen's Arrow Core increases DMG by
+  **100%(300%)**, with no ATK basis stated in that core.
+- Original/scroll suffixes differ: Templar's **10.42.25 AM 1.png** is the
+  unscrolled Mind Trap icon source; the filename without ` 1` completes its
+  core. Earthbreaker's **10.43.24 AM 1.png** and Bone Archer's
+  **10.44.47 AM 1.png** are artifact continuations. Dark Queen's
+  **10.44.59 AM.png** is the original Dread Arrow popup; the ` 1` file completes
+  the gold bonus and Swift Longbow. No recapture is needed for those endings.
+
 ### Awakening skills (game, 2026-09-13)
 
 Hero-specific I and III are read from the Hero Awaken screenshots in
@@ -981,6 +1213,36 @@ daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
 
+- 2026-09-14 — After reviewing the 10.40–10.45 AM batch and its
+  10.57–10.58 AM/Archive follow-ups, the owner invoked
+  **add-mini-heroes-hero** and requested **multiple agents**, authorizing the
+  fourteen screenshot-backed detail imports and Hellscream / Dark Queen's
+  Eternal roster additions. No Awakening I/III screenshots were supplied;
+  preserve those unknown stages while importing the verified content.
+
+- 2026-09-14 — **10.57–10.58 AM and Archive follow-up review:** the owner
+  supplied five new images. **10.57.41 AM** completes **Wizard's Wand → Abyss
+  Roar**, adding Magic DMG equal to **25%(75%) of ATK**. Templar's
+  **10.57.58 AM** Artifact tab establishes **Spectral Blade** and mythic
+  **DMG Increase / Physical DMG Boost**, left/right; **10.58.00 / 10.58.01 AM**
+  reconfirm all four abilities against the previous talent popups.
+  `gameplay/heroes/image copy 9.png` explicitly shows the **Eternal 2/2**
+  Archive section with **Hellscream (Warrior)** and **Dark Queen (Marksman)**,
+  supplying both portrait sources and confirming a fourth Archive rarity.
+  All fourteen candidates now have complete non-awakening evidence; only
+  **I (18★) and III (22★)** remain missing, with no exclusion applied.
+  Documentation-only review: no roster, detail seed, portrait, or database import.
+- 2026-09-14 — **Readiness review of the 10.40.34–10.45.03 AM batch:** the
+  owner's 179 screenshots establish the identities, talent names/kinds/order,
+  core links, artifact abilities, and mythic divinities in the review section
+  above. Ten existing-roster candidates have complete non-awakening evidence;
+  Abyssal Queen needs the fourth core below Abyss Roar, and Templar needs its
+  Artifact tab (all four ability texts are already visible in talent popups).
+  Hellscream (Warrior) and Dark Queen (Marksman) have complete supplied combat
+  details but no Archive portrait/roster evidence. All fourteen new candidates
+  lack Awakening I/III, which were not excluded. Thrall and Radiant Envoy agree
+  with their existing detail entries, including previously recorded awakenings.
+  This records a review only; no seed, public image, or database content changed.
 - 2026-09-14 — After the readiness review and Snowoman follow-ups, the owner
   authorized importing the reviewed hero details with
   **`$add-mini-heroes-hero use multiple agents`**. This covers Snowoman, Bamboo
@@ -1405,13 +1667,15 @@ images from the internet — the owner rejected that.
    per-screenshot layout table inside the script.
 
 If a screenshot is added or a card moves, edit the `LAYOUT` table in the script (names
-in reading order, roles, rarity per screenshot) and rerun it. Then run the upsert in
-`scripts/upsert-heroes.sql` (or `pnpm db:push`/Drizzle) so Supabase matches.
+in reading order, roles, rarity per screenshot) and rerun it. New heroes are
+inserted by the normal `ensureHeroesSeeded()` read flow;
+`scripts/upsert-heroes.sql` is also regenerated for explicit roster updates.
 
 Because image files are replaced in place, every game image URL carries a
 cache-busting `?v=N` from `src/lib/asset-version.ts` (`versioned()`). Bump
-`ASSET_VERSION` after re-slicing anything (portraits, divinity / talent / artifact
-icons); `next.config.ts` allows exactly that query string for all local images.
+`ASSET_VERSION` when re-slicing changes existing portraits, divinity / talent /
+artifact icons; adding only new paths needs no bump. `next.config.ts` allows
+exactly that query string for all local images.
 Symptom when forgotten: the browser keeps showing the old icon.
 
 The portrait tile keeps the card's 81:100 aspect ratio so the whole panel shows.
@@ -1484,6 +1748,7 @@ a CATALOG name never seen, fails the run: add the row (or the screenshot) and re
 
 | Hero                 | Role     | Rarity | Slug                   |
 | -------------------- | -------- | ------ | ---------------------- |
+| Hellscream | Warrior | Eternal | `hellscream` |
 | Baphomet             | Warrior  | Mythic | `baphomet`             |
 | Dark Knight          | Warrior  | Mythic | `dark-knight`          |
 | Earthbreaker         | Warrior  | Mythic | `earthbreaker`         |
@@ -1505,6 +1770,7 @@ a CATALOG name never seen, fails the run: add the row (or the screenshot) and re
 | GooGoo Fish          | Warrior  | Epic   | `googoo-fish`          |
 | Mars                 | Warrior  | Epic   | `mars`                 |
 | Roar Warrior         | Warrior  | Epic   | `roar-warrior`         |
+| Dark Queen | Marksman | Eternal | `dark-queen` |
 | Bone Archer          | Marksman | Mythic | `bone-archer`          |
 | Captain Pilot        | Marksman | Mythic | `captain-pilot`        |
 | Darkin Hunter        | Marksman | Mythic | `darkin-hunter`        |

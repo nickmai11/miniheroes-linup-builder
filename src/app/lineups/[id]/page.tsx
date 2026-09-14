@@ -1,4 +1,4 @@
-import { getRegisteredDevice, requirePageAccess } from "@/lib/app-access";
+import { hasAppAccess, requirePageAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -12,7 +12,7 @@ import { PageShell } from "@/components/page-shell";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getLineup } from "@/lib/lineups";
-import { canEditLocally } from "@/lib/local-editing";
+import { canEditContent } from "@/lib/editing";
 import { deleteLineup } from "../actions";
 
 export const dynamic = "force-dynamic";
@@ -38,9 +38,7 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
 
   const [lineup, canEdit] = await Promise.all([
     getLineup(numericId),
-    canEditLocally().then(
-      async (local) => local && Boolean(await getRegisteredDevice()),
-    ),
+    canEditContent().then(async (allowed) => allowed && (await hasAppAccess())),
   ]);
   if (!lineup) notFound();
 

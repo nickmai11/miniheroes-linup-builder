@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { PageShell } from "@/components/page-shell";
 import { getHeroesWithDetails } from "@/lib/heroes";
 import { getLineup } from "@/lib/lineups";
-import { canEditLocally } from "@/lib/local-editing";
+import { canEditContent } from "@/lib/editing";
 import { getAllFishes } from "@/lib/fishes";
 import { getAllPets } from "@/lib/pets";
 import { getAllRelics } from "@/lib/relics";
@@ -18,7 +18,7 @@ export default async function EditLineupPage(
   props: PageProps<"/lineups/[id]/edit">,
 ) {
   await requireAppAccess();
-  if (!(await canEditLocally())) notFound();
+  if (!(await canEditContent())) notFound();
   const { id } = await props.params;
   const numericId = Number(id);
   if (!Number.isSafeInteger(numericId) || numericId <= 0) notFound();

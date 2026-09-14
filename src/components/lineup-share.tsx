@@ -152,7 +152,7 @@ export function LineupShare({
               </Menu.Item>
               {!canInvite && (
                 <p className="text-muted-foreground px-3 py-2 text-xs">
-                  Invitation codes can be generated on localhost.
+                  Sign in as admin to generate invitation codes.
                 </p>
               )}
             </Menu.Popup>

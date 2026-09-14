@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { PageShell } from "@/components/page-shell";
 import { getHeroesWithDetails } from "@/lib/heroes";
 import { getLineup } from "@/lib/lineups";
-import { canEditLocally } from "@/lib/local-editing";
+import { canEditContent } from "@/lib/editing";
 import { getAllFishes } from "@/lib/fishes";
 import { getAllPets } from "@/lib/pets";
 import { getAllRelics } from "@/lib/relics";
@@ -16,7 +16,7 @@ export const metadata: Metadata = { title: "Build a lineup" };
 
 export default async function NewLineupPage(props: PageProps<"/lineups/new">) {
   await requireAppAccess();
-  if (!(await canEditLocally())) notFound();
+  if (!(await canEditContent())) notFound();
   const searchParams = await props.searchParams;
   const cloneId =
     typeof searchParams.clone === "string" ? Number(searchParams.clone) : NaN;

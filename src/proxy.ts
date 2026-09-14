@@ -6,6 +6,7 @@ import {
   rotateDeviceToken,
 } from "@/lib/invitations";
 import { isLocalEditingAllowed } from "@/lib/local-edit-policy";
+import { refreshAdminSession } from "@/lib/supabase/proxy";
 import { openDeviceTransfer, sealDeviceTransfer } from "@/lib/device-transfer";
 import { PRODUCTION_APP_URL, isLegacyAppHost } from "@/lib/site-url";
 import { isPublicPage } from "@/lib/public-urls";
@@ -34,6 +35,7 @@ export async function proxy(request: NextRequest) {
   const url = request.nextUrl;
   const path = url.pathname;
   const requestHeaders = new Headers(request.headers);
+  let authResponse: NextResponse | undefined = undefined;
   // Always overwrite the client-supplied destination before forwarding it.
   requestHeaders.set(
     "x-app-destination",
@@ -43,10 +45,20 @@ export async function proxy(request: NextRequest) {
   const next = () =>
     NextResponse.next({ request: { headers: requestHeaders } });
   const finish = (response: NextResponse) => {
+    if (authResponse) {
+      authResponse.cookies
+        .getAll()
+        .forEach((cookie) => response.cookies.set(cookie));
+      for (const name of ["Cache-Control", "Expires", "Pragma"]) {
+        const value = authResponse.headers.get(name);
+        if (value) response.headers.set(name, value);
+      }
+    }
     privateInvitationResponse(response);
     if (
       isPublicRead(request.method, request.headers) &&
       /\.png$/.test(path) &&
+      !authResponse?.cookies.getAll().length &&
       response.headers.get("x-middleware-next") === "1"
     ) {
       // Cache authorized artwork only in this browser. Replaced images get a
@@ -89,6 +101,27 @@ export async function proxy(request: NextRequest) {
     return finish(NextResponse.redirect(target));
   }
 
+  // Login and logout must work before invitation registration and after expiry.
+  if (path === "/api/admin/login" || path === "/api/admin/logout")
+    return finish(next());
+  // Keep the shared image optimizer disabled for admins as well.
+  if (path === "/_next/image")
+    return finish(new NextResponse("Not found", { status: 404 }));
+  const session = await refreshAdminSession(request);
+  authResponse = session.response;
+  // Server Components must receive the refreshed cookies from this request.
+  requestHeaders.set("cookie", request.headers.get("cookie") ?? "");
+  if (session.admin) {
+    if (path === "/invite") {
+      return finish(
+        NextResponse.redirect(
+          new URL(invitationDestination(url.searchParams.get("next")), url),
+        ),
+      );
+    }
+    return finish(next());
+  }
+
   if (
     [
       "/invitations/new",
@@ -104,11 +137,6 @@ export async function proxy(request: NextRequest) {
     );
   }
   if (path === "/api/invitations/redeem") return finish(next());
-  // The shared image optimizer must never cache authenticated game artwork.
-  // next/image uses the original, authenticated URLs (images.unoptimized).
-  if (path === "/_next/image")
-    return finish(new NextResponse("Not found", { status: 404 }));
-
   const token = request.cookies.get(DEVICE_COOKIE)?.value;
   try {
     // Files in public/ have no page or data layer, so validate their access here

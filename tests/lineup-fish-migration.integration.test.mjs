@@ -31,7 +31,7 @@ test(
       "server-only": {},
       "@/db": { db, schema },
       "@/lib/app-access": { requireAppAccess: async () => {} },
-      "@/lib/local-editing": { canEditLocally: async () => true },
+      "@/lib/editing": { canEditContent: async () => true },
       "next/cache": { revalidatePath: () => {} },
       "./heroes": {
         syncSeededHeroDetails: async () => {},

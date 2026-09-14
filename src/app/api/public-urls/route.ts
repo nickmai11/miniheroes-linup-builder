@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
-import { canEditLocally } from "@/lib/local-editing";
+import { canEditContent } from "@/lib/editing";
 import { isSameOriginInvitationRequest } from "@/lib/invitation-policy";
 import { privateInvitationResponse } from "@/lib/invitation-cookie";
 import { normalizePublicUrl } from "@/lib/public-url-policy";
 import { addPublicUrl, removePublicUrl } from "@/lib/public-urls";
 
 async function update(request: Request, remove: boolean) {
-  if (!(await canEditLocally()))
+  if (!(await canEditContent()))
     return new NextResponse("Not found", { status: 404 });
   const reply = (body: object, status = 200) =>
     privateInvitationResponse(NextResponse.json(body, { status }));

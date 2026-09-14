@@ -1,4 +1,4 @@
-import { getRegisteredDevice, requirePageAccess } from "@/lib/app-access";
+import { hasAppAccess, requirePageAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Copy, Plus } from "lucide-react";
@@ -17,7 +17,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getAllLineups } from "@/lib/lineups";
-import { canEditLocally } from "@/lib/local-editing";
+import { canEditContent } from "@/lib/editing";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Lineups" };
@@ -26,9 +26,7 @@ export default async function LineupsPage() {
   await requirePageAccess();
   const [lineups, canEdit] = await Promise.all([
     getAllLineups(),
-    canEditLocally().then(
-      async (local) => local && Boolean(await getRegisteredDevice()),
-    ),
+    canEditContent().then(async (allowed) => allowed && (await hasAppAccess())),
   ]);
 
   return (

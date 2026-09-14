@@ -8,17 +8,17 @@ import { redirect } from "next/navigation";
 import { db, schema } from "@/db";
 import { lineupSchema, type LineupInput } from "@/lib/lineup-input";
 import {
-  canEditLocally,
-  LOCAL_EDITING_ERROR,
-  requireLocalEditing,
-} from "@/lib/local-editing";
+  canEditContent,
+  EDITING_ERROR,
+  requireEditing,
+} from "@/lib/editing";
 
 export type LineupActionState = { error?: string; id?: number };
 
 export async function saveLineup(
   input: LineupInput,
 ): Promise<LineupActionState> {
-  if (!(await canEditLocally())) return { error: LOCAL_EDITING_ERROR };
+  if (!(await canEditContent())) return { error: EDITING_ERROR };
   await requireAppAccess();
   const parsed = lineupSchema.safeParse(input);
   if (!parsed.success) {
@@ -195,7 +195,7 @@ export async function saveLineup(
 }
 
 export async function deleteLineup(id: number) {
-  await requireLocalEditing();
+  await requireEditing();
   await requireAppAccess();
   await db.delete(schema.lineups).where(eq(schema.lineups.id, id));
   revalidatePath("/lineups");

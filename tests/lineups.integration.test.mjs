@@ -41,9 +41,9 @@ test(
     const actions = loadTypeScript("src/app/lineups/actions.ts", {
       "@/db": { db, schema },
       "@/lib/app-access": { requireAppAccess: async () => {} },
-      "@/lib/local-editing": {
-        canEditLocally: async () => true,
-        requireLocalEditing: async () => {},
+      "@/lib/editing": {
+        canEditContent: async () => true,
+        requireEditing: async () => {},
       },
       "next/cache": { revalidatePath: (...args) => invalidated.push(args) },
       "next/navigation": {

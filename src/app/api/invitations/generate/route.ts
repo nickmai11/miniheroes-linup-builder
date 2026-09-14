@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import { canEditLocally } from "@/lib/local-editing";
+import { canEditContent } from "@/lib/editing";
 import { generateInvitationCode } from "@/lib/invitations";
 import { isSameOriginInvitationRequest } from "@/lib/invitation-policy";
 import { privateInvitationResponse } from "@/lib/invitation-cookie";
 
 export async function POST(request: Request) {
-  if (!(await canEditLocally()))
+  if (!(await canEditContent()))
     return new NextResponse("Not found", { status: 404 });
   if (!isSameOriginInvitationRequest(request)) {
     return privateInvitationResponse(

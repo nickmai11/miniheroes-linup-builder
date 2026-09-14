@@ -7,15 +7,20 @@ import { findRegisteredDevice } from "@/lib/invitations";
 import { DEVICE_COOKIE, invitationScreen } from "@/lib/invitation-policy";
 import { isPublicPage } from "@/lib/public-urls";
 import { isPublicRead, publicPagePath } from "@/lib/public-url-policy";
+import { isAdmin } from "@/lib/admin-access";
 
 // Request-scoped only: authorization is never shared between visitors.
 export const getRegisteredDevice = cache(async () => {
   return findRegisteredDevice((await cookies()).get(DEVICE_COOKIE)?.value);
 });
 
+export const hasAppAccess = cache(async (): Promise<boolean> => {
+  return (await isAdmin()) || Boolean(await getRegisteredDevice());
+});
+
 /** Pages and actions verify access independently of Proxy. */
 export async function requireAppAccess(): Promise<void> {
-  if (await getRegisteredDevice()) return;
+  if (await hasAppAccess()) return;
   const destination = (await headers()).get("x-app-destination") ?? "/";
   redirect(invitationScreen(destination));
 }
@@ -28,9 +33,9 @@ export const getPublicPage = cache(async (): Promise<string | null> => {
   return path && (await isPublicPage(path)) ? path : null;
 });
 
-/** Page/metadata reads can be public; mutation guards still require registration. */
+/** Page/metadata reads can be public; mutations require admin or local access. */
 export async function requirePageAccess(): Promise<void> {
-  if (await getRegisteredDevice()) return;
+  if (await hasAppAccess()) return;
   if (await getPublicPage()) return;
   await requireAppAccess();
 }

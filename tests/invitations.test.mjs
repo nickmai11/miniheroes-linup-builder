@@ -514,7 +514,7 @@ test("generation is restricted on both the route and the proxy", async () => {
     else process.env.NODE_ENV = previous;
   }
   const { POST } = loadTypeScript("src/app/api/invitations/generate/route.ts", {
-    "@/lib/local-editing": { canEditLocally: async () => false },
+    "@/lib/editing": { canEditContent: async () => false },
     "@/lib/invitations": {
       generateInvitationCode: async () => {
         throw new Error("Unauthorized generation");
@@ -582,14 +582,14 @@ test("API and action entry points check registration even without Proxy", async 
     "@/db": { db: databaseTripwire, schema: databaseTripwire },
     "@/db/schema": { LINEUP_SIZE: 5 },
     "@/lib/app-access": {
-      getRegisteredDevice: async () => null,
+      hasAppAccess: async () => null,
       requireAppAccess: async () => {
         throw denied;
       },
     },
-    "@/lib/local-editing": {
-      canEditLocally: async () => true,
-      requireLocalEditing: async () => {},
+    "@/lib/editing": {
+      canEditContent: async () => true,
+      requireEditing: async () => {},
     },
     "@/lib/builds": {
       getOtherHeroBuilds: async () => {

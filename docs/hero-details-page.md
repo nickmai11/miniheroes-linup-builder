@@ -104,6 +104,16 @@ the **10.10.23 AM** popup supplies its text and core. Its **Glorious Aura** is
 stored as Aura. Fire Sorceress's red/rainbow **Blazing Fire** abilities are both
 standalone. Awakening I/III were not supplied and retain their empty states.
 
+The **September 14 10.40–10.45 AM import**, including the **10.57–10.58 AM**
+and Archive follow-ups, adds **Wine Immortal, Abyssal Queen, Iron Fan Princess,
+Otherworld Prisoner, Wizard, Templar, Warlock, Darkin Hunter, Earthbreaker,
+Observer, Dark Shaman, Hellscream, Bone Archer, and Dark Queen**. Each has six
+talents, four linked cores, all four artifact tiers, two mythic divinities, and
+new talent/artifact images. Hellscream and Dark Queen also have new owner-sourced
+Archive portraits and **Eternal** roster entries. Abyssal Queen's unobscured
+artifact image comes from its **10.41.04 AM** ability popup. Awakening I/III
+were not supplied and retain their empty states.
+
 Build imports use an outline button matching **New build**. The picker searches
 hero and build names on the server, loads twelve results per page only when opened,
 and keeps the results in a scrollable panel. Select a build, then choose **Import
@@ -148,9 +158,9 @@ Unmatched names are reported after import; an
 import with no usable attributes or cores is rejected.
 
 Build creation, editing, importing, deletion, and the "Start a lineup" link are
-available only in local development, as described in the README's Local editing
-section. Public visitors can read saved builds and lineups; every build write
-action also enforces this restriction on the server.
+available to signed-in admins and in local development, as described in the
+README's Admin login and editing section. Public visitors can read saved builds
+and lineups; every build write action also enforces this restriction on the server.
 
 Rules that shape the page:
 
@@ -299,6 +309,40 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
 
 ## 6. Known gaps
 
+- **September 14, 10.40–10.45 AM import and 10.57–10.58 AM/Archive follow-ups:**
+  the original 179 captures plus five follow-ups cover fourteen new detail
+  imports and two already recorded heroes. **All fourteen imported heroes now
+  have complete recorded non-awakening details:** Wine Immortal, Abyssal
+  Queen, Iron Fan Princess, Otherworld Prisoner, Wizard, Templar, Warlock,
+  Darkin Hunter, Earthbreaker, Observer, Dark Shaman, Hellscream, Bone Archer,
+  and Dark Queen. Each still needs **Awakening I (18★) and III (22★)**.
+  No awakening exclusion applies. Exact sources,
+  icon originals, continuations, links, and transcription notes are in the game
+  reference's **10.40–10.45 AM screenshot review and import** section.
+- **Abyssal Queen's fourth-core gap is resolved:**
+  `Screenshot 2026-09-14 at 10.57.41 AM.png` supplies **Wizard's Wand → Abyss
+  Roar**, additional Magic DMG equal to **25%(75%) of ATK**. Together with the
+  previously verified talents, other three cores, Sickle of Fear tiers,
+  HP / DMG Reduction, and Archive portrait, only I/III remain missing.
+  Keep **10.41.00 AM** as the unscrolled ultimate icon source.
+- **Templar's artifact/divinity gap is resolved:** **10.57.58 AM** supplies
+  **Spectral Blade**, its artwork, and the bottom red **DMG Increase / Physical
+  DMG Boost** badges in left/right order. **10.58.00 / 10.58.01 AM** supply the
+  full ability popup and agree with all four previously verified talent-linked
+  bonuses. Purple/rainbow **Refraction** links to **Phase Shift**. Only I/III
+  remain missing. The original Mind Trap icon still uses **10.42.25 AM 1.png**;
+  the filename without ` 1` completes Hunter's Cloak.
+- **Hellscream and Dark Queen's Archive gaps are resolved:**
+  `gameplay/heroes/image copy 9.png` shows both whole card art panels under
+  **Eternal 2/2**, establishing Eternal rarity and confirming Warrior / Marksman
+  respectively. Their non-awakening evidence is complete; only I/III remain
+  missing. Both are now included in the 67-hero seed with Eternal rarity support.
+  Their owner-supplied Archive source is included in `scripts/slice-hero-cards.py`,
+  producing whole-panel portraits with artifact-progress diamonds removed.
+  Their earlier artifact/divinity coverage remains verified.
+- The same batch's **Thrall and Radiant Envoy** captures agree with existing
+  detail seeds. Both already have I/III; Radiant Envoy's approved guide source
+  remains valid. No new missing content was identified for either hero.
 - **September 14, 9.58–10.02 AM imported batch:** 162 screenshots plus
   Snowoman's two **10.10 AM** follow-ups supply the recorded details for
   **Snowoman, Bamboo Hat, Fire

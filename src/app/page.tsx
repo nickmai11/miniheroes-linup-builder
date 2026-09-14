@@ -1,8 +1,8 @@
-import { getRegisteredDevice, requirePageAccess } from "@/lib/app-access";
+import { hasAppAccess, requirePageAccess } from "@/lib/app-access";
 import Link from "next/link";
 import { ArrowRight, Hammer, ListOrdered, Users } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
-import { canEditLocally } from "@/lib/local-editing";
+import { canEditContent } from "@/lib/editing";
 import {
   Card,
   CardDescription,
@@ -33,8 +33,7 @@ const SECTIONS = [
 
 export default async function Home() {
   await requirePageAccess();
-  const canEdit =
-    (await canEditLocally()) && Boolean(await getRegisteredDevice());
+  const canEdit = (await canEditContent()) && (await hasAppAccess());
   const sections = SECTIONS.filter(
     ({ href }) => canEdit || href !== "/lineups/new",
   );

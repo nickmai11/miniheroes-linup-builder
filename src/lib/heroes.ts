@@ -21,7 +21,7 @@ import type {
 export { RARITY_LABELS, ROLE_LABELS } from "./hero-labels";
 
 const ROLE_ORDER: HeroRole[] = ["warrior", "marksman", "mage", "support"];
-const RARITY_ORDER: HeroRarity[] = ["mythic", "legend", "epic"];
+const RARITY_ORDER: HeroRarity[] = ["eternal", "mythic", "legend", "epic"];
 
 // Only persisted fields belong here; awakening skills are served from the file.
 // Bump the version if the synchronization rules change without a seed edit.

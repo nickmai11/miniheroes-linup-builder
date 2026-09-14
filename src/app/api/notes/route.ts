@@ -2,9 +2,12 @@ import { desc } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db, schema } from "@/db";
-import { canEditLocally, LOCAL_EDITING_ERROR } from "@/lib/local-editing";
-import { getRegisteredDevice } from "@/lib/app-access";
-import { INVITATION_REQUIRED } from "@/lib/invitation-policy";
+import { canEditContent, EDITING_ERROR } from "@/lib/editing";
+import { hasAppAccess } from "@/lib/app-access";
+import {
+  INVITATION_REQUIRED,
+  isSameOriginInvitationRequest,
+} from "@/lib/invitation-policy";
 
 const createNoteSchema = z.object({
   title: z.string().trim().min(1).max(200),
@@ -12,7 +15,7 @@ const createNoteSchema = z.object({
 });
 
 export async function GET() {
-  if (!(await getRegisteredDevice()))
+  if (!(await hasAppAccess()))
     return NextResponse.json({ error: INVITATION_REQUIRED }, { status: 401 });
   const rows = await db
     .select()
@@ -22,11 +25,16 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  if (!(await canEditLocally())) {
-    return NextResponse.json({ error: LOCAL_EDITING_ERROR }, { status: 403 });
+  if (!(await canEditContent())) {
+    return NextResponse.json({ error: EDITING_ERROR }, { status: 403 });
   }
-  if (!(await getRegisteredDevice()))
+  if (!(await hasAppAccess()))
     return NextResponse.json({ error: INVITATION_REQUIRED }, { status: 401 });
+  if (!isSameOriginInvitationRequest(request))
+    return NextResponse.json(
+      { error: "Invalid request origin." },
+      { status: 403 },
+    );
   const parsed = createNoteSchema.safeParse(await request.json());
   if (!parsed.success) {
     return NextResponse.json(

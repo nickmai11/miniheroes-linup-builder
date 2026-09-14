@@ -52,19 +52,51 @@ Schema changes: edit `src/db/schema.ts`, run `pnpm db:generate`, then `pnpm db:m
 
 Set `DATABASE_URL` to the Supabase pooler string on the host (Vercel or any Node host) and deploy. Uploaded hero portraits are written to `public/heroes/`, which only persists on a host with a writable disk.
 
-## Local editing
+## Admin login and editing
 
-Create, edit, import, and delete controls are available only through `pnpm dev`
+Click **Admin login** in the header and enter your Supabase Auth email and
+password. The dialog is also available on the invitation screen; admins do not
+need an invitation code. Authentication uses the official `@supabase/supabase-js`
+and `@supabase/ssr` packages.
+
+Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` from the
+existing project's **Connect** dialog in `.env.local` and your deployment's
+environment settings. Restart or redeploy after changing them. Use a publishable
+(or legacy anon) key, never a service-role or secret key in these variables.
+
+Admin accounts must exist in Supabase **Authentication → Users** and have
+`app_metadata.role` set to `admin` through
+Supabase's trusted administration tools. Admin checks use `auth.getUser()` to
+verify the session and read current server-managed metadata; user-editable
+`user_metadata` cannot grant access. Additional admins can be managed through
+the same Supabase role. Removing the role removes access on subsequent requests.
+
+Supabase manages passwords, session expiry, refresh tokens, and authentication
+rate limits. The Next.js proxy refreshes sessions and forwards updated cookies to
+both the browser and Server Components. Passwords and a custom signing secret
+are not stored in app environment variables. Auth runs on the server, and SDK
+session cookies are HTTP-only and require HTTPS in production.
+
+Signed-in admins can create, edit, import, and delete content, generate invitation
+codes, and manage public URLs. **Sign out** signs out the current Supabase session
+while preserving the browser's existing invitation registration. Admin login
+does not register a visitor's browser or consume an invitation code, and requires
+no application database migration.
+
+### Local development
+
+The existing local development shortcut also makes editing available through `pnpm dev`
 at `http://localhost:3000` (or `http://127.0.0.1:3000`). The development server binds
 to `127.0.0.1`; restart any already-running dev server after this change. Keep it
 bound to loopback and do not expose it through a tunnel or reverse proxy.
 
 Production (`pnpm build` / `pnpm start`, including on localhost) is read-only for
-visitors. Every write action and the notes POST API check access on the server;
-request headers cannot enable editing in production. The policy also rejects
+visitors who have not signed in as admin. Every write action and the notes POST
+API check access on the server; request headers cannot enable editing in
+production. The local development shortcut also rejects
 non-local hosts, remote forwarded addresses, proxy chains, and cross-origin
-requests in development. The lineup builder route is unavailable outside local
-development, and registered browsers can read saved lineups and builds. Automatic
+requests in development. The lineup builder route requires admin login or local
+development access, and registered browsers can read saved lineups and builds. Automatic
 synchronization of the versioned game reference data is unchanged.
 
 Run `pnpm test` (Node 22.6+), `pnpm typecheck`, and `pnpm lint` to check the policy
@@ -88,19 +120,19 @@ retiring the old one only at that moment. The seal is derived from
 redirect on the old domain, or that hand-off never runs and existing visitors
 would need a fresh invitation. The hosts are listed in `src/lib/site-url.ts`.
 
-The generator page and its POST endpoint are available only in local development,
-using the same loopback policy as editing. They work before that browser is
-registered, so you can generate the first invitation. Production builds do not
-expose the generator, including when run on localhost.
+The generator page and its POST endpoint are available to signed-in admins and
+in local development, using the same access policy as editing. They work before
+that browser is registered, so you can generate the first invitation.
 
 Saved lineup cards and detail pages have a **Share** menu. **Copy link** copies
 the production lineup URL without invitation codes or other query
 parameters. **Copy link with IC** generates a fresh, single-use code and copies
-the lineup URL with `?ic=CODE`; this option is available only on localhost.
+the lineup URL with `?ic=CODE`; this option requires admin or local editing access.
 If clipboard access is blocked, the link is shown for manual copying, and
 retrying reuses the invitation that was already generated.
 
-Unregistered browsers see `/invite` and must enter a valid, unused code. Opening
+Unregistered browsers see `/invite` and can enter a valid, unused code or sign in
+as admin. Opening
 an app URL with `?ic=CODE` submits the code automatically through a POST, then
 replaces the address with the original page without `ic`. Other query parameters
 and fragments are preserved. Ordinary GET requests and link previews do not redeem
@@ -120,7 +152,7 @@ before running the updated app. It includes RLS policies and grants for
 if needed. Local generation and the deployed app must use the same `DATABASE_URL`.
 
 Pages, metadata, APIs (including health), actions, and original game images require
-registration unless a page is explicitly made public as described below.
+registration or an admin session unless a page is explicitly made public as described below.
 Framework CSS, JavaScript, fonts, and the favicon remain accessible
 to render the invitation screen. Images use their original authenticated URLs;
 the shared Next.js image optimizer is disabled to avoid caching private artwork.
@@ -144,9 +176,9 @@ it never uses the app's `DATABASE_URL`.
 
 ## Public URLs
 
-Open **http://localhost:3000/public-urls** while running `pnpm dev`, or choose
-**Public URLs** in the local navigation. This settings page works without an
-invitation and is available only on localhost in development. Paste an app link
+Sign in as admin and choose **Public URLs**, or open
+**http://localhost:3000/public-urls** while running `pnpm dev`. This settings page
+works without an invitation for admins and local development. Paste an app link
 or a path such as `/lineups/123`, then click **Add public URL**. The list provides
 **Copy link** for the production URL and **Remove** to restore invitation access.
 
@@ -169,4 +201,5 @@ empty `public_urls` table with the existing app-only RLS policy. No pages are
 public by default. Localhost and production use the same database settings;
 production must run the updated code to honor the rules. Changes require no
 redeploy once that code is running. The settings page and its mutation endpoint
-return 404 in production, including with forged localhost headers.
+return 404 for visitors without an admin session in production, including with
+forged localhost headers.
