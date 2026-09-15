@@ -390,5 +390,7 @@
   "Close heroes": "Đóng danh sách anh hùng",
   "All special stats": "Tất cả chỉ số đặc biệt",
   "Has special stats": "Có chỉ số đặc biệt",
-  "No special stats": "Không có chỉ số đặc biệt"
+  "No special stats": "Không có chỉ số đặc biệt",
+  "Rare": "Hiếm",
+  "Rarity: {rarity}": "Độ hiếm: {rarity}"
 }

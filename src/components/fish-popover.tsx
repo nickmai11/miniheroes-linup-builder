@@ -7,12 +7,14 @@ import type { Fish } from "@/db/schema";
 import { FishBait } from "@/components/fish-bait";
 import { FishIcon } from "@/components/fish-icon";
 import { FishStats } from "@/components/fish-stats";
+import { FishRarity } from "@/components/fish-rarity";
 
 type FishPreview = Pick<
   Fish,
   | "slug"
   | "name"
   | "iconUrl"
+  | "rarity"
   | "fishType"
   | "baseStats"
   | "specialStats"
@@ -54,7 +56,12 @@ export function FishPopover({
             <h3 className="font-semibold break-words">
               {gameLabel("fish", fish)}
             </h3>
-            <p className="text-muted-foreground text-xs">{t(fish.fishType)}</p>
+            <div className="mt-1 flex flex-wrap items-center gap-2">
+              <span className="text-muted-foreground text-xs">
+                {t(fish.fishType)}
+              </span>
+              <FishRarity rarity={fish.rarity} />
+            </div>
           </div>
         </div>
         <div>

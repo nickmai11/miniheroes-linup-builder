@@ -18,6 +18,7 @@ export const ensureFishesSeeded = onceAsync(async () => {
       set: {
         name: sql`excluded.name`,
         iconUrl: sql`excluded.icon_url`,
+        rarity: sql`excluded.rarity`,
         area: sql`excluded.area`,
         fishType: sql`excluded.fish_type`,
         collection: sql`excluded.collection`,

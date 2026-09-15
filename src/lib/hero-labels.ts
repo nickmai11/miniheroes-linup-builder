@@ -32,10 +32,10 @@ export const SKILL_KIND_LABELS: Record<SkillKind, string> = {
 };
 
 export const ARTIFACT_TIER_LABELS: Record<ArtifactTier, string> = {
-  purple: "Purple",
-  gold: "Gold",
-  red: "Red",
-  rainbow: "Rainbow",
+  purple: "Epic",
+  gold: "Legend",
+  red: "Mythic",
+  rainbow: "Eternal",
 };
 
 export const RUNE_TYPE_LABELS: Record<RuneType, string> = {

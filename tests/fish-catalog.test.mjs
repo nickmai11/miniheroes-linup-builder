@@ -41,6 +41,13 @@ test("fish cards show icons, separated stats, area, bait and translated names", 
     );
     assert.ok(decodeURIComponent(html).includes("/baits/mudskipper.png"));
     assert.ok(
+      html.includes(
+        createI18n(locale).t("Rarity: {rarity}", {
+          rarity: createI18n(locale).t("Eternal"),
+        }),
+      ),
+    );
+    assert.ok(
       !html.includes(
         translateGameLabel(locale, "fishCollection", fish.collection),
       ),

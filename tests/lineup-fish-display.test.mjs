@@ -60,6 +60,13 @@ test("fish previews expose localized stats, category, location and bait without 
     assert.ok(html.includes("/fishes/mutated-dragonfish.png"));
     assert.ok(html.includes("/baits/mudskipper.png"));
     assert.ok(
+      html.includes(
+        createI18n(locale).t("Rarity: {rarity}", {
+          rarity: createI18n(locale).t("Eternal"),
+        }),
+      ),
+    );
+    assert.ok(
       !html.includes(
         translateGameLabel(locale, "fishCollection", dragonfish.collection),
       ),

@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FishStats } from "@/components/fish-stats";
 import { FishBait } from "@/components/fish-bait";
+import { FishRarity } from "@/components/fish-rarity";
 import type { Fish } from "@/db/schema";
 import { versioned } from "@/lib/asset-version";
 import { FISH_CATEGORIES } from "@/lib/fish-selection";
@@ -163,9 +164,12 @@ export function FishCatalog({ fishes }: { fishes: Fish[] }) {
                   <h2 className="text-base leading-snug font-semibold break-words">
                     {gameLabel("fish", fish)}
                   </h2>
-                  <p className="text-muted-foreground mt-1 text-xs">
-                    {t(fish.fishType)}
-                  </p>
+                  <div className="mt-1 flex flex-wrap items-center gap-2">
+                    <span className="text-muted-foreground text-xs">
+                      {t(fish.fishType)}
+                    </span>
+                    <FishRarity rarity={fish.rarity} />
+                  </div>
                 </div>
               </div>
               <dl className="flex flex-1 flex-col gap-3 text-sm">

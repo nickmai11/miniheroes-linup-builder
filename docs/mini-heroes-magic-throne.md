@@ -127,7 +127,10 @@ tracks talent levels. Tapping a talent opens up to three panels:
 
 **Artifact tab.** The hero's divine weapon: a named artifact with stars and
 ATK/DEF/HP (player-dependent, not stored), an "Ascension Bonus" line, and the six
-divinity badges around it. The artifact popup lists one ability per quality tier:
+divinity badges around it. The app displays rarity names for artifact tiers:
+Epic (purple), Legend (gold), Mythic (red), Eternal (rainbow), following the
+owner’s app-wide naming instruction (2026-09-15).
+The artifact popup lists one ability per quality tier:
 purple / gold / red / rainbow. Quality does not determine whether the ability
 modifies a talent or is standalone: Dark Knight's gold **Frost Dark Axe**,
 Gunslinger's gold **Full-out Shooting**, and Witch Dictator's red **Withering
@@ -1216,6 +1219,11 @@ tiles, matched to the 12.57.40–12.58.16 PM popups.
 
 The fish catalog and dedicated Fishes page must show each fish’s icon, name,
 base stats, special stats, and where to get it (owner, 2026-09-15).
+Each fish also has a rarity (owner, 2026-09-15).
+The 130 title-bar colors are recorded in `gameplay/fishes/icons.json`: rainbow
+(25), red (38), gold (29), purple (29), and blue (9). The owner confirmed the
+mapping on 2026-09-15: rainbow = Eternal, red = Mythic, gold = Legend,
+purple = Epic, and blue = Rare. The color evidence is retained independently.
 Base stats are ATK, HP, DEF, and class-specific ATK/HP; all other bonuses
 are special stats (owner, 2026-09-15).
 Baits belong in the database; each fish has its corresponding bait, or none
@@ -1330,6 +1338,14 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-15 — Use the correct rarity names throughout the app (Rare, Epic,
+  Legend, Mythic, Eternal) instead of color-based rarity labels.
+
+- 2026-09-15 — Confirmed fish rarity names: blue = Rare, purple = Epic,
+  gold = Legend, red = Mythic, and rainbow = Eternal.
+
+- 2026-09-15 — Fish should also have rarity.
 
 - 2026-09-15 — Add an option to filter fishes by special stats.
 
@@ -1762,8 +1778,13 @@ is said. These override anything marked (web).
   No pet skills, stats, or bonuses are stored; lineup assignments use separate links.
 - `fishes` table: `slug`, `name`, optional `iconUrl`, `area`, `fishType`,
   `collection`, ordered `stats` (names only), `baseStats`, `specialStats`,
-  optional `bait`, ID, and creation timestamp. Migration `0027_fish_stats.sql`
-  adds the two stat groups. `getAllFishes()` synchronizes source records once
+  optional `bait`, `rarity`, ID, and creation timestamp. Migration `0027_fish_stats.sql`
+  adds the two stat groups. Migration `0029_fish_rarity.sql` adds the fish-specific
+  rarity enum and column. Every source fish has a verified title-bar color;
+  unrecorded custom entries may use NULL rather than a guessed rarity. The
+  importer rejects missing or mismatched color evidence. Fish cards and popovers
+  show a localized rarity badge without changing the fixed-height lineup chips.
+  `getAllFishes()` synchronizes source records once
   per process, preserving IDs and lineup selections.
   Regenerate `src/data/fishes.ts`, `scripts/upsert-fishes.sql`, and all 130 icons
   with `python3 scripts/import-fishes.py` (Pillow required). The importer reads

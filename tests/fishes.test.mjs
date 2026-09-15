@@ -1,11 +1,34 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import test from "node:test";
 import { loadTypeScript } from "./load-typescript.mjs";
 
 const { fishSeeds } = loadTypeScript("src/data/fishes.ts");
 const { FISH_CATEGORIES } = loadTypeScript("src/lib/fish-selection.ts");
+
+test("every fish rarity matches its recorded screenshot color", () => {
+  const icons = JSON.parse(readFileSync("gameplay/fishes/icons.json", "utf8"));
+  const colors = {
+    rainbow: "eternal",
+    red: "mythic",
+    gold: "legend",
+    purple: "epic",
+    blue: "rare",
+  };
+  const counts = {};
+  for (const fish of fishSeeds) {
+    assert.equal(fish.rarity, colors[icons[fish.slug].rarityColor], fish.slug);
+    counts[fish.rarity] = (counts[fish.rarity] ?? 0) + 1;
+  }
+  assert.deepEqual(counts, {
+    epic: 29,
+    legend: 29,
+    mythic: 38,
+    eternal: 25,
+    rare: 9,
+  });
+});
 
 test("all catalog fishes belong to the four owner-defined categories", () => {
   assert.deepEqual(FISH_CATEGORIES, ["Small", "Medium", "Large", "Aquatic"]);
@@ -56,6 +79,7 @@ test("fish catalog includes all seven areas and preserves recorded details", () 
     stats: ["Warrior HP", "DMG Reduction", "Heavy Injury Effect"],
     bait: null,
     iconUrl: "/fishes/marten-s-pearl-oyster.png",
+    rarity: "mythic",
     baseStats: ["Warrior HP"],
     specialStats: ["DMG Reduction", "Heavy Injury Effect"],
   });

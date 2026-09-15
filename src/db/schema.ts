@@ -14,6 +14,7 @@ import {
 import { sql } from "drizzle-orm";
 import { BUILD_PRIORITIES } from "@/lib/build-priorities";
 import { MAX_FISH_QUANTITY } from "@/lib/fish-selection";
+import { FISH_RARITIES } from "@/lib/fish-rarity";
 
 export const notes = pgTable("notes", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
@@ -308,12 +309,16 @@ export const baits = pgTable("baits", {
 
 export type Bait = typeof baits.$inferSelect;
 
+export const fishRarity = pgEnum("fish_rarity", FISH_RARITIES);
+
 /** Fish catalog from the owner's area sheets, used by lineup selections. */
 export const fishes = pgTable("fishes", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   slug: text("slug").notNull().unique(),
   name: text("name").notNull(),
   iconUrl: text("icon_url"),
+  // Null only for entries whose screenshot rarity has not been recorded.
+  rarity: fishRarity("rarity"),
   area: text("area").notNull().default(""),
   fishType: text("fish_type").notNull().default(""),
   collection: text("collection").notNull().default(""),

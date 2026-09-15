@@ -1,522 +1,652 @@
 {
   "lemon-fish": {
     "source": "Screenshot 2026-09-15 at 9.40.26 AM.png",
-    "name": "Lemon Fish"
+    "name": "Lemon Fish",
+    "rarityColor": "purple"
   },
   "greenlight-fish": {
     "source": "Screenshot 2026-09-15 at 9.40.29 AM.png",
-    "name": "Greenlight Fish"
+    "name": "Greenlight Fish",
+    "rarityColor": "gold"
   },
   "moonlight-fish": {
     "source": "Screenshot 2026-09-15 at 9.40.31 AM.png",
-    "name": "Moonlight Fish"
+    "name": "Moonlight Fish",
+    "rarityColor": "red"
   },
   "mutated-dragonfish": {
     "source": "Screenshot 2026-09-15 at 9.40.33 AM.png",
-    "name": "Mutated Dragonfish"
+    "name": "Mutated Dragonfish",
+    "rarityColor": "rainbow"
   },
   "mullet-fish": {
     "source": "Screenshot 2026-09-15 at 9.40.34 AM.png",
-    "name": "Mullet Fish"
+    "name": "Mullet Fish",
+    "rarityColor": "red"
   },
   "little-goldfish": {
     "source": "Screenshot 2026-09-15 at 9.40.36 AM.png",
-    "name": "Little Goldfish"
+    "name": "Little Goldfish",
+    "rarityColor": "blue"
   },
   "runescale-koi": {
     "source": "Screenshot 2026-09-15 at 9.40.38 AM.png",
-    "name": "Runescale Koi"
+    "name": "Runescale Koi",
+    "rarityColor": "red"
   },
   "longbill-loach": {
     "source": "Screenshot 2026-09-15 at 9.40.40 AM.png",
-    "name": "Longbill Loach"
+    "name": "Longbill Loach",
+    "rarityColor": "blue"
   },
   "frog": {
     "source": "Screenshot 2026-09-15 at 9.40.41 AM.png",
-    "name": "Frog"
+    "name": "Frog",
+    "rarityColor": "blue"
   },
   "winter-squid": {
     "source": "Screenshot 2026-09-15 at 9.40.44 AM.png",
-    "name": "Winter Squid"
+    "name": "Winter Squid",
+    "rarityColor": "purple"
   },
   "ice-river-carp": {
     "source": "Screenshot 2026-09-15 at 9.40.45 AM.png",
-    "name": "Icy River Carp"
+    "name": "Icy River Carp",
+    "rarityColor": "gold"
   },
   "plateau-fugu": {
     "source": "Screenshot 2026-09-15 at 9.40.47 AM.png",
-    "name": "Plateau Fugu"
+    "name": "Plateau Fugu",
+    "rarityColor": "purple"
   },
   "watermelon-fish": {
     "source": "Screenshot 2026-09-15 at 9.40.49 AM.png",
-    "name": "Watermelon Fish"
+    "name": "Watermelon Fish",
+    "rarityColor": "gold"
   },
   "mickey-mouse-platy": {
     "source": "Screenshot 2026-09-15 at 9.40.50 AM.png",
-    "name": "Mickey Mouse Platy"
+    "name": "Mickey Mouse Platy",
+    "rarityColor": "purple"
   },
   "spear-fish": {
     "source": "Screenshot 2026-09-15 at 9.40.53 AM.png",
-    "name": "Spear Fish"
+    "name": "Spear Fish",
+    "rarityColor": "rainbow"
   },
   "bite-bluefish": {
     "source": "Screenshot 2026-09-15 at 9.40.54 AM.png",
-    "name": "Bite Bluefish"
+    "name": "Bite Bluefish",
+    "rarityColor": "purple"
   },
   "sea-urchin": {
     "source": "Screenshot 2026-09-15 at 9.40.55 AM.png",
-    "name": "Sea Urchin"
+    "name": "Sea Urchin",
+    "rarityColor": "blue"
   },
   "grey-lobster": {
     "source": "Screenshot 2026-09-15 at 9.40.58 AM.png",
-    "name": "Grey Lobster"
+    "name": "Grey Lobster",
+    "rarityColor": "purple"
   },
   "snow-crab": {
     "source": "Screenshot 2026-09-15 at 9.40.59 AM.png",
-    "name": "Snow Crab"
+    "name": "Snow Crab",
+    "rarityColor": "gold"
   },
   "silverhead-salmon": {
     "source": "Screenshot 2026-09-15 at 9.41.01 AM.png",
-    "name": "Silverhead Salmon"
+    "name": "Silverhead Salmon",
+    "rarityColor": "blue"
   },
   "silver-fin-fish": {
     "source": "Screenshot 2026-09-15 at 9.41.03 AM.png",
-    "name": "Silver Fin Fish"
+    "name": "Silver Fin Fish",
+    "rarityColor": "blue"
   },
   "ocean-sunfish": {
     "source": "Screenshot 2026-09-15 at 9.41.08 AM.png",
-    "name": "Ocean Sunfish"
+    "name": "Ocean Sunfish",
+    "rarityColor": "red"
   },
   "icy-scale-bluefish": {
     "source": "Screenshot 2026-09-15 at 9.41.09 AM.png",
-    "name": "Icy Scale Bluefish"
+    "name": "Icy Scale Bluefish",
+    "rarityColor": "gold"
   },
   "rainbowfin-fish": {
     "source": "Screenshot 2026-09-15 at 9.41.11 AM.png",
-    "name": "Rainbowfin Fish"
+    "name": "Rainbowfin Fish",
+    "rarityColor": "blue"
   },
   "sunblaze-fish": {
     "source": "Screenshot 2026-09-15 at 9.41.12 AM.png",
-    "name": "Sunblaze Fish"
+    "name": "Sunblaze Fish",
+    "rarityColor": "red"
   },
   "night-scale-snapper": {
     "source": "Screenshot 2026-09-15 at 9.41.13 AM.png",
-    "name": "Night Scale Snapper"
+    "name": "Night Scale Snapper",
+    "rarityColor": "gold"
   },
   "giant-mouth-shark": {
     "source": "Screenshot 2026-09-15 at 9.41.15 AM.png",
-    "name": "Giant Mouth Shark"
+    "name": "Giant Mouth Shark",
+    "rarityColor": "rainbow"
   },
   "mouthed-salmon": {
     "source": "Screenshot 2026-09-15 at 9.41.16 AM.png",
-    "name": "Mouthed Salmon"
+    "name": "Mouthed Salmon",
+    "rarityColor": "purple"
   },
   "hammerhead-shark": {
     "source": "Screenshot 2026-09-15 at 9.41.18 AM.png",
-    "name": "Hammerhead Shark"
+    "name": "Hammerhead Shark",
+    "rarityColor": "rainbow"
   },
   "amber-seahorse": {
     "source": "Screenshot 2026-09-15 at 9.41.19 AM.png",
-    "name": "Amber Seahorse"
+    "name": "Amber Seahorse",
+    "rarityColor": "blue"
   },
   "lobster": {
     "source": "Screenshot 2026-09-15 at 9.41.20 AM.png",
-    "name": "Lobster"
+    "name": "Lobster",
+    "rarityColor": "red"
   },
   "nautilus": {
     "source": "Screenshot 2026-09-15 at 9.41.22 AM.png",
-    "name": "Nautilus"
+    "name": "Nautilus",
+    "rarityColor": "purple"
   },
   "figru-mudfish": {
     "source": "Screenshot 2026-09-15 at 9.41.24 AM.png",
-    "name": "Figru Mudfish"
+    "name": "Figru Mudfish",
+    "rarityColor": "purple"
   },
   "sayid-fish": {
     "source": "Screenshot 2026-09-15 at 9.41.25 AM.png",
-    "name": "Sayid Fish"
+    "name": "Sayid Fish",
+    "rarityColor": "red"
   },
   "giant-squid": {
     "source": "Screenshot 2026-09-15 at 9.41.26 AM.png",
-    "name": "Giant Squid"
+    "name": "Giant Squid",
+    "rarityColor": "rainbow"
   },
   "giant-china-turtle": {
     "source": "Screenshot 2026-09-15 at 9.41.27 AM.png",
-    "name": "Giant China Turtle"
+    "name": "Giant China Turtle",
+    "rarityColor": "gold"
   },
   "white-perch": {
     "source": "Screenshot 2026-09-15 at 9.41.29 AM.png",
-    "name": "White Perch"
+    "name": "White Perch",
+    "rarityColor": "rainbow"
   },
   "sea-snail": {
     "source": "Screenshot 2026-09-15 at 9.41.42 AM.png",
-    "name": "Sea Snail"
+    "name": "Sea Snail",
+    "rarityColor": "gold"
   },
   "island-red-crab": {
     "source": "Screenshot 2026-09-15 at 9.41.44 AM.png",
-    "name": "Island Red Crab"
+    "name": "Island Red Crab",
+    "rarityColor": "rainbow"
   },
   "blue-funnel-fish": {
     "source": "Screenshot 2026-09-15 at 9.41.45 AM.png",
-    "name": "Blue Funnel Fish"
+    "name": "Blue Funnel Fish",
+    "rarityColor": "purple"
   },
   "mary-fish": {
     "source": "Screenshot 2026-09-15 at 9.41.47 AM.png",
-    "name": "Mary Fish"
+    "name": "Mary Fish",
+    "rarityColor": "blue"
   },
   "jellyfish": {
     "source": "Screenshot 2026-09-15 at 9.41.48 AM.png",
-    "name": "Jellyfish"
+    "name": "Jellyfish",
+    "rarityColor": "gold"
   },
   "sand-shifter": {
     "source": "Screenshot 2026-09-15 at 9.41.50 AM.png",
-    "name": "Sand Shifter"
+    "name": "Sand Shifter",
+    "rarityColor": "purple"
   },
   "neon-fish": {
     "source": "Screenshot 2026-09-15 at 9.41.51 AM.png",
-    "name": "Neon Fish"
+    "name": "Neon Fish",
+    "rarityColor": "gold"
   },
   "ice-crystal-arhat-fish": {
     "source": "Screenshot 2026-09-15 at 9.41.52 AM.png",
-    "name": "Ice Crystal Arhat Fish"
+    "name": "Ice Crystal Arhat Fish",
+    "rarityColor": "gold"
   },
   "big-eye-squid": {
     "source": "Screenshot 2026-09-15 at 9.41.54 AM.png",
-    "name": "Big Eye Squid"
+    "name": "Big Eye Squid",
+    "rarityColor": "purple"
   },
   "fins-fish": {
     "source": "Screenshot 2026-09-15 at 9.41.55 AM.png",
-    "name": "Fins Fish"
+    "name": "Fins Fish",
+    "rarityColor": "red"
   },
   "flag-fish": {
     "source": "Screenshot 2026-09-15 at 9.41.58 AM.png",
-    "name": "Flag Fish"
+    "name": "Flag Fish",
+    "rarityColor": "red"
   },
   "tiger-shark": {
     "source": "Screenshot 2026-09-15 at 9.41.59 AM.png",
-    "name": "Tiger Shark"
+    "name": "Tiger Shark",
+    "rarityColor": "rainbow"
   },
   "plateau-salmon": {
     "source": "Screenshot 2026-09-15 at 9.42.00 AM.png",
-    "name": "Plateau Salmon"
+    "name": "Plateau Salmon",
+    "rarityColor": "rainbow"
   },
   "phantom-fugu": {
     "source": "Screenshot 2026-09-15 at 9.42.03 AM.png",
-    "name": "Phantom Fugu"
+    "name": "Phantom Fugu",
+    "rarityColor": "purple"
   },
   "zanga-octopus": {
     "source": "Screenshot 2026-09-15 at 9.42.04 AM.png",
-    "name": "Zanga Octopus"
+    "name": "Zanga Octopus",
+    "rarityColor": "red"
   },
   "yellow-sparrow-fish": {
     "source": "Screenshot 2026-09-15 at 9.42.06 AM 1.png",
-    "name": "Yellow Sparrow Fish"
+    "name": "Yellow Sparrow Fish",
+    "rarityColor": "rainbow"
   },
   "redface-fish": {
     "source": "Screenshot 2026-09-15 at 9.42.06 AM.png",
-    "name": "Redface Fish"
+    "name": "Redface Fish",
+    "rarityColor": "purple"
   },
   "big-bluefish": {
     "source": "Screenshot 2026-09-15 at 9.42.08 AM.png",
-    "name": "Big Bluefish"
+    "name": "Big Bluefish",
+    "rarityColor": "red"
   },
   "icescale-carp": {
     "source": "Screenshot 2026-09-15 at 9.42.14 AM.png",
-    "name": "Icescale Carp"
+    "name": "Icescale Carp",
+    "rarityColor": "purple"
   },
   "scale-fish": {
     "source": "Screenshot 2026-09-15 at 9.42.15 AM.png",
-    "name": "Scale Fish"
+    "name": "Scale Fish",
+    "rarityColor": "red"
   },
   "pufferfish": {
     "source": "Screenshot 2026-09-15 at 9.42.16 AM.png",
-    "name": "Pufferfish"
+    "name": "Pufferfish",
+    "rarityColor": "purple"
   },
   "electric-eel": {
     "source": "Screenshot 2026-09-15 at 9.42.18 AM.png",
-    "name": "Electric Eel"
+    "name": "Electric Eel",
+    "rarityColor": "red"
   },
   "batoids": {
     "source": "Screenshot 2026-09-15 at 9.42.19 AM.png",
-    "name": "Batoids"
+    "name": "Batoids",
+    "rarityColor": "red"
   },
   "blue-silver-fish": {
     "source": "Screenshot 2026-09-15 at 9.42.21 AM.png",
-    "name": "Blue Silver Fish"
+    "name": "Blue Silver Fish",
+    "rarityColor": "gold"
   },
   "white-sturgeon": {
     "source": "Screenshot 2026-09-15 at 9.42.22 AM.png",
-    "name": "White Sturgeon"
+    "name": "White Sturgeon",
+    "rarityColor": "rainbow"
   },
   "current-snapper": {
     "source": "Screenshot 2026-09-15 at 9.42.24 AM.png",
-    "name": "Current Snapper"
+    "name": "Current Snapper",
+    "rarityColor": "gold"
   },
   "fin-squid": {
     "source": "Screenshot 2026-09-15 at 9.42.25 AM.png",
-    "name": "Fin Squid"
+    "name": "Fin Squid",
+    "rarityColor": "red"
   },
   "slitherskin-fish": {
     "source": "Screenshot 2026-09-15 at 9.42.26 AM.png",
-    "name": "Slitherskin Fish"
+    "name": "Slitherskin Fish",
+    "rarityColor": "red"
   },
   "sea-catfish": {
     "source": "Screenshot 2026-09-15 at 9.42.27 AM.png",
-    "name": "Sea Catfish"
+    "name": "Sea Catfish",
+    "rarityColor": "red"
   },
   "pearl-shell": {
     "source": "Screenshot 2026-09-15 at 9.42.30 AM.png",
-    "name": "Pearl Shell"
+    "name": "Pearl Shell",
+    "rarityColor": "gold"
   },
   "rainbow-snail": {
     "source": "Screenshot 2026-09-15 at 9.42.31 AM.png",
-    "name": "Rainbow Snail"
+    "name": "Rainbow Snail",
+    "rarityColor": "red"
   },
   "panda-fish": {
     "source": "Screenshot 2026-09-15 at 9.42.32 AM.png",
-    "name": "Panda Fish"
+    "name": "Panda Fish",
+    "rarityColor": "rainbow"
   },
   "shallow-funnel-fish": {
     "source": "Screenshot 2026-09-15 at 9.42.34 AM.png",
-    "name": "Shallow Funnel Fish"
+    "name": "Shallow Funnel Fish",
+    "rarityColor": "gold"
   },
   "hermit-crab": {
     "source": "Screenshot 2026-09-15 at 9.42.35 AM.png",
-    "name": "Hermit Crab"
+    "name": "Hermit Crab",
+    "rarityColor": "red"
   },
   "oyster": {
     "source": "Screenshot 2026-09-15 at 9.42.36 AM.png",
-    "name": "Oyster"
+    "name": "Oyster",
+    "rarityColor": "purple"
   },
   "peacook-fish": {
     "source": "Screenshot 2026-09-15 at 9.42.43 AM.png",
-    "name": "Peacock Fish"
+    "name": "Peacock Fish",
+    "rarityColor": "red"
   },
   "zebrafish": {
     "source": "Screenshot 2026-09-15 at 9.42.44 AM.png",
-    "name": "Zebrafish"
+    "name": "Zebrafish",
+    "rarityColor": "red"
   },
   "blue-parrot-fish": {
     "source": "Screenshot 2026-09-15 at 9.42.45 AM.png",
-    "name": "Blue Parrot Fish"
+    "name": "Blue Parrot Fish",
+    "rarityColor": "purple"
   },
   "lophiomus": {
     "source": "Screenshot 2026-09-15 at 9.42.46 AM.png",
-    "name": "Lophiomus"
+    "name": "Lophiomus",
+    "rarityColor": "rainbow"
   },
   "ancient-black-fish": {
     "source": "Screenshot 2026-09-15 at 9.42.48 AM.png",
-    "name": "Ancient Black Fish"
+    "name": "Ancient Black Fish",
+    "rarityColor": "rainbow"
   },
   "giant-isopod": {
     "source": "Screenshot 2026-09-15 at 9.42.49 AM.png",
-    "name": "Giant Isopod"
+    "name": "Giant Isopod",
+    "rarityColor": "rainbow"
   },
   "horned-salamander": {
     "source": "Screenshot 2026-09-15 at 9.42.51 AM.png",
-    "name": "Horned Salamander"
+    "name": "Horned Salamander",
+    "rarityColor": "purple"
   },
   "flower-shell": {
     "source": "Screenshot 2026-09-15 at 9.42.52 AM.png",
-    "name": "Flower Shell"
+    "name": "Flower Shell",
+    "rarityColor": "gold"
   },
   "loach": {
     "source": "Screenshot 2026-09-15 at 9.42.55 AM.png",
-    "name": "Loach"
+    "name": "Loach",
+    "rarityColor": "red"
   },
   "highhill-salmon": {
     "source": "Screenshot 2026-09-15 at 9.42.57 AM.png",
-    "name": "Highhill Salmon"
+    "name": "Highhill Salmon",
+    "rarityColor": "gold"
   },
   "yellow-cross-fish": {
     "source": "Screenshot 2026-09-15 at 9.42.58 AM.png",
-    "name": "Yellow Cross Fish"
+    "name": "Yellow Cross Fish",
+    "rarityColor": "purple"
   },
   "striped-knifefish": {
     "source": "Screenshot 2026-09-15 at 9.42.59 AM.png",
-    "name": "Striped Knifefish"
+    "name": "Striped Knifefish",
+    "rarityColor": "red"
   },
   "cobra-brass": {
     "source": "Screenshot 2026-09-15 at 9.43.01 AM.png",
-    "name": "Cobra Bass"
+    "name": "Cobra Bass",
+    "rarityColor": "gold"
   },
   "shallow-eel": {
     "source": "Screenshot 2026-09-15 at 9.43.02 AM.png",
-    "name": "Shallow Eel"
+    "name": "Shallow Eel",
+    "rarityColor": "purple"
   },
   "sea-cucumber": {
     "source": "Screenshot 2026-09-15 at 9.43.03 AM.png",
-    "name": "Sea Cucumber"
+    "name": "Sea Cucumber",
+    "rarityColor": "purple"
   },
   "hairy-crab": {
     "source": "Screenshot 2026-09-15 at 9.43.04 AM.png",
-    "name": "Hairy Crab"
+    "name": "Hairy Crab",
+    "rarityColor": "red"
   },
   "whale-shark": {
     "source": "Screenshot 2026-09-15 at 9.43.11 AM.png",
-    "name": "Whale Shark"
+    "name": "Whale Shark",
+    "rarityColor": "rainbow"
   },
   "purple-tiger-fish": {
     "source": "Screenshot 2026-09-15 at 9.43.13 AM.png",
-    "name": "Purple Tiger Fish"
+    "name": "Purple Tiger Fish",
+    "rarityColor": "gold"
   },
   "oarfish": {
     "source": "Screenshot 2026-09-15 at 9.43.14 AM.png",
-    "name": "Oarfish"
+    "name": "Oarfish",
+    "rarityColor": "red"
   },
   "butterfly-tail": {
     "source": "Screenshot 2026-09-15 at 9.43.17 AM.png",
-    "name": "Butterfly Tail"
+    "name": "Butterfly Tail",
+    "rarityColor": "purple"
   },
   "rose-fish": {
     "source": "Screenshot 2026-09-15 at 9.43.19 AM.png",
-    "name": "Rose Fish"
+    "name": "Rose Fish",
+    "rarityColor": "rainbow"
   },
   "color-swallow-fish": {
     "source": "Screenshot 2026-09-15 at 9.43.20 AM.png",
-    "name": "Color Swallow Fish"
+    "name": "Color Swallow Fish",
+    "rarityColor": "red"
   },
   "yellow-crest-fish": {
     "source": "Screenshot 2026-09-15 at 9.43.21 AM.png",
-    "name": "Yellow Crest Fish"
+    "name": "Yellow Crest Fish",
+    "rarityColor": "gold"
   },
   "blue-scale-fish": {
     "source": "Screenshot 2026-09-15 at 9.43.22 AM.png",
-    "name": "Blue Scale Fish"
+    "name": "Blue Scale Fish",
+    "rarityColor": "purple"
   },
   "sea-flatworm": {
     "source": "Screenshot 2026-09-15 at 9.43.24 AM.png",
-    "name": "Sea Flatworm"
+    "name": "Sea Flatworm",
+    "rarityColor": "purple"
   },
   "scallop": {
     "source": "Screenshot 2026-09-15 at 9.43.25 AM.png",
-    "name": "Scallop"
+    "name": "Scallop",
+    "rarityColor": "gold"
   },
   "sea-star": {
     "source": "Screenshot 2026-09-15 at 9.43.26 AM.png",
-    "name": "Sea Star"
+    "name": "Sea Star",
+    "rarityColor": "red"
   },
   "green-crab": {
     "source": "Screenshot 2026-09-15 at 9.43.28 AM.png",
-    "name": "Green Crab"
+    "name": "Green Crab",
+    "rarityColor": "rainbow"
   },
   "abalone": {
     "source": "Screenshot 2026-09-15 at 9.43.29 AM.png",
-    "name": "Abalone"
+    "name": "Abalone",
+    "rarityColor": "purple"
   },
   "musselback-sculpin": {
     "source": "Screenshot 2026-09-15 at 9.43.30 AM.png",
-    "name": "Musselback Sculpin"
+    "name": "Musselback Sculpin",
+    "rarityColor": "gold"
   },
   "ironback-fish": {
     "source": "Screenshot 2026-09-15 at 9.43.34 AM.png",
-    "name": "Ironback Fish"
+    "name": "Ironback Fish",
+    "rarityColor": "gold"
   },
   "spiked-flounder": {
     "source": "Screenshot 2026-09-15 at 9.43.35 AM.png",
-    "name": "Spiked Flounder"
+    "name": "Spiked Flounder",
+    "rarityColor": "red"
   },
   "great-white-shark": {
     "source": "Screenshot 2026-09-15 at 9.43.37 AM.png",
-    "name": "Great White Shark"
+    "name": "Great White Shark",
+    "rarityColor": "rainbow"
   },
   "mahimahi": {
     "source": "Screenshot 2026-09-15 at 9.43.38 AM.png",
-    "name": "Mahimahi"
+    "name": "Mahimahi",
+    "rarityColor": "red"
   },
   "arapaima": {
     "source": "Screenshot 2026-09-15 at 9.43.40 AM 1.png",
-    "name": "Arapaima"
+    "name": "Arapaima",
+    "rarityColor": "red"
   },
   "kissing-fish": {
     "source": "Screenshot 2026-09-15 at 9.43.40 AM.png",
-    "name": "Kissing Fish"
+    "name": "Kissing Fish",
+    "rarityColor": "red"
   },
   "white-dolphin": {
     "source": "Screenshot 2026-09-15 at 9.43.43 AM.png",
-    "name": "White Dolphin"
+    "name": "White Dolphin",
+    "rarityColor": "rainbow"
   },
   "blackmouth-fish": {
     "source": "Screenshot 2026-09-15 at 9.43.45 AM.png",
-    "name": "Blackmouth Fish"
+    "name": "Blackmouth Fish",
+    "rarityColor": "gold"
   },
   "pacific-barreleye-fish": {
     "source": "Screenshot 2026-09-15 at 9.43.49 AM.png",
-    "name": "Pacific Barreleye Fish"
+    "name": "Pacific Barreleye Fish",
+    "rarityColor": "gold"
   },
   "red-eyed-carp": {
     "source": "Screenshot 2026-09-15 at 9.43.50 AM.png",
-    "name": "Red-eyed Carp"
+    "name": "Red-eyed Carp",
+    "rarityColor": "red"
   },
   "immortal-fish": {
     "source": "Screenshot 2026-09-15 at 9.43.51 AM.png",
-    "name": "Immortal Fish"
+    "name": "Immortal Fish",
+    "rarityColor": "gold"
   },
   "mutant-blackfish": {
     "source": "Screenshot 2026-09-15 at 9.43.53 AM.png",
-    "name": "Mutant Blackfish"
+    "name": "Mutant Blackfish",
+    "rarityColor": "gold"
   },
   "pond-loach": {
     "source": "Screenshot 2026-09-15 at 9.43.54 AM.png",
-    "name": "Pond Loach"
+    "name": "Pond Loach",
+    "rarityColor": "red"
   },
   "lionfish": {
     "source": "Screenshot 2026-09-15 at 9.43.56 AM.png",
-    "name": "Lionfish"
+    "name": "Lionfish",
+    "rarityColor": "purple"
   },
   "golden-river-tigerfish": {
     "source": "Screenshot 2026-09-15 at 9.43.57 AM.png",
-    "name": "Golden River Tigerfish"
+    "name": "Golden River Tigerfish",
+    "rarityColor": "red"
   },
   "starry-pearl-trio-fish": {
     "source": "Screenshot 2026-09-15 at 9.44.00 AM.png",
-    "name": "Starry Pearl Trio Fish"
+    "name": "Starry Pearl Trio Fish",
+    "rarityColor": "rainbow"
   },
   "marten-s-pearl-oyster": {
     "source": "Screenshot 2026-09-15 at 9.44.01 AM.png",
-    "name": "Marten's Pearl Oyster"
+    "name": "Marten's Pearl Oyster",
+    "rarityColor": "red"
   },
   "far-east-taimen": {
     "source": "Screenshot 2026-09-15 at 9.44.03 AM.png",
-    "name": "Far East Taimen"
+    "name": "Far East Taimen",
+    "rarityColor": "rainbow"
   },
   "flat-faced-shell": {
     "source": "Screenshot 2026-09-15 at 9.44.04 AM.png",
-    "name": "Flat-Faced Shell"
+    "name": "Flat-Faced Shell",
+    "rarityColor": "purple"
   },
   "dragon-crystal-goldfish": {
     "source": "Screenshot 2026-09-15 at 9.44.06 AM.png",
-    "name": "Dragon Crystal Goldfish"
+    "name": "Dragon Crystal Goldfish",
+    "rarityColor": "rainbow"
   },
   "dolly-varden-trout": {
     "source": "Screenshot 2026-09-15 at 9.44.07 AM.png",
-    "name": "Dolly Varden Trout"
+    "name": "Dolly Varden Trout",
+    "rarityColor": "red"
   },
   "plaice": {
     "source": "Screenshot 2026-09-15 at 9.44.10 AM.png",
-    "name": "Plaice"
+    "name": "Plaice",
+    "rarityColor": "gold"
   },
   "sea-bream": {
     "source": "Screenshot 2026-09-15 at 9.44.11 AM.png",
-    "name": "Sea Bream"
+    "name": "Sea Bream",
+    "rarityColor": "red"
   },
   "sea-pig": {
     "source": "Screenshot 2026-09-15 at 9.44.12 AM.png",
-    "name": "Sea Pig"
+    "name": "Sea Pig",
+    "rarityColor": "purple"
   },
   "sea-anemone": {
     "source": "Screenshot 2026-09-15 at 9.44.14 AM.png",
-    "name": "Sea Anemone"
+    "name": "Sea Anemone",
+    "rarityColor": "gold"
   },
   "piranha": {
     "source": "Screenshot 2026-09-15 at 9.44.15 AM.png",
-    "name": "Piranha"
+    "name": "Piranha",
+    "rarityColor": "rainbow"
   },
   "white-spotted-dogfish": {
     "source": "Screenshot 2026-09-15 at 9.44.16 AM.png",
-    "name": "White-Spotted Dogfish"
+    "name": "White-Spotted Dogfish",
+    "rarityColor": "red"
   },
   "mock-crocodile-turtle": {
     "source": "Screenshot 2026-09-15 at 9.44.18 AM.png",
-    "name": "Mock Crocodile Turtle"
+    "name": "Mock Crocodile Turtle",
+    "rarityColor": "rainbow"
   }
 }

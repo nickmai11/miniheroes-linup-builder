@@ -7,6 +7,11 @@ facts behind these rules are in `mini-heroes-magic-throne.md` (Owner-stated fact
 
 ## 1. What the page shows
 
+Display rarity names rather than color names (owner, 2026-09-15): artifact
+quality tiers are **Epic**, **Legend**, **Mythic**, and **Eternal**, including
+accessible diamond labels. Stored tier keys and image filenames remain
+`purple`, `gold`, `red`, and `rainbow` so existing links stay stable.
+
 Names of heroes, talents, awakenings, cores, artifacts, and divinities display
 through `gameLabel()` in the selected language (owner, 2026-09-14). Keep original
 English names in seeds and the database so talent links, core matching, and seed
@@ -64,7 +69,7 @@ button in the left column):
 | Notes          | free text, only if set                                                                                                                                                                                                                           | `heroes.notes`                                          |
 | **Talents**    | six cards: icon, kind, unlock stars, name, description; under a card: its Artifact Bonus (tier diamond) and Core bonus (core gem)                                                                                                                | `hero_skills`, `hero_artifact_bonuses`, `hero_cores`    |
 | **Awakening skills** | I (18★) and III (22★): stage, unlock stars, skill name and description, without icons; an unrecorded stage has an empty state | `HERO_AWAKENING_STAGES` and `heroDetailSeeds[slug].awakeningSkills` in `src/data/hero-details.ts` |
-| **Artifacts**  | artifact image + name; one row per quality tier (purple, gold, red, rainbow) with the diamond, the talent it modifies or the artifact's own skill, and the description                                                                           | `heroes.artifactName/IconUrl`, `hero_artifact_bonuses`  |
+| **Artifacts**  | artifact image + name; one row per quality tier (Epic, Legend, Mythic, Eternal) with the diamond, the talent it modifies or the artifact's own skill, and the description                                                                           | `heroes.artifactName/IconUrl`, `hero_artifact_bonuses`  |
 | **Divinities** | the hero's mythic (red) divinities as equal-width badge cards, each linking to `/divinities/<slug>` (the heroes that share it)                                                                                                                   | `hero_divinities` → `divinities`                        |
 | **Builds**     | the owner's builds for the hero: name, notes, chosen rune attributes grouped by rune type, weapon attributes, and hero cores, all with Important / Should have / OK to have priority tiers; editable in place (new / edit / delete) | `hero_builds`, `hero_build_runes`, `hero_build_weapons`, `hero_build_cores` |
 | Lineups        | saved lineups that use the hero                                                                                                                                                                                                                  | `lineup_heroes`                                         |
