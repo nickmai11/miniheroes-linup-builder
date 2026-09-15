@@ -24,8 +24,8 @@ export default function Loading() {
         </div>
         <Skeleton className="h-9 w-40" />
       </section>
-      <section className="grid gap-4 sm:grid-cols-3">
-        {Array.from({ length: 3 }, (_, i) => (
+      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {Array.from({ length: 4 }, (_, i) => (
           <Card key={i}>
             <CardHeader className="gap-2">
               <Skeleton className="mb-2 size-5" />

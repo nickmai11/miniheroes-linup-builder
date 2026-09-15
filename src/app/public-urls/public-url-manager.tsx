@@ -1,6 +1,7 @@
 "use client";
 
 import { useI18n } from "@/lib/i18n/client";
+import { ConfirmAction } from "@/components/confirm-action";
 import { useState } from "react";
 import {
   Check,
@@ -26,7 +27,8 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
   const [copied, setCopied] = useState("");
 
   async function update(value: string, remove = false) {
-    if (pending) return;
+    if (pending)
+      return { error: "Please wait for the current update to finish." };
     setPending(remove ? value : "add");
     setError("");
     setMessage("");
@@ -50,12 +52,14 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
           ? t("{path} now requires an invitation.", { path: result.path })
           : t("{path} is now public.", { path: result.path }),
       );
+      return {};
     } catch (reason) {
-      setError(
+      const error =
         reason instanceof Error
           ? reason.message
-          : "Could not connect. Please try again.",
-      );
+          : "Could not connect. Please try again.";
+      if (!remove) setError(error);
+      return { error };
     } finally {
       setPending(null);
     }
@@ -173,21 +177,27 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
                     )}
                     {copied === path ? t("Copied") : t("Copy link")}
                   </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
+                  <ConfirmAction
+                    title={t('Remove public access to "{path}"?', { path })}
+                    description="Visitors will need an invitation or admin login to open this page. You can make it public again later."
+                    confirmLabel="Remove"
+                    pendingLabel="Removing…"
                     disabled={pending !== null}
-                    onClick={() => void update(path, true)}
-                    aria-label={t("Remove public access to {path}", { path })}
-                  >
-                    {pending === path ? (
-                      <LoaderCircle className="animate-spin" aria-hidden />
-                    ) : (
-                      <Trash2 aria-hidden />
-                    )}
-                    {t("Remove")}
-                  </Button>
+                    action={() => update(path, true)}
+                    trigger={
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        aria-label={t("Remove public access to {path}", {
+                          path,
+                        })}
+                      >
+                        <Trash2 aria-hidden />
+                        {t("Remove")}
+                      </Button>
+                    }
+                  />
                 </li>
               ))}
             </ul>

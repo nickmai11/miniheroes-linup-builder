@@ -1,4 +1,5 @@
 import { getI18n } from "@/lib/i18n/server";
+import { ConfirmAction } from "@/components/confirm-action";
 import { hasAppAccess, requirePageAccess } from "@/lib/app-access";
 import { desc } from "drizzle-orm";
 import { db, schema } from "@/db";
@@ -43,11 +44,20 @@ export default async function NotesPage() {
               </p>
             </div>
             {canEdit && (
-              <form action={deleteNote.bind(null, note.id)}>
-                <button className="text-destructive text-sm hover:underline">
-                  {t("Delete")}
-                </button>
-              </form>
+              <ConfirmAction
+                title={t('Delete note "{name}"?', { name: note.title })}
+                description="This permanently deletes the note. This cannot be undone."
+                action={deleteNote.bind(null, note.id)}
+                trigger={
+                  <button
+                    type="button"
+                    className="text-destructive text-sm hover:underline"
+                    aria-label={t("Delete {name}", { name: note.title })}
+                  >
+                    {t("Delete")}
+                  </button>
+                }
+              />
             )}
           </li>
         ))}

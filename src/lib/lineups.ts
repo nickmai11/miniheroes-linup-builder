@@ -4,7 +4,7 @@ import { db, schema } from "@/db";
 import type { Fish, Hero, Lineup, Pet, Relic } from "@/db/schema";
 import type { HeroBuild } from "@/lib/build-types";
 import { getBuildsByIds, getHeroIdsWithBuilds } from "@/lib/builds";
-import { lineupOrder } from "@/lib/lineup-order";
+import { lineupOrder, type LineupSort } from "@/lib/lineup-order";
 import {
   divinitiesByHeroIds,
   syncSeededHeroDetails,
@@ -160,6 +160,7 @@ async function loadSlots(lineupIds: number[]) {
 
 export async function getAllLineups(
   lineupIds: number[] | null = null,
+  sort: LineupSort = "date",
 ): Promise<LineupWithHeroes[]> {
   if (lineupIds?.length === 0) return [];
   await syncSeededHeroDetails();
@@ -169,7 +170,7 @@ export async function getAllLineups(
     .where(
       lineupIds === null ? undefined : inArray(schema.lineups.id, lineupIds),
     )
-    .orderBy(...lineupOrder());
+    .orderBy(...lineupOrder(sort));
   const slotRows = await loadSlots(lineupRows.map((l) => l.id));
   return assemble(lineupRows, slotRows);
 }

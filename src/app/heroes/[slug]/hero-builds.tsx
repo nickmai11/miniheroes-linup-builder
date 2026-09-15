@@ -1,6 +1,7 @@
 "use client";
 
 import { ContentVotes } from "@/components/content-votes";
+import { ConfirmAction } from "@/components/confirm-action";
 import { useI18n } from "@/lib/i18n/client";
 import { Copy, Download, Pencil, Plus, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState, useTransition } from "react";
@@ -177,16 +178,6 @@ export function HeroBuilds({
     });
   }
 
-  function remove(build: HeroBuild) {
-    if (!window.confirm(t('Delete the build "{name}"?', { name: build.name })))
-      return;
-    setError(null);
-    startTransition(async () => {
-      const result = await deleteHeroBuild(build.id);
-      if (result.error) setError(result.error);
-    });
-  }
-
   const picked = draft
     ? draft.runeIds.length + draft.weaponIds.length + draft.coreIds.length
     : 0;
@@ -268,15 +259,27 @@ export function HeroBuilds({
                   >
                     <Pencil />
                   </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon-sm"
-                    onClick={() => remove(build)}
+                  <ConfirmAction
+                    title={t('Delete the build "{name}"?', {
+                      name: build.name,
+                    })}
+                    description="This permanently deletes the build and its votes, and clears it from any lineup using it. This cannot be undone."
                     disabled={pending}
-                    aria-label={t("Delete {name}", { name: build.name })}
-                  >
-                    <Trash2 />
-                  </Button>
+                    action={async () => {
+                      setError(null);
+                      return deleteHeroBuild(build.id);
+                    }}
+                    trigger={
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon-sm"
+                        aria-label={t("Delete {name}", { name: build.name })}
+                      >
+                        <Trash2 />
+                      </Button>
+                    }
+                  />
                 </div>
               )}
             </div>

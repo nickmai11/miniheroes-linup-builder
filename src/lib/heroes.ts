@@ -322,7 +322,7 @@ export type HeroDetail = Hero & {
   artifactBonuses: HeroArtifactBonus[];
   /** Mythic divinities in slot order (bottom-left, bottom-right). */
   divinities: Divinity[];
-  /** Saved lineups this hero appears in, most likes first, then newest. */
+  /** Saved lineups this hero appears in, newest first. */
   lineups: Pick<Lineup, "id" | "name" | "createdAt">[];
 };
 

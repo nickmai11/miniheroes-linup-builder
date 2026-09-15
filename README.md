@@ -109,8 +109,9 @@ and its protected entry points.
 Saved lineups and builds show Like/Dislike buttons and separate totals, including
 build previews. Registered visitors vote per device; admins vote per account.
 Click the selected reaction to clear it or the other reaction to switch.
-Lineups sort by most likes, then newest creation date, including on hero pages.
-Changing a lineup vote refreshes the list order.
+Lineups default to newest first, including on hero pages. The Lineups page also
+offers Most liked, with newest creation date breaking ties. The selected sort is
+stored in the URL; changing a lineup vote refreshes the current order.
 Public visitors can read totals. Voting requires access to the target, including
 builds assigned to a lineup shared through a scoped invitation.
 

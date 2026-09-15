@@ -1,5 +1,6 @@
 import { ContentVotes } from "@/components/content-votes";
 import { getI18n } from "@/lib/i18n/server";
+import { ConfirmAction } from "@/components/confirm-action";
 import { hasAppAccess, requirePageAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -65,11 +66,16 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
           >
             <Pencil data-icon="inline-start" /> {t("Edit lineup")}
           </Link>
-          <form action={deleteLineup.bind(null, lineup.id)}>
-            <Button type="submit" variant="destructive">
-              <Trash2 data-icon="inline-start" /> {t("Delete")}
-            </Button>
-          </form>
+          <ConfirmAction
+            title={t('Delete lineup "{name}"?', { name: lineup.name })}
+            description="This permanently deletes the lineup, its votes, and its invitation links. This cannot be undone."
+            action={deleteLineup.bind(null, lineup.id)}
+            trigger={
+              <Button type="button" variant="destructive">
+                <Trash2 data-icon="inline-start" /> {t("Delete")}
+              </Button>
+            }
+          />
           <Link
             href={`/lineups/new?clone=${lineup.id}`}
             className={buttonVariants({ variant: "outline" })}

@@ -210,6 +210,10 @@ in the README's Admin login and editing section. Public visitors can read saved
 builds and lineups; every build write action also enforces this restriction on
 the server.
 
+Deleting a saved build opens a confirmation dialog naming the build and explaining
+that its votes and lineup assignments will be removed. Cancel is focused first;
+Delete must be explicitly selected (owner, 2026-09-15).
+
 Rules that shape the page:
 
 - Reaction totals for saved builds and lineups are shown per the owner’s

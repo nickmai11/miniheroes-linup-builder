@@ -1,7 +1,14 @@
 import { getI18n } from "@/lib/i18n/server";
 import { hasAppAccess, requirePageAccess } from "@/lib/app-access";
 import Link from "next/link";
-import { ArrowRight, Hammer, ListOrdered, Sparkles, Users } from "lucide-react";
+import {
+  ArrowRight,
+  Fish,
+  Hammer,
+  ListOrdered,
+  Sparkles,
+  Users,
+} from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { canEditContent } from "@/lib/editing";
 import {
@@ -25,6 +32,13 @@ const SECTIONS = [
     title: "Divinities",
     description:
       "Browse mythic divinities by category and find heroes with each recorded divinity.",
+  },
+  {
+    href: "/fishes",
+    icon: Fish,
+    title: "Fishes",
+    description:
+      "Explore fish stats, rarities, fishing areas, and baits for your lineups.",
   },
   {
     href: "/lineups",
@@ -82,7 +96,7 @@ export default async function Home() {
       </section>
       <section
         aria-label={t("Explore the library")}
-        className={`grid gap-4 ${canEdit ? "sm:grid-cols-2 lg:grid-cols-4" : "sm:grid-cols-3"}`}
+        className={`grid gap-4 sm:grid-cols-2 ${canEdit ? "lg:grid-cols-3 xl:grid-cols-5" : "lg:grid-cols-4"}`}
       >
         {sections.map(({ href, icon: Icon, title, description }) => (
           <Link

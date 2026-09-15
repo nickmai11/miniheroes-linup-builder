@@ -1,4 +1,5 @@
 import { ContentVotes } from "@/components/content-votes";
+import { LineupSortSelect } from "@/components/lineup-sort";
 import { getI18n } from "@/lib/i18n/server";
 import {
   accessibleLineupIds,
@@ -32,13 +33,16 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t("Lineups") };
 }
 
-export default async function LineupsPage() {
+export default async function LineupsPage({
+  searchParams,
+}: PageProps<"/lineups">) {
   const { gameLabel, t, formatDate } = await getI18n();
 
   await requirePageAccess("/lineups");
+  const sort = (await searchParams).sort === "likes" ? "likes" : "date";
   const lineupIds = await accessibleLineupIds();
   const [lineups, canEdit] = await Promise.all([
-    getAllLineups(lineupIds),
+    getAllLineups(lineupIds, sort),
     canEditContent().then(async (allowed) => allowed && (await hasAppAccess())),
   ]);
 
@@ -61,6 +65,9 @@ export default async function LineupsPage() {
         )
       }
     >
+      <div className="flex justify-end">
+        <LineupSortSelect value={sort} />
+      </div>
       {lineups.length === 0 ? (
         <Card>
           <CardContent className="text-muted-foreground py-10 text-center">

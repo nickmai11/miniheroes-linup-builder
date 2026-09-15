@@ -1267,8 +1267,10 @@ Public visitors can read totals. Votes follow existing content access, including
 builds assigned to an invited lineup. Clones and imports start with no votes.
 Hovering a lineup on a hero detail page shows its preview in a popover
 (owner, 2026-09-15).
-Lineup lists sort by most likes first, then newest creation date for ties
-(owner, 2026-09-15). Dislikes do not subtract from the sorting count.
+Lineup lists default to newest creation date. The Lineups page offers a sort
+selector for newest first or most liked (owner, 2026-09-15), stored in the URL.
+Most liked uses newest creation date for ties; dislikes do not subtract from
+the sorting count.
 
 A battle lineup is **5 heroes**. Conventional wisdom (web) is one of each role plus a
 flex pick, but the whole point of this app is to record the owner's better answers.
@@ -1288,6 +1290,10 @@ and notes use the full page content width below the lineup and fish controls
 Hero cards in saved lineup lists, lineup detail pages, and the lineup builder
 (both the hero picker and selected slots) must not display divinities
 (owner, 2026-09-13).
+
+Deleting saved lineups, builds, and notes requires an explicit confirmation
+dialog; removing public page access also asks for confirmation (owner,
+2026-09-15).
 
 Saved lineups are editable, including their name, notes, heroes, and each hero's
 pet/relic assignments (owner, 2026-09-13). A hero can be assigned one or more pets
@@ -1348,6 +1354,13 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-15 — Add a lineup sort option, defaulting to date. This supersedes
+  the earlier likes-first default; most liked remains an available option.
+
+- 2026-09-15 — Add a not-found page and add Fishes to the home page.
+
+- 2026-09-15 — Require a confirmation dialog before deleting things.
 
 - 2026-09-15 — Hovering a lineup on a hero detail page should show a
   preview of that lineup in a popover.
@@ -1745,6 +1758,9 @@ is said. These override anything marked (web).
   13. This is a review, not an import.
 
 ## How the app models it
+
+- The home page includes a Fishes card linking to `/fishes`. Missing pages use a
+  themed, localized 404 page with links to Home and Lineups.
 
 - Hero-page lineup links open an on-demand formation preview through
   `/api/lineups/preview`. The initial page sends only each lineup's ID, name,
