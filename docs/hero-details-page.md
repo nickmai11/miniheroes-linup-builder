@@ -216,6 +216,12 @@ Delete must be explicitly selected (owner, 2026-09-15).
 
 Rules that shape the page:
 
+- Each saved build has a Change history button that opens a dialog (owner, 2026-09-15).
+  It loads 20 entries at a time and shows before/after values for changed notes,
+  names, attributes, priorities, and cores. Opening it refreshes the history.
+  Its height stays fixed within the viewport while entries load or expand;
+  the body scrolls without moving the title and close button.
+
 - Reaction totals for saved builds and lineups are shown per the owner’s
   2026-09-15 like/dislike request.
 - **No catalog counts** anywhere ("6 talents", "30 divinities"). Empty states are fine.

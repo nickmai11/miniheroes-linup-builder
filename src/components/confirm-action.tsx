@@ -69,21 +69,23 @@ export function ConfirmAction({
         <AlertDialog.Viewport className="fixed inset-0 z-[80] flex items-center justify-center overflow-y-auto p-4">
           <AlertDialog.Popup
             initialFocus={cancelButton}
-            className="bg-background text-foreground relative my-auto max-h-[calc(100dvh-2rem)] w-full max-w-md overflow-y-auto rounded-2xl border p-6 shadow-2xl outline-none"
+            className="bg-background text-foreground relative my-auto flex h-[min(22rem,calc(100dvh-2rem))] w-full max-w-md flex-col overflow-hidden rounded-2xl border p-6 shadow-2xl outline-none"
           >
-            <AlertDialog.Title className="text-lg font-semibold wrap-break-word">
-              {t(title)}
-            </AlertDialog.Title>
-            <AlertDialog.Description className="text-muted-foreground mt-2 text-sm">
-              {t(description)}
-            </AlertDialog.Description>
-            {error && (
-              <p role="alert" className="text-destructive mt-3 text-sm">
-                {t(error)}
-              </p>
-            )}
+            <div className="min-h-0 flex-1 [scrollbar-gutter:stable] overflow-y-auto overscroll-contain">
+              <AlertDialog.Title className="text-lg font-semibold wrap-break-word">
+                {t(title)}
+              </AlertDialog.Title>
+              <AlertDialog.Description className="text-muted-foreground mt-2 text-sm">
+                {t(description)}
+              </AlertDialog.Description>
+              {error && (
+                <p role="alert" className="text-destructive mt-3 text-sm">
+                  {t(error)}
+                </p>
+              )}
+            </div>
             <form
-              className="mt-6 flex justify-end gap-2"
+              className="mt-6 flex shrink-0 justify-end gap-2"
               aria-busy={pending}
               onSubmit={(event) => {
                 event.preventDefault();
@@ -101,6 +103,7 @@ export function ConfirmAction({
               <Button
                 type="submit"
                 variant="destructive"
+                className="min-w-34"
                 disabled={disabled || pending}
               >
                 {pending && (

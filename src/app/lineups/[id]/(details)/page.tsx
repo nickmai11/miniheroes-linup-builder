@@ -1,4 +1,5 @@
 import { ContentVotes } from "@/components/content-votes";
+import { ChangeHistory } from "@/components/change-history";
 import { getI18n } from "@/lib/i18n/server";
 import { ConfirmAction } from "@/components/confirm-action";
 import { hasAppAccess, requirePageAccess } from "@/lib/app-access";
@@ -163,6 +164,7 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
           </CardContent>
         </Card>
       )}
+      <ChangeHistory kind="lineup" id={lineup.id} name={lineup.name} />
     </PageShell>
   );
 }

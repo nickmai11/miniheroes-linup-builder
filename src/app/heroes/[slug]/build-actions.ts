@@ -6,6 +6,12 @@ import { and, asc, eq, inArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { db, schema } from "@/db";
+import {
+  buildSnapshot,
+  lineupSnapshot,
+  lockContentWrites,
+  recordChange,
+} from "@/lib/change-recording";
 import { matchBuildCores } from "@/lib/build-cores";
 import { buildSchema, type BuildInput } from "@/lib/build-input";
 import { DEFAULT_BUILD_PRIORITY } from "@/lib/build-priorities";
@@ -67,6 +73,20 @@ export async function saveHeroBuild(
   }
 
   const buildId = await db.transaction(async (tx) => {
+    await lockContentWrites(tx);
+    if (id !== undefined) {
+      await tx
+        .select({ id: schema.heroBuilds.id })
+        .from(schema.heroBuilds)
+        .where(
+          and(
+            eq(schema.heroBuilds.id, id),
+            eq(schema.heroBuilds.heroId, heroId),
+          ),
+        )
+        .for("update");
+    }
+    const before = id === undefined ? null : await buildSnapshot(tx, id);
     let buildId = id;
     if (buildId) {
       const updated = await tx
@@ -132,11 +152,20 @@ export async function saveHeroBuild(
             parsed.data.corePriorities[coreId] ?? DEFAULT_BUILD_PRIORITY,
         })),
       );
+    await recordChange(
+      tx,
+      "build",
+      buildId,
+      id === undefined ? "created" : "updated",
+      before,
+      await buildSnapshot(tx, buildId),
+    );
     return buildId;
   });
   if (buildId === null) return { error: "Build not found" };
 
   revalidatePath(`/heroes/${hero.slug}`);
+  revalidatePath("/");
   revalidatePath("/heroes");
   revalidatePath("/divinities", "layout");
   revalidatePath("/lineups", "layout");
@@ -239,6 +268,7 @@ export async function importHeroBuild(
     };
 
   const newId = await db.transaction(async (tx) => {
+    await lockContentWrites(tx);
     const [row] = await tx
       .insert(schema.heroBuilds)
       .values({ heroId, name: source.name, notes: source.notes })
@@ -270,10 +300,19 @@ export async function importHeroBuild(
           priority: corePriorities.get(coreId) ?? DEFAULT_BUILD_PRIORITY,
         })),
       );
+    await recordChange(
+      tx,
+      "build",
+      row.id,
+      "imported",
+      null,
+      await buildSnapshot(tx, row.id),
+    );
     return row.id;
   });
 
   revalidatePath(`/heroes/${hero.slug}`);
+  revalidatePath("/");
   revalidatePath("/heroes");
   revalidatePath("/divinities", "layout");
   revalidatePath("/lineups", "layout");
@@ -289,16 +328,56 @@ export async function importHeroBuild(
 export async function deleteHeroBuild(id: number): Promise<BuildActionState> {
   if (!(await canEditContent())) return { error: EDITING_ERROR };
   await requireAppAccess();
-  const [deleted] = await db
-    .delete(schema.heroBuilds)
-    .where(eq(schema.heroBuilds.id, id))
-    .returning({ heroId: schema.heroBuilds.heroId });
+  const deleted = await db.transaction(async (tx) => {
+    await lockContentWrites(tx);
+    // Match lineup writers' lock order before clearing their build assignments.
+    const affected = await tx
+      .select({ id: schema.lineups.id })
+      .from(schema.lineups)
+      .where(
+        inArray(
+          schema.lineups.id,
+          tx
+            .select({ id: schema.lineupHeroes.lineupId })
+            .from(schema.lineupHeroes)
+            .where(eq(schema.lineupHeroes.buildId, id)),
+        ),
+      )
+      .orderBy(asc(schema.lineups.id))
+      .for("update");
+    await tx
+      .select({ id: schema.heroBuilds.id })
+      .from(schema.heroBuilds)
+      .where(eq(schema.heroBuilds.id, id))
+      .for("update");
+    const before = await buildSnapshot(tx, id);
+    const lineupBefore = await Promise.all(
+      affected.map((row) => lineupSnapshot(tx, row.id)),
+    );
+    const [row] = await tx
+      .delete(schema.heroBuilds)
+      .where(eq(schema.heroBuilds.id, id))
+      .returning({ heroId: schema.heroBuilds.heroId });
+    await recordChange(tx, "build", id, "deleted", before, null);
+    for (const [index, lineup] of affected.entries()) {
+      await recordChange(
+        tx,
+        "lineup",
+        lineup.id,
+        "updated",
+        lineupBefore[index],
+        await lineupSnapshot(tx, lineup.id),
+      );
+    }
+    return row;
+  });
   if (!deleted) return { error: "Build not found" };
   const [hero] = await db
     .select({ slug: schema.heroes.slug })
     .from(schema.heroes)
     .where(eq(schema.heroes.id, deleted.heroId));
   if (hero) revalidatePath(`/heroes/${hero.slug}`);
+  revalidatePath("/");
   revalidatePath("/heroes");
   revalidatePath("/divinities", "layout");
   revalidatePath("/lineups", "layout");

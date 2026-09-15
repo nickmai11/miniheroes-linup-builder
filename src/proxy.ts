@@ -140,6 +140,8 @@ export async function proxy(request: NextRequest) {
   if (path === "/api/votes") return finish(next());
   // This read endpoint verifies the hero page and lineup independently.
   if (path === "/api/lineups/preview") return finish(next());
+  // History verifies current target access, independently of the referring page.
+  if (path === "/api/changes") return finish(next());
   const token = request.cookies.get(DEVICE_COOKIE)?.value;
   try {
     // Files in public/ have no page or data layer, so validate their access here

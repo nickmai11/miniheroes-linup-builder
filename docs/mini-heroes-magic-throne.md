@@ -1260,6 +1260,12 @@ the earlier fishing collectibles sheet must not be imported as fishes.
 
 ### Lineups (game)
 
+Saved lineups and hero builds have change history, and the home page shows
+Recent changes (owner, 2026-09-15).
+Change history opens in a dialog (owner clarification, 2026-09-15).
+Dialogs must keep a stable size and position when their contents change
+(owner, 2026-09-15). Long content scrolls inside the dialog.
+
 Saved lineups and hero builds offer like/dislike controls with totals (owner,
 2026-09-15). Registered visitors vote per device; admins vote per account.
 Selecting the current reaction clears it; selecting the other switches it.
@@ -1354,6 +1360,13 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-15 — Dialogs must not jump when their content changes.
+
+- 2026-09-15 — Change history should open in a dialog.
+
+- 2026-09-15 — Add change history to lineups and hero builds, and Recent changes
+  to the home page.
 
 - 2026-09-15 — Add a lineup sort option, defaulting to date. This supersedes
   the earlier likes-first default; most liked remains an available option.
@@ -1758,6 +1771,23 @@ is said. These override anything marked (web).
   13. This is a review, not an import.
 
 ## How the app models it
+
+- `content_changes` records creates, edits, imports, and deletions of lineups and
+  hero builds in the same transaction as the content write. Before/after values
+  preserve names, notes, slots, assignments, fishes and quantities, build picks,
+  and priorities. Unchanged saves create no entry. A transaction advisory lock
+  serializes content writes so build deletion also records cleared lineup
+  assignments consistently. Existing items start history with their next change;
+  old edits cannot be reconstructed. Clones start their own history.
+  The `/api/changes` read endpoint checks current target access and paginates
+  20 records at a time. The home page shows the newest 10 visible records.
+  Making Home or a hero page public does not publish private lineup history;
+  deleted-content records are visible only to full-library viewers and have no
+  broken destination links. History includes no admin account identifiers.
+  Migration `0031_content_changes.sql` adds the table and `lineup_app` RLS policy.
+  It was applied to the configured database on 2026-09-15 using the documented
+  transaction fallback, since the standard migrator attempts to create a schema
+  that already exists and the app role lacks that database-level permission.
 
 - The home page includes a Fishes card linking to `/fishes`. Missing pages use a
   themed, localized 404 page with links to Home and Lineups.

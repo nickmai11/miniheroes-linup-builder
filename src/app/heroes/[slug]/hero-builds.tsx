@@ -1,6 +1,7 @@
 "use client";
 
 import { ContentVotes } from "@/components/content-votes";
+import { ChangeHistory } from "@/components/change-history";
 import { ConfirmAction } from "@/components/confirm-action";
 import { useI18n } from "@/lib/i18n/client";
 import { Copy, Download, Pencil, Plus, Trash2 } from "lucide-react";
@@ -219,6 +220,7 @@ export function HeroBuilds({
         draft?.id === build.id ? null : (
           <article
             key={build.id}
+            id={`build-${build.id}`}
             className="bg-background flex flex-col gap-8 rounded-lg border p-3"
           >
             <div className="flex items-start justify-between gap-3">
@@ -286,6 +288,7 @@ export function HeroBuilds({
 
             <ContentVotes kind="build" id={build.id} name={build.name} />
             <BuildStats build={build} />
+            <ChangeHistory kind="build" id={build.id} name={build.name} />
           </article>
         ),
       )}

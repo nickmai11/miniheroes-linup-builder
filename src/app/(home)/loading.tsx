@@ -35,6 +35,14 @@ export default function Loading() {
           </Card>
         ))}
       </section>
+      <section className="space-y-4">
+        <Skeleton className="h-7 w-48" />
+        <div className="space-y-5 rounded-xl border p-5">
+          <TextSkeleton lines={2} />
+          <TextSkeleton lines={2} />
+          <TextSkeleton lines={2} />
+        </div>
+      </section>
     </LoadingPage>
   );
 }

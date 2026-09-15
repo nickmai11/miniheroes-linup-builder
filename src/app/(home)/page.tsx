@@ -1,4 +1,6 @@
 import { getI18n } from "@/lib/i18n/server";
+import { getRecentChanges } from "@/lib/changes";
+import { ChangeList } from "@/components/change-list";
 import { hasAppAccess, requirePageAccess } from "@/lib/app-access";
 import Link from "next/link";
 import {
@@ -61,6 +63,7 @@ export default async function Home() {
 
   await requirePageAccess();
   const canEdit = (await canEditContent()) && (await hasAppAccess());
+  const recentChanges = await getRecentChanges();
   const sections = SECTIONS.filter(
     ({ href }) => canEdit || href !== "/lineups/new",
   );
@@ -121,6 +124,19 @@ export default async function Home() {
           "Game details and artwork are recorded from in-game screenshots. Coverage varies by hero as more details are added.",
         )}
       </p>
+      <section aria-labelledby="recent-changes" className="space-y-4">
+        <div>
+          <h2 id="recent-changes" className="text-xl font-semibold">
+            {t("Recent changes")}
+          </h2>
+          <p className="text-muted-foreground mt-1 text-sm">
+            {t("Latest lineup and build changes.")}
+          </p>
+        </div>
+        <div className="bg-card rounded-xl border p-5">
+          <ChangeList entries={recentChanges} showTargets />
+        </div>
+      </section>
     </main>
   );
 }

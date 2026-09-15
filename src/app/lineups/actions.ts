@@ -6,6 +6,11 @@ import { eq, inArray, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db, schema } from "@/db";
+import {
+  lineupSnapshot,
+  lockContentWrites,
+  recordChange,
+} from "@/lib/change-recording";
 import { lineupSchema, type LineupInput } from "@/lib/lineup-input";
 import { canEditContent, EDITING_ERROR, requireEditing } from "@/lib/editing";
 
@@ -98,6 +103,15 @@ export async function saveLineup(
   }
 
   const lineup = await db.transaction(async (tx) => {
+    await lockContentWrites(tx);
+    if (id !== undefined) {
+      await tx
+        .select({ id: schema.lineups.id })
+        .from(schema.lineups)
+        .where(eq(schema.lineups.id, id))
+        .for("update");
+    }
+    const before = id === undefined ? null : await lineupSnapshot(tx, id);
     // Updating the parent also serializes concurrent saves of this lineup.
     const [saved] =
       id === undefined
@@ -177,11 +191,20 @@ export async function saveLineup(
         `);
       }
     }
+    await recordChange(
+      tx,
+      "lineup",
+      saved.id,
+      id === undefined ? "created" : "updated",
+      before,
+      await lineupSnapshot(tx, saved.id),
+    );
     return saved;
   });
   if (!lineup) return { error: "This lineup no longer exists" };
 
   revalidatePath("/lineups");
+  revalidatePath("/");
   revalidatePath(`/lineups/${lineup.id}`);
   revalidatePath(`/lineups/${lineup.id}/edit`);
   revalidatePath("/heroes/[slug]", "page");
@@ -192,7 +215,19 @@ export async function saveLineup(
 export async function deleteLineup(id: number) {
   await requireEditing();
   await requireAppAccess();
-  await db.delete(schema.lineups).where(eq(schema.lineups.id, id));
+  await db.transaction(async (tx) => {
+    await lockContentWrites(tx);
+    await tx
+      .select({ id: schema.lineups.id })
+      .from(schema.lineups)
+      .where(eq(schema.lineups.id, id))
+      .for("update");
+    const before = await lineupSnapshot(tx, id);
+    await tx.delete(schema.lineups).where(eq(schema.lineups.id, id));
+    await recordChange(tx, "lineup", id, "deleted", before, null);
+  });
   revalidatePath("/lineups");
+  revalidatePath("/");
+  revalidatePath("/heroes/[slug]", "page");
   redirect("/lineups");
 }

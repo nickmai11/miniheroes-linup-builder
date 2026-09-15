@@ -151,7 +151,7 @@ export function AdminLogin({
         <Dialog.Viewport className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4">
           <Dialog.Popup
             initialFocus={emailRef}
-            className="bg-background relative my-auto w-full max-w-sm rounded-2xl border p-6 shadow-2xl outline-none"
+            className="bg-background relative my-auto max-h-[calc(100dvh-2rem)] w-full max-w-sm [scrollbar-gutter:stable] overflow-y-auto overscroll-contain rounded-2xl border p-6 shadow-2xl outline-none"
           >
             <Dialog.Close
               render={<Button variant="ghost" size="icon" />}
@@ -230,15 +230,17 @@ export function AdminLogin({
                   </Button>
                 </div>
               </div>
-              {error && (
-                <p
-                  id="admin-login-error"
-                  role="alert"
-                  className="text-destructive text-sm"
-                >
-                  {t(error)}
-                </p>
-              )}
+              <div className="h-12 [scrollbar-gutter:stable] overflow-y-auto overscroll-contain">
+                {error && (
+                  <p
+                    id="admin-login-error"
+                    role="alert"
+                    className="text-destructive text-sm"
+                  >
+                    {t(error)}
+                  </p>
+                )}
+              </div>
               <Button
                 type="submit"
                 size="lg"

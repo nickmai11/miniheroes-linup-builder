@@ -15,6 +15,33 @@ import { sql } from "drizzle-orm";
 import { BUILD_PRIORITIES } from "@/lib/build-priorities";
 import { MAX_FISH_QUANTITY } from "@/lib/fish-selection";
 import { FISH_RARITIES } from "@/lib/fish-rarity";
+import type { ChangeEvent, ChangeField, ChangeKind } from "@/lib/change-types";
+
+/** Retained after deletion; access is checked against the current target. */
+export const contentChanges = pgTable(
+  "content_changes",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    kind: text("kind").$type<ChangeKind>().notNull(),
+    targetId: integer("target_id").notNull(),
+    name: text("name").notNull(),
+    heroName: text("hero_name"),
+    heroSlug: text("hero_slug"),
+    event: text("event").$type<ChangeEvent>().notNull(),
+    fields: jsonb("fields").$type<ChangeField[]>().notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    index("content_changes_target_idx").on(t.kind, t.targetId, t.id),
+    check("content_changes_kind", sql`${t.kind} in ('lineup', 'build')`),
+    check(
+      "content_changes_event",
+      sql`${t.event} in ('created', 'updated', 'imported', 'deleted')`,
+    ),
+  ],
+);
 
 export const notes = pgTable("notes", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),

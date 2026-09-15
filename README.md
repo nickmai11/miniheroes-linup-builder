@@ -104,6 +104,24 @@ unchanged.
 Run `pnpm test` (Node 22.6+), `pnpm typecheck`, and `pnpm lint` to check the policy
 and its protected entry points.
 
+## Change history
+
+Saved lineups and hero builds have **Change history** dialogs with dated,
+before/after values. The home page shows the ten most recent visible changes.
+Creates, edits, imports, deletions, and lineup assignments cleared by build deletion
+are recorded atomically. Unchanged saves add no entry. Existing items start
+recording with their next change; earlier edits cannot be reconstructed.
+
+Migration `0031_content_changes.sql` adds the history table and has been applied
+to the configured database. History follows
+current content access, including scoped invitations and public pages; publishing
+the home page does not publish private history. Deleted-item records remain visible
+only to full-library viewers. The history API is uncached and paginates 20 entries.
+
+For database tests, use `CHANGES_TEST_DATABASE_URL` pointing to the migrated,
+disposable database `postgres://vote_test@127.0.0.1:55443/votes_test`, then run
+`node --experimental-strip-types --test tests/changes.integration.test.mjs`.
+
 ## Likes and dislikes
 
 Saved lineups and builds show Like/Dislike buttons and separate totals, including
