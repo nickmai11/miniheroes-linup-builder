@@ -6,7 +6,10 @@ import { ArrowRight, LoaderCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { invitationDestination } from "@/lib/invitation-policy";
+import {
+  INVALID_INVITATION,
+  invitationDestination,
+} from "@/lib/invitation-policy";
 
 export function InvitationForm({
   initialCode,
@@ -70,7 +73,7 @@ export function InvitationForm({
       className="flex flex-col gap-4"
       onSubmit={(event) => {
         event.preventDefault();
-        if (pending) return;
+        if (pending || !code.trim()) return;
         setError("");
         setPending(true);
         void redeem(code);
@@ -82,7 +85,10 @@ export function InvitationForm({
           id="invitation-code"
           name="code"
           value={code}
-          onChange={(event) => setCode(event.target.value)}
+          onChange={(event) => {
+            setCode(event.target.value);
+            setError("");
+          }}
           placeholder={t("Paste your invitation code")}
           autoComplete="off"
           autoCapitalize="characters"
@@ -92,23 +98,30 @@ export function InvitationForm({
           disabled={pending}
           aria-invalid={Boolean(error)}
           aria-describedby={error ? "invitation-error" : undefined}
-          className="h-11 font-mono"
+          className="h-12 font-mono text-sm placeholder:font-sans"
         />
       </div>
       {error && (
-        <p
+        <div
           id="invitation-error"
           role="alert"
-          className="text-destructive text-sm"
+          className="border-destructive/20 bg-destructive/5 text-destructive rounded-lg border p-3 text-sm leading-relaxed"
         >
-          {t(error)}
-        </p>
+          <p>{t(error)}</p>
+          {error === INVALID_INVITATION && (
+            <p className="mt-1">
+              {t(
+                "Check that you copied the whole code, or ask for a new invitation.",
+              )}
+            </p>
+          )}
+        </div>
       )}
       <Button
         type="submit"
         size="lg"
         disabled={pending || !code.trim()}
-        className="w-full"
+        className="h-12 w-full"
       >
         {pending ? (
           <>
@@ -117,14 +130,19 @@ export function InvitationForm({
           </>
         ) : (
           <>
-            {t("Continue")} <ArrowRight aria-hidden />
+            {t("Open invitation")} <ArrowRight aria-hidden />
           </>
         )}
       </Button>
-      <p className="text-muted-foreground text-xs">
-        {t(
-          "Each code can be used once. Ask the person who invited you for a new code if yours has already been used.",
-        )}
+      <p
+        role="status"
+        className="text-muted-foreground text-sm leading-relaxed"
+      >
+        {pending
+          ? t("You’ll continue automatically once your code is checked.")
+          : t(
+              "Have an invitation link? Open it directly — the code is filled in for you.",
+            )}
       </p>
       <noscript>
         <p>{t("Enable JavaScript to use your invitation code.")}</p>

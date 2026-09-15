@@ -6,7 +6,12 @@ import {
   Skeleton,
   TextSkeleton,
 } from "@/components/loading-skeleton";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 
 export default function Loading() {
   const { t } = useI18n();
@@ -14,22 +19,26 @@ export default function Loading() {
   return (
     <LoadingPage
       label={t("invitation form")}
-      className="max-w-md flex-1 justify-center gap-5 px-4 py-16"
+      className="max-w-md flex-1 justify-center px-4 py-10 sm:py-16"
     >
-      <Card>
+      <Card className="[--card-spacing:--spacing(6)]">
         <CardHeader className="gap-3">
           <Skeleton className="size-12 rounded-xl" />
           <Skeleton className="h-8 w-64 max-w-full" />
-          <TextSkeleton lines={3} />
+          <TextSkeleton lines={2} />
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
             <Skeleton className="h-4 w-28" />
-            <Skeleton className="h-11 w-full" />
+            <Skeleton className="h-12 w-full" />
           </div>
-          <Skeleton className="h-8 w-full" />
+          <Skeleton className="h-12 w-full" />
           <TextSkeleton lines={2} />
         </CardContent>
+        <CardFooter className="flex-col items-start gap-1.5">
+          <Skeleton className="h-5 w-36" />
+          <TextSkeleton lines={2} />
+        </CardFooter>
       </Card>
     </LoadingPage>
   );

@@ -46,8 +46,8 @@ const DETAIL_SEED_HASHES = new Map(
 export function sortHeroes<T extends Hero>(list: T[]): T[] {
   return [...list].sort(
     (a, b) =>
-      ROLE_ORDER.indexOf(a.role) - ROLE_ORDER.indexOf(b.role) ||
       RARITY_ORDER.indexOf(a.rarity) - RARITY_ORDER.indexOf(b.rarity) ||
+      ROLE_ORDER.indexOf(a.role) - ROLE_ORDER.indexOf(b.role) ||
       a.name.localeCompare(b.name),
   );
 }

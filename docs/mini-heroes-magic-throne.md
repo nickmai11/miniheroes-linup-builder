@@ -41,8 +41,10 @@ the hero art. It is removed from the portraits in this app.
 Hero portraits show an indicator when that hero has at least one saved build
 (owner, 2026-09-14). This indicates build availability for the hero, independent
 of whether a build is assigned to a particular lineup slot.
-In the hero pool, heroes with at least one saved build appear first, retaining
-the existing class, rarity, and name order within each group (owner, 2026-09-14).
+In the hero pool, heroes with at least one saved build appear first (owner,
+2026-09-14). Within each group, sort by rarity (Eternal, Mythic, Legend, Epic),
+then class (Warrior, Marksman, Mage, Support), then name; rarity precedes class
+per the owner's 2026-09-15 request.
 The build indicator keeps its hammer icon, overlaid with a thick green checkmark
 without a background behind the check. Both scale with the portrait
 (owner, 2026-09-14). The hammer's background must have enough contrast to remain
@@ -1310,6 +1312,9 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-15 — Sort the hero pool by rarity, then class. Retain the existing
+  saved-build-first grouping and use name to break ties.
 
 - 2026-09-14 — Move Share to the same row as the lineup title, superseding its
   placement on the right of the toolbar.

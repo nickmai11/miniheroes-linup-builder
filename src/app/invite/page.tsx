@@ -8,6 +8,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -17,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getI18n();
 
   return {
-    title: t("Invitation access"),
+    title: t("Open your invitation"),
     robots: { index: false, follow: false },
   };
 }
@@ -29,19 +30,17 @@ export default async function InvitePage(props: PageProps<"/invite">) {
   const destination = invitationDestination(params.next);
   if (await hasAppAccess()) redirect(destination);
   return (
-    <main className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center gap-5 px-4 py-16">
-      <Card>
+    <main className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-4 py-10 sm:py-16">
+      <Card className="[--card-spacing:--spacing(6)]">
         <CardHeader className="gap-3">
           <div className="bg-primary/10 text-primary flex size-12 items-center justify-center rounded-xl">
             <KeyRound className="size-6" aria-hidden />
           </div>
           <CardTitle>
-            <h1 className="text-2xl">{t("Invitation access")}</h1>
+            <h1 className="text-2xl">{t("Open your invitation")}</h1>
           </CardTitle>
-          <CardDescription>
-            {t(
-              "Enter your invitation code. A lineup invitation adds that lineup to this browser’s access. You can use more codes to add more lineups.",
-            )}
+          <CardDescription className="leading-relaxed">
+            {t("Enter the code shared with you to continue.")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -50,6 +49,14 @@ export default async function InvitePage(props: PageProps<"/invite">) {
             destination={destination}
           />
         </CardContent>
+        <CardFooter className="flex-col items-start gap-1.5">
+          <p className="font-medium">{t("Need an invitation?")}</p>
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            {t(
+              "Ask the person sharing with you for an invitation link or code.",
+            )}
+          </p>
+        </CardFooter>
       </Card>
     </main>
   );
