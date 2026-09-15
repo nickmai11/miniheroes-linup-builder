@@ -28,6 +28,7 @@ test("loading boundaries preserve every public page URL", () => {
     "/about",
     "/divinities",
     "/divinities/[slug]",
+    "/fishes",
     "/heroes",
     "/heroes/[slug]",
     "/invitations/new",

@@ -4,6 +4,8 @@ import { db, schema } from "@/db";
 import { heroSeeds } from "@/data/heroes";
 import { heroDetailSeeds } from "@/data/hero-details";
 import { divinitySeeds } from "@/data/divinities";
+import { fishSeeds } from "@/data/fishes";
+import { baitSeeds } from "@/data/baits";
 
 const SHARED_ICONS = new Set([
   "/icons/core.png",
@@ -44,7 +46,7 @@ export async function isPublicPageAsset(
   allowedLineupIds?: number[],
 ): Promise<boolean> {
   if (
-    !/^\/(heroes|badges|divinities|talents|artifacts|icons|pets|relics|fishes)\/[a-z0-9/-]+\.png$/.test(
+    !/^\/(heroes|badges|divinities|talents|artifacts|icons|pets|relics|fishes|baits)\/[a-z0-9/-]+\.png$/.test(
       asset,
     )
   )
@@ -58,6 +60,15 @@ export async function isPublicPageAsset(
   if (hero) return heroAssets(hero[1], true, true).has(asset);
   if (page === "/divinities")
     return divinitySeeds.some((item) => item.iconUrl === asset);
+  if (page === "/fishes")
+    return (
+      fishSeeds.some((item) => item.iconUrl === asset) ||
+      baitSeeds.some(
+        (bait) =>
+          bait.iconUrl === asset &&
+          fishSeeds.some((fish) => fish.bait === bait.name),
+      )
+    );
   const divinity = page.match(/^\/divinities\/([a-z0-9-]+)$/);
   if (divinity) {
     if (
@@ -123,6 +134,18 @@ export async function isPublicPageAsset(
         eq(schema.lineupHeroRelics.lineupHeroId, schema.lineupHeroes.id),
       )
       .where(lineupFilter(schema.lineupHeroes.lineupId));
+    return rows.some((row) => row.iconUrl === asset);
+  }
+  if (asset.startsWith("/baits/")) {
+    const rows = await db
+      .select({ iconUrl: schema.baits.iconUrl })
+      .from(schema.lineupFishes)
+      .innerJoin(
+        schema.fishes,
+        eq(schema.lineupFishes.fishId, schema.fishes.id),
+      )
+      .innerJoin(schema.baits, eq(schema.fishes.bait, schema.baits.name))
+      .where(lineupFilter(schema.lineupFishes.lineupId));
     return rows.some((row) => row.iconUrl === asset);
   }
   if (asset.startsWith("/fishes/")) {

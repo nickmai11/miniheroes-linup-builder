@@ -60,6 +60,7 @@ test("every recorded game name and fishing label has a translation key in both l
   for (const [kind, file, name] of [
     ["hero", "heroes", "heroSeeds"],
     ["fish", "fishes", "fishSeeds"],
+    ["bait", "baits", "baitSeeds"],
     ["divinity", "divinities", "divinitySeeds"],
     ["pet", "pets", "petSeeds"],
     ["relic", "relics", "relicSeeds"],
@@ -156,9 +157,9 @@ test("fish previews translate names, areas and bait", () => {
   });
   const html = render(FishPopover, {
     fish: {
-      name: "Mutated Dragonfish",
-      area: "Gold Coast",
-      bait: "Mudskipper",
+      ...loadTypeScript("src/data/fishes.ts").fishSeeds.find(
+        (fish) => fish.slug === "mutated-dragonfish",
+      ),
     },
   });
   assert.match(html, /Cá Rồng Đột Biến/);

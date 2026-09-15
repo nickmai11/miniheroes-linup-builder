@@ -5,7 +5,8 @@ import { useI18n } from "@/lib/i18n/client";
 import { Popover } from "@base-ui/react/popover";
 import { ChevronDown, Search } from "lucide-react";
 import { useState } from "react";
-import { FishPopover } from "@/components/fish-popover";
+import { FishChip, FishPopover } from "@/components/fish-popover";
+import { FishIcon } from "@/components/fish-icon";
 import { Input } from "@/components/ui/input";
 import type { Fish } from "@/db/schema";
 import {
@@ -98,7 +99,10 @@ export function FishPicker({
                   title={summary || undefined}
                   className="bg-background hover:bg-muted focus-visible:ring-ring/50 flex h-10 w-full items-center justify-between gap-2 rounded-md border px-3 text-left text-sm focus-visible:ring-3 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  <span className="min-w-0 truncate">
+                  {selected.length > 0 && (
+                    <FishIcon fish={selected[0]} size={24} />
+                  )}
+                  <span className="min-w-0 flex-1 truncate">
                     {selected.length ? (
                       <>
                         <span aria-hidden="true">
@@ -131,7 +135,7 @@ export function FishPicker({
                         category: t(category),
                       })}
                       initialFocus={(type) => type === "keyboard"}
-                      className="bg-popover text-popover-foreground flex max-h-[min(24rem,var(--available-height))] w-80 max-w-(--available-width) min-w-(--anchor-width) flex-col overflow-hidden rounded-md border p-1 shadow-lg outline-none"
+                      className="bg-popover text-popover-foreground flex h-[min(24rem,var(--available-height))] w-80 max-w-(--available-width) min-w-(--anchor-width) flex-col overflow-hidden rounded-md border p-1 shadow-lg outline-none"
                     >
                       <div className="relative shrink-0 border-b p-1 pb-2">
                         <Search
@@ -150,13 +154,13 @@ export function FishPicker({
                           className="pl-8"
                         />
                       </div>
-                      <ul className="min-h-0 overflow-y-auto overscroll-contain">
+                      <ul className="min-h-0 flex-1 [scrollbar-gutter:stable] overflow-y-auto overscroll-contain">
                         {matches.map((fish) => {
                           const quantity = quantities.get(fish.id) ?? 0;
                           return (
                             <li
                               key={fish.id}
-                              className="hover:bg-accent flex min-h-12 items-center gap-2 rounded px-2 py-1.5 text-sm"
+                              className="hover:bg-accent flex h-12 min-w-0 items-center gap-2 rounded px-2 py-1.5 text-sm"
                             >
                               <input
                                 type="checkbox"
@@ -211,6 +215,21 @@ export function FishPicker({
                   </Popover.Positioner>
                 </Popover.Portal>
               </Popover.Root>
+              <div className="h-28 [scrollbar-gutter:stable] overflow-y-auto overscroll-contain">
+                {selected.length > 0 ? (
+                  <ul className="flex min-w-0 flex-col gap-1.5 p-1">
+                    {selected.map((fish) => (
+                      <li key={fish.id} className="w-full min-w-0">
+                        <FishChip fish={fish} quantity={fish.quantity} />
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-muted-foreground p-2 text-xs">
+                    {t("No fishes selected.")}
+                  </p>
+                )}
+              </div>
             </div>
           );
         })}

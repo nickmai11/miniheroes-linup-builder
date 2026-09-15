@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Dialog } from "@base-ui/react/dialog";
 import {
   Crown,
+  Fish,
   Hammer,
   Info,
   Link2,
@@ -23,6 +24,7 @@ import { cn } from "@/lib/utils";
 const LINKS = [
   { href: "/heroes", label: "Heroes", icon: Users },
   { href: "/divinities", label: "Divinities", icon: Sparkles },
+  { href: "/fishes", label: "Fishes", icon: Fish },
   { href: "/lineups", label: "Lineups", icon: Swords },
   { href: "/lineups/new", label: "Build", icon: Hammer },
   { href: "/invitations/new", label: "Invitations", icon: Ticket },

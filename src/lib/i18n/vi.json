@@ -372,5 +372,22 @@
   "Access is temporarily unavailable. Please try again.": "Tạm thời không thể truy cập. Vui lòng thử lại.",
   "Artifact Bonus": "Hiệu ứng thần khí",
   "Artifact Skill": "Kỹ năng thần khí",
-  "{name} Core": "Lõi {name}"
+  "{name} Core": "Lõi {name}",
+  "Explore fish stats and where to catch them.": "Khám phá chỉ số cá và nơi đánh bắt.",
+  "Search fishes": "Tìm cá",
+  "Category": "Loại",
+  "All categories": "Tất cả loại",
+  "Fishing area": "Khu vực câu cá",
+  "All areas": "Tất cả khu vực",
+  "Clear filters": "Xóa bộ lọc",
+  "{count} of {total} fishes": "{count} / {total} loài cá",
+  "No fishes match your filters.": "Không có cá phù hợp với bộ lọc.",
+  "No fishes recorded yet.": "Chưa có dữ liệu cá.",
+  "Base stats": "Chỉ số cơ bản",
+  "Special stats": "Chỉ số đặc biệt",
+  "Collection": "Bộ sưu tập",
+  "None recorded": "Chưa ghi nhận",
+  "None": "Không có",
+  "{name} fish details": "Thông tin cá {name}",
+  "No fishes selected.": "Chưa chọn cá."
 }

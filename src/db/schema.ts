@@ -3,6 +3,7 @@ import {
   check,
   index,
   integer,
+  jsonb,
   pgEnum,
   pgTable,
   real,
@@ -288,6 +289,25 @@ export const pets = pgTable("pets", {
 export type Pet = typeof pets.$inferSelect;
 export type NewPet = typeof pets.$inferInsert;
 
+/** Bait catalog from the owner's shop screenshots. */
+export const baits = pgTable("baits", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  slug: text("slug").notNull().unique(),
+  name: text("name").notNull().unique(),
+  iconUrl: text("icon_url").notNull(),
+  description: text("description").notNull(),
+  fishType: text("fish_type"),
+  bonuses: jsonb("bonuses")
+    .$type<{ name: string; percent: number }[]>()
+    .notNull()
+    .default([]),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+export type Bait = typeof baits.$inferSelect;
+
 /** Fish catalog from the owner's area sheets, used by lineup selections. */
 export const fishes = pgTable("fishes", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
@@ -298,7 +318,12 @@ export const fishes = pgTable("fishes", {
   fishType: text("fish_type").notNull().default(""),
   collection: text("collection").notNull().default(""),
   stats: text("stats").array().notNull().default([]),
-  bait: text("bait"),
+  baseStats: text("base_stats").array().notNull().default([]),
+  specialStats: text("special_stats").array().notNull().default([]),
+  bait: text("bait").references(() => baits.name, {
+    onDelete: "set null",
+    onUpdate: "cascade",
+  }),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),

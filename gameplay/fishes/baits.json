@@ -1,0 +1,152 @@
+[
+  {
+    "slug": "shrimp-bait",
+    "name": "Shrimp Bait",
+    "source": "Screenshot 2026-09-15 at 9.59.13 AM.png",
+    "description": "Shrimp and fish-based bait loved by big fish. Fish that consume this type of bait grow quickly.",
+    "fishType": null,
+    "bonuses": [
+      {
+        "name": "Mastery",
+        "percent": 25
+      }
+    ]
+  },
+  {
+    "slug": "lucky-star",
+    "name": "Lucky Star",
+    "source": "Screenshot 2026-09-15 at 9.59.14 AM.png",
+    "description": "According to legend, this material comes from the sky, filled with unknown and mysterious properties, seemingly related to certain mysterious items.",
+    "fishType": null,
+    "bonuses": [
+      {
+        "name": "Scavenge",
+        "percent": 10
+      },
+      {
+        "name": "Mastery",
+        "percent": 10
+      }
+    ]
+  },
+  {
+    "slug": "mealworm",
+    "name": "Mealworm",
+    "source": "Screenshot 2026-09-15 at 9.59.15 AM.png",
+    "description": "A type of bait loved by small fish. Fish that consume this type of bait grow quickly.",
+    "fishType": "Small",
+    "bonuses": [
+      {
+        "name": "Small Fish Hunter",
+        "percent": 35
+      },
+      {
+        "name": "Mastery",
+        "percent": 10
+      }
+    ]
+  },
+  {
+    "slug": "pupa-bait",
+    "name": "Pupa Bait",
+    "source": "Screenshot 2026-09-15 at 9.59.17 AM.png",
+    "description": "A type of bait loved by medium fish. Fish that consume this type of bait grow quickly.",
+    "fishType": "Medium",
+    "bonuses": [
+      {
+        "name": "Medium Fish Hunter",
+        "percent": 35
+      },
+      {
+        "name": "Mastery",
+        "percent": 10
+      }
+    ]
+  },
+  {
+    "slug": "mudskipper",
+    "name": "Mudskipper",
+    "source": "Screenshot 2026-09-15 at 9.59.18 AM.png",
+    "description": "A type of bait loved by large fish. Fish that consume this type of bait grow quickly.",
+    "fishType": "Large",
+    "bonuses": [
+      {
+        "name": "Large Fish Hunter",
+        "percent": 35
+      },
+      {
+        "name": "Mastery",
+        "percent": 10
+      }
+    ]
+  },
+  {
+    "slug": "seaweed-bait",
+    "name": "Seaweed Bait",
+    "source": "Screenshot 2026-09-15 at 9.59.20 AM.png",
+    "description": "A type of bait loved by underwater creatures. Creatures that consume this type of bait grow quickly.",
+    "fishType": "Aquatic",
+    "bonuses": [
+      {
+        "name": "Biologist",
+        "percent": 35
+      },
+      {
+        "name": "Mastery",
+        "percent": 10
+      }
+    ]
+  },
+  {
+    "slug": "earthworm",
+    "name": "Earthworm",
+    "source": "Screenshot 2026-09-15 at 9.59.21 AM.png",
+    "description": "A type of bait loved by small fish",
+    "fishType": "Small",
+    "bonuses": [
+      {
+        "name": "Small Fish Hunter",
+        "percent": 30
+      }
+    ]
+  },
+  {
+    "slug": "beetle-bait",
+    "name": "Beetle Bait",
+    "source": "Screenshot 2026-09-15 at 9.59.23 AM.png",
+    "description": "A type of bait loved by medium fish",
+    "fishType": "Medium",
+    "bonuses": [
+      {
+        "name": "Medium Fish Hunter",
+        "percent": 30
+      }
+    ]
+  },
+  {
+    "slug": "locust-bait",
+    "name": "Locust Bait",
+    "source": "Screenshot 2026-09-15 at 9.59.24 AM.png",
+    "description": "A type of bait loved by large fish",
+    "fishType": "Large",
+    "bonuses": [
+      {
+        "name": "Large Fish Hunter",
+        "percent": 30
+      }
+    ]
+  },
+  {
+    "slug": "mayfly",
+    "name": "Mayfly Bait",
+    "source": "Screenshot 2026-09-15 at 9.59.25 AM.png",
+    "description": "A type of bait loved by underwater creatures",
+    "fishType": "Aquatic",
+    "bonuses": [
+      {
+        "name": "Biologist",
+        "percent": 30
+      }
+    ]
+  }
+]

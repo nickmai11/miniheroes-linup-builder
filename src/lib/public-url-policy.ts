@@ -1,7 +1,7 @@
 import { PRODUCTION_APP_URL } from "@/lib/site-url";
 
 const PAGE_PATH =
-  /^(?:\/|\/about|\/notes|\/heroes(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)?|\/divinities(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)?|\/lineups(?:\/[1-9][0-9]*)?)$/;
+  /^(?:\/|\/about|\/fishes|\/notes|\/heroes(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)?|\/divinities(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)?|\/lineups(?:\/[1-9][0-9]*)?)$/;
 
 /** Exact read-only pages; admin pages, APIs and editing routes cannot be published. */
 export function publicPagePath(value: unknown): string | null {

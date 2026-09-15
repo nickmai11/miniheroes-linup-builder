@@ -1213,6 +1213,17 @@ tiles, matched to the 12.57.40–12.58.16 PM popups.
 
 ### Fishes (owner-defined, 2026-09-13)
 
+The fish catalog and dedicated Fishes page must show each fish’s icon, name,
+base stats, special stats, and where to get it (owner, 2026-09-15).
+Base stats are ATK, HP, DEF, and class-specific ATK/HP; all other bonuses
+are special stats (owner, 2026-09-15).
+Baits belong in the database; each fish has its corresponding bait, or none
+when not applicable (owner, 2026-09-15).
+Do not show collection information on fish cards (owner, 2026-09-15).
+Show fishes with special stats first (owner, 2026-09-15).
+Keep the 16 specific CSV bait links; all other fishes have no assigned bait.
+Category compatibility alone does not create a fish-specific link (owner, 2026-09-15).
+
 Lineups include fishes. The owner requested a fish catalog in the database and
 fish selection in the lineup builder. Fish selections belong to the lineup.
 The owner supplied seven `gameplay/fishes/Fish Guide - <Area>.csv` sheets with
@@ -1229,6 +1240,11 @@ selections start at quantity 1; editing and cloning preserve quantities.
 Hovering over a fish must show where to get it (owner, 2026-09-14). Fish names in
 the picker and saved lineups open a location preview on hover or press, showing
 the recorded area and optional bait from the owner's sheets.
+Lineups and the builder must show fish icons and expanded fish information in
+hover popovers (owner, 2026-09-15), including base stats, special stats,
+category, location, and assigned bait.
+Fish items have equal widths and stay on one line without layout jumps
+(owner, 2026-09-15).
 The owner confirmed that fish selections use this **separate fish list**;
 the earlier fishing collectibles sheet must not be imported as fishes.
 
@@ -1312,6 +1328,30 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-15 — Fish items in lineups and the builder should have the same width.
+
+- 2026-09-15 — Fish items in lineups and the builder must stay on one line
+  without UI jumps.
+
+- 2026-09-15 — Show fish icons in lineups and the builder, with fish information
+  in a popover when hovered.
+
+- 2026-09-15 — Sort the fish catalog with fishes that have special stats first.
+
+- 2026-09-15 — Keep the 16 fish-specific bait links from the CSVs and show
+  None for every other fish; do not assign all category-compatible baits.
+
+- 2026-09-15 — Fish cards do not need collection information.
+
+- 2026-09-15 — Review the newly added bait screenshots, add baits to the
+  database, and give each fish its corresponding bait, or none when not applicable.
+
+- 2026-09-15 — Fish base stats are ATK, HP, DEF, and class-specific ATK/HP.
+  Other bonuses (including damage reduction, healing, and knockback) are special stats.
+
+- 2026-09-15 — Update the fish database and add a Fishes page. Each fish should
+  have an icon, name/label/title, base stats, special stats, and where to get it.
 
 - 2026-09-15 — Sort the hero pool by rarity, then class. Retain the existing
   saved-build-first grouping and use name to break ties.
@@ -1715,14 +1755,39 @@ is said. These override anything marked (web).
   by `ensurePetsSeeded()` in `src/lib/pets.ts`; `getAllPets()` reads them by name.
   No pet skills, stats, or bonuses are stored; lineup assignments use separate links.
 - `fishes` table: `slug`, `name`, optional `iconUrl`, `area`, `fishType`,
-  `collection`, ordered `stats` (names only), optional `bait`, ID, and creation
-  timestamp. `getAllFishes()` in `src/lib/fishes.ts` inserts missing catalog rows
-  once per process from `src/data/fishes.ts` and reads them by name.
-  Regenerate that seed and `scripts/upsert-fishes.sql` with
-  `python3 scripts/import-fishes.py`. The SQL refreshes recorded details while
-  preserving IDs, lineup selections, and any icons. The importer reads only the
-  seven area sheets, excludes collectibles, and rejects duplicate fish slugs or
-  malformed input. No fish icons are supplied in these CSVs.
+  `collection`, ordered `stats` (names only), `baseStats`, `specialStats`,
+  optional `bait`, ID, and creation timestamp. Migration `0027_fish_stats.sql`
+  adds the two stat groups. `getAllFishes()` synchronizes source records once
+  per process, preserving IDs and lineup selections.
+  Regenerate `src/data/fishes.ts`, `scripts/upsert-fishes.sql`, and all 130 icons
+  with `python3 scripts/import-fishes.py` (Pillow required). The importer reads
+  the seven area CSVs and `gameplay/fishes/icons.json`, which maps stable slugs
+  to visually reviewed owner screenshots. It crops the complete circular icon
+  panel, excluding titles and personal catch records. Duplicate screenshots
+  are excluded. Screenshot spellings correct Icy River Carp, Peacock Fish,
+  and Cobra Bass without changing their existing slugs.
+  `/fishes` shows localized names, icons, both stat groups, fishing area,
+  bait (icon/name, or None). Collection information is omitted from the cards.
+  Fishes with special stats sort first, then alphabetically within both groups.
+  Search matches English and Vietnamese names;
+  category and area filters combine with search. Empty special stats display
+  “None recorded”; no numeric values are inferred. The catalog follows the
+  existing page-access rules and can be explicitly shared via Public URLs.
+- `baits` stores the 10 owner-supplied shop entries with name, stable slug,
+  cropped icon, description, nullable target category, and the displayed bonus
+  percentages. Source: `gameplay/fishes/baits.json` and the 2026-09-15
+  9.59.13–9.59.25 screenshots. Regenerate seeds, SQL, and icons with
+  `python3 scripts/import-baits.py`, then regenerate fishes with
+  `python3 scripts/import-fishes.py`. Quantity badges and shop controls are
+  excluded from the icons; displayed bonuses are not claimed as maximums.
+  Migration `0028_bait_catalog.sql` seeds the bait table before adding the
+  nullable foreign key from `fishes.bait` to the unique bait name. Name updates
+  cascade; deleting a bait clears its fish links. The legacy CSV “Mayfly”
+  resolves to the screenshot title “Mayfly Bait” (stable slug `mayfly`).
+  Exactly 16 fish-specific links remain, with NULL for the other 114 fishes;
+  category compatibility does not assign a bait. Baits seed before fishes.
+  Fish cards and location popovers show the bait icon/name or explicit None.
+  Artwork access includes only baits assigned to fishes on the allowed page.
 - `lineup_fishes`: ordered, unique fish selections linked to the whole lineup.
   Each selection stores a `quantity` of **1–4**, enforced by input validation
   and a database check. Migration `0024_lineup_fish_quantities.sql` gives existing
@@ -1732,7 +1797,18 @@ is said. These override anything marked (web).
   has one fixed-height multi-select dropdown per category (**Small, Medium,
   Large, Aquatic**), with a quantity selector for each fish. Multiple distinct
   fishes are allowed in every category; the quantity limit applies to each fish.
-  Saved lineup lists and detail pages group fish names and quantities by category.
+  Saved lineup lists and detail pages group fish icons, names, and quantities by
+  category. The shared `FishChip` opens a `FishPopover` with the fish icon,
+  name, category, base stats, special stats, location, and assigned bait (or None).
+  The builder uses the same preview in picker options and selected chips below
+  each dropdown; its closed category trigger also includes the first selected
+  fish’s icon. Preview buttons stay separate from checkbox/quantity controls.
+  Popovers support desktop hover and touch/keyboard press, with no collection info.
+  Fish chips fill equal-width category columns with fixed 40px single-line rows;
+  long names truncate while icons and quantities remain visible. Picker options
+  use fixed 48px rows. The builder reserves a 7rem selected-fish viewport per
+  category and a fixed-height search popup; overflow scrolls with stable gutters
+  so selecting or filtering does not shift the surrounding layout.
   Each dropdown includes a fish-name search; filtering preserves selections and
   quantities. The search resets when a category dropdown is opened.
   While migration 0024 is pending, reads treat existing selections as quantity 1

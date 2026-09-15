@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
+import { existsSync } from "node:fs";
 import test from "node:test";
 import { loadTypeScript } from "./load-typescript.mjs";
 
@@ -54,9 +55,44 @@ test("fish catalog includes all seven areas and preserves recorded details", () 
     collection: "Sweetie Sweetie",
     stats: ["Warrior HP", "DMG Reduction", "Heavy Injury Effect"],
     bait: null,
+    iconUrl: "/fishes/marten-s-pearl-oyster.png",
+    baseStats: ["Warrior HP"],
+    specialStats: ["DMG Reduction", "Heavy Injury Effect"],
   });
   assert.equal(find("Mutated Dragonfish").bait, "Mudskipper");
   assert.equal(find("Beast Fang"), undefined);
+});
+
+test("fish details have screenshot icons and the owner-confirmed stat split", () => {
+  const baseStats = new Set([
+    "ATK",
+    "HP",
+    "DEF",
+    ...["Warrior", "Marksman", "Mage", "Support"].flatMap((role) => [
+      `${role} ATK`,
+      `${role} HP`,
+    ]),
+  ]);
+  for (const fish of fishSeeds) {
+    assert.ok(existsSync(`public${fish.iconUrl}`), fish.slug);
+    assert.deepEqual(
+      fish.baseStats,
+      fish.stats.filter((stat) => baseStats.has(stat)),
+      fish.slug,
+    );
+    assert.deepEqual(
+      fish.specialStats,
+      fish.stats.filter((stat) => !baseStats.has(stat)),
+      fish.slug,
+    );
+  }
+  const find = (slug) => fishSeeds.find((fish) => fish.slug === slug);
+  assert.equal(find("ice-river-carp").name, "Icy River Carp");
+  assert.equal(find("peacook-fish").name, "Peacock Fish");
+  assert.equal(find("cobra-brass").name, "Cobra Bass");
+  assert.deepEqual(find("mutated-dragonfish").baseStats, ["ATK", "Support HP"]);
+  assert.deepEqual(find("mutated-dragonfish").specialStats, ["Reflect DMG"]);
+  assert.deepEqual(find("little-goldfish").specialStats, []);
 });
 
 test("fish importer excludes collectibles and rejects ambiguous or malformed input", () => {

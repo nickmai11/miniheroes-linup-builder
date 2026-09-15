@@ -266,7 +266,7 @@
   "bait.pupa-bait": "Mồi Nhộng",
   "bait.mealworm": "Sâu Bột",
   "bait.beetle-bait": "Mồi Bọ Cánh Cứng",
-  "bait.mayfly": "Phù Du",
+  "bait.mayfly": "Mồi Phù Du",
   "stat.mage-hp": "Sinh lực Pháp sư",
   "stat.def": "Phòng thủ",
   "stat.mage-atk": "Tấn công Pháp sư",
@@ -979,5 +979,8 @@
   "artifact.ghostlight-bone": "Xương Ma Quang",
   "artifact.soul-mask": "Mặt Nạ Linh Hồn",
   "artifact.siren-blade": "Kiếm Hải Yêu",
-  "artifact.fire-tipped-spear": "Hỏa Tiêm Thương"
+  "artifact.fire-tipped-spear": "Hỏa Tiêm Thương",
+  "bait.shrimp-bait": "Mồi Tôm",
+  "bait.lucky-star": "Ngôi Sao May Mắn",
+  "bait.earthworm": "Giun Đất"
 }
