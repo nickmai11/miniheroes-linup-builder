@@ -1,6 +1,5 @@
 {
   "home": "trang chủ",
-  "Hero pool": "Danh sách anh hùng",
   "Explore recorded talents, artifacts, awakenings, and builds with rune, weapon, and core priorities.": "Khám phá thiên phú, thần khí, thức tỉnh và cách xây dựng anh hùng với thứ tự ưu tiên phù văn, vũ khí và lõi.",
   "Divinities": "Thần tính",
   "Browse mythic divinities by category and find heroes with each recorded divinity.": "Tra cứu thần tính Thần thoại theo nhóm và tìm các anh hùng sở hữu từng thần tính đã ghi nhận.",
@@ -32,7 +31,6 @@
   "divinity details": "chi tiết thần tính",
   "Heroes": "Anh hùng",
   "Divinity": "Thần tính",
-  "hero pool": "danh sách anh hùng",
   "Could not load builds. Please try again.": "Không thể tải cách xây dựng. Vui lòng thử lại.",
   "Import a build from another hero": "Nhập cách xây dựng từ anh hùng khác",
   "Copy a build from another hero. Matching cores use this hero's own bonuses; cores not recorded for this hero are skipped. You can edit your copy after importing.": "Sao chép cách xây dựng từ anh hùng khác. Lõi tương ứng sẽ dùng hiệu ứng của anh hùng này; các lõi chưa được ghi nhận sẽ bị bỏ qua. Bạn có thể chỉnh sửa bản sao sau khi nhập.",
@@ -158,7 +156,6 @@
   "Relics": "Di vật",
   "Choose a hero below": "Chọn một anh hùng bên dưới",
   "Click the slot to choose a hero": "Nhấn vào ô để chọn anh hùng",
-  "Close hero pool": "Đóng danh sách anh hùng",
   "Select pets and relics inside each hero card. You can choose multiple of each.": "Chọn thú cưng và di vật trong thẻ của từng anh hùng. Bạn có thể chọn nhiều mục mỗi loại.",
   "Choose heroes": "Chọn anh hùng",
   "Search heroes": "Tìm anh hùng",
@@ -389,5 +386,6 @@
   "None recorded": "Chưa ghi nhận",
   "None": "Không có",
   "{name} fish details": "Thông tin cá {name}",
-  "No fishes selected.": "Chưa chọn cá."
+  "No fishes selected.": "Chưa chọn cá.",
+  "Close heroes": "Đóng danh sách anh hùng"
 }

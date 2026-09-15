@@ -58,7 +58,7 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
         href="/heroes"
         className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-1 text-sm"
       >
-        <ArrowLeft className="size-4" /> {t("Hero pool")}
+        <ArrowLeft className="size-4" /> {t("Heroes")}
       </Link>
 
       <div className="grid gap-8 md:grid-cols-[260px_1fr]">

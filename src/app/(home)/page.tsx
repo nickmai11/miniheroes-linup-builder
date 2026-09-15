@@ -15,7 +15,7 @@ const SECTIONS = [
   {
     href: "/heroes",
     icon: Users,
-    title: "Hero pool",
+    title: "Heroes",
     description:
       "Explore recorded talents, artifacts, awakenings, and builds with rune, weapon, and core priorities.",
   },

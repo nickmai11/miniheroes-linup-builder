@@ -321,7 +321,7 @@ export function LineupBuilder({
                     {activeSlot !== null && ` · ${t(SLOT_LABELS[activeSlot])}`}
                   </Dialog.Title>
                   <Dialog.Close
-                    aria-label={t("Close hero pool")}
+                    aria-label={t("Close heroes")}
                     className={buttonVariants({
                       variant: "ghost",
                       size: "icon",

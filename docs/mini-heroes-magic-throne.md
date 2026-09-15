@@ -41,6 +41,7 @@ the hero art. It is removed from the portraits in this app.
 Hero portraits show an indicator when that hero has at least one saved build
 (owner, 2026-09-14). This indicates build availability for the hero, independent
 of whether a build is assigned to a particular lineup slot.
+The hero catalog is labeled **Heroes** in the UI (owner, 2026-09-15).
 In the hero pool, heroes with at least one saved build appear first (owner,
 2026-09-14). Within each group, sort by rarity (Eternal, Mythic, Legend, Epic),
 then class (Warrior, Marksman, Mage, Support), then name; rarity precedes class
@@ -1328,6 +1329,8 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-15 — Rename the visible “Hero pool” label to “Heroes”.
 
 - 2026-09-15 — Fish items in lineups and the builder should have the same width.
 

@@ -18,7 +18,7 @@ export default async function HeroesPage() {
   await requirePageAccess();
   const heroes = await getHeroesWithDetails();
   return (
-    <PageShell title={t("Hero pool")}>
+    <PageShell title={t("Heroes")}>
       <HeroPool heroes={heroes} />
     </PageShell>
   );

@@ -12,8 +12,8 @@ export default function Loading() {
   const { t } = useI18n();
 
   return (
-    <LoadingPage label={t("hero pool")}>
-      <PageHeadingSkeleton title={t("Hero pool")} />
+    <LoadingPage label={t("Heroes")}>
+      <PageHeadingSkeleton title={t("Heroes")} />
       <div className="flex flex-col gap-6">
         <HeroFiltersSkeleton />
         <HeroGridSkeleton />
