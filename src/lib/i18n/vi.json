@@ -387,5 +387,8 @@
   "None": "Không có",
   "{name} fish details": "Thông tin cá {name}",
   "No fishes selected.": "Chưa chọn cá.",
-  "Close heroes": "Đóng danh sách anh hùng"
+  "Close heroes": "Đóng danh sách anh hùng",
+  "All special stats": "Tất cả chỉ số đặc biệt",
+  "Has special stats": "Có chỉ số đặc biệt",
+  "No special stats": "Không có chỉ số đặc biệt"
 }

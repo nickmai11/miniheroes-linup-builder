@@ -18,12 +18,22 @@ export function FishCatalog({ fishes }: { fishes: Fish[] }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [area, setArea] = useState("all");
+  const [specialStat, setSpecialStat] = useState("all");
   const areas = [...new Set(fishes.map((fish) => fish.area).filter(Boolean))];
+  const specialStats = [
+    ...new Set(fishes.flatMap((fish) => fish.specialStats)),
+  ].sort((a, b) => gameLabel("stat", a).localeCompare(gameLabel("stat", b)));
   const visible = fishes
     .filter(
       (fish) =>
         (category === "all" || fish.fishType === category) &&
         (area === "all" || fish.area === area) &&
+        (specialStat === "all" ||
+          (specialStat === "any"
+            ? fish.specialStats.length > 0
+            : specialStat === "none"
+              ? fish.specialStats.length === 0
+              : fish.specialStats.includes(specialStat))) &&
         matchesGameLabel("fish", fish, query),
     )
     .sort(
@@ -31,7 +41,11 @@ export function FishCatalog({ fishes }: { fishes: Fish[] }) {
         Number(b.specialStats.length > 0) - Number(a.specialStats.length > 0) ||
         a.name.localeCompare(b.name),
     );
-  const filtered = query !== "" || category !== "all" || area !== "all";
+  const filtered =
+    query !== "" ||
+    category !== "all" ||
+    area !== "all" ||
+    specialStat !== "all";
 
   return (
     <div className="flex flex-col gap-5">
@@ -79,6 +93,23 @@ export function FishCatalog({ fishes }: { fishes: Fish[] }) {
             ))}
           </select>
         </label>
+        <label className="flex min-w-0 flex-1 flex-col gap-1 text-xs sm:flex-none">
+          <span className="text-muted-foreground">{t("Special stats")}</span>
+          <select
+            value={specialStat}
+            onChange={(event) => setSpecialStat(event.target.value)}
+            className="bg-background border-input focus-visible:ring-ring h-10 max-w-full rounded-md border px-3 text-sm focus-visible:ring-2"
+          >
+            <option value="all">{t("All special stats")}</option>
+            <option value="any">{t("Has special stats")}</option>
+            <option value="none">{t("No special stats")}</option>
+            {specialStats.map((stat) => (
+              <option key={stat} value={stat}>
+                {gameLabel("stat", stat)}
+              </option>
+            ))}
+          </select>
+        </label>
         {filtered && (
           <Button
             variant="ghost"
@@ -87,6 +118,7 @@ export function FishCatalog({ fishes }: { fishes: Fish[] }) {
               setQuery("");
               setCategory("all");
               setArea("all");
+              setSpecialStat("all");
             }}
           >
             {t("Clear filters")}

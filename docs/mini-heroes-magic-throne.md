@@ -1221,7 +1221,8 @@ are special stats (owner, 2026-09-15).
 Baits belong in the database; each fish has its corresponding bait, or none
 when not applicable (owner, 2026-09-15).
 Do not show collection information on fish cards (owner, 2026-09-15).
-Show fishes with special stats first (owner, 2026-09-15).
+Show fishes with special stats first, and provide a special-stat filter
+(owner, 2026-09-15).
 Keep the 16 specific CSV bait links; all other fishes have no assigned bait.
 Category compatibility alone does not create a fish-specific link (owner, 2026-09-15).
 
@@ -1329,6 +1330,8 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-15 — Add an option to filter fishes by special stats.
 
 - 2026-09-15 — Rename the visible “Hero pool” label to “Heroes”.
 
@@ -1773,7 +1776,9 @@ is said. These override anything marked (web).
   bait (icon/name, or None). Collection information is omitted from the cards.
   Fishes with special stats sort first, then alphabetically within both groups.
   Search matches English and Vietnamese names;
-  category and area filters combine with search. Empty special stats display
+  category, area, and special-stat filters combine with search. The special-stat
+  dropdown offers each recorded stat, any special stats, or no special stats;
+  Clear filters resets all four controls. Empty special stats display
   “None recorded”; no numeric values are inferred. The catalog follows the
   existing page-access rules and can be explicitly shared via Public URLs.
 - `baits` stores the 10 owner-supplied shop entries with name, stable slug,
