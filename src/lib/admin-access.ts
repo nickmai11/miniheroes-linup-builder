@@ -5,13 +5,17 @@ import { createClient } from "@/lib/supabase/server";
 import { isAdminUser } from "@/lib/admin-policy";
 
 // Request-scoped: never cache authorization across browsers.
-export const isAdmin = cache(async (): Promise<boolean> => {
+export const getAdminId = cache(async (): Promise<string | null> => {
   const supabase = await createClient();
-  if (!supabase) return false;
+  if (!supabase) return null;
   try {
     const { data, error } = await supabase.auth.getUser();
-    return !error && isAdminUser(data.user);
+    return !error && isAdminUser(data.user) ? data.user!.id : null;
   } catch {
-    return false;
+    return null;
   }
+});
+
+export const isAdmin = cache(async (): Promise<boolean> => {
+  return (await getAdminId()) !== null;
 });

@@ -392,5 +392,15 @@
   "Has special stats": "Có chỉ số đặc biệt",
   "No special stats": "Không có chỉ số đặc biệt",
   "Rare": "Hiếm",
-  "Rarity: {rarity}": "Độ hiếm: {rarity}"
+  "Rarity: {rarity}": "Độ hiếm: {rarity}",
+  "Like": "Thích",
+  "Dislike": "Không thích",
+  "Like {name}": "Thích {name}",
+  "Dislike {name}": "Không thích {name}",
+  "Votes for {name}": "Bình chọn cho {name}",
+  "{likes} likes, {dislikes} dislikes": "{likes} lượt thích, {dislikes} lượt không thích",
+  "Use an invitation or sign in as admin to vote.": "Dùng lời mời hoặc đăng nhập quản trị viên để bình chọn.",
+  "Could not load votes. Please try again.": "Không thể tải bình chọn. Vui lòng thử lại.",
+  "Could not save your vote. Please try again.": "Không thể lưu bình chọn của bạn. Vui lòng thử lại.",
+  "Retry": "Thử lại"
 }

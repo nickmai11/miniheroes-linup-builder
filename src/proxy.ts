@@ -135,6 +135,9 @@ export async function proxy(request: NextRequest) {
     return finish(new NextResponse("Not found", { status: 404 }));
   }
   if (path === "/api/invitations/redeem") return finish(next());
+  // Votes independently verify target visibility and voter identity, including
+  // scoped invitations and read-only totals on explicitly public pages.
+  if (path === "/api/votes") return finish(next());
   const token = request.cookies.get(DEVICE_COOKIE)?.value;
   try {
     // Files in public/ have no page or data layer, so validate their access here

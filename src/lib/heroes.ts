@@ -1,13 +1,14 @@
 import "server-only";
 import { createHash } from "node:crypto";
 import { cache } from "react";
-import { asc, desc, eq, inArray } from "drizzle-orm";
+import { asc, eq, inArray } from "drizzle-orm";
 import { db, schema } from "@/db";
 import { heroDetailSeeds, type HeroAwakeningSkill } from "@/data/hero-details";
 import { heroSeeds } from "@/data/heroes";
 import { ensureDivinitiesSeeded } from "./divinities";
 import { onceAsync } from "@/lib/once-async";
 import { getHeroIdsWithBuilds } from "./builds";
+import { lineupOrder } from "./lineup-order";
 import type {
   Divinity,
   Hero,
@@ -321,7 +322,7 @@ export type HeroDetail = Hero & {
   artifactBonuses: HeroArtifactBonus[];
   /** Mythic divinities in slot order (bottom-left, bottom-right). */
   divinities: Divinity[];
-  /** Saved lineups this hero appears in, newest first. */
+  /** Saved lineups this hero appears in, most likes first, then newest. */
   lineups: Lineup[];
 };
 
@@ -380,7 +381,7 @@ export const getHeroDetail = cache(
             eq(schema.lineupHeroes.lineupId, schema.lineups.id),
           )
           .where(eq(schema.lineupHeroes.heroId, hero.id))
-          .orderBy(desc(schema.lineups.createdAt)),
+          .orderBy(...lineupOrder()),
       ]);
     return {
       ...hero,

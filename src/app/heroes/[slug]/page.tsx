@@ -1,3 +1,4 @@
+import { ContentVotes } from "@/components/content-votes";
 import { getI18n } from "@/lib/i18n/server";
 import { hasAppAccess, requirePageAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
@@ -407,6 +408,13 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
                           {formatDate(lineup.createdAt)}
                         </span>
                       </Link>
+                      <div className="pb-2">
+                        <ContentVotes
+                          kind="lineup"
+                          id={lineup.id}
+                          name={lineup.name}
+                        />
+                      </div>
                     </li>
                   ))}
                 </ul>

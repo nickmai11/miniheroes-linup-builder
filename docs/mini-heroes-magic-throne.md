@@ -1260,6 +1260,14 @@ the earlier fishing collectibles sheet must not be imported as fishes.
 
 ### Lineups (game)
 
+Saved lineups and hero builds offer like/dislike controls with totals (owner,
+2026-09-15). Registered visitors vote per device; admins vote per account.
+Selecting the current reaction clears it; selecting the other switches it.
+Public visitors can read totals. Votes follow existing content access, including
+builds assigned to an invited lineup. Clones and imports start with no votes.
+Lineup lists sort by most likes first, then newest creation date for ties
+(owner, 2026-09-15). Dislikes do not subtract from the sorting count.
+
 A battle lineup is **5 heroes**. Conventional wisdom (web) is one of each role plus a
 flex pick, but the whole point of this app is to record the owner's better answers.
 
@@ -1338,6 +1346,10 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-15 — Sort lineups by likes first, then date.
+
+- 2026-09-15 — Add like/dislike to saved lineups and hero builds.
 
 - 2026-09-15 — Use the correct rarity names throughout the app (Rare, Epic,
   Legend, Mythic, Eternal) instead of color-based rarity labels.
@@ -1728,6 +1740,16 @@ is said. These override anything marked (web).
   13. This is a review, not an import.
 
 ## How the app models it
+
+- `content_votes` stores one reaction per saved lineup/build and voter identity.
+  Separate unique keys prevent duplicate reactions; checks enforce exactly one
+  target and a value of 1 or -1. Clearing a reaction deletes that row. Target
+  foreign keys cascade on deletion, and clones/imports receive no copied votes.
+  Migration `0030_content_votes.sql` includes the `lineup_app` RLS policy and
+  was applied to the configured database on 2026-09-15. The vote API separately
+  verifies target visibility and uses registered-device IDs or verified admin
+  account IDs; public visitors can read totals. English/Vietnamese controls share
+  state for repeated previews of the same build on a page.
 
 - Invitation codes have an optional `lineupId`: null grants the full library;
   a lineup ID grants that lineup only. `invitation_redemptions` links each

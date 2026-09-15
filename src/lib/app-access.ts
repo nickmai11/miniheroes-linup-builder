@@ -39,7 +39,9 @@ export const getPublicPage = cache(async (): Promise<string | null> => {
   return path && (await isPublicPage(path)) ? path : null;
 });
 
-/** Page/metadata reads can be public; mutations require admin access. */
+/** Page/metadata reads can be public; editing requires admin access.
+ * Reactions use the independent target and voter checks in votes.ts.
+ */
 export async function requirePageAccess(
   expectedDestination?: string,
 ): Promise<void> {

@@ -1,3 +1,4 @@
+import { ContentVotes } from "@/components/content-votes";
 import { getI18n } from "@/lib/i18n/server";
 import {
   accessibleLineupIds,
@@ -128,6 +129,13 @@ export default async function LineupsPage() {
                   )}
                 </CardContent>
                 <CardFooter className="flex-wrap justify-end gap-2 py-2">
+                  <div className="mr-auto">
+                    <ContentVotes
+                      kind="lineup"
+                      id={lineup.id}
+                      name={lineup.name}
+                    />
+                  </div>
                   {canEdit && (
                     <Link
                       href={`/lineups/new?clone=${lineup.id}`}

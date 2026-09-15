@@ -1,5 +1,6 @@
 "use client";
 
+import { ContentVotes } from "@/components/content-votes";
 import { useI18n } from "@/lib/i18n/client";
 import type { ReactElement } from "react";
 import { Eye } from "lucide-react";
@@ -48,6 +49,7 @@ export function BuildPopover({
             </p>
           )}
         </div>
+        <ContentVotes kind="build" id={build.id} name={build.name} />
         <PriorityLegend />
         <BuildStats build={build} />
       </div>

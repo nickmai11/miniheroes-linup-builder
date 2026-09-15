@@ -1,3 +1,4 @@
+import { ContentVotes } from "@/components/content-votes";
 import { getI18n } from "@/lib/i18n/server";
 import { hasAppAccess, requirePageAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
@@ -55,6 +56,7 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
       actions={<LineupShare lineupId={lineup.id} canInvite={canEdit} />}
       width="max-w-4xl"
     >
+      <ContentVotes kind="lineup" id={lineup.id} name={lineup.name} />
       {canEdit && (
         <div className="flex min-w-0 flex-wrap items-start gap-2">
           <Link

@@ -205,7 +205,9 @@ the server.
 
 Rules that shape the page:
 
-- **No counts** anywhere ("6 talents", "30 divinities"). Empty states are fine.
+- Reaction totals for saved builds and lineups are shown per the owner’s
+  2026-09-15 like/dislike request.
+- **No catalog counts** anywhere ("6 talents", "30 divinities"). Empty states are fine.
 - An artifact bonus **attached to a talent** appears under that talent _and_ in
   the Artifacts section. One **not attached** (e.g. Ship Raid, gold-tier Frost
   Dark Axe / Full-out Shooting, or red-tier Withering Fear) appears only under

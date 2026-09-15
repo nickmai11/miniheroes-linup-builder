@@ -95,6 +95,10 @@ const i18n = loadTypeScript("src/lib/i18n/client.tsx");
 const { HeroBuilds } = loadTypeScript("src/app/heroes/[slug]/hero-builds.tsx", {
   "@/lib/i18n/client": i18n,
   "./build-actions": {},
+  "next/navigation": {
+    usePathname: () => "/heroes/sea-captain",
+    useRouter: () => ({ refresh() {} }),
+  },
 });
 
 test("saved builds offer a localized Clone button only to editors", () => {

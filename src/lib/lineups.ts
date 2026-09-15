@@ -1,9 +1,10 @@
 import { cache } from "react";
-import { asc, desc, eq, inArray, sql } from "drizzle-orm";
+import { asc, eq, inArray, sql } from "drizzle-orm";
 import { db, schema } from "@/db";
 import type { Fish, Hero, Lineup, Pet, Relic } from "@/db/schema";
 import type { HeroBuild } from "@/lib/build-types";
 import { getBuildsByIds, getHeroIdsWithBuilds } from "@/lib/builds";
+import { lineupOrder } from "@/lib/lineup-order";
 import {
   divinitiesByHeroIds,
   syncSeededHeroDetails,
@@ -168,7 +169,7 @@ export async function getAllLineups(
     .where(
       lineupIds === null ? undefined : inArray(schema.lineups.id, lineupIds),
     )
-    .orderBy(desc(schema.lineups.createdAt));
+    .orderBy(...lineupOrder());
   const slotRows = await loadSlots(lineupRows.map((l) => l.id));
   return assemble(lineupRows, slotRows);
 }

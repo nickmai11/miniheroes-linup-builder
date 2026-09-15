@@ -1,5 +1,6 @@
 "use client";
 
+import { ContentVotes } from "@/components/content-votes";
 import { useI18n } from "@/lib/i18n/client";
 import { Copy, Download, Pencil, Plus, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState, useTransition } from "react";
@@ -280,6 +281,7 @@ export function HeroBuilds({
               )}
             </div>
 
+            <ContentVotes kind="build" id={build.id} name={build.name} />
             <BuildStats build={build} />
           </article>
         ),

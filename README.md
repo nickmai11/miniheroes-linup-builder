@@ -96,13 +96,42 @@ Run `pnpm dev` and sign in as admin at `http://localhost:3000` (or
 `127.0.0.1`. Localhost and development mode do not grant feature access; the same
 admin requirement applies on every host and in production.
 
-Content writes and management APIs check admin access on the server. The lineup
+Content editing and management APIs check admin access on the server. The lineup
 builder also requires admin login, and registered browsers can read saved lineups
 and builds. Automatic synchronization of the versioned game reference data is
 unchanged.
 
 Run `pnpm test` (Node 22.6+), `pnpm typecheck`, and `pnpm lint` to check the policy
 and its protected entry points.
+
+## Likes and dislikes
+
+Saved lineups and builds show Like/Dislike buttons and separate totals, including
+build previews. Registered visitors vote per device; admins vote per account.
+Click the selected reaction to clear it or the other reaction to switch.
+Lineups sort by most likes, then newest creation date, including on hero pages.
+Changing a lineup vote refreshes the list order.
+Public visitors can read totals. Voting requires access to the target, including
+builds assigned to a lineup shared through a scoped invitation.
+
+Migration `0030_content_votes.sql` adds the vote table, uniqueness constraints,
+target deletion cleanup, and the `lineup_app` RLS policy. It has been applied to
+the configured database. Votes stay with the saved lineup/build when edited;
+clones and imports start without votes. The vote API uses private, uncached
+responses and verifies access independently of Proxy.
+
+`pnpm test` covers request validation, shared button state, and accessible labels.
+Database tests require a migrated disposable PostgreSQL database:
+
+```sh
+VOTES_TEST_DATABASE_URL=postgres://vote_test@127.0.0.1:55443/votes_test \
+  node --experimental-strip-types --test tests/votes.integration.test.mjs
+```
+
+For the HTTP test, start the built app on `127.0.0.1:4403` with that same disposable
+database and add `VOTES_TEST_ORIGIN=http://127.0.0.1:4403` when running
+`tests/votes.http.test.mjs`. These tests reject other database addresses and never
+use `DATABASE_URL` for fixtures.
 
 ## Invitation access
 

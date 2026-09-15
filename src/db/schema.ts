@@ -468,6 +468,31 @@ export const lineups = pgTable("lineups", {
 
 export type Lineup = typeof lineups.$inferSelect;
 
+/** One current reaction per voter and saved lineup/build. */
+export const contentVotes = pgTable(
+  "content_votes",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    lineupId: integer("lineup_id").references(() => lineups.id, {
+      onDelete: "cascade",
+    }),
+    buildId: integer("build_id").references(() => heroBuilds.id, {
+      onDelete: "cascade",
+    }),
+    voterKey: text("voter_key").notNull(),
+    value: integer("value").notNull(),
+  },
+  (t) => [
+    unique().on(t.lineupId, t.voterKey),
+    unique().on(t.buildId, t.voterKey),
+    check(
+      "content_votes_one_target",
+      sql`(${t.lineupId} is not null) <> (${t.buildId} is not null)`,
+    ),
+    check("content_votes_value", sql`${t.value} in (-1, 1)`),
+  ],
+);
+
 /** Fish selections belong to the whole lineup and preserve selection order. */
 export const lineupFishes = pgTable(
   "lineup_fishes",
