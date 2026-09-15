@@ -45,6 +45,13 @@ and core bonuses beneath talents; use recorded `skillId` links, never name guess
 The lineup editor can assign a hero one of its own saved builds and uses these
 same previews without expanding the hero card.
 
+Lineup links in the Lineups section open a formation preview on hover (owner,
+2026-09-15). The adjacent eye button opens the same preview for touch and
+keyboard users; clicking the lineup name still navigates to its detail page.
+Previews load on demand and include five slots, assigned builds, pets, relics,
+fishes, and notes. They preserve lineup access restrictions independently of
+public hero-page access.
+
 Build popovers are up to 40rem wide, constrained to the viewport and available
 space around their trigger. All info popovers use fixed positioning and reserve
 scrollbar space inside the popup; the page also reserves its scrollbar gutter so

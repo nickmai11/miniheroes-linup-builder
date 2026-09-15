@@ -323,7 +323,7 @@ export type HeroDetail = Hero & {
   /** Mythic divinities in slot order (bottom-left, bottom-right). */
   divinities: Divinity[];
   /** Saved lineups this hero appears in, most likes first, then newest. */
-  lineups: Lineup[];
+  lineups: Pick<Lineup, "id" | "name" | "createdAt">[];
 };
 
 // Metadata and page rendering share the same load (and seed) within a request.
@@ -374,7 +374,13 @@ export const getHeroDetail = cache(
           .where(eq(schema.heroDivinities.heroId, hero.id))
           .orderBy(asc(schema.heroDivinities.position)),
         db
-          .select({ lineup: schema.lineups })
+          .select({
+            lineup: {
+              id: schema.lineups.id,
+              name: schema.lineups.name,
+              createdAt: schema.lineups.createdAt,
+            },
+          })
           .from(schema.lineupHeroes)
           .innerJoin(
             schema.lineups,

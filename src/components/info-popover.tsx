@@ -11,13 +11,17 @@ export function InfoPopover({
   children,
   nativeButton = true,
   triggerRole,
+  secondaryTrigger,
+  side = "right",
   popupClassName,
 }: {
   trigger: ReactElement;
   label: string;
   children: ReactNode;
   nativeButton?: boolean;
-  triggerRole?: "option";
+  triggerRole?: "option" | "link";
+  secondaryTrigger?: ReactElement;
+  side?: "top" | "right" | "bottom" | "left";
   popupClassName?: string;
 }) {
   return (
@@ -30,10 +34,11 @@ export function InfoPopover({
         delay={200}
         closeDelay={150}
       />
+      {secondaryTrigger && <Popover.Trigger render={secondaryTrigger} />}
       <Popover.Portal>
         <Popover.Positioner
           positionMethod="fixed"
-          side="right"
+          side={side}
           align="start"
           sideOffset={8}
           collisionPadding={16}

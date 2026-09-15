@@ -13,11 +13,13 @@ export function BuildPopover({
   trigger,
   nativeButton = true,
   triggerRole,
+  contextPage,
 }: {
   build: HeroBuild;
   trigger?: ReactElement;
   nativeButton?: boolean;
   triggerRole?: "option";
+  contextPage?: string;
 }) {
   const { t } = useI18n();
 
@@ -49,7 +51,12 @@ export function BuildPopover({
             </p>
           )}
         </div>
-        <ContentVotes kind="build" id={build.id} name={build.name} />
+        <ContentVotes
+          kind="build"
+          id={build.id}
+          name={build.name}
+          contextPage={contextPage}
+        />
         <PriorityLegend />
         <BuildStats build={build} />
       </div>

@@ -402,5 +402,13 @@
   "Use an invitation or sign in as admin to vote.": "Dùng lời mời hoặc đăng nhập quản trị viên để bình chọn.",
   "Could not load votes. Please try again.": "Không thể tải bình chọn. Vui lòng thử lại.",
   "Could not save your vote. Please try again.": "Không thể lưu bình chọn của bạn. Vui lòng thử lại.",
-  "Retry": "Thử lại"
+  "Retry": "Thử lại",
+  "Preview {name} lineup": "Xem trước đội hình {name}",
+  "Loading lineup preview": "Đang tải bản xem trước đội hình",
+  "Lineup heroes": "Tướng trong đội hình",
+  "Slot {number}": "Vị trí {number}",
+  "Open lineup": "Mở đội hình",
+  "Open the lineup with an invitation to view it.": "Mở đội hình bằng lời mời để xem.",
+  "This lineup is no longer available.": "Đội hình này không còn khả dụng.",
+  "Could not load the lineup preview. Please try again.": "Không thể tải bản xem trước đội hình. Vui lòng thử lại."
 }

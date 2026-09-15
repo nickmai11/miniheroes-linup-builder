@@ -224,6 +224,7 @@ test("the real artwork policy limits hero and divinity assets without database w
   const { isPublicPageAsset } = loadTypeScript("src/lib/public-url-assets.ts", {
     "server-only": {},
     "@/db": { db: tripwire, schema: tripwire },
+    "@/lib/lineup-preview-access": { heroLineupPreviewIds: async () => [] },
   });
   for (const path of [
     "/heroes/sea-captain.png",

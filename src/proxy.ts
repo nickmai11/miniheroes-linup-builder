@@ -138,6 +138,8 @@ export async function proxy(request: NextRequest) {
   // Votes independently verify target visibility and voter identity, including
   // scoped invitations and read-only totals on explicitly public pages.
   if (path === "/api/votes") return finish(next());
+  // This read endpoint verifies the hero page and lineup independently.
+  if (path === "/api/lineups/preview") return finish(next());
   const token = request.cookies.get(DEVICE_COOKIE)?.value;
   try {
     // Files in public/ have no page or data layer, so validate their access here
@@ -237,7 +239,13 @@ export async function proxy(request: NextRequest) {
         if (
           referringPage &&
           (await isPublicPage(referringPage)) &&
-          (await isPublicPageAsset(referringPage, path))
+          (await isPublicPageAsset(
+            referringPage,
+            path,
+            referringPage.startsWith("/heroes/")
+              ? device?.lineupIds
+              : undefined,
+          ))
         ) {
           return finish(next());
         }

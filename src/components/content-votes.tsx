@@ -11,13 +11,16 @@ export function ContentVotes({
   kind,
   id,
   name,
+  contextPage,
 }: {
   kind: "lineup" | "build";
   id: number;
   name: string;
+  contextPage?: string;
 }) {
   const { t, formatNumber } = useI18n();
-  const page = usePathname();
+  const pathname = usePathname();
+  const page = contextPage ?? pathname;
   const router = useRouter();
   const store = useMemo(() => voteStore({ kind, id, page }), [kind, id, page]);
   const { summary, pending, error } = useSyncExternalStore(
@@ -68,7 +71,7 @@ export function ContentVotes({
               if (
                 !store.snapshot().error &&
                 kind === "lineup" &&
-                (page === "/lineups" || page.startsWith("/heroes/"))
+                (pathname === "/lineups" || pathname.startsWith("/heroes/"))
               )
                 router.refresh();
             }}

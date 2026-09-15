@@ -1,4 +1,5 @@
 import { ContentVotes } from "@/components/content-votes";
+import { LineupPopover } from "@/components/lineup-popover";
 import { getI18n } from "@/lib/i18n/server";
 import { hasAppAccess, requirePageAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
@@ -40,7 +41,7 @@ export async function generateMetadata(
 }
 
 export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
-  const { gameLabel, t, formatDate } = await getI18n();
+  const { gameLabel, t } = await getI18n();
 
   await requirePageAccess();
   const { slug } = await props.params;
@@ -399,15 +400,14 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
                 <ul className="flex flex-col divide-y">
                   {hero.lineups.map((lineup) => (
                     <li key={lineup.id}>
-                      <Link
-                        href={`/lineups/${lineup.id}`}
-                        className="hover:text-primary flex items-baseline justify-between gap-4 py-2"
-                      >
-                        <span className="font-medium">{lineup.name}</span>
-                        <span className="text-muted-foreground text-xs">
-                          {formatDate(lineup.createdAt)}
-                        </span>
-                      </Link>
+                      <LineupPopover
+                        lineup={{
+                          id: lineup.id,
+                          name: lineup.name,
+                          createdAt: lineup.createdAt,
+                        }}
+                        heroSlug={hero.slug}
+                      />
                       <div className="pb-2">
                         <ContentVotes
                           kind="lineup"

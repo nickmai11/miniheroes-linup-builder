@@ -1265,6 +1265,8 @@ Saved lineups and hero builds offer like/dislike controls with totals (owner,
 Selecting the current reaction clears it; selecting the other switches it.
 Public visitors can read totals. Votes follow existing content access, including
 builds assigned to an invited lineup. Clones and imports start with no votes.
+Hovering a lineup on a hero detail page shows its preview in a popover
+(owner, 2026-09-15).
 Lineup lists sort by most likes first, then newest creation date for ties
 (owner, 2026-09-15). Dislikes do not subtract from the sorting count.
 
@@ -1346,6 +1348,9 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-15 — Hovering a lineup on a hero detail page should show a
+  preview of that lineup in a popover.
 
 - 2026-09-15 — Sort lineups by likes first, then date.
 
@@ -1740,6 +1745,14 @@ is said. These override anything marked (web).
   13. This is a review, not an import.
 
 ## How the app models it
+
+- Hero-page lineup links open an on-demand formation preview through
+  `/api/lineups/preview`. The initial page sends only each lineup's ID, name,
+  and date. The API checks access to both the hero page and the linked lineup;
+  a public hero page does not publish its private lineups. Preview artwork is
+  limited to lineups readable through an invitation or a published lineup URL.
+  Clicking the name still opens the lineup; the eye button supports touch and
+  keyboard previews. Nested build votes use the previewed lineup's access context.
 
 - `content_votes` stores one reaction per saved lineup/build and voter identity.
   Separate unique keys prevent duplicate reactions; checks enforce exactly one

@@ -6,6 +6,7 @@ import { heroDetailSeeds } from "@/data/hero-details";
 import { divinitySeeds } from "@/data/divinities";
 import { fishSeeds } from "@/data/fishes";
 import { baitSeeds } from "@/data/baits";
+import { heroLineupPreviewIds } from "@/lib/lineup-preview-access";
 
 const SHARED_ICONS = new Set([
   "/icons/core.png",
@@ -57,7 +58,12 @@ export async function isPublicPageAsset(
     );
   }
   const hero = page.match(/^\/heroes\/([a-z0-9-]+)$/);
-  if (hero) return heroAssets(hero[1], true, true).has(asset);
+  if (hero) {
+    if (heroAssets(hero[1], true, true).has(asset)) return true;
+    const previewIds = await heroLineupPreviewIds(hero[1], allowedLineupIds);
+    if (!previewIds.length) return false;
+    return isPublicPageAsset("/lineups", asset, previewIds);
+  }
   if (page === "/divinities")
     return divinitySeeds.some((item) => item.iconUrl === asset);
   if (page === "/fishes")
