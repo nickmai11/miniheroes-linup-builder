@@ -1,6 +1,8 @@
 import { getI18n } from "@/lib/i18n/server";
 import { getRecentChanges } from "@/lib/changes";
 import { ChangeList } from "@/components/change-list";
+import { FollowButton } from "@/components/follow-button";
+import { getFollowContext, getFollowedItems } from "@/lib/follows";
 import { hasAppAccess, requirePageAccess } from "@/lib/app-access";
 import Link from "next/link";
 import {
@@ -58,12 +60,24 @@ const SECTIONS = [
   },
 ] as const;
 
-export default async function Home() {
-  const { t } = await getI18n();
+export default async function Home({ searchParams }: PageProps<"/">) {
+  const { t, gameLabel } = await getI18n();
 
   await requirePageAccess();
   const canEdit = (await canEditContent()) && (await hasAppAccess());
-  const recentChanges = await getRecentChanges();
+  const followingOnly = (await searchParams).feed === "following";
+  const [recentChanges, followedItems, followContext] = await Promise.all([
+    getRecentChanges(followingOnly),
+    getFollowedItems(),
+    getFollowContext(),
+  ]);
+  const following = followedItems.map((item) => ({
+    ...item,
+    name:
+      item.kind === "hero" && item.available && item.slug
+        ? gameLabel("hero", { name: item.name, slug: item.slug })
+        : item.name,
+  }));
   const sections = SECTIONS.filter(
     ({ href }) => canEdit || href !== "/lineups/new",
   );
@@ -132,11 +146,88 @@ export default async function Home() {
           <p className="text-muted-foreground mt-1 text-sm">
             {t("Latest lineup and build changes.")}
           </p>
+          {followContext.key && (
+            <nav
+              aria-label={t("Filter recent changes")}
+              className="mt-3 flex gap-2"
+            >
+              <Link
+                href="/"
+                scroll={false}
+                className={buttonVariants({
+                  variant: followingOnly ? "outline" : "secondary",
+                  size: "sm",
+                })}
+                aria-current={!followingOnly ? "page" : undefined}
+              >
+                {t("All changes")}
+              </Link>
+              <Link
+                href="/?feed=following"
+                scroll={false}
+                className={buttonVariants({
+                  variant: followingOnly ? "secondary" : "outline",
+                  size: "sm",
+                })}
+                aria-current={followingOnly ? "page" : undefined}
+              >
+                {t("Following")}
+              </Link>
+            </nav>
+          )}
         </div>
         <div className="bg-card rounded-xl border p-5">
-          <ChangeList entries={recentChanges} showTargets />
+          {followingOnly && recentChanges.length === 0 ? (
+            <p className="text-muted-foreground text-sm">
+              {t("No changes from followed lineups or heroes yet.")}
+            </p>
+          ) : (
+            <ChangeList entries={recentChanges} showTargets />
+          )}
         </div>
       </section>
+      {followContext.key && (
+        <section aria-labelledby="following" className="space-y-4">
+          <h2 id="following" className="text-xl font-semibold">
+            {t("Following")}
+          </h2>
+          {following.length ? (
+            <ul className="grid gap-3 sm:grid-cols-2">
+              {following.map((item) => (
+                <li
+                  key={`${item.kind}:${item.id}`}
+                  className="bg-card flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4"
+                >
+                  <div className="min-w-0 flex-1">
+                    <p className="text-muted-foreground text-xs">
+                      {t(item.kind === "lineup" ? "Lineup" : "Hero")}
+                    </p>
+                    {item.href ? (
+                      <Link
+                        href={item.href}
+                        className="font-medium wrap-break-word hover:underline"
+                      >
+                        {item.name}
+                      </Link>
+                    ) : (
+                      <p className="text-muted-foreground">{t(item.name)}</p>
+                    )}
+                  </div>
+                  <FollowButton
+                    kind={item.kind}
+                    id={item.id}
+                    name={item.available ? item.name : t(item.name)}
+                  />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-muted-foreground text-sm">
+              {t("Follow lineups or heroes to see them here.")}
+            </p>
+          )}
+        </section>
+      )}
     </main>
   );
 }

@@ -216,6 +216,10 @@ Delete must be explicitly selected (owner, 2026-09-15).
 
 Rules that shape the page:
 
+- Hero details include a Follow / Following control (owner, 2026-09-15).
+  Following a hero adds its recorded build changes to the home page's Following
+  feed. Following does not grant access to private content.
+
 - Each saved build has a Change history button that opens a dialog (owner, 2026-09-15).
   It loads 20 entries at a time and shows before/after values for changed notes,
   names, attributes, priorities, and cores. Opening it refreshes the history.

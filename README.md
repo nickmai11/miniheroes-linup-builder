@@ -104,6 +104,18 @@ unchanged.
 Run `pnpm test` (Node 22.6+), `pnpm typecheck`, and `pnpm lint` to check the policy
 and its protected entry points.
 
+## Following lineups and heroes
+
+Use **Follow** on a hero or saved lineup. Home lists followed items and offers a
+**Following** filter for Recent changes, including build changes for followed
+heroes. Follows belong to the registered device or verified admin account and
+never grant access to private content. Unfollow remains available after a target
+is deleted or access is revoked. Migration `0032_content_follows.sql` adds storage
+and has been applied to the configured database.
+
+Run follow integration tests on a migrated disposable database with
+`FOLLOWS_TEST_DATABASE_URL=postgres://vote_test@127.0.0.1:55443/votes_test pnpm test`.
+
 ## Change history
 
 Saved lineups and hero builds have **Change history** dialogs with dated,

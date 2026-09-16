@@ -1260,6 +1260,8 @@ the earlier fishing collectibles sheet must not be imported as fishes.
 
 ### Lineups (game)
 
+Visitors can follow lineups and heroes (owner, 2026-09-15).
+
 Saved lineups and hero builds have change history, and the home page shows
 Recent changes (owner, 2026-09-15).
 Change history opens in a dialog (owner clarification, 2026-09-15).
@@ -1360,6 +1362,8 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-15 — Add following for lineups and heroes.
 
 - 2026-09-15 — Dialogs must not jump when their content changes.
 
@@ -1771,6 +1775,21 @@ is said. These override anything marked (web).
   13. This is a review, not an import.
 
 ## How the app models it
+
+- `content_follows` stores personal lineup/hero subscriptions per registered
+  device or verified admin account, with one row per target and follower.
+  Follow controls appear on hero details and lineup lists/details. Home offers
+  quick links to followed items and an All changes / Following feed filter;
+  following a hero includes its recorded build changes. The filter still checks
+  current content access. Deleted or inaccessible items retain only a personal
+  subscription, appear as unavailable without their private name, and can be
+  unfollowed. Retention lets full-library viewers see a followed lineup's final
+  deletion event. Anonymous readers need an invitation or admin login to follow.
+  The `/api/follows` endpoint validates identity, target access, desired state,
+  and same-origin JSON writes; it uses uncached responses. Migration
+  `0032_content_follows.sql` includes RLS and the `lineup_app` grants.
+  It was applied to the configured database on 2026-09-15 using the documented
+  transactional migration fallback.
 
 - `content_changes` records creates, edits, imports, and deletions of lineups and
   hero builds in the same transaction as the content write. Before/after values

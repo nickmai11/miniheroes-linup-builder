@@ -3,6 +3,7 @@ import { and, desc, eq, lt, or, sql, type SQL } from "drizzle-orm";
 import { db, schema } from "@/db";
 import { getRegisteredDevice, hasAppAccess } from "@/lib/app-access";
 import type { ChangeKind, ChangePage } from "./change-types";
+import { getFollowContext } from "@/lib/follows";
 
 /** Sharing the home or a hero page does not publish private lineup history. */
 async function visibility() {
@@ -141,6 +142,19 @@ export async function getChangeHistory(
   );
 }
 
-export async function getRecentChanges() {
-  return (await readChanges(undefined, 10)).entries;
+export async function getRecentChanges(followingOnly = false) {
+  if (!followingOnly) return (await readChanges(undefined, 10)).entries;
+  const { key } = await getFollowContext();
+  if (!key) return [];
+  const c = schema.contentChanges;
+  return (
+    await readChanges(
+      sql`exists (
+    select 1 from ${schema.contentFollows} f where f.follower_key = ${key} and (
+      (f.kind = 'lineup' and ${c.kind} = 'lineup' and f.target_id = ${c.targetId})
+      or (f.kind = 'hero' and ${c.kind} = 'build' and exists (
+        select 1 from ${schema.heroes} h where h.id = f.target_id and h.slug = ${c.heroSlug}))))`,
+      10,
+    )
+  ).entries;
 }

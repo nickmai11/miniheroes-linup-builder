@@ -1,4 +1,5 @@
 import { ContentVotes } from "@/components/content-votes";
+import { FollowButton } from "@/components/follow-button";
 import { ChangeHistory } from "@/components/change-history";
 import { getI18n } from "@/lib/i18n/server";
 import { ConfirmAction } from "@/components/confirm-action";
@@ -58,7 +59,10 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
       actions={<LineupShare lineupId={lineup.id} canInvite={canEdit} />}
       width="max-w-4xl"
     >
-      <ContentVotes kind="lineup" id={lineup.id} name={lineup.name} />
+      <div className="flex flex-wrap items-start gap-2">
+        <ContentVotes kind="lineup" id={lineup.id} name={lineup.name} />
+        <FollowButton kind="lineup" id={lineup.id} name={lineup.name} />
+      </div>
       {canEdit && (
         <div className="flex min-w-0 flex-wrap items-start gap-2">
           <Link

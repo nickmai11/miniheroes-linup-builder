@@ -1,4 +1,5 @@
 import { ContentVotes } from "@/components/content-votes";
+import { FollowButton } from "@/components/follow-button";
 import { LineupSortSelect } from "@/components/lineup-sort";
 import { getI18n } from "@/lib/i18n/server";
 import {
@@ -143,6 +144,11 @@ export default async function LineupsPage({
                       name={lineup.name}
                     />
                   </div>
+                  <FollowButton
+                    kind="lineup"
+                    id={lineup.id}
+                    name={lineup.name}
+                  />
                   {canEdit && (
                     <Link
                       href={`/lineups/new?clone=${lineup.id}`}

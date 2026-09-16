@@ -1,6 +1,7 @@
 import { ContentVotes } from "@/components/content-votes";
 import { LineupPopover } from "@/components/lineup-popover";
 import { getI18n } from "@/lib/i18n/server";
+import { FollowButton } from "@/components/follow-button";
 import { hasAppAccess, requirePageAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -93,6 +94,11 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
               {gameLabel("hero", hero)}
             </h1>
             <p className="text-muted-foreground">{t(ROLE_LABELS[hero.role])}</p>
+            <FollowButton
+              kind="hero"
+              id={hero.id}
+              name={gameLabel("hero", hero)}
+            />
           </header>
 
           {hero.notes && (

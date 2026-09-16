@@ -17,6 +17,24 @@ import { MAX_FISH_QUANTITY } from "@/lib/fish-selection";
 import { FISH_RARITIES } from "@/lib/fish-rarity";
 import type { ChangeEvent, ChangeField, ChangeKind } from "@/lib/change-types";
 
+/** Personal subscriptions survive target deletion so its final change stays in the feed. */
+export const contentFollows = pgTable(
+  "content_follows",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    followerKey: text("follower_key").notNull(),
+    kind: text("kind", { enum: ["lineup", "hero"] }).notNull(),
+    targetId: integer("target_id").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    unique().on(t.followerKey, t.kind, t.targetId),
+    check("content_follows_kind", sql`${t.kind} in ('lineup', 'hero')`),
+  ],
+);
+
 /** Retained after deletion; access is checked against the current target. */
 export const contentChanges = pgTable(
   "content_changes",
