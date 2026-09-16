@@ -284,5 +284,8 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static/|_next/webpack-hmr$|favicon\\.ico$).*)"],
+  // Vercel serves analytics independently of the app's invitation access.
+  matcher: [
+    "/((?!_next/static/|_next/webpack-hmr$|_vercel/insights/|favicon\\.ico$).*)",
+  ],
 };

@@ -58,6 +58,20 @@ if it moves: repeated queries across continents add latency to pages and APIs.
 Region changes take effect on the next deployment. See
 [the performance review](docs/page-performance.md) for deployment measurements.
 
+## Traffic analytics
+
+Vercel Web Analytics tracks page views and client-side navigation through the root
+layout's `SiteAnalytics` component. Tracked page URLs omit query strings and
+fragments, including invitation codes, device-transfer tokens, and nested
+invitation destinations. The invitation proxy allows Vercel's
+`/_vercel/insights/` routes through for public and invitation-screen visitors.
+
+To activate collection, open the project in Vercel, select **Analytics**, click
+**Enable**, and deploy this change. View traffic in that same dashboard. Local
+development uses the SDK's debug mode and does not send production page views.
+No additional environment variables are required. See the
+[Vercel setup guide](https://vercel.com/docs/analytics/quickstart).
+
 ## Admin login and editing
 
 Click **Admin login** in the header and enter your Supabase Auth email and

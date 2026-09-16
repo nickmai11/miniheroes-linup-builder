@@ -21,7 +21,7 @@ const transfer = loadTypeScript("src/lib/device-transfer.ts");
 const token = "a".repeat(43);
 const code = "ABCD-1234-EFAB-5678-CDEF-9012";
 
-test("the proxy matcher protects content while allowing only framework assets and the favicon", () => {
+test("the proxy matcher protects content while allowing framework assets, analytics, and the favicon", () => {
   globalThis.AsyncLocalStorage ??= AsyncLocalStorage;
   const require = createRequire(import.meta.url);
   const {
@@ -38,6 +38,8 @@ test("the proxy matcher protects content while allowing only framework assets an
     "/_next/image",
     "/faviconXico",
     "/_next/webpack-hmr-extra",
+    "/_vercel/insights-extra/view",
+    "/_vercel/private",
   ]) {
     assert.equal(unstable_doesMiddlewareMatch({ config, url }), true, url);
   }
@@ -46,6 +48,9 @@ test("the proxy matcher protects content while allowing only framework assets an
     "/_next/static/media/font.woff2",
     "/_next/webpack-hmr",
     "/favicon.ico",
+    "/_vercel/insights/script.js",
+    "/_vercel/insights/view",
+    "/_vercel/insights/event",
   ]) {
     assert.equal(unstable_doesMiddlewareMatch({ config, url }), false, url);
   }
