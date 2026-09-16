@@ -10,16 +10,19 @@ import {
   getRegisteredDevice,
   hasAppAccess,
 } from "@/lib/app-access";
-import { isAdmin } from "@/lib/admin-access";
+import { getAdminId } from "@/lib/admin-access";
 import { AdminLogin } from "@/components/admin-login";
+import { NotificationsButton } from "@/components/notifications-button";
 
 export async function SiteHeader() {
   const { t } = await getI18n();
 
   const canEdit = await canEditContent();
-  const signedIn = await isAdmin();
+  const adminId = await getAdminId();
+  const signedIn = adminId !== null;
   const access = await hasAppAccess();
-  const lineupOnly = !access && Boolean(await getRegisteredDevice());
+  const device = await getRegisteredDevice();
+  const lineupOnly = !access && Boolean(device);
   const publicPage = access ? null : await getPublicPage();
   return (
     <>
@@ -39,6 +42,9 @@ export async function SiteHeader() {
             <span>{t("Mini Heroes Library")}</span>
           </Link>
           <div className="ml-auto flex shrink-0 items-center gap-1">
+            {(signedIn || device) && (
+              <NotificationsButton key={adminId ?? `device:${device!.id}`} />
+            )}
             <AdminLogin signedIn={signedIn} compact />
             <LanguageSwitcher />
             <ThemeToggle />

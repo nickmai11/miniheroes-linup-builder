@@ -144,6 +144,8 @@ export async function proxy(request: NextRequest) {
   if (path === "/api/changes") return finish(next());
   // Follows verify viewer identity and current target visibility independently.
   if (path === "/api/follows") return finish(next());
+  // Notifications independently verify the viewer and each followed lineup.
+  if (path === "/api/notifications") return finish(next());
   const token = request.cookies.get(DEVICE_COOKIE)?.value;
   try {
     // Files in public/ have no page or data layer, so validate their access here

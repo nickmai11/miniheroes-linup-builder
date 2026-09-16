@@ -159,14 +159,26 @@ export async function recordChange(
       .set({ updatedAt: sql`clock_timestamp()` })
       .where(eq(schema.lineups.id, targetId));
   }
-  await tx.insert(schema.contentChanges).values({
-    kind,
-    targetId,
-    event,
-    name: snapshot.name,
-    heroName: snapshot.heroName,
-    heroSlug: snapshot.heroSlug,
-    fields,
-    privateOwnerId: snapshot.privateOwnerId ?? null,
-  });
+  const [change] = await tx
+    .insert(schema.contentChanges)
+    .values({
+      kind,
+      targetId,
+      event,
+      name: snapshot.name,
+      heroName: snapshot.heroName,
+      heroSlug: snapshot.heroSlug,
+      fields,
+      privateOwnerId: snapshot.privateOwnerId ?? null,
+    })
+    .returning({ id: schema.contentChanges.id });
+  if (kind === "lineup" && event === "updated") {
+    // Fan out inside the content transaction; failed saves never send alerts.
+    await tx.execute(sql`
+      insert into ${schema.lineupNotifications} (follow_id, change_id)
+      select f.id, ${change.id} from ${schema.contentFollows} f
+      where f.kind = 'lineup' and f.target_id = ${targetId}
+      on conflict (follow_id, change_id) do nothing
+    `);
+  }
 }

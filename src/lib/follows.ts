@@ -5,6 +5,7 @@ import { getAdminId } from "@/lib/admin-access";
 import { getRegisteredDevice } from "@/lib/app-access";
 import { getPublicUrls } from "@/lib/public-urls";
 import { lineupPrivacyFilter } from "@/lib/lineup-privacy";
+import { lockContentWrites } from "@/lib/change-recording";
 import type { FollowedItem, FollowSummary, FollowTarget } from "./follow-types";
 
 export async function getFollowContext() {
@@ -99,12 +100,16 @@ export async function setFollow(
   key: string,
   following: boolean,
 ) {
-  if (following)
-    await db
-      .insert(schema.contentFollows)
-      .values({ followerKey: key, kind: target.kind, targetId: target.id })
-      .onConflictDoNothing();
-  else await db.delete(schema.contentFollows).where(match(target, key));
+  await db.transaction(async (tx) => {
+    // Serialize follow/unfollow with notification creation during a save.
+    await lockContentWrites(tx);
+    if (following)
+      await tx
+        .insert(schema.contentFollows)
+        .values({ followerKey: key, kind: target.kind, targetId: target.id })
+        .onConflictDoNothing();
+    else await tx.delete(schema.contentFollows).where(match(target, key));
+  });
 }
 
 export async function getFollowedItems(): Promise<FollowedItem[]> {

@@ -122,7 +122,8 @@ and its protected entry points.
 
 Lineup cards and details show **Created at** and **Updated at** under the title.
 Follow and visibility controls sit at the top. Dates use the selected language
-and Asia/Ho_Chi_Minh timezone. Content edits, visibility changes, and removed
+and Asia/Ho_Chi_Minh timezone. Labels are smaller and muted; date values use
+the foreground color and medium weight. Content edits, visibility changes, and removed
 build assignments update the timestamp atomically with history; unchanged saves,
 views, votes, and follows do not. Existing timestamps are backfilled from the
 latest recorded lineup change, falling back to the creation date. Migration
@@ -165,6 +166,22 @@ and has been applied to the configured database.
 
 Run follow integration tests on a migrated disposable database with
 `FOLLOWS_TEST_DATABASE_URL=postgres://vote_test@127.0.0.1:55443/votes_test pnpm test`.
+
+The header **notification bell** shows unread lineup updates with links, change
+labels, and individual / mark-all read controls. It refreshes every 30 seconds
+while the page is visible and the dialog is closed, on window focus, and when
+opened. Notifications are in-app and belong to the same device or admin account
+as the follow. They start with new edits after this feature is deployed; existing
+history is not backfilled. Unchanged saves do not notify. Unfollowing clears that
+subscription's notifications, and refollowing starts fresh. Current invitation
+and privacy rules apply to the list, unread count, links, and read-state updates.
+Hidden or deleted lineups never appear for unauthorized viewers.
+
+Migration `0035_lineup_notifications.sql` adds notification storage, cascading
+cleanup, RLS and app-role grants. It was applied to the configured database on
+2026-09-16; deploy the app to activate notifications. Test delivery, read-state isolation, rollback,
+pagination, and access checks on a migrated disposable database with
+`NOTIFICATIONS_TEST_DATABASE_URL=postgres://vote_test@127.0.0.1:55443/votes_test pnpm test`.
 
 ## Change history
 

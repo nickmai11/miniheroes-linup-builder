@@ -9,16 +9,26 @@ export async function LineupTimestamps({
 }) {
   const { t, formatDate } = await getI18n();
   return (
-    <span className="text-muted-foreground flex flex-wrap gap-x-4 gap-y-1 text-xs">
-      <span>
-        {t("Created at")}:{" "}
-        <time dateTime={createdAt.toISOString()}>
+    <span className="flex flex-wrap gap-x-4 gap-y-1">
+      <span className="inline-flex flex-wrap items-baseline gap-x-1">
+        <span className="text-muted-foreground text-[11px]">
+          {t("Created at")}:
+        </span>
+        <time
+          className="text-foreground text-xs font-medium"
+          dateTime={createdAt.toISOString()}
+        >
           {formatDate(createdAt, true)}
         </time>
       </span>
-      <span>
-        {t("Updated at")}:{" "}
-        <time dateTime={updatedAt.toISOString()}>
+      <span className="inline-flex flex-wrap items-baseline gap-x-1">
+        <span className="text-muted-foreground text-[11px]">
+          {t("Updated at")}:
+        </span>
+        <time
+          className="text-foreground text-xs font-medium"
+          dateTime={updatedAt.toISOString()}
+        >
           {formatDate(updatedAt, true)}
         </time>
       </span>

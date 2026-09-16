@@ -1266,8 +1266,12 @@ Use an eye / crossed-out-eye icon to toggle visibility, and keep the existing
 invitation requirement for public lineups (owner clarification, 2026-09-16).
 Follow and visibility controls belong at the top of lineups. Show both creation
 and last-update timestamps on lineups (owner, 2026-09-16).
+Timestamp labels and values must be visually distinct through color or font size
+(owner, 2026-09-16).
 
 Visitors can follow lineups and heroes (owner, 2026-09-15).
+Users should receive notifications when lineups they follow are updated, with
+a notifications button in the app (owner, 2026-09-16).
 The Follow button should be smaller (owner, 2026-09-16); it uses a compact
 bookmark icon with its label on hover, matching the visibility control's size.
 
@@ -1371,6 +1375,12 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-16 — Make created-at / updated-at labels and values visually distinct,
+  for example using font color or size.
+
+- 2026-09-16 — Add a notifications button; notify users when followed lineups
+  are updated.
 
 - 2026-09-16 — The Follow button is too big; make it smaller.
 
@@ -1834,6 +1844,19 @@ is said. These override anything marked (web).
   `0032_content_follows.sql` includes RLS and the `lineup_app` grants.
   It was applied to the configured database on 2026-09-15 using the documented
   transactional migration fallback.
+
+- `lineup_notifications` links each lineup update to its active followers in the
+  content transaction. No-op saves and creation do not notify. Follow/unfollow
+  share the content write lock; unfollowing cascades notifications. The header
+  bell refreshes every 30 seconds while visible and closed, on focus, and when
+  opened. Its fixed-size dialog lists 20 updates per page with per-item and
+  snapshot-bounded mark-all read controls. Identity, current invitations, and
+  private ownership are checked for lists, counts, links, and read-state writes.
+  Deleted or inaccessible lineups are excluded. These are in-app notifications
+  for future edits, with no historical backfill. Migration
+  `0035_lineup_notifications.sql` includes RLS and app-role grants.
+  Applied to the configured database on 2026-09-16 using the transactional
+  migration fallback, after verification on a disposable database.
 
 - `content_changes` records creates, edits, imports, and deletions of lineups and
   hero builds in the same transaction as the content write. Before/after values

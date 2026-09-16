@@ -63,6 +63,25 @@ export const contentChanges = pgTable(
   ],
 );
 
+/** One in-app notification per active lineup follow and saved update. */
+export const lineupNotifications = pgTable(
+  "lineup_notifications",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    followId: integer("follow_id")
+      .notNull()
+      .references(() => contentFollows.id, { onDelete: "cascade" }),
+    changeId: integer("change_id")
+      .notNull()
+      .references(() => contentChanges.id, { onDelete: "cascade" }),
+    readAt: timestamp("read_at", { withTimezone: true }),
+  },
+  (t) => [
+    unique().on(t.followId, t.changeId),
+    index("lineup_notifications_change_id_idx").on(t.changeId),
+  ],
+);
+
 export const notes = pgTable("notes", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   title: text("title").notNull(),
