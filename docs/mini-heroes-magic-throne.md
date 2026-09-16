@@ -1274,6 +1274,8 @@ Users should receive notifications when lineups they follow are updated, with
 a notifications button in the app (owner, 2026-09-16).
 The Follow button should be smaller (owner, 2026-09-16); it uses a compact
 bookmark icon with its label on hover, matching the visibility control's size.
+Only the bookmark icon uses the primary theme color when followed; the button
+keeps its neutral outlined appearance (owner clarification, 2026-09-16).
 
 Saved lineups and hero builds have change history, and the home page shows
 Recent changes (owner, 2026-09-15).
@@ -1375,6 +1377,11 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-16 — Clarification: only the followed flag/bookmark icon should use
+  the primary color, rather than the whole button.
+
+- 2026-09-16 — Use the primary theme for the followed button state.
 
 - 2026-09-16 — Make created-at / updated-at labels and values visually distinct,
   for example using font color or size.

@@ -36,7 +36,7 @@ export function FollowButton({
         <TooltipTrigger render={<span className="inline-flex" />}>
           <Button
             type="button"
-            variant={summary?.following ? "secondary" : "outline"}
+            variant="outline"
             size="icon"
             aria-pressed={summary?.following ?? false}
             aria-busy={pending}
@@ -52,7 +52,10 @@ export function FollowButton({
               if (!store.snapshot().error) router.refresh();
             }}
           >
-            <Icon aria-hidden="true" />
+            <Icon
+              aria-hidden="true"
+              className={summary?.following ? "text-primary" : undefined}
+            />
           </Button>
         </TooltipTrigger>
         <TooltipContent>
