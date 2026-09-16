@@ -47,6 +47,8 @@ export const contentChanges = pgTable(
     heroSlug: text("hero_slug"),
     event: text("event").$type<ChangeEvent>().notNull(),
     fields: jsonb("fields").$type<ChangeField[]>().notNull(),
+    // Retain lineup privacy after deletion; never include this in history DTOs.
+    privateOwnerId: text("private_owner_id"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
@@ -506,7 +508,12 @@ export const lineups = pgTable("lineups", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   name: text("name").notNull(),
   description: text("description").notNull().default(""),
+  // Null keeps existing sharing rules; otherwise only this admin may read it.
+  privateOwnerId: text("private_owner_id"),
   createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
     .notNull()
     .defaultNow(),
 });

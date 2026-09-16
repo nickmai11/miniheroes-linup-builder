@@ -4,6 +4,7 @@ import { db, schema } from "@/db";
 import { getAdminId } from "@/lib/admin-access";
 import { getRegisteredDevice } from "@/lib/app-access";
 import { getPublicUrls } from "@/lib/public-urls";
+import { lineupPrivacyFilter } from "@/lib/lineup-privacy";
 import type { FollowedItem, FollowSummary, FollowTarget } from "./follow-types";
 
 export async function getFollowContext() {
@@ -12,6 +13,7 @@ export async function getFollowContext() {
     getRegisteredDevice(),
   ]);
   return {
+    adminId,
     key: adminId ? `admin:${adminId}` : device ? `device:${device.id}` : null,
     full: Boolean(adminId || device?.fullAccess),
     invited: device?.lineupIds ?? [],
@@ -57,7 +59,12 @@ export async function getFollowAccess(target: FollowTarget) {
       ? await db
           .select({ id: schema.lineups.id })
           .from(schema.lineups)
-          .where(eq(schema.lineups.id, target.id))
+          .where(
+            and(
+              eq(schema.lineups.id, target.id),
+              lineupPrivacyFilter(context.adminId),
+            ),
+          )
       : await db
           .select({ id: schema.heroes.id, slug: schema.heroes.slug })
           .from(schema.heroes)
@@ -115,7 +122,11 @@ export async function getFollowedItems(): Promise<FollowedItem[]> {
     .from(f)
     .leftJoin(
       schema.lineups,
-      and(eq(f.kind, "lineup"), eq(f.targetId, schema.lineups.id)),
+      and(
+        eq(f.kind, "lineup"),
+        eq(f.targetId, schema.lineups.id),
+        lineupPrivacyFilter(context.adminId),
+      ),
     )
     .leftJoin(
       schema.heroes,

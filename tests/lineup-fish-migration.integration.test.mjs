@@ -28,6 +28,7 @@ test(
     const schema = loadTypeScript("src/db/schema.ts");
     const db = drizzle(sql, { schema });
     const overrides = {
+      "@/lib/admin-access": { getAdminId: async () => "owner" },
       "server-only": {},
       "@/db": { db, schema },
       "@/lib/app-access": { requireAppAccess: async () => {} },

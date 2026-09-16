@@ -4,7 +4,7 @@ import { generateInvitationCode } from "@/lib/invitations";
 import { isSameOriginInvitationRequest } from "@/lib/invitation-policy";
 import { privateInvitationResponse } from "@/lib/invitation-cookie";
 import { db, schema } from "@/db";
-import { eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import { reportAccessError } from "@/lib/access-error";
 
 export async function POST(request: Request) {
@@ -46,7 +46,12 @@ export async function POST(request: Request) {
       const [lineup] = await db
         .select({ id: schema.lineups.id })
         .from(schema.lineups)
-        .where(eq(schema.lineups.id, lineupId))
+        .where(
+          and(
+            eq(schema.lineups.id, lineupId),
+            isNull(schema.lineups.privateOwnerId),
+          ),
+        )
         .limit(1);
       if (!lineup)
         return privateInvitationResponse(

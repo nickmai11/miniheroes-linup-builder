@@ -5,6 +5,7 @@ import { db, schema } from "@/db";
 import { getAdminId } from "@/lib/admin-access";
 import { getRegisteredDevice } from "@/lib/app-access";
 import { isPublicPage } from "@/lib/public-urls";
+import { lineupPrivacyFilter, visibleLineupFilter } from "@/lib/lineup-privacy";
 import type { VoteSummary, VoteTarget, VoteValue } from "@/lib/vote-types";
 
 /** Never trust the supplied page: verify both access and target membership. */
@@ -22,7 +23,12 @@ export async function getVoteAccess(target: VoteTarget) {
   const [exists] = await db
     .select({ id: table.id })
     .from(table)
-    .where(eq(table.id, target.id))
+    .where(
+      and(
+        eq(table.id, target.id),
+        target.kind === "lineup" ? lineupPrivacyFilter(adminId) : undefined,
+      ),
+    )
     .limit(1);
   if (!exists) return { allowed: false, voterKey: null };
   if (adminId || device?.fullAccess) return { allowed: true, voterKey };
@@ -38,6 +44,7 @@ export async function getVoteAccess(target: VoteTarget) {
           and(
             eq(schema.lineupHeroes.buildId, target.id),
             inArray(schema.lineupHeroes.lineupId, device.lineupIds),
+            visibleLineupFilter(schema.lineupHeroes.lineupId, adminId),
           ),
         )
         .limit(1);
@@ -93,6 +100,7 @@ export async function getVoteAccess(target: VoteTarget) {
       .where(
         and(
           eq(schema.lineupHeroes.buildId, target.id),
+          visibleLineupFilter(schema.lineupHeroes.lineupId, adminId),
           lineupMatch
             ? eq(schema.lineupHeroes.lineupId, Number(lineupMatch[1]))
             : undefined,

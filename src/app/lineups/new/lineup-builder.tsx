@@ -17,7 +17,14 @@ import type { AssignmentItem } from "@/components/lineup-assignments";
 import { HeroName, HeroPortrait } from "@/components/hero-portrait";
 import { RoleFilterGroup, type RoleFilter } from "@/components/role-filter";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { LineupVisibilityToggle } from "@/components/lineup-visibility";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -73,6 +80,7 @@ export function LineupBuilder({
   const slotTriggerRef = useRef<HTMLButtonElement | null>(null);
   const [activeSlot, setActiveSlot] = useState<number | null>(null);
   const [name, setName] = useState(initialDraft?.name ?? "");
+  const [isPrivate, setIsPrivate] = useState(initialDraft?.isPrivate ?? false);
   const [fishSelections, setFishSelections] = useState<FishSelection[]>(
     () => initialDraft?.fishSelections ?? [],
   );
@@ -150,6 +158,7 @@ export function LineupBuilder({
           id: initialDraft?.id,
           name,
           description,
+          isPrivate,
           fishSelections,
           slots,
         });
@@ -398,6 +407,13 @@ export function LineupBuilder({
       <Card>
         <CardHeader>
           <CardTitle>{t("Lineup details")}</CardTitle>
+          <CardAction>
+            <LineupVisibilityToggle
+              isPrivate={isPrivate}
+              onChange={setIsPrivate}
+              disabled={pending}
+            />
+          </CardAction>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">

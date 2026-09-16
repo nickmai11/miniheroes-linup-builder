@@ -603,6 +603,7 @@ test("API and action entry points check registration even without Proxy", async 
   );
   const overrides = {
     "@/db": { db: databaseTripwire, schema: databaseTripwire },
+    "@/lib/admin-access": { getAdminId: async () => "owner" },
     "@/db/schema": { LINEUP_SIZE: 5 },
     "@/lib/app-access": {
       hasAppAccess: async () => null,

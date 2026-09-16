@@ -31,6 +31,9 @@ test(
     let device = null;
     const invalidations = [];
     const overrides = {
+      "@/lib/admin-access": {
+        getAdminId: async () => (fullAccess ? "owner" : null),
+      },
       "@/db": { db, schema },
       "@/lib/app-access": {
         requireAppAccess: async () => {},
@@ -163,6 +166,18 @@ test(
         fishSelections: [{ fishId, quantity: 1 }],
       };
       const lineupId = await save(saveLineup, lineupInput, lineupIds);
+      const readLineup = async () =>
+        (
+          await db
+            .select()
+            .from(schema.lineups)
+            .where(eq(schema.lineups.id, lineupId))
+        )[0];
+      const createdLineup = await readLineup();
+      assert.equal(
+        createdLineup.updatedAt.getTime(),
+        createdLineup.createdAt.getTime(),
+      );
       const original = (await history("lineup", lineupId)).entries[0];
       assert.equal(original.event, "created");
       assert.match(
@@ -177,6 +192,12 @@ test(
         fishSelections: [{ fishId, quantity: 2 }],
       };
       await save(saveLineup, edited, lineupIds);
+      const editedLineup = await readLineup();
+      assert.equal(
+        editedLineup.createdAt.getTime(),
+        createdLineup.createdAt.getTime(),
+      );
+      assert.ok(editedLineup.updatedAt > createdLineup.updatedAt);
       const event = (await history("lineup", lineupId)).entries[0];
       assert.deepEqual(
         event.fields.map((field) => field.label),
@@ -189,6 +210,11 @@ test(
       });
       await save(saveLineup, edited, lineupIds);
       assert.equal((await history("lineup", lineupId)).entries.length, 2);
+      assert.equal(
+        (await readLineup()).updatedAt.getTime(),
+        editedLineup.updatedAt.getTime(),
+        "unchanged saves preserve updatedAt",
+      );
 
       failHistory = true;
       await assert.rejects(saveLineup({ ...edited, name: "Must roll back" }));
@@ -196,6 +222,11 @@ test(
         saveHeroBuild({ ...editedBuild, notes: "Must roll back" }),
       );
       failHistory = false;
+      assert.equal(
+        (await readLineup()).updatedAt.getTime(),
+        editedLineup.updatedAt.getTime(),
+        "failed writes roll back updatedAt",
+      );
       assert.equal(
         (
           await db
@@ -334,7 +365,12 @@ test(
       assert.equal(swap.selectionChanged, true);
       await save(saveLineup, edited, lineupIds);
 
+      const beforeBuildDelete = await readLineup();
       await deleteHeroBuild(buildId);
+      assert.ok(
+        (await readLineup()).updatedAt > beforeBuildDelete.updatedAt,
+        "clearing a deleted build updates its lineup timestamp",
+      );
       const cleared = (await history("lineup", lineupId)).entries[0];
       assert.equal(cleared.fields[0].label, "Slot 1");
       assert.ok(cleared.fields[0].before.includes(buildInput.name));

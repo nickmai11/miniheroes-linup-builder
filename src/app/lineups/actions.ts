@@ -2,7 +2,9 @@
 
 import { requireAppAccess } from "@/lib/app-access";
 
-import { eq, inArray, sql } from "drizzle-orm";
+import { and, eq, inArray, sql } from "drizzle-orm";
+import { getAdminId } from "@/lib/admin-access";
+import { lineupPrivacyFilter } from "@/lib/lineup-privacy";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db, schema } from "@/db";
@@ -20,12 +22,15 @@ export async function saveLineup(
   input: LineupInput,
 ): Promise<LineupActionState> {
   if (!(await canEditContent())) return { error: EDITING_ERROR };
+  const adminId = await getAdminId();
+  if (!adminId) return { error: EDITING_ERROR };
   await requireAppAccess();
   const parsed = lineupSchema.safeParse(input);
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Invalid lineup" };
   }
-  const { id, name, description, slots, fishSelections } = parsed.data;
+  const { id, name, description, slots, fishSelections, isPrivate } =
+    parsed.data;
   const fishIds = fishSelections.map((selection) => selection.fishId);
   const buildIds = slots.flatMap((slot) =>
     slot?.buildId ? [slot.buildId] : [],
@@ -104,12 +109,18 @@ export async function saveLineup(
 
   const lineup = await db.transaction(async (tx) => {
     await lockContentWrites(tx);
+    let privateOwnerId: string | null = isPrivate ? adminId : null;
     if (id !== undefined) {
-      await tx
-        .select({ id: schema.lineups.id })
+      const [existing] = await tx
+        .select({
+          id: schema.lineups.id,
+          privateOwnerId: schema.lineups.privateOwnerId,
+        })
         .from(schema.lineups)
-        .where(eq(schema.lineups.id, id))
+        .where(and(eq(schema.lineups.id, id), lineupPrivacyFilter(adminId)))
         .for("update");
+      if (!existing) return undefined;
+      if (isPrivate === undefined) privateOwnerId = existing.privateOwnerId;
     }
     const before = id === undefined ? null : await lineupSnapshot(tx, id);
     // Updating the parent also serializes concurrent saves of this lineup.
@@ -117,11 +128,11 @@ export async function saveLineup(
       id === undefined
         ? await tx
             .insert(schema.lineups)
-            .values({ name, description })
+            .values({ name, description, privateOwnerId })
             .returning({ id: schema.lineups.id })
         : await tx
             .update(schema.lineups)
-            .set({ name, description })
+            .set({ name, description, privateOwnerId })
             .where(eq(schema.lineups.id, id))
             .returning({ id: schema.lineups.id });
     if (!saved) return undefined;
@@ -214,14 +225,17 @@ export async function saveLineup(
 
 export async function deleteLineup(id: number) {
   await requireEditing();
+  const adminId = await getAdminId();
+  if (!adminId) throw new Error(EDITING_ERROR);
   await requireAppAccess();
   await db.transaction(async (tx) => {
     await lockContentWrites(tx);
-    await tx
+    const [existing] = await tx
       .select({ id: schema.lineups.id })
       .from(schema.lineups)
-      .where(eq(schema.lineups.id, id))
+      .where(and(eq(schema.lineups.id, id), lineupPrivacyFilter(adminId)))
       .for("update");
+    if (!existing) return;
     const before = await lineupSnapshot(tx, id);
     await tx.delete(schema.lineups).where(eq(schema.lineups.id, id));
     await recordChange(tx, "lineup", id, "deleted", before, null);
@@ -230,4 +244,40 @@ export async function deleteLineup(id: number) {
   revalidatePath("/");
   revalidatePath("/heroes/[slug]", "page");
   redirect("/lineups");
+}
+
+export async function setLineupVisibility(
+  id: number,
+  isPrivate: boolean,
+): Promise<LineupActionState> {
+  const adminId = await getAdminId();
+  if (!adminId) return { error: EDITING_ERROR };
+  if (!Number.isSafeInteger(id) || id <= 0 || typeof isPrivate !== "boolean")
+    return { error: "Invalid lineup" };
+  const saved = await db.transaction(async (tx) => {
+    await lockContentWrites(tx);
+    const [existing] = await tx
+      .select({ id: schema.lineups.id })
+      .from(schema.lineups)
+      .where(and(eq(schema.lineups.id, id), lineupPrivacyFilter(adminId)))
+      .for("update");
+    if (!existing) return false;
+    const before = await lineupSnapshot(tx, id);
+    await tx
+      .update(schema.lineups)
+      .set({ privateOwnerId: isPrivate ? adminId : null })
+      .where(eq(schema.lineups.id, id));
+    await recordChange(
+      tx,
+      "lineup",
+      id,
+      "updated",
+      before,
+      await lineupSnapshot(tx, id),
+    );
+    return true;
+  });
+  if (!saved) return { error: "This lineup no longer exists" };
+  revalidatePath("/", "layout");
+  return { id };
 }

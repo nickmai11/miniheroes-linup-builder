@@ -14,6 +14,8 @@ import { HeroPortrait } from "@/components/hero-portrait";
 import { LineupFishes } from "@/components/lineup-fishes";
 import { LineupAssignments } from "@/components/lineup-assignments";
 import { LineupShare } from "@/components/lineup-share";
+import { LineupVisibility } from "@/components/lineup-visibility";
+import { LineupTimestamps } from "@/components/lineup-timestamps";
 import { BuildPopover } from "@/components/build-popover";
 import { PageShell } from "@/components/page-shell";
 import { buttonVariants } from "@/components/ui/button";
@@ -37,7 +39,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function LineupsPage({
   searchParams,
 }: PageProps<"/lineups">) {
-  const { gameLabel, t, formatDate } = await getI18n();
+  const { gameLabel, t } = await getI18n();
 
   await requirePageAccess("/lineups");
   const sort = (await searchParams).sort === "likes" ? "likes" : "date";
@@ -88,19 +90,35 @@ export default async function LineupsPage({
           {lineups.map((lineup) => (
             <li key={lineup.id}>
               <Card>
-                <Link
-                  href={`/lineups/${lineup.id}`}
-                  className="hover:text-primary flex flex-col gap-4 transition-colors"
-                >
-                  <CardHeader>
-                    <CardTitle className="flex items-baseline justify-between gap-4">
-                      <span>{lineup.name}</span>
-                      <span className="text-muted-foreground text-xs font-normal">
-                        {formatDate(lineup.createdAt)}
-                      </span>
-                    </CardTitle>
-                  </CardHeader>
-                </Link>
+                <CardHeader className="gap-2">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <Link
+                      href={`/lineups/${lineup.id}`}
+                      className="hover:text-primary min-w-0 transition-colors"
+                    >
+                      <CardTitle className="wrap-break-word">
+                        {lineup.name}
+                      </CardTitle>
+                    </Link>
+                    <div className="flex shrink-0 items-start gap-2">
+                      <FollowButton
+                        kind="lineup"
+                        id={lineup.id}
+                        name={lineup.name}
+                      />
+                      {canEdit && (
+                        <LineupVisibility
+                          id={lineup.id}
+                          isPrivate={lineup.isPrivate}
+                        />
+                      )}
+                    </div>
+                  </div>
+                  <LineupTimestamps
+                    createdAt={lineup.createdAt}
+                    updatedAt={lineup.updatedAt}
+                  />
+                </CardHeader>
                 <CardContent className="flex flex-col gap-3">
                   <div className="grid max-w-sm grid-cols-5 gap-2">
                     {lineup.slots.map((hero, i) => (
@@ -144,11 +162,6 @@ export default async function LineupsPage({
                       name={lineup.name}
                     />
                   </div>
-                  <FollowButton
-                    kind="lineup"
-                    id={lineup.id}
-                    name={lineup.name}
-                  />
                   {canEdit && (
                     <Link
                       href={`/lineups/new?clone=${lineup.id}`}
@@ -158,7 +171,9 @@ export default async function LineupsPage({
                       <Copy data-icon="inline-start" /> {t("Clone")}
                     </Link>
                   )}
-                  <LineupShare lineupId={lineup.id} canInvite={canEdit} />
+                  {!lineup.isPrivate && (
+                    <LineupShare lineupId={lineup.id} canInvite={canEdit} />
+                  )}
                 </CardFooter>
               </Card>
             </li>

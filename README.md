@@ -118,6 +118,42 @@ unchanged.
 Run `pnpm test` (Node 22.6+), `pnpm typecheck`, and `pnpm lint` to check the policy
 and its protected entry points.
 
+## Lineup privacy
+
+Lineup cards and details show **Created at** and **Updated at** under the title.
+Follow and visibility controls sit at the top. Dates use the selected language
+and Asia/Ho_Chi_Minh timezone. Content edits, visibility changes, and removed
+build assignments update the timestamp atomically with history; unchanged saves,
+views, votes, and follows do not. Existing timestamps are backfilled from the
+latest recorded lineup change, falling back to the creation date. Migration
+`0034_lineup_timestamps.sql` was applied to the configured database on 2026-09-16.
+
+Admins can click the **eye / crossed-out-eye icon** on lineup cards, on the
+detail page, or in the editor to show or hide a lineup. The eye means visible;
+the crossed-out eye means **Private — only me**. Public keeps the existing invitation and Public
+URLs rules; this setting does not automatically publish a page to the internet.
+Private lineups belong to the admin account that hides them. Other admins,
+registered devices, scoped invitations, and published URLs cannot override it.
+Existing lineups keep their current visibility. Clones retain the source privacy.
+
+Privacy applies to lineup lists and pages, metadata, hero previews, votes,
+follows, artwork granted through a lineup, and current or deleted-lineup history.
+The Share control is unavailable for private lineups. Making a lineup public
+again restores its existing sharing rules. Previously loaded content cannot be
+removed from another visitor's browser.
+
+Migration `0033_lineup_privacy.sql` adds the private account columns to lineups
+and retained history, plus a column-level history update grant. It was applied
+to the configured database on 2026-09-16 using the documented transaction-pooler
+fallback. Deploy the updated app to enforce privacy on the hosted site.
+Run the privacy integration check against a disposable
+database:
+
+```bash
+PRIVACY_TEST_DATABASE_URL=postgres://vote_test@127.0.0.1:55443/votes_test \
+  node --experimental-strip-types --test tests/lineup-privacy.integration.test.mjs
+```
+
 ## Following lineups and heroes
 
 Use **Follow** on a hero or saved lineup. Home lists followed items and offers a

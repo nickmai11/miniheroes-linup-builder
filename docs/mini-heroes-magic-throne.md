@@ -1260,7 +1260,16 @@ the earlier fishing collectibles sheet must not be imported as fishes.
 
 ### Lineups (game)
 
+Lineups need a public/private option. A hidden/private lineup is visible only
+to the owner's signed-in account (owner, 2026-09-16).
+Use an eye / crossed-out-eye icon to toggle visibility, and keep the existing
+invitation requirement for public lineups (owner clarification, 2026-09-16).
+Follow and visibility controls belong at the top of lineups. Show both creation
+and last-update timestamps on lineups (owner, 2026-09-16).
+
 Visitors can follow lineups and heroes (owner, 2026-09-15).
+The Follow button should be smaller (owner, 2026-09-16); it uses a compact
+bookmark icon with its label on hover, matching the visibility control's size.
 
 Saved lineups and hero builds have change history, and the home page shows
 Recent changes (owner, 2026-09-15).
@@ -1362,6 +1371,17 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-16 — The Follow button is too big; make it smaller.
+
+- 2026-09-16 — Move Follow/hide controls to the top and display created-at and
+  updated-at timestamps for lineups.
+
+- 2026-09-16 — Simplify lineup visibility to an eye / crossed-out-eye icon;
+  public lineups keep the existing invitation requirement.
+
+- 2026-09-16 — Add public/private options for lineups; hidden lineups are visible
+  only to the owner.
 
 - 2026-09-15 — Add following for lineups and heroes.
 
@@ -1775,6 +1795,30 @@ is said. These override anything marked (web).
   13. This is a review, not an import.
 
 ## How the app models it
+
+- Lineup headers show `created_at` and `updated_at` in the selected locale and
+  Asia/Ho_Chi_Minh timezone. Follow and visibility controls are at the top of
+  cards and details. Actual lineup changes advance `updated_at` atomically with
+  history, including visibility and deleted-build assignment changes. No-op
+  saves and failed writes preserve the timestamp. Migration
+  `0034_lineup_timestamps.sql` backfills existing rows from their latest recorded
+  lineup change or creation date. Applied to the configured database on
+  2026-09-16 after migration and timestamp integration checks.
+
+- Lineup privacy uses a nullable `lineups.private_owner_id`: null preserves the
+  existing invitation/Public URLs audience; otherwise only that verified admin
+  account can read or modify the lineup. Public/private controls are available
+  on the list, details, and editor. Existing rows remain unchanged in visibility;
+  clones preserve privacy, and older editor payloads cannot clear it by omission.
+  All lineup reads, hero references/previews, reactions, follows, and artwork
+  granted through a lineup enforce the same privacy rule. Share controls and
+  invitation generation are disabled for hidden lineups. History inherits the
+  latest privacy in `content_changes.private_owner_id`, retained after deletion.
+  Visibility changes are recorded atomically in history without account IDs in
+  the response. Migration `0033_lineup_privacy.sql` adds both nullable columns
+  and permits the app role to update only the history privacy column.
+  Applied to the configured database on 2026-09-16 using the documented
+  transactional migration fallback after verification on a disposable database.
 
 - `content_follows` stores personal lineup/hero subscriptions per registered
   device or verified admin account, with one row per target and follower.

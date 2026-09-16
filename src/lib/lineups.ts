@@ -1,5 +1,7 @@
 import { cache } from "react";
-import { asc, eq, inArray, sql } from "drizzle-orm";
+import { and, asc, eq, inArray, sql } from "drizzle-orm";
+import { getAdminId } from "@/lib/admin-access";
+import { lineupPrivacyFilter } from "@/lib/lineup-privacy";
 import { db, schema } from "@/db";
 import type { Fish, Hero, Lineup, Pet, Relic } from "@/db/schema";
 import type { HeroBuild } from "@/lib/build-types";
@@ -19,7 +21,8 @@ export type LineupHeroWithAssignments = HeroWithDivinities & {
 
 export type LineupFish = Fish & { quantity: number };
 
-export type LineupWithHeroes = Lineup & {
+export type LineupWithHeroes = Omit<Lineup, "privateOwnerId"> & {
+  isPrivate: boolean;
   fishes: LineupFish[];
   /** Slot index -> hero (missing slots are null). */
   slots: (LineupHeroWithAssignments | null)[];
@@ -138,7 +141,13 @@ async function assemble(
         };
       }
     }
-    return { ...l, slots, fishes: fishesByLineup.get(l.id) ?? [] };
+    const { privateOwnerId, ...lineup } = l;
+    return {
+      ...lineup,
+      isPrivate: privateOwnerId !== null,
+      slots,
+      fishes: fishesByLineup.get(l.id) ?? [],
+    };
   });
 }
 
@@ -168,7 +177,10 @@ export async function getAllLineups(
     .select()
     .from(schema.lineups)
     .where(
-      lineupIds === null ? undefined : inArray(schema.lineups.id, lineupIds),
+      and(
+        lineupPrivacyFilter(await getAdminId()),
+        lineupIds === null ? undefined : inArray(schema.lineups.id, lineupIds),
+      ),
     )
     .orderBy(...lineupOrder(sort));
   const slotRows = await loadSlots(lineupRows.map((l) => l.id));
@@ -182,7 +194,9 @@ export const getLineup = cache(async function getLineup(
   const lineupRows = await db
     .select()
     .from(schema.lineups)
-    .where(eq(schema.lineups.id, id));
+    .where(
+      and(eq(schema.lineups.id, id), lineupPrivacyFilter(await getAdminId())),
+    );
   if (lineupRows.length === 0) return undefined;
   const slotRows = await loadSlots([id]);
   return (await assemble(lineupRows, slotRows))[0];

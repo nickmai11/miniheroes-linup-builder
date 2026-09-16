@@ -14,6 +14,8 @@ export const lineupSchema = z
     id: z.number().int().positive().optional(),
     name: z.string().trim().min(1, "Give the lineup a name").max(120),
     description: z.string().trim().max(5000).default(""),
+    // Omitted by an older client: preserve existing privacy on updates.
+    isPrivate: z.boolean().optional(),
     // Accept drafts from the earlier picker as one copy per fish.
     fishIds: z
       .array(z.number().int().positive())

@@ -4,15 +4,20 @@ import { db, schema } from "@/db";
 import { getRegisteredDevice, hasAppAccess } from "@/lib/app-access";
 import type { ChangeKind, ChangePage } from "./change-types";
 import { getFollowContext } from "@/lib/follows";
+import { getAdminId } from "@/lib/admin-access";
+import { lineupPrivacyFilter, visibleLineupFilter } from "@/lib/lineup-privacy";
 
 /** Sharing the home or a hero page does not publish private lineup history. */
 async function visibility() {
+  const adminId = await getAdminId();
   const full = await hasAppAccess();
   const device = full ? null : await getRegisteredDevice();
   const invited = device?.lineupIds ?? [];
   const published = (path: SQL) =>
     sql`exists (select 1 from ${schema.publicUrls} p where p.path = ${path})`;
-  const lineupAllowed = (id: SQL) => sql`(
+  const lineupAllowed = (
+    id: SQL,
+  ) => sql`(${visibleLineupFilter(id, adminId)} and (
     ${
       invited.length
         ? sql`${id} in (${sql.join(
@@ -21,7 +26,7 @@ async function visibility() {
           )})`
         : sql`false`
     }
-    or ${published(sql`'/lineups'`)} or ${published(sql`'/lineups/' || ${id}`)})`;
+    or ${published(sql`'/lineups'`)} or ${published(sql`'/lineups/' || ${id}`)}))`;
   const lineupHref = (id: SQL) => sql`case when ${full}
     or ${
       invited.length
@@ -35,7 +40,7 @@ async function visibility() {
   const buildAllowed = sql`(${published(sql`'/heroes/' || ${schema.heroes.slug}`)} or exists (
     select 1 from ${schema.lineupHeroes} a where a.build_id = ${schema.heroBuilds.id}
     and ${lineupAllowed(sql`a.lineup_id`)}))`;
-  const allowed = full
+  const audienceAllowed = full
     ? undefined
     : or(
         and(
@@ -57,7 +62,12 @@ async function visibility() {
         where a.build_id = ${schema.heroBuilds.id} and ${lineupAllowed(sql`a.lineup_id`)} order by a.lineup_id limit 1)
       end
     else null end`;
-  return { allowed, href, full, invited, lineupAllowed, buildAllowed };
+  const allowed = and(
+    audienceAllowed,
+    lineupPrivacyFilter(adminId, schema.contentChanges.privateOwnerId),
+    lineupPrivacyFilter(adminId),
+  );
+  return { allowed, href, full, invited, lineupAllowed, buildAllowed, adminId };
 }
 
 async function readChanges(
@@ -113,6 +123,7 @@ export async function getChangeHistory(
           .where(
             and(
               eq(schema.lineups.id, id),
+              lineupPrivacyFilter(access.adminId),
               access.full
                 ? undefined
                 : access.lineupAllowed(sql`${schema.lineups.id}`),

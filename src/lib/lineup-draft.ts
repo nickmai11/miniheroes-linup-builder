@@ -6,6 +6,7 @@ export type LineupDraft = {
   id?: number;
   name: string;
   description: string;
+  isPrivate: boolean;
   fishSelections: FishSelection[];
   slots: LineupSlotInput[];
 };
@@ -22,6 +23,7 @@ export function createLineupDraft(
       ? `${lineup.name.slice(0, 120 - suffix.length)}${suffix}`
       : lineup.name,
     description: lineup.description,
+    isPrivate: lineup.isPrivate,
     fishSelections: lineup.fishes.map((fish) => ({
       fishId: fish.id,
       quantity: fish.quantity,

@@ -1,5 +1,5 @@
 import "server-only";
-import { sql } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { db, schema } from "@/db";
 import {
   changedFields,
@@ -14,6 +14,7 @@ type Snapshot = {
   heroSlug?: string;
   fields: Record<string, string>;
   identity: Record<string, unknown>;
+  privateOwnerId?: string | null;
 };
 
 /** Coordinate saved-content writes, including build deletion's lineup side effects. */
@@ -29,11 +30,12 @@ export async function lineupSnapshot(
   const [row] = await tx.execute<{
     name: string;
     description: string;
+    privateOwnerId: string | null;
     slots: Record<string, string>;
     fishes: string;
     identity: Record<string, unknown>;
   }>(sql`
-    select l.name, l.description,
+    select l.name, l.description, l.private_owner_id as "privateOwnerId",
       coalesce((select jsonb_object_agg('Slot ' || (lh.position + 1), jsonb_build_array(lh.hero_id, lh.build_id,
         (select jsonb_agg(a.pet_id order by a.sort_order, a.id) from lineup_hero_pets a where a.lineup_hero_id = lh.id),
         (select jsonb_agg(a.relic_id order by a.sort_order, a.id) from lineup_hero_relics a where a.lineup_hero_id = lh.id)))
@@ -55,10 +57,12 @@ export async function lineupSnapshot(
   if (!row) return null;
   return {
     name: row.name,
+    privateOwnerId: row.privateOwnerId,
     identity: row.identity,
     fields: {
       Name: row.name,
       Notes: row.description,
+      Visibility: row.privateOwnerId ? "Private" : "Public",
       ...Object.fromEntries(
         Array.from({ length: 5 }, (_, i) => [
           `Slot ${i + 1}`,
@@ -128,6 +132,18 @@ export async function recordChange(
 ) {
   const snapshot = after ?? before;
   if (!snapshot) return;
+  // All history follows the lineup's latest privacy, including after deletion.
+  if (kind === "lineup") {
+    await tx
+      .update(schema.contentChanges)
+      .set({ privateOwnerId: snapshot.privateOwnerId ?? null })
+      .where(
+        and(
+          eq(schema.contentChanges.kind, kind),
+          eq(schema.contentChanges.targetId, targetId),
+        ),
+      );
+  }
   const fields = changedFields(
     before?.fields ?? null,
     after?.fields ?? null,
@@ -135,6 +151,14 @@ export async function recordChange(
     after?.identity,
   );
   if (event === "updated" && fields.length === 0) return;
+  // Includes indirect edits such as clearing a deleted build from a slot.
+  // Reads, reactions, and unchanged saves never move the timestamp.
+  if (kind === "lineup" && event === "updated") {
+    await tx
+      .update(schema.lineups)
+      .set({ updatedAt: sql`clock_timestamp()` })
+      .where(eq(schema.lineups.id, targetId));
+  }
   await tx.insert(schema.contentChanges).values({
     kind,
     targetId,
@@ -143,5 +167,6 @@ export async function recordChange(
     heroName: snapshot.heroName,
     heroSlug: snapshot.heroSlug,
     fields,
+    privateOwnerId: snapshot.privateOwnerId ?? null,
   });
 }

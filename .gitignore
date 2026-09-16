@@ -49,3 +49,4 @@ next-env.d.ts
 
 # Compiled helpers and bytecode from scripts/
 scripts/__pycache__/
+*.mov

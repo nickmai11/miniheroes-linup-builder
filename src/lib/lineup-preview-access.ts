@@ -1,7 +1,9 @@
 import "server-only";
 
-import { eq, inArray } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 import { db, schema } from "@/db";
+import { getAdminId } from "@/lib/admin-access";
+import { visibleLineupFilter } from "@/lib/lineup-privacy";
 
 /** Only lineups listed for this hero and independently readable by the visitor. */
 export async function heroLineupPreviewIds(
@@ -13,7 +15,12 @@ export async function heroLineupPreviewIds(
     .selectDistinct({ id: schema.lineupHeroes.lineupId })
     .from(schema.lineupHeroes)
     .innerJoin(schema.heroes, eq(schema.heroes.id, schema.lineupHeroes.heroId))
-    .where(eq(schema.heroes.slug, heroSlug));
+    .where(
+      and(
+        eq(schema.heroes.slug, heroSlug),
+        visibleLineupFilter(schema.lineupHeroes.lineupId, await getAdminId()),
+      ),
+    );
   const ids = rows.map((row) => row.id);
   if (fullAccess || !ids.length) return ids;
   const published = await db

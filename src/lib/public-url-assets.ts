@@ -1,5 +1,6 @@
 import "server-only";
-import { eq, inArray } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
+import { visibleLineupFilter } from "@/lib/lineup-privacy";
 import { db, schema } from "@/db";
 import { heroSeeds } from "@/data/heroes";
 import { heroDetailSeeds } from "@/data/hero-details";
@@ -102,11 +103,14 @@ export async function isPublicPageAsset(
     column:
       typeof schema.lineupHeroes.lineupId | typeof schema.lineupFishes.lineupId,
   ) =>
-    lineupId !== null
-      ? eq(column, lineupId)
-      : allowedLineupIds
-        ? inArray(column, allowedLineupIds)
-        : undefined;
+    and(
+      visibleLineupFilter(column, null),
+      lineupId !== null
+        ? eq(column, lineupId)
+        : allowedLineupIds
+          ? inArray(column, allowedLineupIds)
+          : undefined,
+    );
   if (
     lineupId !== null &&
     (!Number.isSafeInteger(lineupId) || lineupId > 2147483647)

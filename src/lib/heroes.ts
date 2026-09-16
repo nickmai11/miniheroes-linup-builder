@@ -1,7 +1,9 @@
 import "server-only";
 import { createHash } from "node:crypto";
 import { cache } from "react";
-import { asc, eq, inArray } from "drizzle-orm";
+import { and, asc, eq, inArray } from "drizzle-orm";
+import { getAdminId } from "@/lib/admin-access";
+import { lineupPrivacyFilter } from "@/lib/lineup-privacy";
 import { db, schema } from "@/db";
 import { heroDetailSeeds, type HeroAwakeningSkill } from "@/data/hero-details";
 import { heroSeeds } from "@/data/heroes";
@@ -386,7 +388,12 @@ export const getHeroDetail = cache(
             schema.lineups,
             eq(schema.lineupHeroes.lineupId, schema.lineups.id),
           )
-          .where(eq(schema.lineupHeroes.heroId, hero.id))
+          .where(
+            and(
+              eq(schema.lineupHeroes.heroId, hero.id),
+              lineupPrivacyFilter(await getAdminId()),
+            ),
+          )
           .orderBy(...lineupOrder()),
       ]);
     return {

@@ -54,6 +54,7 @@ function serverModules(nodeEnv, requestHeaders, admin = false) {
   );
   const overrides = {
     "server-only": {},
+    "@/lib/admin-access": { getAdminId: async () => (admin ? "owner" : null) },
     "@/lib/app-access": {
       requireAppAccess: async () => {},
       hasAppAccess: async () => ({ id: 1 }),
@@ -139,6 +140,7 @@ for (const [name, nodeEnv, requestHeaders] of [
     await assert.rejects(access.requireEditing(), { message: deniedMessage });
     for (const result of [
       await lineups.saveLineup({}),
+      await lineups.setLineupVisibility(1, true),
       await builds.saveHeroBuild({}),
       await builds.saveHeroBuild({ id: 1 }),
       await builds.importHeroBuild({}),

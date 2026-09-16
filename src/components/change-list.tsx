@@ -92,7 +92,11 @@ export function ChangeList({
                             {t("Before")}
                           </p>
                           <p className="wrap-break-word whitespace-pre-wrap">
-                            {field.before ?? t("None")}
+                            {field.before === null
+                              ? t("None")
+                              : field.label === "Visibility"
+                                ? t(field.before)
+                                : field.before}
                           </p>
                         </div>
                         <div className="min-w-0">
@@ -100,7 +104,11 @@ export function ChangeList({
                             {t("After")}
                           </p>
                           <p className="wrap-break-word whitespace-pre-wrap">
-                            {field.after ?? t("None")}
+                            {field.after === null
+                              ? t("None")
+                              : field.label === "Visibility"
+                                ? t(field.after)
+                                : field.after}
                           </p>
                         </div>
                       </dd>

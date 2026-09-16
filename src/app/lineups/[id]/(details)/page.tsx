@@ -13,6 +13,8 @@ import { LineupFishes } from "@/components/lineup-fishes";
 import { LineupAssignments } from "@/components/lineup-assignments";
 import { BuildPopover } from "@/components/build-popover";
 import { LineupShare } from "@/components/lineup-share";
+import { LineupVisibility } from "@/components/lineup-visibility";
+import { LineupTimestamps } from "@/components/lineup-timestamps";
 import { PageShell } from "@/components/page-shell";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -37,7 +39,7 @@ export async function generateMetadata(
 }
 
 export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
-  const { gameLabel, t, formatDate } = await getI18n();
+  const { gameLabel, t } = await getI18n();
 
   const { id } = await props.params;
   await requirePageAccess(`/lineups/${id}`);
@@ -53,15 +55,27 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
   return (
     <PageShell
       title={lineup.name}
-      description={t("Saved {date}", {
-        date: formatDate(lineup.createdAt, true),
-      })}
-      actions={<LineupShare lineupId={lineup.id} canInvite={canEdit} />}
+      description={
+        <LineupTimestamps
+          createdAt={lineup.createdAt}
+          updatedAt={lineup.updatedAt}
+        />
+      }
+      actions={
+        <div className="flex flex-wrap items-start gap-2">
+          <FollowButton kind="lineup" id={lineup.id} name={lineup.name} />
+          {canEdit && (
+            <LineupVisibility id={lineup.id} isPrivate={lineup.isPrivate} />
+          )}
+          {!lineup.isPrivate && (
+            <LineupShare lineupId={lineup.id} canInvite={canEdit} />
+          )}
+        </div>
+      }
       width="max-w-4xl"
     >
       <div className="flex flex-wrap items-start gap-2">
         <ContentVotes kind="lineup" id={lineup.id} name={lineup.name} />
-        <FollowButton kind="lineup" id={lineup.id} name={lineup.name} />
       </div>
       {canEdit && (
         <div className="flex min-w-0 flex-wrap items-start gap-2">

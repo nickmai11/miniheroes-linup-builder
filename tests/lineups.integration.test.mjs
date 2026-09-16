@@ -39,6 +39,7 @@ test(
     });
     const invalidated = [];
     const actions = loadTypeScript("src/app/lineups/actions.ts", {
+      "@/lib/admin-access": { getAdminId: async () => "owner" },
       "@/db": { db, schema },
       "@/lib/app-access": { requireAppAccess: async () => {} },
       "@/lib/editing": {
@@ -53,6 +54,7 @@ test(
       },
     });
     const { getLineup, getAllLineups } = loadTypeScript("src/lib/lineups.ts", {
+      "@/lib/admin-access": { getAdminId: async () => "owner" },
       "server-only": {},
       "@/db": { db, schema },
       "./heroes": {
