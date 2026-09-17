@@ -2,7 +2,7 @@ import { getI18n } from "@/lib/i18n/server";
 import { requirePageAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
 import { PageShell } from "@/components/page-shell";
-import { getHeroesWithDetails } from "@/lib/heroes";
+import { getHeroCatalog } from "@/lib/heroes";
 import { HeroPool } from "../hero-pool";
 
 export const dynamic = "force-dynamic";
@@ -16,7 +16,7 @@ export default async function HeroesPage() {
   const { t } = await getI18n();
 
   await requirePageAccess();
-  const heroes = await getHeroesWithDetails();
+  const heroes = await getHeroCatalog();
   return (
     <PageShell title={t("Heroes")}>
       <HeroPool heroes={heroes} />

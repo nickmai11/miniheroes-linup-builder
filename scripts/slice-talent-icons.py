@@ -40,6 +40,96 @@ S14PM = lambda t: f"Screenshot 2026-09-14 at {t}{NB}PM.png"
 # hero slug -> {"popups": [(file, talent name), ...],
 #               "artifact": Artifact tab, "artifact_popup": the artifact's ability list}
 LAYOUT = {
+    "nether-soul": {
+        "popups": [
+            ('../heroes/Nether Soul/Ultimate.png', "Samsara's End"),
+            ('../heroes/Nether Soul/skill1.png', 'Doom Hammer'),
+            ('../heroes/Nether Soul/Skill2.png', 'Nether Suppression'),
+            ('../heroes/Nether Soul/Skill3.png', 'Soul Choke'),
+            ('../heroes/Nether Soul/Skill4.png', 'Iron Body'),
+            ('../heroes/Nether Soul/Skill5.png', 'Soul Reaping'),
+        ],
+        "talent_icons": {
+            "Samsara's End": {"box": (104, 248, 183, 327), "inset": 10},
+            'Doom Hammer': {"box": (94, 238, 175, 319), "inset": 10},
+            'Nether Suppression': {"box": (92, 239, 173, 320), "inset": 10},
+            'Soul Choke': {"box": (96, 233, 177, 314), "inset": 10},
+            'Iron Body': {"box": (94, 249, 175, 330), "inset": 10},
+            'Soul Reaping': {"box": (96, 262, 177, 343), "inset": 10},
+        },
+        "artifact": "../heroes/Nether Soul/Artifact Overview.png",
+        "artifact_box": (176, 186, 390, 402),
+        "artifact_corner_radius": 6,
+        "artifact_popup": None,
+    },
+    "nightmare-source": {
+        "popups": [
+            ('../heroes/Nightmare Source/Ultimate.png', 'Demonic Claw'),
+            ('../heroes/Nightmare Source/Skill1.png', 'Brain Sap'),
+            ('../heroes/Nightmare Source/Skill2.png', 'Enhanced Claw'),
+            ('../heroes/Nightmare Source/Skill3.png', 'Nightmare'),
+            ('../heroes/Nightmare Source/Skill4.png', 'Dark Blood'),
+            ('../heroes/Nightmare Source/Skill5.png', 'Endless Fear'),
+        ],
+        "talent_icons": {
+            'Demonic Claw': {"box": (92, 258, 173, 339), "inset": 10},
+            'Brain Sap': {"box": (94, 247, 175, 328), "inset": 10},
+            'Enhanced Claw': {"box": (91, 244, 171, 324), "inset": 10},
+            'Nightmare': {"box": (89, 240, 170, 321), "inset": 10},
+            'Dark Blood': {"box": (88, 247, 169, 328), "inset": 10},
+            'Endless Fear': {"box": (92, 245, 174, 327), "inset": 10},
+        },
+        "artifact": "../heroes/Nightmare Source/Artifact Overview.png",
+        "artifact_box": (156, 173, 381, 400),
+        "artifact_corner_radius": 6,
+        "artifact_popup": None,
+    },
+    "panda-warrior": {
+        "popups": [
+            ('../heroes/Panda Warrior/Ultimate.png', 'Mega Beast'),
+            ('../heroes/Panda Warrior/Skill1.png', 'Fury Swipes'),
+            ('../heroes/Panda Warrior/Skill2.png', 'Beast Power'),
+            ('../heroes/Panda Warrior/Skill3.png', 'Earthquake'),
+            ('../heroes/Panda Warrior/Skill4.png', 'Beast Heart'),
+            ('../heroes/Panda Warrior/Skill5.png', 'Beast Strike'),
+        ],
+        "talent_icons": {
+            'Mega Beast': {"box": (90, 249, 171, 330), "inset": 10},
+            'Fury Swipes': {"box": (86, 234, 168, 316), "inset": 10},
+            'Beast Power': {"box": (90, 245, 173, 328), "inset": 10},
+            'Earthquake': {"box": (94, 247, 177, 330), "inset": 10},
+            'Beast Heart': {"box": (84, 247, 165, 328), "inset": 10},
+            'Beast Strike': {"box": (86, 232, 167, 313), "inset": 10},
+        },
+        "artifact": "../heroes/Panda Warrior/Artifact Overview.png",
+        "artifact_box": (150, 175, 381, 382),
+        "artifact_corner_radius": 6,
+        "artifact_popup": None,
+    },
+    "dreamstar-spirit": {
+        # The owner supplied this batch under heroes/ at a different scale.
+        "popups": [
+            ("../heroes/Dreamstar Spirit/3.png", "Night Lullaby"),
+            ("../heroes/Dreamstar Spirit/5.png", "Vortex Seed"),
+            ("../heroes/Dreamstar Spirit/6.png", "Dream Echo"),
+            ("../heroes/Dreamstar Spirit/7.png", "Blossom Whip"),
+            ("../heroes/image1.png", "Petal Whirl"),
+            ("../heroes/Dreamstar Spirit/9.png", "Slumber Garden"),
+        ],
+        "talent_icons": {
+            "Night Lullaby": {"box": (66, 258, 146, 338), "inset": 10},
+            "Vortex Seed": {"box": (72, 246, 150, 324), "inset": 10},
+            "Dream Echo": {"box": (56, 140, 134, 218), "inset": 10},
+            "Blossom Whip": {"box": (50, 238, 130, 318), "inset": 10},
+            "Petal Whirl": {"box": (56, 256, 138, 338), "inset": 10},
+            "Slumber Garden": {"box": (54, 141, 133, 220), "inset": 10},
+        },
+        "artifact": "../heroes/Dreamstar Spirit/1.png",
+        "artifact_box": (36, 75, 161, 195),
+        "artifact_corner_radius": 0,
+        # Reuse the existing shared icons; this popup has different geometry.
+        "artifact_popup": None,
+    },
     "swordmaster": {
         "popups": [
             (S14PM("12.58.31"), "Infernal Oni Slash"),
@@ -1126,7 +1216,8 @@ def main():
     tier_written = set(os.listdir(icons_dir))
     for hero, cfg in LAYOUT.items():
         needed = [f for f, _ in cfg["popups"]] + [cfg["artifact"]]
-        needed.extend(icon["source"] for icon in cfg.get("talent_icons", {}).values())
+        needed.extend(icon["source"] for icon in cfg.get("talent_icons", {}).values()
+                      if "source" in icon)
         if cfg["artifact_popup"]:
             needed.append(cfg["artifact_popup"])
         if any(not os.path.exists(os.path.join(SRC, f)) for f in needed):

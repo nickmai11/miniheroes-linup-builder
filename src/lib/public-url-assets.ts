@@ -4,6 +4,7 @@ import { visibleLineupFilter } from "@/lib/lineup-privacy";
 import { db, schema } from "@/db";
 import { heroSeeds } from "@/data/heroes";
 import { heroDetailSeeds } from "@/data/hero-details";
+import { UNRELEASED_HERO_SLUGS } from "@/data/hero-release-status";
 import { divinitySeeds } from "@/data/divinities";
 import { fishSeeds } from "@/data/fishes";
 import { baitSeeds } from "@/data/baits";
@@ -54,9 +55,9 @@ export async function isPublicPageAsset(
   )
     return false;
   if (page === "/heroes") {
-    return Object.keys(heroDetailSeeds).some((slug) =>
-      heroAssets(slug, false, true).has(asset),
-    );
+    return [
+      ...new Set([...Object.keys(heroDetailSeeds), ...UNRELEASED_HERO_SLUGS]),
+    ].some((slug) => heroAssets(slug, false, true).has(asset));
   }
   const hero = page.match(/^\/heroes\/([a-z0-9-]+)$/);
   if (hero) {

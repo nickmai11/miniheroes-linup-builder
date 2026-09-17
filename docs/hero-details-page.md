@@ -18,9 +18,13 @@ English names in seeds and the database so talent links, core matching, and seed
 fingerprints remain stable. Add corresponding keys to `game-en.json` and
 `game-vi.json` when importing new names. Descriptions remain source transcriptions.
 
-Hero listings (the hero pool, lineup picker, and divinity hero lists) show only
-heroes with an entry in `heroDetailSeeds`. Partly recorded heroes remain visible;
-adding a detail entry automatically makes a hero eligible for these lists.
+The Heroes catalog has Released / Unreleased tabs, defaulting to Released.
+Dreamstar Spirit, Nether Soul, Nightmare Source, and Panda Warrior are Unreleased
+(owner, 2026-09-17). Search and class filters apply within the selected tab.
+The catalog includes these four roster entries even while detail imports are
+pending. Lineup pickers and divinity hero lists still require an entry in
+`heroDetailSeeds`. Partly recorded heroes remain visible; adding a detail entry
+automatically makes a hero eligible for these lists.
 Saved lineup slots and direct hero lookups retain the full roster.
 
 Hero portraits display a build-availability indicator whenever the hero has at
@@ -372,6 +376,39 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
 - [ ] Owner-stated facts logged the same turn they were said
 
 ## 6. Known gaps
+
+- **Nether Soul, Nightmare Source, and Panda Warrior (September 17):** all three
+  now have six talents, all four artifact tiers, two ordered mythic divinities,
+  and talent/artifact images. Nether Soul and Panda Warrior have four linked
+  cores and guide-translated I/III, with source paths and provisional translated
+  names. Nightmare Source still needs its **fourth core** (scroll down the
+  Brain Sap popup beyond the Epic/Eternal bonuses) and **Awakening I/III**.
+  Nightmare Source's Eternal Brain Sap bonus is attached and appears in both
+  Talents and Artifacts; Nether Soul's Indestructible Body and Panda Warrior's
+  Feral Armor are standalone. Nether Soul's portrait patch is repaired and
+  cache version is 6; shared catalog image access includes unreleased entries.
+
+- **Dreamstar Spirit (September 17):** six talents, four linked cores, all four
+  Nightstar Cup abilities, and seven screenshot-derived talent/artifact images
+  are recorded from `gameplay/heroes/`. Eternal **Panicwood** is standalone;
+  the Legend **Blossom Lash** text links to **Blossom Whip**, and Resonance
+  Pendant's **Slumbering Flowerbed** text links to **Slumber Garden**.
+  The follow-up `Dreamstar Spirit/Profile.png` supplies the whole Archive card,
+  now cropped through the portrait pipeline with the progress diamond removed.
+  `artifact overview.png` confirms **Healing Effect / Anti-CRIT Rate** in
+  left/right order; both positional links are recorded.
+  **Awakening I (18★), Stardust Bloom, and III (22★), Dream-Filled Branches,**
+  are now translated from the owner-approved Chinese guide `CN.jpg`. This
+  supersedes the earlier instruction to wait for in-game screenshots. Both
+  retain the guide source; English/Vietnamese names are app translations,
+  pending confirmation of localized game wording. All required detail fields
+  are recorded with this approved guide exception.
+  The overview's talent list follows the normal progression; its captures do
+  not display star labels. The Archive card spells “Dreamerstar Spirit”, while
+  the overview/popups and existing name/slug retain “Dreamstar Spirit”.
+  Vietnamese names are display translations, pending actual in-game labels.
+  The overwritten original `gameplay/heroes/image.png` Archive image is preserved
+  byte-for-byte from Git as `archive-mythic-warriors.png` for existing portraits.
 
 - **Swordmaster (September 14, 12.58 PM):** all non-awakening details are
   recorded. Only **Awakening I (18★) and III (22★)** remain missing; supply

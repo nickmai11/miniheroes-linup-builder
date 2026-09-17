@@ -31,7 +31,7 @@ the in-game **Archive** screen:
 | Rarity | Card background | Count |
 | ------ | --------------- | ----- |
 | Eternal | cyan/blue-to-purple gradient | 2 |
-| Mythic | red             | 40    |
+| Mythic | red             | 44    |
 | Legend | gold            | 14    |
 | Epic   | purple          | 11    |
 
@@ -42,6 +42,12 @@ Hero portraits show an indicator when that hero has at least one saved build
 (owner, 2026-09-14). This indicates build availability for the hero, independent
 of whether a build is assigned to a particular lineup slot.
 The hero catalog is labeled **Heroes** in the UI (owner, 2026-09-15).
+The catalog has **Released** and **Unreleased** tabs, defaulting to Released
+(owner, 2026-09-17). Dreamstar Spirit, Nether Soul, Nightmare Source, and Panda
+Warrior belong to Unreleased. Search and class filters apply within the selected
+tab. Release status is maintained in `src/data/hero-release-status.ts`, separately
+from rarity and detail coverage. The catalog includes these four even when their
+detail import is pending; existing lineup/detail listing rules are preserved.
 In the hero pool, heroes with at least one saved build appear first (owner,
 2026-09-14). Within each group, sort by rarity (Eternal, Mythic, Legend, Epic),
 then class (Warrior, Marksman, Mage, Support), then name; rarity precedes class
@@ -53,7 +59,7 @@ noticeable against the hero artwork (owner, 2026-09-14).
 Hovering it shows a styled tooltip rather than a native HTML title
 (owner, 2026-09-14).
 
-Roster as of 2026-09-14 (67 heroes) — see the table at the end of this file. The
+Roster as of 2026-09-17 (71 heroes) — see the table at the end of this file. The
 seed data lives in `src/data/heroes.ts`. The September 14 follow-up Archive
 capture `gameplay/heroes/image copy 9.png` shows an **Eternal 2/2** section:
 **Hellscream (Warrior)** and **Dark Queen (Marksman)**. This establishes two
@@ -63,6 +69,22 @@ and portrait pipeline support Eternal. Their owner-supplied Archive cards supply
 the whole colored art panels; the portrait pipeline removes their bottom-left
 artifact-progress diamonds. Do not substitute Mythic or Epic for the displayed
 Eternal rarity.
+
+The September 17 Dreamstar Spirit overview adds one **Mythic Support**, bringing
+the roster to **68**. The follow-up `Dreamstar Spirit/Profile.png` supplies its
+whole Archive card;
+the portrait pipeline removes the artifact-progress diamond. The other 67
+portraits are unchanged. The Archive label spells the name “Dreamerstar Spirit”;
+the overview and talent popups use “Dreamstar Spirit”, retained as the existing
+name and stable `dreamstar-spirit` slug.
+The additional unreleased Archive cards add **Nether Soul (Mythic Warrior)**,
+**Nightmare Source (Mythic Support)**, and **Panda Warrior (Mythic Warrior)**,
+bringing the roster to **71**. Their `Profile.png` sources are recorded in the
+portrait pipeline, with whole colored panels and artifact-progress diamonds
+removed. All three now have their supplied talents, artifact abilities, cores,
+and divinities imported. Nether Soul and Panda Warrior also have guide-translated
+I/III, applying the requested Chinese-guide translation approach. Nightmare
+Source still needs its fourth core and Awakening I/III sources.
 
 ### Hero details (owner-defined, 2026-09-12)
 
@@ -104,6 +126,161 @@ Hero Awaken screen; I and III for Sea Captain and Nezha were supplied in
 `gameplay/talents/` on 2026-09-13.
 
 ### Talents, artifact and cores (game, 2026-09-12)
+
+#### Nether Soul, Nightmare Source, and Panda Warrior (owner screenshots, 2026-09-17)
+
+Source folders: `gameplay/heroes/Nether Soul/`, `Nightmare Source/`, and
+`Panda Warrior/`. Each supplies six talent popups with the normal clockwise
+0★/2★/5★/8★/12★/16★ order, an Artifact Overview, and ability popups. Their
+roster-only pages are now populated. Runes screenshots show no owner-selected
+build to import. All three remain Unreleased.
+
+| Hero | Talents in unlock order | Artifact | Bottom red divinities, left / right |
+| --- | --- | --- | --- |
+| Nether Soul | Samsara's End; Doom Hammer; Nether Suppression; Soul Choke; Iron Body; Soul Reaping | Nightfall Axe | HP / Knockback Resist |
+| Nightmare Source | Demonic Claw; Brain Sap; Enhanced Claw; Nightmare; Dark Blood; Endless Fear | Slumber Staff | Melee DMG Reduction / Healing Effect |
+| Panda Warrior | Mega Beast; Fury Swipes; Beast Power; Earthquake; Beast Heart; Beast Strike | Rending Claws | Physical RES / Anti-CRIT Rate |
+
+Each has Ultimate / Battle / Enhance / Special / Passive / Enhance kinds.
+Full descriptions and exact numeric values are preserved in `heroDetailSeeds`.
+All 18 talent images come from original unscrolled popup headers through explicit
+crop overrides in `scripts/slice-talent-icons.py`; artifacts come from each
+Artifact Overview without progress stars. The two red badges match the existing
+owner-sourced divinity catalog.
+
+- **Nether Soul:** all four cores. `Ulltimate-1.png` completes Blade of Valor:
+  extra Physical DMG 250%(750%) ATK and Attack Speed reduction 20%(60%). Its
+  “Reincarnation Realm” alias links to **Samsara's End**. “Soul Strangle” in
+  Brawler's Armor links to **Soul Choke**. Epic Soul Choke, Legend Doom Hammer,
+  and Mythic Samsara's End are talent-attached; Eternal **Indestructible Body**
+  is standalone. `Artifact Details2.png` completes it: at the first own/ally
+  hero HP drop below 45%, all allies receive a shield worth 13% of Nether Soul's
+  max HP, converting absorbed damage to their own HP, unaffected by Heavy Injury,
+  for 6s. Preserve the supplied wording rather than inferring repeated triggers.
+- **Nightmare Source:** Crystal Staff → Demonic Claw (20%(60%) ATK extra
+  Magic DMG), Luminous Visor → Nightmare (damage received +5%(15%)), and
+  Resonance Pendant → Endless Fear (Energy Regen SPD reduction +3%(10%)).
+  `Ultimate-1.png` completes Crystal Staff. `Skill1.png` shows Brain Sap plus
+  its Epic and Eternal bonuses, ending before any fourth core; supply a lower
+  scroll of that popup. Do not invent the missing core's name/effect. All four
+  artifact bonuses are talent-attached: Epic/Eternal Brain Sap, Legend Nightmare,
+  Mythic Demonic Claw. The Eternal bonus must appear in both Talents and Artifacts.
+- **Panda Warrior:** all four cores; Mega Beast / Fury Swipes / Earthquake /
+  Beast Strike link to Blade of Valor / Cavalier Helm / Brawler's Armor /
+  Brawler's Boots. Epic Earthquake, Legend Mega Beast, and Mythic Fury Swipes
+  are attached; Eternal **Feral Armor** is standalone. It grants 50% DMG
+  Reduction and Control RES decaying over 40s, with another 10% DMG Reduction
+  per allied hero death, up to four stacks.
+
+Applying the owner's requested Chinese-guide translation approach, the first
+and third **unique skill** entries in `Nether Soul/CN.png` and
+`Panda Warrior/CN.jpg` are recorded at 18★/22★. These are guide translations,
+not verified English in-game names. The second/fourth entries are explicitly
+Warrior common skills and are excluded from hero-specific data.
+
+| Hero | Stage | Chinese name / translated label | Translation |
+| --- | --- | --- | --- |
+| Nether Soul | I | 灵魂巫术 / Soul Witchcraft | Doom Hammer or Soul Choke has a 35% chance to restore 30% of own lost HP and grant 15% Ranged DMG Reduction for 6s; 8s cooldown. |
+| Nether Soul | III | 黑暗光环 / Dark Aura | On battle entry, an aura surrounds the caster's feet; own MOV SPD +10%, with 1% Max HP damage each second to enemies inside, capped at 50% of own ATK. The guide does not explicitly identify whose Max HP; preserve that ambiguity. |
+| Panda Warrior | I | 命令光环 / Command Aura | On entry, own and nearby allies' ATK +10%; self gains 20 Energy per second. |
+| Panda Warrior | III | 激怒 / Enrage | On entry, own ATK increases by an amount equal to 0.6% of own Max HP. |
+
+Nightmare Source has no supplied awakening guide or in-game I/III panels.
+
+**Nether Soul portrait repair:** the generic rectangular diamond-removal patch
+copied nearby armor over the lower-left corner of this smaller card. A dedicated
+`GEM_PATCHES` entry now masks only the diamond using clean red background from
+the same Archive panel. The full colored panel and surrounding armor are kept.
+Its image changed, so `ASSET_VERSION` is bumped from 5 to 6.
+The shared-page catalog artwork policy also previously checked only detail-seeded
+heroes, while the Unreleased catalog included roster-only entries. Its allowlist
+now uses the same detail-seed/unreleased union, permitting those portraits and
+class badges without exposing detail art from the catalog or unrelated pages.
+
+Verification: all three imports were synchronized and read back through
+`getHeroDetail`/`syncHeroDetail`. Every talent description, core link, artifact
+bonus/link, ordered divinity, and recorded awakening matches the seed; unchanged
+repeat syncs skip writes and preserve core IDs. Isolated rendering of the actual
+hero pages verified descriptions, awakening stages, version-6 portrait references,
+and bonus placement, including Nightmare Source's Eternal Brain Sap under both
+Talents and Artifacts. All 21 new talent/artifact crops and the repaired portrait
+were visually checked; only Nether Soul's existing PNG changed. Typecheck and
+diff checks passed; tests report **303 passed, 15 skipped**. Lint retains the
+existing unused `buttonVariants` warning. The portrait-access regression test
+covers all four unreleased roster entries even with no detail seeds, while
+continuing to deny detail images from the catalog and unrelated pages. Local
+routes still require an invited session; authenticated HTTP/image responses and
+interactive browser checks remain unverified.
+
+#### Dreamstar Spirit (owner screenshots, 2026-09-17)
+
+`gameplay/heroes/image.png`, `1.png`–`9.png`, and `image1.png` show
+**Dreamstar Spirit**, **Mythic Support**, with artifact **Nightstar Cup**.
+The overview uses a two-column talent list, in the same progression order as
+the existing talent model: ultimate, then 2★/5★/8★/12★/16★. The captures do not
+show the unlock stars themselves.
+
+| Talent | Kind | Core | Artifact bonus |
+| --- | --- | --- | --- |
+| Night Lullaby | Ultimate Skill | Crystal Staff: Healing +100%(300%) ATK | Mythic: sleeping enemies' DMG Reduction, Physical RES, Magic RES, Ranged DMG Reduct, and Melee DMG Reduct −15% for 5s; waking enemies take 200% of Dreamstar's ATK as Magic DMG |
+| Vortex Seed | Battle Skill | Tome of Radiance: trigger chance +5%(15%); stun duration +0.3(1)s | Epic: Magic DMG +150% |
+| Dream Echo | Enhance | — | — |
+| Blossom Whip | Special Skill | Luminous Visor: first cast interval −2(6)s; True DMG +20%(60%) of ATK | Legend: on cast, heal all melee allies for 200% of Dreamstar Spirit's ATK |
+| Petal Whirl | Passive | — | — |
+| Slumber Garden | Enhance | Resonance Pendant: after waking, enemies' damage dealt −7%(21%) for 6 seconds | — |
+
+Nightstar Cup's Eternal ability is standalone **Panicwood**: enters battle;
+after 4s, smashes the ground for 200% ATK as Magic DMG to all enemies, knocking
+them back and reducing HP Regen by 1.5% and Healing Effect by 40% for 8s;
+13s cooldown, at most three times per battle. `2.png` completes this ability.
+`4.png` completes Crystal Staff and `8.png` completes Luminous Visor.
+The artifact/core text calls **Blossom Whip** “Blossom Lash” and
+**Slumber Garden** “Slumbering Flowerbed”; preserve those descriptions but
+link to the popup titles. `image1.png` supplies Petal Whirl.
+`image copy 10.png` and `image copy 11.png` identify the red divinities as
+**Healing Effect** and **Anti-CRIT Rate**. The follow-up
+`Dreamstar Spirit/artifact overview.png` establishes that same left/right order
+by matching the bottom red badges to the catalog. `Dreamstar Spirit/Profile.png`
+supplies the Archive portrait. The folder's `1.png`–`9.png` agree with the
+previous talent/core/artifact transcriptions. `Runes.png` has empty rune slots
+and does not specify a build. `CN.jpg` is a Chinese guide, separate from the
+verified in-game sources. The owner subsequently authorized translating
+Awakening I/III from this guide (2026-09-17), superseding the earlier decision
+to wait for in-game screenshots. Both are recorded with guide provenance;
+the English names are translations, not verified English game labels.
+
+The new overview replaced the old `gameplay/heroes/image.png` Archive source.
+Keep the original Archive bytes from Git under a distinct filename when
+updating the portrait pipeline; never overwrite the owner's new capture.
+Those bytes are preserved as `gameplay/heroes/archive-mythic-warriors.png`.
+`scripts/slice-hero-cards.py` records Dreamstar Spirit's Archive card in `LAYOUT`
+and generates its portrait, complete roster, and SQL. The detail seed now links
+Healing Effect / Anti-CRIT Rate in confirmed left/right order.
+All seven talent/artifact crops were visually checked; existing public images
+remain byte-identical. Vietnamese names are app display translations rather
+than verified Vietnamese in-game wording.
+
+The initial Dreamstar Spirit import was synchronized and read back from the configured database on
+2026-09-17 using the existing roster seeding and `getHeroDetail`/`syncHeroDetail`
+flow: six talents, four correctly linked cores, and four artifact tiers match
+the seed; a second unchanged sync performs no writes. Isolated rendering of the
+actual hero page verified the descriptions, core previews, three attached bonuses
+in both sections, standalone Panicwood only in Artifacts, initials portrait, and
+I/III empty states at 18★/22★. All seven new PNGs are valid. Typecheck and diff
+checks passed; lint has one pre-existing unused `buttonVariants` warning in
+`src/components/lineup-popover.tsx`; tests report **294 passed, 15 skipped**.
+The local page redirects to the invitation screen and the artifact image returns
+401 without a session, so authenticated HTTP rendering/image access and browser
+interaction remain unverified. No access settings were changed.
+
+The September 17 follow-up synchronized the new portrait and both ordered
+divinity links to the configured database. All four core IDs were preserved;
+a second unchanged detail sync skipped writes. The portrait was visually
+checked, and every previously existing PNG remained byte-identical. Typecheck
+and diff checks passed again; tests remain **294 passed, 15 skipped**, with the
+same existing lint warning. The local page still redirects to `/invite`, and
+the new portrait returns 401 without a session; authenticated rendering and
+image responses remain unverified.
 
 **Talent tab.** Six talents: the **Ultimate Skill** in the centre and five in a
 ring. Kinds seen: Ultimate Skill, Special Skill, Battle Skill, Enhance, Attribute,
@@ -1100,6 +1277,35 @@ data/display is not implemented yet. II and other classes' IV remain unrecorded.
 Thrall's III is inactive in the screenshot, but its full description is visible.
 The game spells his name "Thal" in that description; the transcription preserves it.
 
+#### Dreamstar Spirit awakening reference (owner-approved Chinese guide)
+
+On 2026-09-17 the owner authorized translating `gameplay/heroes/Dreamstar Spirit/CN.jpg`
+after initially asking to wait for in-game screenshots. Its first and third
+entries are marked 独立技能 (unique skill), corresponding to I and III; the
+second and fourth are 辅助通用技能 (Support common skills) and are not imported
+as hero-specific awakenings. Preserve the guide path as the source.
+
+- **I (18★), 星尘绽放 — Stardust Bloom:** Whenever an enemy hero dies
+  (excluding summoned units), increases own HP Regen per second by 2.5% until
+  the end of battle. Stacks up to 3 times. The guide does not explicitly name
+  a max-HP basis; do not add one.
+- **III (22★), 梦满枝 — Dream-Filled Branches:** Vortex Seed, Blossom Whip,
+  and Panicwood also apply Dream Dust when they deal damage to enemies.
+  Dream Dust's duration can be refreshed, but the effect does not stack.
+  Chinese references 流涡种 / 飞花挞 / 惊惶木 map to those existing recorded
+  abilities; 梦尘 is Dream Dust.
+
+English and Vietnamese names are app translations, not verified localized
+in-game names. The owner-approved guide completes recorded I/III coverage;
+English Hero Awaken panels can later confirm wording.
+The translated stages were verified through `getHeroDetail`; awakening data is
+read from the versioned file and needs no database write. The same follow-up
+verified all four unreleased heroes and their portraits through `getHeroCatalog`.
+The tab markup/default Released view passed server-render checks in English and
+Vietnamese. Typecheck passed; tests report **296 passed, 15 skipped**; lint retains
+the existing unused `buttonVariants` warning. Authenticated browser interaction
+remains unverified because the local routes require an invited session.
+
 #### Radiant Envoy awakening reference (owner-approved MR-UK guide)
 
 `gameplay/talents/image.png` is an MR-UK compendium excerpt, not a Hero Awaken
@@ -1457,6 +1663,50 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-17 — Supplied Nether Soul / Nightmare Source / Panda Warrior screenshots
+  establish their six talents, all four artifact tiers, and HP/Knockback Resist,
+  Melee DMG Reduction/Healing Effect, and Physical RES/Anti-CRIT Rate divinities
+  respectively. Nether Soul and Panda Warrior have four complete cores;
+  Nightmare Source has three visible cores. The Chinese guides supply Nether
+  Soul and Panda Warrior I/III translations under the requested guide approach;
+  Nightmare Source has no awakening source. Exact sources and aliases are above.
+
+- 2026-09-17 — Reported missing hero details and a broken Nether Soul portrait.
+  Import the supplied details for Nether Soul, Nightmare Source, and Panda
+  Warrior, and repair Nether Soul's portrait using its owner-supplied Archive card.
+
+- 2026-09-17 — Add Released / Unreleased tabs to the Heroes catalog. The four
+  new heroes — Dreamstar Spirit (also labeled Dreamerstar Spirit), Nether Soul,
+  Nightmare Source, and Panda Warrior — are unreleased.
+
+- 2026-09-17 — Subsequently authorized translating Dreamstar Spirit's
+  Awakening I/III from `gameplay/heroes/Dreamstar Spirit/CN.jpg`, superseding
+  the earlier request to wait for in-game screenshots. The guide's first/third
+  unique skills are 星尘绽放 / 梦满枝, translated as Stardust Bloom /
+  Dream-Filled Branches. I grants 2.5% HP Regen per second per enemy hero death
+  (excluding summons), until battle ends, up to three stacks. III lets Vortex
+  Seed, Blossom Whip, and Panicwood apply Dream Dust on damage; its duration
+  refreshes without stacking. Translated names are not verified English game labels.
+
+- 2026-09-17 — Keep Dreamstar Spirit's Awakening I (18★) and III (22★)
+  pending in-game screenshots. Do not use the supplied Chinese guide
+  `gameplay/heroes/Dreamstar Spirit/CN.jpg` to fill those stages.
+
+- 2026-09-17 — Authorized updating Dreamerstar Spirit's missing pieces from
+  `gameplay/heroes/Dreamstar Spirit/`. `Profile.png` supplies the Mythic Support
+  Archive card (label spelling “Dreamerstar Spirit”); `artifact overview.png`
+  confirms Healing Effect left / Anti-CRIT Rate right. The talent popups retain
+  “Dreamstar Spirit” and agree with the existing descriptions. The stable slug
+  and talent/core links are preserved. `CN.jpg` is a Chinese guide; no in-game
+  Awakening I/III panels are supplied. `Runes.png` shows no selected runes.
+
+- 2026-09-17 — Supplied Dreamstar Spirit's Mythic Support overview, six talent
+  popups, all four Nightstar Cup abilities, four complete cores, and Healing
+  Effect / Anti-CRIT Rate divinity popups in `gameplay/heroes/`. Blossom Lash
+  refers to the Blossom Whip talent; Slumbering Flowerbed refers to Slumber
+  Garden. The scrolls complete Crystal Staff, Luminous Visor, and standalone
+  Eternal Panicwood. Archive portrait, divinity order, and I/III remain missing.
 
 - 2026-09-17 — Review fish screenshots, including older captures, and add
   their highest records to the fish data.
@@ -2410,6 +2660,10 @@ a CATALOG name never seen, fails the run: add the row (or the screenshot) and re
 | Little Goblin        | Mage     | Epic   | `little-goblin`        |
 | Arcane Saint         | Support  | Mythic | `arcane-saint`         |
 | Dark Shaman          | Support  | Mythic | `dark-shaman`          |
+| Dreamstar Spirit     | Support  | Mythic | `dreamstar-spirit`     |
+| Nether Soul          | Warrior  | Mythic | `nether-soul`          |
+| Nightmare Source     | Support  | Mythic | `nightmare-source`     |
+| Panda Warrior        | Warrior  | Mythic | `panda-warrior`        |
 | Holy Healer          | Support  | Mythic | `holy-healer`          |
 | Lady Pan             | Support  | Mythic | `lady-pan`             |
 | Necromancer          | Support  | Mythic | `necromancer`          |

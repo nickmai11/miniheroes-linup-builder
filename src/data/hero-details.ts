@@ -61,6 +61,476 @@ export type HeroDetailSeed = {
 const talent = (hero: string, slug: string) => `/talents/${hero}/${slug}.png`;
 
 export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
+  // September 17 owner screenshots in gameplay/heroes/<hero>/.
+  // Nether Soul/Panda Warrior I/III are Chinese-guide translations, not English game labels.
+  "nether-soul": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Soul Witchcraft",
+        description:
+          "Casting Doom Hammer or Soul Choke has a 35% chance to immediately restore 30% of own lost HP and increase own Ranged DMG Reduction by 15% for 6s. Cooldown: 8s.",
+        sourceScreenshot: "../heroes/Nether Soul/CN.png",
+      },
+      {
+        stage: "III",
+        name: "Dark Aura",
+        description:
+          "After entering battle, a dark aura surrounds the caster's feet, increasing own MOV SPD by 10% and dealing damage equal to 1% of Max HP per second to enemies inside the aura (up to 50% of own ATK).",
+        sourceScreenshot: "../heroes/Nether Soul/CN.png",
+      },
+    ],
+    artifact: {
+      name: "Nightfall Axe",
+      iconUrl: "/artifacts/nether-soul.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Soul Choke",
+          description:
+            'When casting "Soul Choke", own Melee DMG Boost +15% for 6s.',
+        },
+        {
+          tier: "gold",
+          skill: "Doom Hammer",
+          description: '"Doom Hammer" cooldown -3s.',
+        },
+        {
+          tier: "red",
+          skill: "Samsara's End",
+          description:
+            "\"Samsara's End\" summons a Death Domain on cast, increasing all allies' True DMG Reduction by 35% (only vs True DMG) and reducing all enemies' damage by 13%. Lasts 8s and cannot be dispelled.",
+        },
+        {
+          tier: "rainbow",
+          name: "Indestructible Body",
+          description:
+            "[New] \"Indestructible Body\" When own or any ally hero's HP first drops below 45%, grant all allies a shield that absorbs damage equal to 13% of Nether Soul's max HP and converts it to their own HP (unaffected by Heavy Injury), lasting 6s.",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Samsara's End",
+        unlockStars: 0,
+        iconUrl: "/talents/nether-soul/samsara-s-end.png",
+        description:
+          "Lock on to 1 random enemy hero(es) (ranged first), dealing physical DMG equal to 1000% ATK and applying Samsara Mark for 4s. Samsara Mark steals 20% of target's DEF (max 20% of own DEF) and reduces target's DMG Result by 15%. (Stolen effect cannot be dispelled.)",
+      },
+      {
+        kind: "battle",
+        name: "Doom Hammer",
+        unlockStars: 2,
+        iconUrl: "/talents/nether-soul/doom-hammer.png",
+        description:
+          "Every 9s, swing a giant axe phantom forward and smash the ground, dealing physical DMG equal to 380% ATK to the frontmost enemy and enemies in a range behind it, knocking them back. If it hits only 1 enemy(ies), deal 2x damage.",
+      },
+      {
+        kind: "enhance",
+        name: "Nether Suppression",
+        unlockStars: 5,
+        iconUrl: "/talents/nether-soul/nether-suppression.png",
+        description: "Samsara's End physical DMG +250%",
+      },
+      {
+        kind: "special",
+        name: "Soul Choke",
+        unlockStars: 8,
+        iconUrl: "/talents/nether-soul/soul-choke.png",
+        description:
+          "Every 11s, claw enemies in front, dealing physical DMG equal to 300% ATK and binding them for 1.5s. Bound targets cannot move or attack, and their Healing Effect received is reduced by 35% for 5s.",
+      },
+      {
+        kind: "passive",
+        name: "Iron Body",
+        unlockStars: 12,
+        iconUrl: "/talents/nether-soul/iron-body.png",
+        description: "ATK increased by 10%, HP increased by 15%",
+      },
+      {
+        kind: "enhance",
+        name: "Soul Reaping",
+        unlockStars: 16,
+        iconUrl: "/talents/nether-soul/soul-reaping.png",
+        description:
+          "Samsara's End Samsara Mark duration +2s. While Marked, additionally steal 15% of target's ATK (max 30% of own ATK). If the target dies while Marked, Nether Soul restores 15% of max HP.",
+      },
+    ],
+    cores: [
+      {
+        name: "Blade of Valor",
+        skill: "Samsara's End",
+        description:
+          '"Reincarnation Realm" additionally deals Physical DMG equal to 250%(750%) of ATK, and Reincarnation Mark additionally reduces the target\'s Attack Speed by 20%(60%)',
+      },
+      {
+        name: "Cavalier Helm",
+        skill: "Doom Hammer",
+        description:
+          '"Doom Hammer" additionally deals Physical DMG equal to 130%(390%) of ATK',
+      },
+      {
+        name: "Brawler's Armor",
+        skill: "Soul Choke",
+        description:
+          '"Soul Strangle" first cast interval reduced by 2(6)s, bind duration increased by 0.3(1)s',
+      },
+      {
+        name: "Brawler's Boots",
+        skill: "Soul Reaping",
+        description:
+          '"Soul Reaping" When the target dies while the mark is active, Nether Soul additionally restores 5%(15%) of Max HP',
+      },
+    ],
+    divinities: ["hp", "knockback-resist"],
+  },
+  "nightmare-source": {
+    artifact: {
+      name: "Slumber Staff",
+      iconUrl: "/artifacts/nightmare-source.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Brain Sap",
+          description:
+            "[Brain Sap] additionally drains 2.5% of the target's Max HP (up to a maximum of 50% of Nightmare Source's ATK)",
+        },
+        {
+          tier: "gold",
+          skill: "Nightmare",
+          description:
+            "[Nightmare]: Enemies afflicted by Nightmare lose 30 Energy per second",
+        },
+        {
+          tier: "red",
+          skill: "Demonic Claw",
+          description:
+            "[Demonic Claw]: Damage dealt is converted to True DMG, drains 40 Energy from the target per second, and reduces healing received by the target by 50%",
+        },
+        {
+          tier: "rainbow",
+          skill: "Brain Sap",
+          description:
+            "[Brain Sap] cooldown reduced by 3s, and additionally targets 1 more enemies ahead",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Demonic Claw",
+        unlockStars: 0,
+        iconUrl: "/talents/nightmare-source/demonic-claw.png",
+        description:
+          "Summons a demonic claw to randomly seize an enemy hero (prioritizing Ranged heroes) for 4s, immobilizing them and dealing Magic DMG equal to 85% of Attack each second. (Undispellable)",
+      },
+      {
+        kind: "battle",
+        name: "Brain Sap",
+        unlockStars: 2,
+        iconUrl: "/talents/nightmare-source/brain-sap.png",
+        description:
+          "Every 10s, drains 11% of Max HP from the foremost enemy (up to a maximum of 200% of Nightmare Source's Attack)",
+      },
+      {
+        kind: "enhance",
+        name: "Enhanced Claw",
+        unlockStars: 5,
+        iconUrl: "/talents/nightmare-source/enhanced-claw.png",
+        description: "Magic DMG dealt by Demonic Claw is increased by 35%",
+      },
+      {
+        kind: "special",
+        name: "Nightmare",
+        unlockStars: 8,
+        iconUrl: "/talents/nightmare-source/nightmare.png",
+        description:
+          "6s after battle starts, randomly puts an enemy hero to sleep. While asleep, the target takes 20% increased DMG for 3s, CD: 11s",
+      },
+      {
+        kind: "passive",
+        name: "Dark Blood",
+        unlockStars: 12,
+        iconUrl: "/talents/nightmare-source/dark-blood.png",
+        description: "ATK increased by 10%, HP increased by 15%",
+      },
+      {
+        kind: "enhance",
+        name: "Endless Fear",
+        unlockStars: 16,
+        iconUrl: "/talents/nightmare-source/endless-fear.png",
+        description:
+          "Demonic Claw duration increased by 1s. Upon casting Demonic Claw, reduces all enemies' Energy Regen SPD by 10% for 5s",
+      },
+    ],
+    cores: [
+      {
+        name: "Crystal Staff",
+        skill: "Demonic Claw",
+        description:
+          "[Demonic Claw] deals additional Magic DMG equal to 20%(60%) of ATK",
+      },
+      {
+        name: "Luminous Visor",
+        skill: "Nightmare",
+        description:
+          "[Nightmare] increases the damage the target receives while asleep by an additional 5%(15%)",
+      },
+      {
+        name: "Resonance Pendant",
+        skill: "Endless Fear",
+        description:
+          "[Endless Fear] All enemies' Energy Regen SPD is additionally reduced by 3%(10%)",
+      },
+    ],
+    divinities: ["melee-dmg-reduction", "healing-effect"],
+  },
+  "panda-warrior": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Command Aura",
+        description:
+          "After entering battle, increases own ATK and the ATK of nearby allies by 10%, and restores 20 Energy to self every second.",
+        sourceScreenshot: "../heroes/Panda Warrior/CN.jpg",
+      },
+      {
+        stage: "III",
+        name: "Enrage",
+        description:
+          "After entering battle, increases own ATK by an amount equal to 0.6% of own Max HP.",
+        sourceScreenshot: "../heroes/Panda Warrior/CN.jpg",
+      },
+    ],
+    artifact: {
+      name: "Rending Claws",
+      iconUrl: "/artifacts/panda-warrior.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Earthquake",
+          description: "[Earthquake] Hit targets' ATK SPD -15% for 4s",
+        },
+        {
+          tier: "gold",
+          skill: "Mega Beast",
+          description: "[Mega Beast] Phantom beast ATK count +1",
+        },
+        {
+          tier: "red",
+          skill: "Fury Swipes",
+          description: "[Fury Swipes]: Increasing their DMG Result by 6%",
+        },
+        {
+          tier: "rainbow",
+          name: "Feral Armor",
+          description:
+            "[New] [Feral Armor] After entering battle, grants 50% DMG Reduction and 50% Control RES. This effect decays over 40s. Each time an ally hero dies, gains an additional 10% DMG Reduction, stacking up to 4 times",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Mega Beast",
+        unlockStars: 0,
+        iconUrl: "/talents/panda-warrior/mega-beast.png",
+        description:
+          "Panda Warrior clears all debuffs and summons a phantom beast to strike the front 1 enemies 5 times. Each strike deals Physical DMG equal to 270% ATK and triggers a Knockback Effect",
+      },
+      {
+        kind: "battle",
+        name: "Fury Swipes",
+        unlockStars: 2,
+        iconUrl: "/talents/panda-warrior/fury-swipes.png",
+        description:
+          "Each Basic ATK inflicts 1 stacks of Fury Swipes: increasing their DMG Result from Panda Warrior's next attack by 4% (includes skills). This effect is undispellable and stacks up to 10 times",
+      },
+      {
+        kind: "enhance",
+        name: "Beast Power",
+        unlockStars: 5,
+        iconUrl: "/talents/panda-warrior/beast-power.png",
+        description: "Mega Beast: Increase Physical DMG dealt by 70%",
+      },
+      {
+        kind: "special",
+        name: "Earthquake",
+        unlockStars: 8,
+        iconUrl: "/talents/panda-warrior/earthquake.png",
+        description:
+          "6s after battle starts, Panda Warrior slams the ground, dealing Physical DMG equal to 500% ATK to nearby enemies with a Knockback Effect and reducing their MOV SPD by 15% for 4s. CD: 11s",
+      },
+      {
+        kind: "passive",
+        name: "Beast Heart",
+        unlockStars: 12,
+        iconUrl: "/talents/panda-warrior/beast-heart.png",
+        description: "ATK increased by 10%, HP increased by 15%",
+      },
+      {
+        kind: "enhance",
+        name: "Beast Strike",
+        unlockStars: 16,
+        iconUrl: "/talents/panda-warrior/beast-strike.png",
+        description:
+          "Mega Beast: Panda Warrior heals for 25% of DMG dealt by the phantom beast; each hit also inflicts 1 stacks of Fury Swipes",
+      },
+    ],
+    cores: [
+      {
+        name: "Blade of Valor",
+        skill: "Mega Beast",
+        description:
+          "[Mega Beast] Phantom beast deals 50%(150%) ATK Physical DMG per hit.",
+      },
+      {
+        name: "Cavalier Helm",
+        skill: "Fury Swipes",
+        description: "[Fury Swipes] Max stacks increase by 2(6)",
+      },
+      {
+        name: "Brawler's Armor",
+        skill: "Earthquake",
+        description: "[Earthquake] Skill AoE increased by 20%(60%)",
+      },
+      {
+        name: "Brawler's Boots",
+        skill: "Beast Strike",
+        description:
+          "[Beast Strike] DMG to HP conversion effect increase by 6%(18%)",
+      },
+    ],
+    divinities: ["physical-res", "anti-crit-rate"],
+  },
+  // September 17 owner screenshots in gameplay/heroes/: 1.png–9.png,
+  // image.png and image1.png; Dreamstar Spirit/ supplies the Archive card and
+  // Artifact tab follow-ups. I/III use the owner-approved Chinese guide.
+  "dreamstar-spirit": {
+    // Owner-approved CN.jpg translation (2026-09-17), not English game labels.
+    // The first/third entries are unique skills; the second/fourth are Support-wide.
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Stardust Bloom",
+        description:
+          "Whenever an enemy hero dies (excluding summoned units), increases own HP Regen per second by 2.5% until the end of battle. Stacks up to 3 times.",
+        sourceScreenshot: "../heroes/Dreamstar Spirit/CN.jpg",
+      },
+      {
+        stage: "III",
+        name: "Dream-Filled Branches",
+        description:
+          "Vortex Seed, Blossom Whip, and Panicwood also apply Dream Dust when they deal damage to enemies. Dream Dust's duration can be refreshed, but the effect does not stack.",
+        sourceScreenshot: "../heroes/Dreamstar Spirit/CN.jpg",
+      },
+    ],
+    artifact: {
+      name: "Nightstar Cup",
+      iconUrl: "/artifacts/dreamstar-spirit.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Vortex Seed",
+          description: "[Vortex Seed]'s Magic DMG is increased by 150%.",
+        },
+        {
+          tier: "gold",
+          skill: "Blossom Whip",
+          description:
+            "[Blossom Lash]: On cast, additionally heals all melee allies for 200% of Dreamstar Spirit's ATK.",
+        },
+        {
+          tier: "red",
+          skill: "Night Lullaby",
+          description:
+            "[Night Lullaby] When enemies fall asleep, their Damage Reduction stats (DMG Reduction, Physical RES, Magic RES, Ranged DMG Reduct, Melee DMG Reduct) are reduced by 15% for 5 sec. When they wake from sleep, they also take Magic DMG equal to 200% of Dreamstar's ATK.",
+        },
+        {
+          tier: "rainbow",
+          name: "Panicwood",
+          description:
+            "[New] [Panicwood] enters battle. After 4s, it raises its weapon high and smashes the ground, dealing 200% ATK as Magic DMG to all enemies and knocking them back, while reducing their HP Regen by 1.5% and Healing Effect by 40% for 8s. CD 13s, max 3 times per battle.",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Night Lullaby",
+        unlockStars: 0,
+        iconUrl: talent("dreamstar-spirit", "night-lullaby"),
+        description:
+          "Dreamstar Spirit performs Night Lullaby, restoring HP equal to 160% of Dreamstar's ATK to the 2 allies with the lowest HP. It also applies Dream Dust to all enemies, dealing 1.4% of max HP as DMG per second (up to 30% of Dreamstar's ATK) for 3 sec. After casting, it randomly causes 2 enemies (ranged first) to fall asleep after 2 sec for 2.5 sec. Sleeping enemies cannot move or attack (Dream Dust can be dispelled; sleep cannot).",
+      },
+      {
+        kind: "battle",
+        name: "Vortex Seed",
+        unlockStars: 2,
+        iconUrl: talent("dreamstar-spirit", "vortex-seed"),
+        description:
+          "Dreamstar Spirit's basic attacks have a 25% chance to hurl a Vortex Seed at 1 random enemies (ranged first), dealing 300% ATK as Magic DMG and stunning them for 1.5 s.",
+      },
+      {
+        kind: "enhance",
+        name: "Dream Echo",
+        unlockStars: 5,
+        iconUrl: talent("dreamstar-spirit", "dream-echo"),
+        description: "Night Lullaby's healing amount increases by 100% ATK.",
+      },
+      {
+        kind: "special",
+        name: "Blossom Whip",
+        unlockStars: 8,
+        iconUrl: talent("dreamstar-spirit", "blossom-whip"),
+        description:
+          "Every 11 sec, Dreamstar Spirit hurls a wave of aroma forward, dealing 90% ATK as True DMG to all enemies and knocking them back. The farther the enemy, the higher the damage taken, up to 1.5× DMG.",
+      },
+      {
+        kind: "passive",
+        name: "Petal Whirl",
+        unlockStars: 12,
+        iconUrl: talent("dreamstar-spirit", "petal-whirl"),
+        description: "ATK increased by 10%, HP increased by 15%",
+      },
+      {
+        kind: "enhance",
+        name: "Slumber Garden",
+        unlockStars: 16,
+        iconUrl: talent("dreamstar-spirit", "slumber-garden"),
+        description:
+          "Night Lullaby enhances [Dream Dust]: it additionally deals 0.7% of max HP as DMG per sec (up to 15% of Dreamstar Spirit's ATK); when enemies wake from sleep, their ATK SPD is reduced by 50% for 6s.",
+      },
+    ],
+    cores: [
+      {
+        name: "Crystal Staff",
+        skill: "Night Lullaby",
+        description: "[Night Lullaby] Healing +100%(300%) ATK",
+      },
+      {
+        name: "Tome of Radiance",
+        skill: "Vortex Seed",
+        description:
+          "[Vortex Seed] Trigger chance +5%(15%), stun duration +0.3(1)s",
+      },
+      {
+        name: "Luminous Visor",
+        skill: "Blossom Whip",
+        description:
+          "[Blossom Lash] first cast interval reduced by 2(6)s, True DMG dealt increased by 20%(60%) of ATK",
+      },
+      {
+        name: "Resonance Pendant",
+        skill: "Slumber Garden",
+        description:
+          "[Slumbering Flowerbed] After waking from sleep, damage dealt by enemies is reduced by 7%(21%) for 6 seconds",
+      },
+    ],
+    // Dreamstar Spirit/artifact overview.png: bottom red badges, left to right.
+    divinities: ["healing-effect", "anti-crit-rate"],
+  },
   // September 14 12.58.22–12.58.40 PM owner screenshots; I/III not supplied.
   swordmaster: {
     artifact: {

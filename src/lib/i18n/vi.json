@@ -498,5 +498,8 @@
   "Fish not found.": "Không tìm thấy cá.",
   "Could not save fish. Please try again.": "Không thể lưu cá. Vui lòng thử lại.",
   "Maximum stats update automatically from the highest record.": "Chỉ số tối đa tự động cập nhật theo kỷ lục kích thước.",
-  "Stats will be calculated once a fish sample is added.": "Chỉ số sẽ được tính sau khi thêm mẫu cá."
+  "Stats will be calculated once a fish sample is added.": "Chỉ số sẽ được tính sau khi thêm mẫu cá.",
+  "Released": "Đã ra mắt",
+  "Unreleased": "Chưa ra mắt",
+  "Hero release status": "Trạng thái ra mắt tướng"
 }

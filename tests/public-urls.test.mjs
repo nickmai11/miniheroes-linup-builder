@@ -263,6 +263,39 @@ test("the real artwork policy limits hero and divinity assets without database w
   );
 });
 
+test("catalog portraits are allowed for unreleased heroes before detail import", async () => {
+  const { isPublicPageAsset } = loadTypeScript("src/lib/public-url-assets.ts", {
+    "@/db": { db: {}, schema: {} },
+    "@/data/hero-details": { heroDetailSeeds: {} },
+    "@/lib/lineup-preview-access": { heroLineupPreviewIds: async () => [] },
+  });
+  for (const slug of [
+    "dreamstar-spirit",
+    "nether-soul",
+    "nightmare-source",
+    "panda-warrior",
+  ]) {
+    assert.equal(
+      await isPublicPageAsset("/heroes", `/heroes/${slug}.png`),
+      true,
+    );
+  }
+  assert.equal(await isPublicPageAsset("/heroes", "/badges/warrior.png"), true);
+  assert.equal(await isPublicPageAsset("/heroes", "/badges/support.png"), true);
+  assert.equal(
+    await isPublicPageAsset("/heroes", "/heroes/sea-captain.png"),
+    false,
+  );
+  assert.equal(
+    await isPublicPageAsset("/heroes", "/artifacts/nether-soul.png"),
+    false,
+  );
+  assert.equal(
+    await isPublicPageAsset("/about", "/heroes/nether-soul.png"),
+    false,
+  );
+});
+
 test("page guards accept a public read independently, while action guards still reject it", async () => {
   let method = "GET";
   let published = true;

@@ -7,6 +7,7 @@ import { lineupPrivacyFilter } from "@/lib/lineup-privacy";
 import { db, schema } from "@/db";
 import { heroDetailSeeds, type HeroAwakeningSkill } from "@/data/hero-details";
 import { heroSeeds } from "@/data/heroes";
+import { UNRELEASED_HERO_SLUGS } from "@/data/hero-release-status";
 import { ensureDivinitiesSeeded } from "./divinities";
 import { onceAsync } from "@/lib/once-async";
 import { getHeroIdsWithBuilds } from "./builds";
@@ -142,7 +143,17 @@ export function getRecordedHeroSlugs(): string[] {
 
 /** Heroes available to browse or pick, with their recorded detail content. */
 export async function getHeroesWithDetails(): Promise<HeroWithDivinities[]> {
-  const slugs = getRecordedHeroSlugs();
+  return getListedHeroes(getRecordedHeroSlugs());
+}
+
+/** The catalog also shows owner-confirmed unreleased heroes awaiting details. */
+export async function getHeroCatalog(): Promise<HeroWithDivinities[]> {
+  return getListedHeroes([
+    ...new Set([...getRecordedHeroSlugs(), ...UNRELEASED_HERO_SLUGS]),
+  ]);
+}
+
+async function getListedHeroes(slugs: string[]): Promise<HeroWithDivinities[]> {
   if (slugs.length === 0) return [];
   await syncSeededHeroDetails();
   const rows = await db

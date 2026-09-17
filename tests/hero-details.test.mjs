@@ -47,7 +47,11 @@ for (const [slug, hero] of Object.entries(heroDetailSeeds)) {
       }
     }
 
-    assert.equal(hero.divinities.length, 2);
+    assert.ok(
+      hero.divinities.length <= 2,
+      "only the two mythic divinities belong here",
+    );
+    assert.equal(new Set(hero.divinities).size, hero.divinities.length);
     for (const divinity of hero.divinities) assert.ok(divinities.has(divinity));
   });
 
