@@ -1,5 +1,29 @@
 # Page performance review — 2026-09-13
 
+## New-visitor access incident — 2026-09-17
+
+A fresh request to `https://miniheroes-library.vercel.app/` returned 503 with
+"Access is temporarily unavailable", while `/invite` returned 200. A read-only
+connection attempt to the configured database returned SQLSTATE `XX000` and
+`(EMAXCONN) max client connections reached, limit: 200`. The home page recovered
+to a 307 invitation redirect during diagnosis, before this patch was deployed.
+This confirms intermittent pool exhaustion rather than a missing invitation.
+
+The app created Postgres.js clients with `max: 10`, no idle timeout, and only
+cached the client globally in development. Production module loads could create
+additional pools. `src/db/index.ts` now reuses the runtime's client in production
+as well, limits each pool to two connections, closes idle sockets after 20 seconds,
+and recycles connections after five minutes. Additional parallel queries queue
+inside that runtime. This bounds each runtime; it does not impose a fleet-wide
+connection limit. Existing `prepare: false` transaction-pooler compatibility is
+preserved. Changed database URLs still close and replace the old client.
+
+Diagnostics now recognize the pooler's EMAXCONN marker without logging raw
+messages, SQL parameters, cookies, or connection strings. Tests cover production
+module reuse, replacement on URL changes, bounded pool settings, and sanitized
+exhaustion diagnostics. No migration or access-policy change is needed.
+The fix takes effect in production only after deployment.
+
 ## Deployment follow-up — 2026-09-14
 
 The deployed app's `/invite` response reported

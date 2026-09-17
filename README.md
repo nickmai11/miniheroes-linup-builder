@@ -294,6 +294,14 @@ If pages return **Access is temporarily unavailable**, check the server log's
 `Access operation failed` entry. Codes `42P01` (missing table) or `42703`
 (missing column) indicate an unapplied schema migration. In particular, running
 the scoped-invitation code before migration 0026 breaks device lookups.
+Connection exhaustion is a separate cause: Supabase can return
+`XX000` with `(EMAXCONN) max client connections reached`; diagnostics report
+`EMAXCONN` (or Postgres `53300`) with a connection-limit hint. The app shares
+one Postgres.js pool per runtime in production and development, capped at two
+connections, closing idle connections after 20 seconds and recycling them after
+five minutes. These limits apply per runtime, not across the whole deployment.
+Deploy the updated pool settings to apply them to production; they do not require
+a schema migration. The access gate continues to deny access on lookup failures.
 Diagnostics omit invitation codes, device cookies, and SQL parameters.
 
 Pages, metadata, APIs (including health), actions, and original game images require

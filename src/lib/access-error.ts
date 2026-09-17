@@ -9,6 +9,16 @@ export function reportAccessError(operation: string, error: unknown): void {
     depth < 5 && cause && typeof cause === "object";
     depth++
   ) {
+    // Supabase's pooler reports client exhaustion as generic SQLSTATE XX000.
+    // Extract only its known marker, never log the raw error message.
+    if (
+      "message" in cause &&
+      typeof cause.message === "string" &&
+      /\bEMAXCONN\b/.test(cause.message)
+    ) {
+      code = "EMAXCONN";
+      break;
+    }
     if (
       "code" in cause &&
       typeof cause.code === "string" &&
@@ -24,6 +34,10 @@ export function reportAccessError(operation: string, error: unknown): void {
     code,
     ...(code === "42P01" || code === "42703"
       ? { hint: "Apply pending database migrations before running this app." }
-      : {}),
+      : code === "EMAXCONN" || code === "53300"
+        ? {
+            hint: "Database connection limit reached. Check runtime pool size and idle connection cleanup.",
+          }
+        : {}),
   });
 }
