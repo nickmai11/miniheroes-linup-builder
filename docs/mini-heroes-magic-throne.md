@@ -1297,10 +1297,31 @@ Zebrafish's screenshot label Anti-CRIT Rate maps to the catalog key
 `Anti-Crit Rate`. Repeated Kissing Fish, Lophiomus, Oarfish, and Hermit Crab
 rows are duplicate samples, not additional ratios. Use the complete Ancient
 Black Fish row in `image copy 5.png`, not the clipped row in `image copy 4.png`.
-The follow-ups do not establish highest records: new seed defaults stay null,
-and sample synchronization preserves any admin-entered highest records.
+The aquarium follow-ups alone do not establish highest records, and sample
+synchronization preserves any admin-entered highest records.
 All seven samples were synchronized and read back from the configured database
-on 2026-09-17; their highest records were unset and remain unset.
+on 2026-09-17. Their initially unset highest records are now supplied by the
+older catalog screenshots, reviewed at the owner's request later that day.
+
+The September 15 catalog screenshots contain explicit **Highest record** banners
+for **all 130 fishes**. `src/data/fish-highest-records.ts` records every verified
+size and source filename in `gameplay/fishes/`. Four duplicate catalog captures
+agree with their canonical images. The new aquarium screenshots confirm the
+seven sample sizes but are not substituted for highest-record evidence.
+For the seven recently sampled fish the banners show: Zebrafish **18 cm**,
+Rose Fish **26.10 cm**, Kissing Fish **26.10 cm**, Lophiomus **53.10 cm**,
+Oarfish **384.30 cm**, Ancient Black Fish **1107 cm**, and Hermit Crab **21.60 cm**.
+Visual review corrected two OCR decimal errors: Blue Funnel Fish is
+**22.16 cm**, and Mahimahi is **122.40 cm**. New catalog inserts receive these
+defaults; regular catalog synchronization still preserves admin edits. The
+one-time historical import only fills missing records or increases lower ones,
+and preserves all stat samples and larger existing highest records.
+The import was committed and read back from the configured database on
+2026-09-17: **128 missing records filled**, **130/130 highest records present**,
+and all **nine stat samples preserved**. The two existing records were unchanged.
+Review covered all 150 fish-folder PNGs: 134 catalog captures (130 unique fish
+and four duplicates), ten bait captures, four aquarium captures, and two
+name/stat reference sheets.
 
 Fish selection is grouped into **Small, Medium, Large, and Aquatic**. Each category
 can contain multiple distinct fishes, and each selected fish has a quantity of
@@ -2047,6 +2068,8 @@ is said. These override anything marked (web).
   Migration `0036_fish_measurements.sql` adds `best_size_cm` and `stat_sample`
   (original catch size plus stat values) and backfills the two screenshot-backed
   examples. `src/data/fish-measurements.ts` seeds these on fresh inserts only.
+  `src/data/fish-highest-records.ts` supplies screenshot-backed highest-record
+  defaults for all 130 fish, including fish whose stat samples are unknown.
   Applied to the configured database on 2026-09-17 using the transactional
   migration fallback after a rolled-back temporary-table verification.
   Admins edit only the best record from each fish card. The Server Action

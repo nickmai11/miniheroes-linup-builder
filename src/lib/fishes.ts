@@ -5,6 +5,7 @@ import { db, schema } from "@/db";
 import type { Fish } from "@/db/schema";
 import { fishSeeds } from "@/data/fishes";
 import { fishMeasurementSeeds } from "@/data/fish-measurements";
+import { fishHighestRecordSeeds } from "@/data/fish-highest-records";
 import { onceAsync } from "@/lib/once-async";
 import { ensureBaitsSeeded } from "@/lib/baits";
 
@@ -17,6 +18,7 @@ export const ensureFishesSeeded = onceAsync(async () => {
       fishSeeds.map((fish) => ({
         ...fish,
         ...fishMeasurementSeeds[fish.slug],
+        bestSizeCm: fishHighestRecordSeeds[fish.slug]?.bestSizeCm ?? null,
       })),
     )
     .onConflictDoUpdate({

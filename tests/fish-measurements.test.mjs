@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { existsSync } from "node:fs";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { loadTypeScript } from "./load-typescript.mjs";
@@ -9,12 +10,37 @@ const { fishMeasurementSeeds } = loadTypeScript(
   "src/data/fish-measurements.ts",
 );
 const { fishSeeds } = loadTypeScript("src/data/fishes.ts");
+const { fishHighestRecordSeeds } = loadTypeScript(
+  "src/data/fish-highest-records.ts",
+);
 const { createI18n } = loadTypeScript("src/lib/i18n/messages.ts");
 const squid = {
   ...fishSeeds.find((fish) => fish.slug === "fin-squid"),
   ...fishMeasurementSeeds["fin-squid"],
   id: 1,
 };
+
+test("every catalog fish has a sourced highest record, independent of sample coverage", () => {
+  assert.deepEqual(
+    Object.keys(fishHighestRecordSeeds).sort(),
+    fishSeeds.map((fish) => fish.slug).sort(),
+  );
+  for (const [slug, record] of Object.entries(fishHighestRecordSeeds)) {
+    assert.ok(
+      Number.isFinite(record.bestSizeCm) && record.bestSizeCm > 0,
+      slug,
+    );
+    assert.ok(existsSync(`gameplay/fishes/${record.source}`), slug);
+    const sample = fishMeasurementSeeds[slug];
+    if (sample) {
+      assert.equal(sample.bestSizeCm, record.bestSizeCm, slug);
+      assert.ok(record.bestSizeCm >= sample.statSample.sizeCm, slug);
+    }
+  }
+  // Decimal punctuation was misread by OCR; these are visually verified.
+  assert.equal(fishHighestRecordSeeds["blue-funnel-fish"].bestSizeCm, 22.16);
+  assert.equal(fishHighestRecordSeeds.mahimahi.bestSizeCm, 122.4);
+});
 
 test("screenshot ratios calculate all maximums with independent percentage scaling", () => {
   assert.equal(fishStatMaximum("Warrior ATK", 643.2, squid.statSample), 2997);
@@ -205,6 +231,13 @@ test("catalog refresh does not overwrite administrator measurements", async () =
     "@/lib/baits": { ensureBaitsSeeded: async () => {} },
   });
   await ensureFishesSeeded();
+  for (const fish of inserted) {
+    assert.equal(fish.bestSizeCm, fishHighestRecordSeeds[fish.slug].bestSizeCm);
+  }
+  assert.equal(
+    inserted.find((fish) => fish.slug === "lemon-fish").statSample,
+    undefined,
+  );
   assert.deepEqual(
     inserted.find((fish) => fish.slug === "fin-squid").statSample,
     squid.statSample,
