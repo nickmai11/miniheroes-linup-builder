@@ -4,6 +4,7 @@ import { asc, sql } from "drizzle-orm";
 import { db, schema } from "@/db";
 import type { Fish } from "@/db/schema";
 import { fishSeeds } from "@/data/fishes";
+import { fishMeasurementSeeds } from "@/data/fish-measurements";
 import { onceAsync } from "@/lib/once-async";
 import { ensureBaitsSeeded } from "@/lib/baits";
 
@@ -12,7 +13,12 @@ export const ensureFishesSeeded = onceAsync(async () => {
   await ensureBaitsSeeded();
   await db
     .insert(schema.fishes)
-    .values(fishSeeds)
+    .values(
+      fishSeeds.map((fish) => ({
+        ...fish,
+        ...fishMeasurementSeeds[fish.slug],
+      })),
+    )
     .onConflictDoUpdate({
       target: schema.fishes.slug,
       set: {

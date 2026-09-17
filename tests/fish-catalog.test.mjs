@@ -11,6 +11,7 @@ const { translateGameLabel } = loadTypeScript("src/lib/i18n/game-labels.ts");
 test("fish cards show icons, separated stats, area, bait and translated names", () => {
   for (const locale of ["en", "vi"]) {
     const { FishCatalog } = loadTypeScript("src/app/fishes/fish-catalog.tsx", {
+      "./actions": { updateFishMeasurements: async () => ({}) },
       "@/lib/i18n/client": {
         useI18n: () => ({
           ...createI18n(locale),
@@ -86,6 +87,7 @@ test("fishes can be shared as an exact catalog page with only its own artwork", 
 
 test("fish catalog sorts special stats first, then names, and explicitly shows None for missing bait", () => {
   const { FishCatalog } = loadTypeScript("src/app/fishes/fish-catalog.tsx", {
+    "./actions": { updateFishMeasurements: async () => ({}) },
     "@/lib/i18n/client": {
       useI18n: () => ({
         ...createI18n("en"),

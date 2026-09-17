@@ -20,7 +20,8 @@ type FishPreview = Pick<
   | "specialStats"
   | "area"
   | "bait"
->;
+> &
+  Partial<Pick<Fish, "bestSizeCm" | "statSample">>;
 
 export function FishPopover({
   fish,
@@ -29,7 +30,7 @@ export function FishPopover({
   fish: FishPreview;
   trigger?: ReactElement;
 }) {
-  const { gameLabel, t } = useI18n();
+  const { gameLabel, t, formatNumber } = useI18n();
 
   return (
     <InfoPopover
@@ -64,17 +65,31 @@ export function FishPopover({
             </div>
           </div>
         </div>
+        {fish.bestSizeCm != null && (
+          <p className="text-xs">
+            {t("Highest record")}: {formatNumber(fish.bestSizeCm)} cm
+          </p>
+        )}
         <div>
           <p className="text-muted-foreground mb-1.5 text-xs">
             {t("Base stats")}
           </p>
-          <FishStats stats={fish.baseStats} />
+          <FishStats
+            stats={fish.baseStats}
+            bestSizeCm={fish.bestSizeCm}
+            sample={fish.statSample}
+          />
         </div>
         <div>
           <p className="text-muted-foreground mb-1.5 text-xs">
             {t("Special stats")}
           </p>
-          <FishStats stats={fish.specialStats} special />
+          <FishStats
+            stats={fish.specialStats}
+            special
+            bestSizeCm={fish.bestSizeCm}
+            sample={fish.statSample}
+          />
         </div>
         <div>
           <p className="text-muted-foreground text-xs">

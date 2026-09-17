@@ -1,6 +1,7 @@
 import {
   boolean,
   check,
+  doublePrecision,
   index,
   integer,
   jsonb,
@@ -15,6 +16,7 @@ import { sql } from "drizzle-orm";
 import { BUILD_PRIORITIES } from "@/lib/build-priorities";
 import { MAX_FISH_QUANTITY } from "@/lib/fish-selection";
 import { FISH_RARITIES } from "@/lib/fish-rarity";
+import type { FishStatSample } from "@/lib/fish-measurements";
 import type { ChangeEvent, ChangeField, ChangeKind } from "@/lib/change-types";
 
 /** Personal subscriptions survive target deletion so its final change stays in the feed. */
@@ -391,6 +393,8 @@ export const fishes = pgTable("fishes", {
   stats: text("stats").array().notNull().default([]),
   baseStats: text("base_stats").array().notNull().default([]),
   specialStats: text("special_stats").array().notNull().default([]),
+  bestSizeCm: doublePrecision("best_size_cm"),
+  statSample: jsonb("stat_sample").$type<FishStatSample>(),
   bait: text("bait").references(() => baits.name, {
     onDelete: "set null",
     onUpdate: "cascade",

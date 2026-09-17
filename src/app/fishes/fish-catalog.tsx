@@ -13,9 +13,16 @@ import { versioned } from "@/lib/asset-version";
 import { FISH_CATEGORIES } from "@/lib/fish-selection";
 import { useI18n } from "@/lib/i18n/client";
 import { matchesGameLabel } from "@/lib/i18n/game-labels";
+import { FishRecordEditor } from "./fish-record-editor";
 
-export function FishCatalog({ fishes }: { fishes: Fish[] }) {
-  const { gameLabel, t } = useI18n();
+export function FishCatalog({
+  fishes,
+  canEdit = false,
+}: {
+  fishes: Fish[];
+  canEdit?: boolean;
+}) {
+  const { gameLabel, t, formatNumber } = useI18n();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [area, setArea] = useState("all");
@@ -173,12 +180,26 @@ export function FishCatalog({ fishes }: { fishes: Fish[] }) {
                 </div>
               </div>
               <dl className="flex flex-1 flex-col gap-3 text-sm">
+                {fish.bestSizeCm != null && (
+                  <div>
+                    <dt className="text-muted-foreground text-xs">
+                      {t("Highest record")}
+                    </dt>
+                    <dd className="font-medium">
+                      {formatNumber(fish.bestSizeCm)} cm
+                    </dd>
+                  </div>
+                )}
                 <div>
                   <dt className="text-muted-foreground mb-1.5 text-xs">
                     {t("Base stats")}
                   </dt>
                   <dd>
-                    <FishStats stats={fish.baseStats} />
+                    <FishStats
+                      stats={fish.baseStats}
+                      bestSizeCm={fish.bestSizeCm}
+                      sample={fish.statSample}
+                    />
                   </dd>
                 </div>
                 <div>
@@ -186,7 +207,12 @@ export function FishCatalog({ fishes }: { fishes: Fish[] }) {
                     {t("Special stats")}
                   </dt>
                   <dd>
-                    <FishStats stats={fish.specialStats} special />
+                    <FishStats
+                      stats={fish.specialStats}
+                      special
+                      bestSizeCm={fish.bestSizeCm}
+                      sample={fish.statSample}
+                    />
                   </dd>
                 </div>
                 <div className="mt-auto border-t pt-3">
@@ -207,6 +233,7 @@ export function FishCatalog({ fishes }: { fishes: Fish[] }) {
                   </dd>
                 </div>
               </dl>
+              {canEdit && <FishRecordEditor fish={fish} />}
             </li>
           ))}
         </ul>

@@ -1125,6 +1125,14 @@ any later owner corrections or in-game screenshots override the guide.
 The two common skills remain here as unverified class references and are not
 copied into Radiant Envoy's hero-specific awakening data.
 
+### Owner's damage-stat snapshot (2026-09-17)
+
+The owner reports **CRIT Rate 68%**, **CRIT DMG 184%**, **Magic DMG Boost
+50%**, **Ranged DMG Boost 55%**, and **DMG Increase 63%**, while comparing
+an additional 8% CRIT DMG with 4% Magic DMG Boost. The hero and damage-stat
+stacking formula are unspecified; these values do not establish whether the
+displayed CRIT DMG is total critical-hit damage or bonus damage.
+
 ### Divinities (game, 2026-09-12)
 
 Each hero's **divine weapon** screen shows a named weapon ringed by six round
@@ -1242,7 +1250,58 @@ Desert Beach (17), Frost Land (19), Jungle Lakes (19), and Idyllic Paradise (20)
 Each row records a name, type (Small / Medium / Large / Aquatic), collection,
 up to three stat names, and optional bait. Area comes from the sheet filename.
 Preserve the sheet's names and stat wording, trimming whitespace and treating
-`-` as unrecorded. No stat values have been specified.
+`-` as unrecorded.
+
+Each fish has a size ratio for each stat (owner, 2026-09-17): divide a
+screenshot's stat value by that catch's size in cm, then multiply by the best
+size record to calculate the maximum stat value. Admins can edit the best size
+record and the app recalculates all available stats automatically. The owner's
+`gameplay/fishes/image copy 2.png` shows Fin Squid at **643.2 cm** with
+**Warrior ATK 2997**, **DMG Increase 2.46%**, and **Magic DMG Boost 3.82%**;
+its Warrior ATK ratio is **2997 / 643.2**. Percentage ratios use percentage
+points per cm. The same screenshot shows Rainbow Snail at **7.27 cm** with
+**Warrior HP 62185**, **CRIT Damage 8.08%**, and **DMG Reduction 2.55%**
+(another catch is 6.93 cm / 59247 / 7.70% / 2.43%). Keep original sample
+values so repeatedly editing a best record does not accumulate rounding error.
+The catalog captures show initial best records of **724.31 cm** for Fin Squid
+(`Screenshot 2026-09-15 at 9.42.25 AM.png`) and **8.10 cm** for Rainbow Snail
+(`Screenshot 2026-09-15 at 9.42.31 AM.png`). Rainbow Snail's screenshot label
+CRIT Damage maps to the existing catalog stat name `Crit DMG`.
+The app rounds calculated base stats to whole numbers and percentage stats to
+two decimals for display; this is a display convention, not a confirmed game
+rounding rule. Admins edit only the best size record, not ratios or their
+underlying sample values (owner clarification, 2026-09-17). Codex adds or updates
+samples from the owner's screenshots when asked, using the
+`add-mini-heroes-fish-sample` skill. Fish without a sample retain unknown values
+until a sample is imported. Saving a best record must preserve its existing sample.
+Show maximum stat values in parentheses, `({value})`, rather than with a Max
+prefix (owner, 2026-09-17); for example, `Warrior ATK (3,375)` and
+`DMG Increase (2.77%)`.
+Label the size record **Highest record** in the UI (owner, 2026-09-17),
+including editing and saving controls; the existing `bestSizeCm` data field
+is unchanged.
+
+The owner's September 17 aquarium follow-ups add seven complete samples:
+
+| Fish | Catch size (cm) | Sample stats | Source in `gameplay/fishes/` |
+| --- | --- | --- | --- |
+| Zebrafish | 18 | Mage ATK 5211; DEF 693; Anti-CRIT Rate 4.37% | `image copy 3.png` |
+| Rose Fish | 26.1 | Mage ATK 5940; DEF 792; Receive Healing 9.90% | `image copy 3.png` |
+| Kissing Fish | 26.1 | Mage HP 78412; DEF 738; DMG Reduction 3.24% | `image copy 3.png` |
+| Lophiomus | 53.1 | Marksman ATK 4545; HP 37440; MOV SPD 6.57% | `image copy 4.png` |
+| Oarfish | 384.3 | ATK 2083; Support HP 73822; Knockback Effect 6.08% | `image copy 4.png`, repeated in `image copy 5.png` |
+| Ancient Black Fish | 1107 | ATK 2245; Support HP 79560; Physical DMG Boost 4.68% | `image copy 5.png` |
+| Hermit Crab | 21.6 | Warrior HP 69232; DMG Reduction 2.84%; Physical DMG Boost 4.41% | `image copy 5.png` |
+
+Zebrafish's screenshot label Anti-CRIT Rate maps to the catalog key
+`Anti-Crit Rate`. Repeated Kissing Fish, Lophiomus, Oarfish, and Hermit Crab
+rows are duplicate samples, not additional ratios. Use the complete Ancient
+Black Fish row in `image copy 5.png`, not the clipped row in `image copy 4.png`.
+The follow-ups do not establish highest records: new seed defaults stay null,
+and sample synchronization preserves any admin-entered highest records.
+All seven samples were synchronized and read back from the configured database
+on 2026-09-17; their highest records were unset and remain unset.
+
 Fish selection is grouped into **Small, Medium, Large, and Aquatic**. Each category
 can contain multiple distinct fishes, and each selected fish has a quantity of
 **1–4** (owner, 2026-09-13). The limit is per fish, not per category. Existing fish
@@ -1377,6 +1436,31 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-17 — Review fish screenshots, including older captures, and add
+  their highest records to the fish data.
+
+- 2026-09-17 — Authorized fish sample updates from `image copy 3.png` through
+  `image copy 5.png`: Zebrafish, Rose Fish, Kissing Fish, Lophiomus, Oarfish,
+  Ancient Black Fish, and Hermit Crab. Catch sizes and all three stats per fish
+  are transcribed in the Fishes section; preserve highest records.
+
+- 2026-09-17 — The owner reports CRIT Rate 68%, CRIT DMG 184%, Magic DMG
+  Boost 50%, Ranged DMG Boost 55%, and DMG Increase 63%, and is choosing
+  between an additional 8% CRIT DMG and 4% Magic DMG Boost. Hero unspecified.
+
+- 2026-09-17 — Rename “Best size record” to “Highest record”.
+
+- 2026-09-17 — Indicate maximum values with `({value})`.
+
+- 2026-09-17 — Admins do not need to edit fish ratios. Codex should add or
+  update fish samples when the owner asks; create a reusable skill for this.
+  The admin editor should change only the best size record.
+
+- 2026-09-17 — Each fish has a calculated size ratio for each stat; for
+  example, Fin Squid Warrior ATK is 2997 / 643.2. Admins should be able to
+  edit a fish's best size record and automatically calculate its maximum
+  stats from these ratios. Evidence: `gameplay/fishes/image copy 2.png`.
 
 - 2026-09-16 — Clarification: only the followed flag/bookmark icon should use
   the primary color, rather than the whole button.
@@ -1959,7 +2043,18 @@ is said. These override anything marked (web).
   importer rejects missing or mismatched color evidence. Fish cards and popovers
   show a localized rarity badge without changing the fixed-height lineup chips.
   `getAllFishes()` synchronizes source records once
-  per process, preserving IDs and lineup selections.
+  per process, preserving IDs, lineup selections, and admin-edited measurements.
+  Migration `0036_fish_measurements.sql` adds `best_size_cm` and `stat_sample`
+  (original catch size plus stat values) and backfills the two screenshot-backed
+  examples. `src/data/fish-measurements.ts` seeds these on fresh inserts only.
+  Applied to the configured database on 2026-09-17 using the transactional
+  migration fallback after a rolled-back temporary-table verification.
+  Admins edit only the best record from each fish card. The Server Action
+  enforces admin access, validates the size, and never writes `stat_sample`.
+  Codex imports ratio samples on request; existing rows need an explicit
+  sample update because catalog synchronization preserves measurements.
+  Catalog cards and lineup popovers derive maximums from the original sample;
+  calculated values are not persisted or reused as ratio inputs.
   Regenerate `src/data/fishes.ts`, `scripts/upsert-fishes.sql`, and all 130 icons
   with `python3 scripts/import-fishes.py` (Pillow required). The importer reads
   the seven area CSVs and `gameplay/fishes/icons.json`, which maps stable slugs
@@ -1974,7 +2069,8 @@ is said. These override anything marked (web).
   category, area, and special-stat filters combine with search. The special-stat
   dropdown offers each recorded stat, any special stats, or no special stats;
   Clear filters resets all four controls. Empty special stats display
-  “None recorded”; no numeric values are inferred. The catalog follows the
+  “None recorded”; numeric maximums require a recorded size/stat sample and
+  best size record. The catalog follows the
   existing page-access rules and can be explicitly shared via Public URLs.
 - `baits` stores the 10 owner-supplied shop entries with name, stable slug,
   cropped icon, description, nullable target category, and the displayed bonus

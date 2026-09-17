@@ -487,5 +487,16 @@
   "Page not found": "Không tìm thấy trang",
   "This page does not exist or is no longer available.": "Trang này không tồn tại hoặc không còn khả dụng.",
   "Go home": "Về trang chủ",
-  "Explore fish stats, rarities, fishing areas, and baits for your lineups.": "Khám phá chỉ số, độ hiếm, khu vực câu và mồi của cá cho đội hình của bạn."
+  "Explore fish stats, rarities, fishing areas, and baits for your lineups.": "Khám phá chỉ số, độ hiếm, khu vực câu và mồi của cá cho đội hình của bạn.",
+  "Edit highest record": "Chỉnh sửa kỷ lục",
+  "Highest record (cm)": "Kỷ lục cao nhất (cm)",
+  "Highest record": "Kỷ lục cao nhất",
+  "Calculated max stats": "Chỉ số tối đa được tính",
+  "Save highest record": "Lưu kỷ lục",
+  "Highest record saved.": "Đã lưu kỷ lục.",
+  "Enter a valid highest record in cm.": "Nhập kỷ lục kích thước hợp lệ bằng cm.",
+  "Fish not found.": "Không tìm thấy cá.",
+  "Could not save fish. Please try again.": "Không thể lưu cá. Vui lòng thử lại.",
+  "Maximum stats update automatically from the highest record.": "Chỉ số tối đa tự động cập nhật theo kỷ lục kích thước.",
+  "Stats will be calculated once a fish sample is added.": "Chỉ số sẽ được tính sau khi thêm mẫu cá."
 }

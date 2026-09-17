@@ -253,6 +253,13 @@
       "when": 1789555558099,
       "tag": "0035_lineup_notifications",
       "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "7",
+      "when": 1789623451707,
+      "tag": "0036_fish_measurements",
+      "breakpoints": true
     }
   ]
 }
