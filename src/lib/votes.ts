@@ -26,7 +26,7 @@ export async function getVoteAccess(target: VoteTarget) {
     .where(
       and(
         eq(table.id, target.id),
-        target.kind === "lineup" ? lineupPrivacyFilter(adminId) : undefined,
+        lineupPrivacyFilter(adminId, table.privateOwnerId),
       ),
     )
     .limit(1);

@@ -10,6 +10,7 @@ const priorityMap = z.record(
 export const buildSchema = z
   .object({
     id: z.number().int().positive().optional(),
+    isPrivate: z.boolean().optional(),
     heroId: z.number().int().positive(),
     name: z.string().trim().min(1, "Give the build a name").max(120),
     notes: z.string().trim().max(5000).default(""),

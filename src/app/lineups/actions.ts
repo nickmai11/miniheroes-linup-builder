@@ -3,6 +3,7 @@
 import { requireAppAccess } from "@/lib/app-access";
 
 import { and, eq, inArray, sql } from "drizzle-orm";
+import { buildPrivacyFilter } from "@/lib/build-privacy";
 import { getAdminId } from "@/lib/admin-access";
 import { lineupPrivacyFilter } from "@/lib/lineup-privacy";
 import { revalidatePath } from "next/cache";
@@ -48,7 +49,12 @@ export async function saveLineup(
               heroId: schema.heroBuilds.heroId,
             })
             .from(schema.heroBuilds)
-            .where(inArray(schema.heroBuilds.id, buildIds))
+            .where(
+              and(
+                inArray(schema.heroBuilds.id, buildIds),
+                buildPrivacyFilter(adminId),
+              ),
+            )
         : [],
       fishIds.length
         ? db
@@ -109,6 +115,19 @@ export async function saveLineup(
 
   const lineup = await db.transaction(async (tx) => {
     await lockContentWrites(tx);
+    // Recheck after serializing with build privacy/deletion writes.
+    if (buildIds.length) {
+      const available = await tx
+        .select({ id: schema.heroBuilds.id })
+        .from(schema.heroBuilds)
+        .where(
+          and(
+            inArray(schema.heroBuilds.id, buildIds),
+            buildPrivacyFilter(adminId),
+          ),
+        );
+      if (available.length !== new Set(buildIds).size) return undefined;
+    }
     let privateOwnerId: string | null = isPrivate ? adminId : null;
     if (id !== undefined) {
       const [existing] = await tx

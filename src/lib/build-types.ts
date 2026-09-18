@@ -11,7 +11,8 @@ import type { BuildPriority } from "@/lib/build-priorities";
 export type Prioritized<T> = T & { priority: BuildPriority };
 export type CoreWithSkill = HeroCore & { skill: HeroSkill | null };
 
-export type HeroBuild = HeroBuildRow & {
+export type HeroBuild = Omit<HeroBuildRow, "privateOwnerId"> & {
+  isPrivate: boolean;
   /** Chosen attributes and cores in pick order, each with its saved tier. */
   runes: Prioritized<RuneAttribute>[];
   weapons: Prioritized<WeaponAttribute>[];

@@ -15,6 +15,7 @@ type Snapshot = {
   fields: Record<string, string>;
   identity: Record<string, unknown>;
   privateOwnerId?: string | null;
+  buildIds?: number[];
 };
 
 /** Coordinate saved-content writes, including build deletion's lineup side effects. */
@@ -59,6 +60,13 @@ export async function lineupSnapshot(
     name: row.name,
     privateOwnerId: row.privateOwnerId,
     identity: row.identity,
+    buildIds: Object.entries(row.identity).flatMap(([key, value]) =>
+      key.startsWith("Slot ") &&
+      Array.isArray(value) &&
+      typeof value[1] === "number"
+        ? [value[1]]
+        : [],
+    ),
     fields: {
       Name: row.name,
       Notes: row.description,
@@ -81,6 +89,7 @@ export async function buildSnapshot(
   const [row] = await tx.execute<{
     name: string;
     notes: string;
+    privateOwnerId: string | null;
     heroName: string;
     heroSlug: string;
     runes: string;
@@ -88,7 +97,7 @@ export async function buildSnapshot(
     cores: string;
     identity: Record<string, unknown>;
   }>(sql`
-    select b.name, b.notes, h.name as "heroName", h.slug as "heroSlug",
+    select b.name, b.notes, b.private_owner_id as "privateOwnerId", h.name as "heroName", h.slug as "heroSlug",
       jsonb_build_object(
         'Runes', (select jsonb_agg(jsonb_build_array(a.rune_attribute_id, a.priority) order by a.sort_order, a.id) from hero_build_runes a where a.build_id = b.id),
         'Weapons', (select jsonb_agg(jsonb_build_array(a.weapon_attribute_id, a.priority) order by a.sort_order, a.id) from hero_build_weapons a where a.build_id = b.id),
@@ -109,12 +118,14 @@ export async function buildSnapshot(
       .replaceAll("[optional]", "[OK to have]");
   return {
     name: row.name,
+    privateOwnerId: row.privateOwnerId,
     heroName: row.heroName,
     heroSlug: row.heroSlug,
     identity: row.identity,
     fields: {
       Name: row.name,
       Notes: row.notes,
+      Visibility: row.privateOwnerId ? "Private" : "Public",
       Runes: priorities(row.runes),
       Weapons: priorities(row.weapons),
       Cores: priorities(row.cores),
@@ -132,18 +143,16 @@ export async function recordChange(
 ) {
   const snapshot = after ?? before;
   if (!snapshot) return;
-  // All history follows the lineup's latest privacy, including after deletion.
-  if (kind === "lineup") {
-    await tx
-      .update(schema.contentChanges)
-      .set({ privateOwnerId: snapshot.privateOwnerId ?? null })
-      .where(
-        and(
-          eq(schema.contentChanges.kind, kind),
-          eq(schema.contentChanges.targetId, targetId),
-        ),
-      );
-  }
+  // All history follows the content's latest privacy, including after deletion.
+  await tx
+    .update(schema.contentChanges)
+    .set({ privateOwnerId: snapshot.privateOwnerId ?? null })
+    .where(
+      and(
+        eq(schema.contentChanges.kind, kind),
+        eq(schema.contentChanges.targetId, targetId),
+      ),
+    );
   const fields = changedFields(
     before?.fields ?? null,
     after?.fields ?? null,
@@ -170,6 +179,9 @@ export async function recordChange(
       heroSlug: snapshot.heroSlug,
       fields,
       privateOwnerId: snapshot.privateOwnerId ?? null,
+      buildIds: [
+        ...new Set([...(before?.buildIds ?? []), ...(after?.buildIds ?? [])]),
+      ],
     })
     .returning({ id: schema.contentChanges.id });
   if (kind === "lineup" && event === "updated") {

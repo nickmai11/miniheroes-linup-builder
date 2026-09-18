@@ -49,7 +49,11 @@ export const contentChanges = pgTable(
     heroSlug: text("hero_slug"),
     event: text("event").$type<ChangeEvent>().notNull(),
     fields: jsonb("fields").$type<ChangeField[]>().notNull(),
-    // Retain lineup privacy after deletion; never include this in history DTOs.
+    buildIds: integer("build_ids")
+      .array()
+      .notNull()
+      .default(sql`'{}'::integer[]`),
+    // Retain content privacy after deletion; never include this in history DTOs.
     privateOwnerId: text("private_owner_id"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
@@ -454,6 +458,7 @@ export const heroBuilds = pgTable(
       .references(() => heroes.id, { onDelete: "cascade" }),
     name: text("name").notNull(),
     notes: text("notes").notNull().default(""),
+    privateOwnerId: text("private_owner_id"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),

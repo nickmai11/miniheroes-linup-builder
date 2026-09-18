@@ -155,6 +155,23 @@ PRIVACY_TEST_DATABASE_URL=postgres://vote_test@127.0.0.1:55443/votes_test \
   node --experimental-strip-types --test tests/lineup-privacy.integration.test.mjs
 ```
 
+## Build privacy
+
+Builds use the same eye / crossed-out-eye controls and owner-only privacy as
+lineups, on saved builds and in the editor. Cloning and importing retain privacy;
+omitting visibility from an older editor does not publish a private build.
+Visitors cannot access hidden builds through hero pages, portrait indicators,
+lineup assignments, import search, reactions, or history. Lineup history that
+names a hidden build is also restricted, including after removal or deletion.
+
+Migrations `0037_build_privacy.sql` and `0038_build_history_privacy.sql` add build
+ownership and history references, with a conservative backfill for older slot
+text. Run the build and lineup privacy regression tests with
+`PRIVACY_TEST_DATABASE_URL=postgres://vote_test@127.0.0.1:55443/votes_test`.
+Applied both migrations and marked all **13 builds and 11 lineups private** for
+the existing owner on 2026-09-18; verification found zero public records.
+Deploy the updated app to enforce build privacy on the hosted site.
+
 ## Following lineups and heroes
 
 Use **Follow** on a hero or saved lineup. Home lists followed items and offers a

@@ -1,0 +1,1 @@
+ALTER TABLE "hero_builds" ADD COLUMN "private_owner_id" text;

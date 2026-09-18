@@ -1,4 +1,6 @@
 import "server-only";
+import { getAdminId } from "@/lib/admin-access";
+import { buildPrivacyFilter } from "@/lib/build-privacy";
 import { matchingGameSlugs } from "@/lib/i18n/game-labels";
 import { and, asc, eq, ilike, inArray, ne, or, type SQL } from "drizzle-orm";
 import { db, schema } from "@/db";
@@ -12,7 +14,12 @@ export async function getHeroIdsWithBuilds(
   const rows = await db
     .selectDistinct({ heroId: schema.heroBuilds.heroId })
     .from(schema.heroBuilds)
-    .where(inArray(schema.heroBuilds.heroId, heroIds));
+    .where(
+      and(
+        inArray(schema.heroBuilds.heroId, heroIds),
+        buildPrivacyFilter(await getAdminId()),
+      ),
+    );
   return new Set(rows.map((row) => row.heroId));
 }
 
@@ -40,7 +47,7 @@ async function loadBuilds(where: SQL): Promise<HeroBuild[]> {
   const builds = await db
     .select()
     .from(schema.heroBuilds)
-    .where(where)
+    .where(and(where, buildPrivacyFilter(await getAdminId())))
     .orderBy(asc(schema.heroBuilds.createdAt), asc(schema.heroBuilds.id));
   if (builds.length === 0) return [];
   const ids = builds.map((b) => b.id);
@@ -114,8 +121,9 @@ async function loadBuilds(where: SQL): Promise<HeroBuild[]> {
       ),
   ]);
 
-  return builds.map((b) => ({
+  return builds.map(({ privateOwnerId, ...b }) => ({
     ...b,
+    isPrivate: privateOwnerId !== null,
     runes: runeRows
       .filter((r) => r.buildId === b.id)
       .map((r) => ({ ...r.rune, priority: r.priority })),
@@ -160,7 +168,13 @@ export async function getOtherHeroBuilds(
     })
     .from(schema.heroBuilds)
     .innerJoin(schema.heroes, eq(schema.heroBuilds.heroId, schema.heroes.id))
-    .where(and(ne(schema.heroBuilds.heroId, excludeHeroId), ...matches))
+    .where(
+      and(
+        ne(schema.heroBuilds.heroId, excludeHeroId),
+        buildPrivacyFilter(await getAdminId()),
+        ...matches,
+      ),
+    )
     .orderBy(
       asc(schema.heroes.name),
       asc(schema.heroes.id),

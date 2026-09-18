@@ -1546,6 +1546,10 @@ the earlier fishing collectibles sheet must not be imported as fishes.
 
 ### Lineups (game)
 
+Builds also have the same owner-only hide/show control as lineups. Hide all
+existing builds and lineups (owner, 2026-09-18). Hidden builds are excluded from
+visitor lists, portrait indicators, assignments, imports, reactions, and history.
+
 Lineups need a public/private option. A hidden/private lineup is visible only
 to the owner's signed-in account (owner, 2026-09-16).
 Use an eye / crossed-out-eye icon to toggle visibility, and keep the existing
@@ -1663,6 +1667,9 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-18 — Make builds hidable like lineups, and hide all existing builds
+  and lineups.
 
 - 2026-09-17 — Supplied Nether Soul / Nightmare Source / Panda Warrior screenshots
   establish their six talents, all four artifact tiers, and HP/Knockback Resist,
@@ -2177,6 +2184,20 @@ is said. These override anything marked (web).
   lineup change or creation date. Applied to the configured database on
   2026-09-16 after migration and timestamp integration checks.
 
+- Build privacy follows lineup privacy using `hero_builds.private_owner_id`.
+  Only the admin who hides a build can read or edit it. Queries filter hero
+  builds, assignment previews, import search, and portrait indicators; mutation
+  and reaction checks enforce the same rule. Copies and imports preserve
+  privacy; omitted visibility leaves existing privacy unchanged. Build history
+  follows its latest privacy, retained after deletion. `content_changes.build_ids`
+  tracks builds named in lineup history so old assignments cannot expose hidden
+  names; migration 0038 backfills references using current and historic names.
+  Migration 0037 adds the build owner column. Public/private labels keep the
+  existing invitation and published-page access rules. Both migrations were
+  applied on 2026-09-18, and all 13 builds and 11 lineups were made private for
+  the existing owner using the normal change-recording transaction. Verification
+  found zero public builds or lineups. Hosted build privacy requires deploying
+  this code.
 - Lineup privacy uses a nullable `lineups.private_owner_id`: null preserves the
   existing invitation/Public URLs audience; otherwise only that verified admin
   account can read or modify the lineup. Public/private controls are available

@@ -260,6 +260,20 @@
       "when": 1789623451707,
       "tag": "0036_fish_measurements",
       "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "7",
+      "when": 1789703613148,
+      "tag": "0037_build_privacy",
+      "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "7",
+      "when": 1789703737202,
+      "tag": "0038_build_history_privacy",
+      "breakpoints": true
     }
   ]
 }

@@ -1,4 +1,8 @@
 import "server-only";
+import {
+  buildHistoryPrivacyFilter,
+  buildPrivacyFilter,
+} from "@/lib/build-privacy";
 import { and, desc, eq, lt, or, sql, type SQL } from "drizzle-orm";
 import { db, schema } from "@/db";
 import { getRegisteredDevice, hasAppAccess } from "@/lib/app-access";
@@ -7,7 +11,7 @@ import { getFollowContext } from "@/lib/follows";
 import { getAdminId } from "@/lib/admin-access";
 import { lineupPrivacyFilter, visibleLineupFilter } from "@/lib/lineup-privacy";
 
-/** Sharing the home or a hero page does not publish private lineup history. */
+/** Sharing the home or a hero page does not publish private content history. */
 async function visibility() {
   const adminId = await getAdminId();
   const full = await hasAppAccess();
@@ -66,6 +70,8 @@ async function visibility() {
     audienceAllowed,
     lineupPrivacyFilter(adminId, schema.contentChanges.privateOwnerId),
     lineupPrivacyFilter(adminId),
+    buildPrivacyFilter(adminId),
+    buildHistoryPrivacyFilter(adminId),
   );
   return { allowed, href, full, invited, lineupAllowed, buildAllowed, adminId };
 }
@@ -139,6 +145,7 @@ export async function getChangeHistory(
           .where(
             and(
               eq(schema.heroBuilds.id, id),
+              buildPrivacyFilter(access.adminId),
               access.full ? undefined : access.buildAllowed,
             ),
           );

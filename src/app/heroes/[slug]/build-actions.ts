@@ -1,5 +1,7 @@
 "use server";
 
+import { getAdminId } from "@/lib/admin-access";
+import { buildPrivacyFilter } from "@/lib/build-privacy";
 import { requireAppAccess } from "@/lib/app-access";
 
 import { and, asc, eq, inArray } from "drizzle-orm";
@@ -36,12 +38,14 @@ export async function saveHeroBuild(
   input: BuildInput,
 ): Promise<BuildActionState> {
   if (!(await canEditContent())) return { error: EDITING_ERROR };
+  const adminId = await getAdminId();
+  if (!adminId) return { error: EDITING_ERROR };
   await requireAppAccess();
   const parsed = buildSchema.safeParse(input);
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Invalid build" };
   }
-  const { id, heroId, name, notes } = parsed.data;
+  const { id, heroId, name, notes, isPrivate } = parsed.data;
   const runeIds = [...new Set(parsed.data.runeAttributeIds)];
   const weaponIds = [...new Set(parsed.data.weaponAttributeIds)];
   const coreIds = [...new Set(parsed.data.coreIds)];
@@ -74,24 +78,31 @@ export async function saveHeroBuild(
 
   const buildId = await db.transaction(async (tx) => {
     await lockContentWrites(tx);
+    let privateOwnerId: string | null = isPrivate ? adminId : null;
     if (id !== undefined) {
-      await tx
-        .select({ id: schema.heroBuilds.id })
+      const [existing] = await tx
+        .select({
+          id: schema.heroBuilds.id,
+          privateOwnerId: schema.heroBuilds.privateOwnerId,
+        })
         .from(schema.heroBuilds)
         .where(
           and(
             eq(schema.heroBuilds.id, id),
+            buildPrivacyFilter(adminId),
             eq(schema.heroBuilds.heroId, heroId),
           ),
         )
         .for("update");
+      if (!existing) return null;
+      if (isPrivate === undefined) privateOwnerId = existing.privateOwnerId;
     }
     const before = id === undefined ? null : await buildSnapshot(tx, id);
     let buildId = id;
     if (buildId) {
       const updated = await tx
         .update(schema.heroBuilds)
-        .set({ name, notes })
+        .set({ name, notes, privateOwnerId })
         .where(
           and(
             eq(schema.heroBuilds.id, buildId),
@@ -115,7 +126,7 @@ export async function saveHeroBuild(
     } else {
       const [row] = await tx
         .insert(schema.heroBuilds)
-        .values({ heroId, name, notes })
+        .values({ heroId, name, notes, privateOwnerId })
         .returning({ id: schema.heroBuilds.id });
       buildId = row.id;
     }
@@ -184,6 +195,8 @@ export async function importHeroBuild(
   input: ImportBuildInput,
 ): Promise<BuildActionState> {
   if (!(await canEditContent())) return { error: EDITING_ERROR };
+  const adminId = await getAdminId();
+  if (!adminId) return { error: EDITING_ERROR };
   await requireAppAccess();
   const parsed = importSchema.safeParse(input);
   if (!parsed.success) {
@@ -200,7 +213,9 @@ export async function importHeroBuild(
   const [source] = await db
     .select()
     .from(schema.heroBuilds)
-    .where(eq(schema.heroBuilds.id, sourceBuildId));
+    .where(
+      and(eq(schema.heroBuilds.id, sourceBuildId), buildPrivacyFilter(adminId)),
+    );
   if (!source) return { error: "That build no longer exists" };
   if (source.heroId === heroId)
     return { error: "That build already belongs to this hero" };
@@ -269,9 +284,25 @@ export async function importHeroBuild(
 
   const newId = await db.transaction(async (tx) => {
     await lockContentWrites(tx);
+    const [currentSource] = await tx
+      .select()
+      .from(schema.heroBuilds)
+      .where(
+        and(
+          eq(schema.heroBuilds.id, sourceBuildId),
+          buildPrivacyFilter(adminId),
+        ),
+      )
+      .for("update");
+    if (!currentSource) return null;
     const [row] = await tx
       .insert(schema.heroBuilds)
-      .values({ heroId, name: source.name, notes: source.notes })
+      .values({
+        heroId,
+        name: source.name,
+        notes: source.notes,
+        privateOwnerId: currentSource.privateOwnerId,
+      })
       .returning({ id: schema.heroBuilds.id });
     if (runeRows.length > 0)
       await tx.insert(schema.heroBuildRunes).values(
@@ -311,6 +342,7 @@ export async function importHeroBuild(
     return row.id;
   });
 
+  if (newId === null) return { error: "That build no longer exists" };
   revalidatePath(`/heroes/${hero.slug}`);
   revalidatePath("/");
   revalidatePath("/heroes");
@@ -327,6 +359,8 @@ export async function importHeroBuild(
 
 export async function deleteHeroBuild(id: number): Promise<BuildActionState> {
   if (!(await canEditContent())) return { error: EDITING_ERROR };
+  const adminId = await getAdminId();
+  if (!adminId) return { error: EDITING_ERROR };
   await requireAppAccess();
   const deleted = await db.transaction(async (tx) => {
     await lockContentWrites(tx);
@@ -345,11 +379,12 @@ export async function deleteHeroBuild(id: number): Promise<BuildActionState> {
       )
       .orderBy(asc(schema.lineups.id))
       .for("update");
-    await tx
+    const [existing] = await tx
       .select({ id: schema.heroBuilds.id })
       .from(schema.heroBuilds)
-      .where(eq(schema.heroBuilds.id, id))
+      .where(and(eq(schema.heroBuilds.id, id), buildPrivacyFilter(adminId)))
       .for("update");
+    if (!existing) return undefined;
     const before = await buildSnapshot(tx, id);
     const lineupBefore = await Promise.all(
       affected.map((row) => lineupSnapshot(tx, row.id)),
@@ -382,4 +417,40 @@ export async function deleteHeroBuild(id: number): Promise<BuildActionState> {
   revalidatePath("/divinities", "layout");
   revalidatePath("/lineups", "layout");
   return {};
+}
+
+export async function setBuildVisibility(
+  id: number,
+  isPrivate: boolean,
+): Promise<BuildActionState> {
+  const adminId = await getAdminId();
+  if (!adminId) return { error: EDITING_ERROR };
+  if (!Number.isSafeInteger(id) || id <= 0 || typeof isPrivate !== "boolean")
+    return { error: "Invalid build" };
+  const saved = await db.transaction(async (tx) => {
+    await lockContentWrites(tx);
+    const [existing] = await tx
+      .select({ id: schema.heroBuilds.id })
+      .from(schema.heroBuilds)
+      .where(and(eq(schema.heroBuilds.id, id), buildPrivacyFilter(adminId)))
+      .for("update");
+    if (!existing) return false;
+    const before = await buildSnapshot(tx, id);
+    await tx
+      .update(schema.heroBuilds)
+      .set({ privateOwnerId: isPrivate ? adminId : null })
+      .where(eq(schema.heroBuilds.id, id));
+    await recordChange(
+      tx,
+      "build",
+      id,
+      "updated",
+      before,
+      await buildSnapshot(tx, id),
+    );
+    return true;
+  });
+  if (!saved) return { error: "Build not found" };
+  revalidatePath("/", "layout");
+  return { id };
 }

@@ -1,5 +1,9 @@
 "use client";
 
+import {
+  BuildVisibility,
+  BuildVisibilityToggle,
+} from "@/components/build-visibility";
 import { ContentVotes } from "@/components/content-votes";
 import { ChangeHistory } from "@/components/change-history";
 import { ConfirmAction } from "@/components/confirm-action";
@@ -164,6 +168,7 @@ export function HeroBuilds({
     startTransition(async () => {
       const result = await saveHeroBuild({
         id: draft.id,
+        isPrivate: draft.isPrivate,
         heroId,
         name: draft.name,
         notes: draft.notes,
@@ -242,7 +247,8 @@ export function HeroBuilds({
                 )}
               </div>
               {canEdit && (
-                <div className="flex shrink-0 gap-1">
+                <div className="flex shrink-0 flex-wrap justify-end gap-1">
+                  <BuildVisibility id={build.id} isPrivate={build.isPrivate} />
                   <Button
                     variant="ghost"
                     size="sm"
@@ -432,6 +438,13 @@ export function HeroBuilds({
 
             {error && <p className="text-destructive text-sm">{t(error)}</p>}
             <div className="flex items-center gap-2">
+              <BuildVisibilityToggle
+                isPrivate={draft.isPrivate}
+                disabled={pending}
+                onChange={(isPrivate) =>
+                  setDraft((d) => d && { ...d, isPrivate })
+                }
+              />
               <Button
                 type="submit"
                 disabled={pending || !draft.name.trim() || picked === 0}

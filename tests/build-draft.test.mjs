@@ -42,6 +42,7 @@ test("cloning preserves all selections, their order and priorities, without a sa
   const copy = createBuildDraft(source, true);
   assert.equal(Object.hasOwn(copy, "id"), false);
   assert.deepEqual(copy, {
+    isPrivate: false,
     name: "Arena (copy)",
     notes: source.notes,
     runeIds: [8, 3],
@@ -95,6 +96,7 @@ const i18n = loadTypeScript("src/lib/i18n/client.tsx");
 const { HeroBuilds } = loadTypeScript("src/app/heroes/[slug]/hero-builds.tsx", {
   "@/lib/i18n/client": i18n,
   "./build-actions": {},
+  "@/app/heroes/[slug]/build-actions": {},
   "next/navigation": {
     usePathname: () => "/heroes/sea-captain",
     useRouter: () => ({ refresh() {} }),
@@ -119,6 +121,29 @@ test("saved builds offer a localized Clone button only to editors", () => {
       ),
     );
   assert.match(render(true, "en"), /aria-label="Clone Arena"/);
+  assert.match(render(true, "en"), /aria-label="Hide build"/);
+  assert.match(render(true, "vi"), /aria-label="Ẩn bản dựng"/);
+  assert.doesNotMatch(render(false, "en"), /aria-label="Hide build"/);
   assert.match(render(true, "vi"), /aria-label="Nhân bản Arena"/);
   assert.doesNotMatch(render(false, "en"), /aria-label="Clone Arena"/);
+});
+
+test("editing and cloning private builds preserve visibility", () => {
+  for (const asCopy of [false, true]) {
+    assert.equal(
+      createBuildDraft({ ...savedBuild(), isPrivate: true }, asCopy).isPrivate,
+      true,
+    );
+  }
+  assert.equal(
+    buildSchema.parse({
+      ...saveInput(createBuildDraft(savedBuild())),
+      isPrivate: true,
+    }).isPrivate,
+    true,
+  );
+  assert.equal(
+    buildSchema.parse(saveInput(createBuildDraft(savedBuild()))).isPrivate,
+    undefined,
+  );
 });

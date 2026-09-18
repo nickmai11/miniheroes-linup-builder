@@ -5,6 +5,12 @@ Route: `/heroes/[slug]` (`src/app/heroes/[slug]/page.tsx`). Reference hero:
 below was established while building it; follow it for every other hero. Game
 facts behind these rules are in `mini-heroes-magic-throne.md` (Owner-stated facts).
 
+Saved builds have the same eye / crossed-out-eye visibility control as lineups
+(owner, 2026-09-18). Private builds are readable and editable only by the admin
+who hides them; copies and imports preserve privacy. Hidden builds do not appear
+in visitor previews, indicators, reactions, or change history. The owner requested
+all existing builds and lineups be hidden.
+
 ## 1. What the page shows
 
 Display rarity names rather than color names (owner, 2026-09-15): artifact

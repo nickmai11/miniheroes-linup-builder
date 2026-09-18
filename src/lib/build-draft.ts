@@ -4,6 +4,7 @@ import type { BuildPriority } from "@/lib/build-priorities";
 /** Pick order remains stable within each separately assigned tier. */
 export type BuildDraft = {
   id?: number;
+  isPrivate: boolean;
   name: string;
   notes: string;
   runeIds: number[];
@@ -26,6 +27,7 @@ export function createBuildDraft(
       asCopy && build
         ? `${build.name.slice(0, 120 - suffix.length)}${suffix}`
         : (build?.name ?? ""),
+    isPrivate: build?.isPrivate ?? false,
     notes: build?.notes ?? "",
     runeIds: build?.runes.map((r) => r.id) ?? [],
     weaponIds: build?.weapons.map((w) => w.id) ?? [],
