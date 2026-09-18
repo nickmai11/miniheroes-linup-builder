@@ -103,6 +103,27 @@ while preserving the browser's existing invitation registration. Admin login
 does not register a visitor's browser or consume an invitation code, and requires
 no application database migration.
 
+### Required nicknames
+
+Every admin account and registered IC user is prompted to choose a nickname
+if one is missing, including users registered before this feature. The dialog
+blocks interaction and cannot be dismissed until a valid nickname is saved.
+Nicknames are trimmed, limited to 40 characters, and support Vietnamese text.
+
+Names persist in `viewer_profiles`, keyed by the existing admin account or IC
+device identity. Additional ICs and device-token transfers keep the same name;
+admin sign-in uses a separate account profile. Anonymous visitors on published
+pages are prompted after registering with an IC or signing in. The save endpoint
+resolves identity from the session, rejects cross-origin requests, and never
+accepts a client-supplied identity. The dialog is available in English and
+Vietnamese.
+
+Migration `0039_viewer_nicknames.sql` was applied to the configured database on
+2026-09-18. Existing users have no generated nickname and will be prompted after
+the updated app is deployed. Run
+`PROFILE_TEST_DATABASE_URL=postgres://vote_test@127.0.0.1:55443/votes_test node --experimental-strip-types --test tests/nickname.integration.test.mjs`
+against a migrated disposable database to check persistence and identity isolation.
+
 ### Local development
 
 Run `pnpm dev` and sign in as admin at `http://localhost:3000` (or

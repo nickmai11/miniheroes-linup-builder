@@ -1668,6 +1668,9 @@ daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
 
+- 2026-09-18 — Every user / IC must have a nickname. Prompt users without a
+  nickname with a dialog.
+
 - 2026-09-18 — Make builds hidable like lineups, and hide all existing builds
   and lineups.
 
@@ -2174,6 +2177,15 @@ is said. These override anything marked (web).
   13. This is a review, not an import.
 
 ## How the app models it
+
+- Every admin account and registered invitation-code user must set a nickname
+  (owner, 2026-09-18). A required dialog prompts existing and new users whose
+  nickname is missing. Nicknames persist with the account or registered device,
+  including across additional IC redemptions and host transfers.
+  `viewer_profiles` stores names against the existing admin/device identity;
+  nickname writes derive identity from the session and validate trimmed, nonempty
+  text up to 40 characters. Migration 0039 was applied on 2026-09-18; existing
+  users are left unnamed so they receive the prompt when the code is deployed.
 
 - Lineup headers show `created_at` and `updated_at` in the selected locale and
   Asia/Ho_Chi_Minh timezone. Follow and visibility controls are at the top of

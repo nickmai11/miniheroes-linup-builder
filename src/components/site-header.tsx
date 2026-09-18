@@ -12,6 +12,8 @@ import {
 } from "@/lib/app-access";
 import { getAdminId } from "@/lib/admin-access";
 import { AdminLogin } from "@/components/admin-login";
+import { getViewerProfile } from "@/lib/viewer-profile";
+import { NicknamePrompt } from "@/components/nickname-prompt";
 import { NotificationsButton } from "@/components/notifications-button";
 
 export async function SiteHeader() {
@@ -22,10 +24,14 @@ export async function SiteHeader() {
   const signedIn = adminId !== null;
   const access = await hasAppAccess();
   const device = await getRegisteredDevice();
+  const profile = await getViewerProfile();
   const lineupOnly = !access && Boolean(device);
   const publicPage = access ? null : await getPublicPage();
   return (
     <>
+      {profile && !profile.nickname && (
+        <NicknamePrompt key={adminId ?? `device:${device!.id}`} />
+      )}
       <header className="bg-background sticky top-0 z-40 border-b md:static">
         <div className="mx-auto flex h-14 w-full max-w-6xl items-center gap-2 px-3 sm:gap-6 sm:px-6">
           <MobileNavigation canEdit={canEdit} />

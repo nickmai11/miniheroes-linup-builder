@@ -134,6 +134,8 @@ export async function proxy(request: NextRequest) {
   ) {
     return finish(new NextResponse("Not found", { status: 404 }));
   }
+  // Nicknames resolve their own authenticated account / IC device, including scoped ICs.
+  if (path === "/api/nickname") return finish(next());
   if (path === "/api/invitations/redeem") return finish(next());
   // Votes independently verify target visibility and voter identity, including
   // scoped invitations and read-only totals on explicitly public pages.

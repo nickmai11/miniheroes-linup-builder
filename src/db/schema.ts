@@ -19,6 +19,21 @@ import { FISH_RARITIES } from "@/lib/fish-rarity";
 import type { FishStatSample } from "@/lib/fish-measurements";
 import type { ChangeEvent, ChangeField, ChangeKind } from "@/lib/change-types";
 
+/** Display names belong to the existing account / registered invitation identity. */
+export const viewerProfiles = pgTable(
+  "viewer_profiles",
+  {
+    viewerKey: text("viewer_key").primaryKey(),
+    nickname: text("nickname").notNull(),
+  },
+  (t) => [
+    check(
+      "viewer_profiles_nickname_length",
+      sql`char_length(btrim(${t.nickname})) between 1 and 40`,
+    ),
+  ],
+);
+
 /** Personal subscriptions survive target deletion so its final change stays in the feed. */
 export const contentFollows = pgTable(
   "content_follows",

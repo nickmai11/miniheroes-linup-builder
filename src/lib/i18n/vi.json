@@ -1,4 +1,13 @@
 {
+  "Choose your nickname": "Chọn biệt danh của bạn",
+  "Enter a nickname to continue. You only need to do this once.": "Nhập biệt danh để tiếp tục. Bạn chỉ cần làm việc này một lần.",
+  "Nickname": "Biệt danh",
+  "Save and continue": "Lưu và tiếp tục",
+  "Enter your nickname.": "Nhập biệt danh của bạn.",
+  "Use 40 characters or fewer.": "Sử dụng tối đa 40 ký tự.",
+  "Use a single line for your nickname.": "Biệt danh phải nằm trên một dòng.",
+  "Use an invitation or sign in to set your nickname.": "Sử dụng lời mời hoặc đăng nhập để đặt biệt danh.",
+  "Could not save your nickname. Please try again.": "Không thể lưu biệt danh. Vui lòng thử lại.",
   "Notifications": "Thông báo",
   "Notifications ({count} unread)": "Thông báo ({count} chưa đọc)",
   "Close notifications": "Đóng thông báo",
