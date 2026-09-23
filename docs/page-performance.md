@@ -1,5 +1,33 @@
 # Page performance review — 2026-09-13
 
+## Save transaction regression — 2026-09-23
+
+Disabling pipelining fixed the concurrent-read stall below but exposed a
+Postgres.js 3.4.9 bug: `execute()` short-circuited before the `onexecute`
+transaction-reservation callback when `max_pipeline` was 0. Reads succeeded,
+while `sql.begin()` / Drizzle transactions failed with `UNSAFE_TRANSACTION`
+in the two-connection app pool. A one-connection diagnostic instead reported
+`Cannot set properties of undefined (setting 'onclose')`.
+
+The tracked `patches/postgres@3.4.9.patch`, registered in `pnpm-workspace.yaml`
+and the lockfile, moves transaction reservation before the pipeline-limit check
+in the driver's ESM, CommonJS, and Cloudflare entry points. Keep
+`max_pipeline: 0` and the bounded pool; reverting that setting reintroduces the
+read stall. Install through pnpm so the patch is applied, and revisit the patch
+when upgrading Postgres.js. Restart existing dev servers or redeploy production
+to replace already loaded driver modules and cached clients.
+
+Regression tests exercise concurrent mixed reads, transaction commits, rollback,
+and connection reuse without overlapping protocol exchanges in both Node module
+formats. Both failed before the patch and pass after it. The history integration
+test now uses the app's actual client settings instead of an independent default
+pool, and verifies real lineup/build saves and atomic rollback in a disposable
+local PostgreSQL database. The full suite passed with that integration test
+enabled (324 passed, 18 optional tests skipped); TypeScript, targeted ESLint,
+and a production Webpack build also passed. The configured Supabase pooler passed 20 concurrent mixed reads,
+commit and rollback of read-only work, and connection reuse. Those live probes
+did not modify application records. Production has not been redeployed.
+
 ## Concurrent-query timeout incident — 2026-09-23
 
 Vercel recorded repeated 300-second 504s in both access middleware and page

@@ -23,6 +23,7 @@ function getClient() {
     // Parse/Describe/Flush exchange. Wait for ReadyForQuery before sending
     // another query on that socket. In Postgres.js, 0 disables pipelining;
     // 1 still permits a second in-flight query. Keep both pool connections.
+    // patches/postgres@3.4.9.patch preserves transaction reservation at 0.
     max_pipeline: 0,
     idle_timeout: 20,
     max_lifetime: 60 * 5,

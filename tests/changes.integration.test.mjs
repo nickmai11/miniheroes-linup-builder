@@ -15,7 +15,22 @@ test(
     assert.equal(url.port, "55443");
     assert.equal(url.username, "vote_test");
     assert.equal(url.pathname, "/votes_test");
-    const client = postgres(testUrl, { prepare: false, max: 6 });
+    // Use the app's pool settings: the old independent max: 6 client missed
+    // the transaction regression caused by disabling pipelining in production.
+    const previous = globalThis.pg;
+    delete globalThis.pg;
+    let client;
+    try {
+      client = loadTypeScript("src/db/index.ts", {
+        "@/lib/env": { env: { DATABASE_URL: testUrl } },
+        "./schema": {},
+        postgres: { default: postgres },
+        "drizzle-orm/postgres-js": { drizzle: (sql) => sql },
+      }).db;
+    } finally {
+      if (previous === undefined) delete globalThis.pg;
+      else globalThis.pg = previous;
+    }
     const schema = loadTypeScript("src/db/schema.ts");
     let failHistory = false;
     const db = drizzle(client, {

@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  postgres@3.4.9: 173073af471c8e6ccbe454477f4c9a24e8821e0d15aea7838480ab405f665f56
+
 importers:
 
   .:
@@ -28,7 +31,7 @@ importers:
         version: 0.2.6
       drizzle-orm:
         specifier: ^0.45.2
-        version: 0.45.2(@libsql/client@0.18.0)(postgres@3.4.9)
+        version: 0.45.2(@libsql/client@0.18.0)(postgres@3.4.9(patch_hash=173073af471c8e6ccbe454477f4c9a24e8821e0d15aea7838480ab405f665f56))
       lucide-react:
         specifier: ^1.45.0
         version: 1.45.0(react@19.2.8)
@@ -40,7 +43,7 @@ importers:
         version: 0.4.6(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       postgres:
         specifier: ^3.4.9
-        version: 3.4.9
+        version: 3.4.9(patch_hash=173073af471c8e6ccbe454477f4c9a24e8821e0d15aea7838480ab405f665f56)
       react:
         specifier: 19.2.8
         version: 19.2.8
@@ -5340,10 +5343,10 @@ snapshots:
       esbuild: 0.25.12
       tsx: 4.23.13
 
-  drizzle-orm@0.45.2(@libsql/client@0.18.0)(postgres@3.4.9):
+  drizzle-orm@0.45.2(@libsql/client@0.18.0)(postgres@3.4.9(patch_hash=173073af471c8e6ccbe454477f4c9a24e8821e0d15aea7838480ab405f665f56)):
     optionalDependencies:
       '@libsql/client': 0.18.0
-      postgres: 3.4.9
+      postgres: 3.4.9(patch_hash=173073af471c8e6ccbe454477f4c9a24e8821e0d15aea7838480ab405f665f56)
 
   dunder-proto@1.0.1:
     dependencies:
@@ -6716,7 +6719,7 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  postgres@3.4.9: {}
+  postgres@3.4.9(patch_hash=173073af471c8e6ccbe454477f4c9a24e8821e0d15aea7838480ab405f665f56): {}
 
   powershell-utils@0.1.0: {}
 
