@@ -1,0 +1,7 @@
+# Use Vercel's configured environment, never local credentials.
+.env*
+!.env.example
+
+# Original screenshots are import sources; runtime artwork is in public/.
+gameplay/
+*.tsbuildinfo

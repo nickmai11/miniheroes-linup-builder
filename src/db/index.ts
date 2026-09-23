@@ -14,14 +14,20 @@ function getClient() {
   const cached = globalForDb.pg;
   if (cached && cached.url === env.DATABASE_URL) return cached.client;
   if (cached) void cached.client.end({ timeout: 1 });
-  const client = postgres(env.DATABASE_URL, {
+  const options = {
     prepare: false,
     // Serverless runtimes multiply these pools; the shared pooler has a finite
     // client limit. Queue extra work locally and release quiet connections.
     max: 2,
+    // Supavisor can stall when a parameterless query is pipelined with a
+    // Parse/Describe/Flush exchange. Wait for ReadyForQuery before sending
+    // another query on that socket. In Postgres.js, 0 disables pipelining;
+    // 1 still permits a second in-flight query. Keep both pool connections.
+    max_pipeline: 0,
     idle_timeout: 20,
     max_lifetime: 60 * 5,
-  });
+  };
+  const client = postgres(env.DATABASE_URL, options);
   globalForDb.pg = { url: env.DATABASE_URL, client };
   return client;
 }

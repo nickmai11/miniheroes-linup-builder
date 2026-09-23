@@ -1,5 +1,40 @@
 # Page performance review — 2026-09-13
 
+## Concurrent-query timeout incident — 2026-09-23
+
+Vercel recorded repeated 300-second 504s in both access middleware and page
+functions. Fresh single-query database checks and occasional successful HTTP
+requests did not establish recovery: concurrent database work could still stall.
+
+A bounded, read-only reproduction against the configured Supabase transaction
+pooler mixed parameterless `SELECT 1` queries with parameterized text selects.
+With the application's existing settings, only 4 of the first 30 completed
+before the diagnostic stopped the client after 12 seconds. A parameterized-only
+control completed all 90 queries. With `max_pipeline: 0`, the same mixed workload
+completed all 90 queries in 9.3 seconds, including local-to-Tokyo network time.
+No production records were read or changed by these probes.
+
+Postgres.js defaults to pipelining queries on a connection. Mixing a completed
+query's protocol messages with the next Parse/Describe/Flush exchange can stall
+through Supavisor; the upstream pooler has also documented
+[pipelining hangs](https://github.com/supabase/supavisor/issues/1061).
+Disable pipelining in the shared app client. In the installed Postgres.js 3.4.9,
+the `sent.length < max_pipeline` check requires **0**, not 1, to wait for
+ReadyForQuery before sending another query. The two-connection pool, transaction
+pooler configuration, and access policies remain in place. This addresses the
+reproduced failure; it does not establish that every historical 504 had this cause.
+
+The regression test uses the real driver and a local PostgreSQL protocol peer
+that delays ReadyForQuery, checking that mixed concurrent queries complete
+without overlapping exchanges on either socket. No Supabase credentials are
+needed for the test. Reverting to the old pipelining setting makes that test hang
+until its five-second cleanup deadline. The final app settings also completed
+the live read-only 90-query reproduction in 9.2 seconds. The full suite passed
+(322 passed, 19 optional integration tests skipped), as did TypeScript, targeted
+ESLint, and a production Webpack build. Turbopack's build was blocked by this
+environment's worker-socket restriction. The fix requires a new production
+deployment; it has not yet been deployed.
+
 ## New-visitor access incident — 2026-09-17
 
 A fresh request to `https://miniheroes-library.vercel.app/` returned 503 with
