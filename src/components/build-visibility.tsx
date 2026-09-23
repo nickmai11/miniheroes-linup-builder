@@ -34,7 +34,11 @@ export function BuildVisibilityToggle({
         <Icon aria-hidden="true" />
       </TooltipTrigger>
       <TooltipContent>
-        {t(isPrivate ? "Private — only me" : "Visible to visitors with access")}
+        {t(
+          isPrivate
+            ? "Private — owner and selected people"
+            : "Visible to visitors with access",
+        )}
       </TooltipContent>
     </Tooltip>
   );

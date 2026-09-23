@@ -345,6 +345,9 @@ test("management routes require an admin on local and deployed hosts in every en
             ["/public-urls", "GET"],
             ["/api/public-urls", "POST"],
             ["/api/public-urls", "DELETE"],
+            ["/users", "GET"],
+            ["/api/users", "PATCH"],
+            ["/api/users", "DELETE"],
           ]) {
             const response = await proxy(
               new NextRequest(`${base}${path}`, {

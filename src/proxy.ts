@@ -130,11 +130,14 @@ export async function proxy(request: NextRequest) {
       "/api/invitations/generate",
       "/public-urls",
       "/api/public-urls",
+      "/users",
+      "/api/users",
     ].includes(path)
   ) {
     return finish(new NextResponse("Not found", { status: 404 }));
   }
   // Nicknames resolve their own authenticated account / IC device, including scoped ICs.
+  if (path === "/api/shares") return finish(next());
   if (path === "/api/nickname") return finish(next());
   if (path === "/api/invitations/redeem") return finish(next());
   // Votes independently verify target visibility and voter identity, including
@@ -225,7 +228,12 @@ export async function proxy(request: NextRequest) {
         if (
           page &&
           deviceCanReadPage(device, page) &&
-          (await isPublicPageAsset(page, path, device.lineupIds))
+          (await isPublicPageAsset(
+            page,
+            path,
+            device.lineupIds,
+            `device:${device.id}`,
+          ))
         ) {
           const response = next();
           setDeviceCookie(response, token);
@@ -253,6 +261,7 @@ export async function proxy(request: NextRequest) {
             referringPage.startsWith("/heroes/")
               ? device?.lineupIds
               : undefined,
+            device ? `device:${device.id}` : null,
           ))
         ) {
           return finish(next());

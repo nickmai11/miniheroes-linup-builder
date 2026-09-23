@@ -124,6 +124,25 @@ the updated app is deployed. Run
 `PROFILE_TEST_DATABASE_URL=postgres://vote_test@127.0.0.1:55443/votes_test node --experimental-strip-types --test tests/nickname.integration.test.mjs`
 against a migrated disposable database to check persistence and identity isolation.
 
+### User management
+
+Signed-in admins can open **Users** (`/users`) to search registered browsers and
+saved admin profiles, edit nicknames, and inspect invitation access and share
+counts. **Invite a user** opens the existing invitation generator. Each invited
+user represents one browser registration, including users without a nickname.
+
+**Revoke access** requires confirmation and removes that browser registration,
+its nickname, shares, follows, notifications, and votes in one transaction. Old
+browser credentials stop working and used invitation codes remain consumed. A
+new invitation can register the browser again; public pages remain public.
+Admin profiles support nickname edits only; Supabase still manages admin roles,
+passwords, and account deletion. The page and API independently enforce admin
+access, and mutations reject cross-origin requests.
+
+No additional database migration is needed beyond the existing nickname and
+sharing tables. Run `USERS_TEST_DATABASE_URL=postgres://vote_test@127.0.0.1:55443/votes_test node --experimental-strip-types --test tests/user-management.integration.test.mjs`
+against a migrated disposable database to check revocation and profile updates.
+
 ### Local development
 
 Run `pnpm dev` and sign in as admin at `http://localhost:3000` (or
@@ -152,15 +171,15 @@ latest recorded lineup change, falling back to the creation date. Migration
 
 Admins can click the **eye / crossed-out-eye icon** on lineup cards, on the
 detail page, or in the editor to show or hide a lineup. The eye means visible;
-the crossed-out eye means **Private — only me**. Public keeps the existing invitation and Public
+the crossed-out eye means **Private — owner and selected people**. Public keeps the existing invitation and Public
 URLs rules; this setting does not automatically publish a page to the internet.
-Private lineups belong to the admin account that hides them. Other admins,
+Private lineups belong to the admin account that hides them. Selected nickname recipients can read private content; other admins,
 registered devices, scoped invitations, and published URLs cannot override it.
 Existing lineups keep their current visibility. Clones retain the source privacy.
 
 Privacy applies to lineup lists and pages, metadata, hero previews, votes,
 follows, artwork granted through a lineup, and current or deleted-lineup history.
-The Share control is unavailable for private lineups. Making a lineup public
+Owners can share private lineups with selected nicknames. Making a lineup public
 again restores its existing sharing rules. Previously loaded content cannot be
 removed from another visitor's browser.
 
@@ -292,17 +311,25 @@ The generator page and its POST endpoint are available only to signed-in admins,
 using the same access policy as editing. They work before that browser is
 registered, so you can generate the first invitation.
 
-Saved lineup cards and detail pages have a **Share** menu. **Copy link** copies
-the lineup URL on the browser's current origin without invitation codes or other query
-parameters. **Copy link with IC** generates a fresh, single-use code and copies
-the lineup URL with `?ic=CODE`; this option requires admin access. This code grants
-access only to that lineup. A browser can redeem codes for multiple lineups,
-and `/lineups` shows its invited lineups. Other private pages and APIs stay
-locked. The lineup’s formation, assigned build previews, pets, relics, fishes,
-and artwork remain viewable. Standalone codes can upgrade a scoped browser
-to full-library access.
-If clipboard access is blocked, the link is shown for manual copying, and
-retrying reuses the invitation that was already generated.
+Saved lineup cards, lineup details, and saved builds have a **Share** button
+that opens a searchable nickname checkbox list. Existing recipients are checked;
+**Save sharing** persists additions and removals. Nickname changes preserve the
+same recipient identity; duplicate names have a numeric disambiguator. Only
+admins who can manage the item can list recipients or change sharing.
+
+Sharing grants read access to that specific item, including private content,
+without granting editing or permission to re-share. Builds and lineups have
+independent lists: a hidden assigned build needs its own share. Recipients find
+items under **Shared with me**. Scoped IC users can open shared lineup pages and
+the hero pages of shared builds without getting full-library access. Unchecking
+revokes the grant; public content still follows its ordinary access rules.
+
+Migration `0040_nickname_sharing.sql` adds profile IDs and `content_shares` with
+RLS and cascading target/profile references. Applied to the configured database
+on 2026-09-18; no recipients were selected automatically. Deploy the updated
+app to enable the new Share dialog and recipient access. Test with
+`SHARING_TEST_DATABASE_URL=postgres://vote_test@127.0.0.1:55443/votes_test node --experimental-strip-types --test tests/sharing.integration.test.mjs`.
+Existing invitation codes and invitation links continue to work.
 
 Unregistered browsers see `/invite` and can enter a valid, unused code or sign in
 as admin. Opening

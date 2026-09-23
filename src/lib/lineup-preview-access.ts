@@ -1,4 +1,5 @@
 import "server-only";
+import { getViewerKey } from "@/lib/viewer-profile";
 
 import { and, eq, inArray } from "drizzle-orm";
 import { db, schema } from "@/db";
@@ -10,7 +11,10 @@ export async function heroLineupPreviewIds(
   heroSlug: string,
   invitedLineupIds: number[] = [],
   fullAccess = false,
+  viewerKey?: string | null,
 ): Promise<number[]> {
+  const key = viewerKey === undefined ? await getViewerKey() : viewerKey;
+  const adminId = viewerKey === undefined ? await getAdminId() : null;
   const rows = await db
     .selectDistinct({ id: schema.lineupHeroes.lineupId })
     .from(schema.lineupHeroes)
@@ -18,7 +22,7 @@ export async function heroLineupPreviewIds(
     .where(
       and(
         eq(schema.heroes.slug, heroSlug),
-        visibleLineupFilter(schema.lineupHeroes.lineupId, await getAdminId()),
+        visibleLineupFilter(schema.lineupHeroes.lineupId, adminId, key),
       ),
     );
   const ids = rows.map((row) => row.id);

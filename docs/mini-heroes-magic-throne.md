@@ -1546,6 +1546,16 @@ the earlier fishing collectibles sheet must not be imported as fishes.
 
 ### Lineups (game)
 
+Lineups and builds support sharing with selected nicknames through a checkbox
+list opened by Share (owner, 2026-09-18). This adds specific readers to private
+content; it does not make that content public or grant editing rights. Each
+lineup/build has its own recipient list, and removing a recipient revokes that
+share. Recipients can find their items on Shared with me. Migration 0040 adds
+stable profile IDs and per-item recipient grants with RLS; it was applied on
+2026-09-18 with no automatic grants. Sharing adds read access across the page
+gate, queries, previews, artwork, reactions, follows, and history. Mutation
+authorization remains owner-only for private content.
+
 Builds also have the same owner-only hide/show control as lineups. Hide all
 existing builds and lineups (owner, 2026-09-18). Hidden builds are excluded from
 visitor lists, portrait indicators, assignments, imports, reactions, and history.
@@ -1636,7 +1646,8 @@ a ` (copy)` suffix; saving creates a new lineup, and Cancel returns to the sourc
 Clone requires a signed-in admin, as do creating and editing lineups. Localhost
 does not grant feature access (owner, 2026-09-14).
 
-**Copy link with IC** generates an invitation scoped to that lineup. A device
+**Legacy lineup links with IC** carry an invitation scoped to that lineup; the
+current Share button selects nickname recipients (owner, 2026-09-18). A device
 that redeems it can access only that lineup; redeeming codes for more lineups
 adds those lineups to the same device's access (owner, 2026-09-14). Standalone
 invitations retain full-library access. Scoped devices see their invited lineups
@@ -1667,6 +1678,9 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-18 — Lineups and builds can be shared to nicknames. Clicking Share
+  must show a list of nicknames with checkboxes to select recipients.
 
 - 2026-09-18 — Every user / IC must have a nickname. Prompt users without a
   nickname with a dialog.
@@ -2197,7 +2211,8 @@ is said. These override anything marked (web).
   2026-09-16 after migration and timestamp integration checks.
 
 - Build privacy follows lineup privacy using `hero_builds.private_owner_id`.
-  Only the admin who hides a build can read or edit it. Queries filter hero
+  Only the admin who hides a build can edit it; selected nickname recipients
+  can also read it. Queries filter hero
   builds, assignment previews, import search, and portrait indicators; mutation
   and reaction checks enforce the same rule. Copies and imports preserve
   privacy; omitted visibility leaves existing privacy unchanged. Build history
@@ -2211,13 +2226,13 @@ is said. These override anything marked (web).
   found zero public builds or lineups. Hosted build privacy requires deploying
   this code.
 - Lineup privacy uses a nullable `lineups.private_owner_id`: null preserves the
-  existing invitation/Public URLs audience; otherwise only that verified admin
-  account can read or modify the lineup. Public/private controls are available
+  existing invitation/Public URLs audience; otherwise that verified admin
+  account retains management and can select nickname recipients for read access. Public/private controls are available
   on the list, details, and editor. Existing rows remain unchanged in visibility;
   clones preserve privacy, and older editor payloads cannot clear it by omission.
   All lineup reads, hero references/previews, reactions, follows, and artwork
-  granted through a lineup enforce the same privacy rule. Share controls and
-  invitation generation are disabled for hidden lineups. History inherits the
+  granted through a lineup enforce the same privacy rule. Share controls now allow selected nicknames on hidden lineups; invitation
+  generation remains disabled for hidden lineups. History inherits the
   latest privacy in `content_changes.private_owner_id`, retained after deletion.
   Visibility changes are recorded atomically in history without account IDs in
   the response. Migration `0033_lineup_privacy.sql` adds both nullable columns

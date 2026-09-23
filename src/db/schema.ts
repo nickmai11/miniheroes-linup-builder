@@ -23,6 +23,7 @@ import type { ChangeEvent, ChangeField, ChangeKind } from "@/lib/change-types";
 export const viewerProfiles = pgTable(
   "viewer_profiles",
   {
+    id: integer("id").notNull().generatedAlwaysAsIdentity().unique(),
     viewerKey: text("viewer_key").primaryKey(),
     nickname: text("nickname").notNull(),
   },
@@ -30,6 +31,32 @@ export const viewerProfiles = pgTable(
     check(
       "viewer_profiles_nickname_length",
       sql`char_length(btrim(${t.nickname})) between 1 and 40`,
+    ),
+  ],
+);
+
+/** Explicit read grants; deleting a target/profile removes its shares. */
+export const contentShares = pgTable(
+  "content_shares",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    recipientKey: text("recipient_key")
+      .notNull()
+      .references(() => viewerProfiles.viewerKey, { onDelete: "cascade" }),
+    lineupId: integer("lineup_id").references(() => lineups.id, {
+      onDelete: "cascade",
+    }),
+    buildId: integer("build_id").references(() => heroBuilds.id, {
+      onDelete: "cascade",
+    }),
+  },
+  (t) => [
+    unique().on(t.lineupId, t.recipientKey),
+    unique().on(t.buildId, t.recipientKey),
+    index("content_shares_recipient_idx").on(t.recipientKey),
+    check(
+      "content_shares_one_target",
+      sql`(${t.lineupId} is not null)::integer + (${t.buildId} is not null)::integer = 1`,
     ),
   ],
 );

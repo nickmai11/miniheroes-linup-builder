@@ -46,11 +46,12 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
   const numericId = Number(id);
   if (!Number.isInteger(numericId)) notFound();
 
-  const [lineup, canEdit] = await Promise.all([
+  const [lineup, adminCanEdit] = await Promise.all([
     getLineup(numericId),
     canEditContent().then(async (allowed) => allowed && (await hasAppAccess())),
   ]);
   if (!lineup) notFound();
+  const canEdit = adminCanEdit && lineup.canManage;
 
   return (
     <PageShell
@@ -67,9 +68,7 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
           {canEdit && (
             <LineupVisibility id={lineup.id} isPrivate={lineup.isPrivate} />
           )}
-          {!lineup.isPrivate && (
-            <LineupShare lineupId={lineup.id} canInvite={canEdit} />
-          )}
+          {canEdit && <LineupShare lineupId={lineup.id} canInvite={canEdit} />}
         </div>
       }
       width="max-w-4xl"

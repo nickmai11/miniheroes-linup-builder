@@ -1,6 +1,7 @@
 import "server-only";
+import { getViewerKey } from "@/lib/viewer-profile";
 import { getAdminId } from "@/lib/admin-access";
-import { buildPrivacyFilter } from "@/lib/build-privacy";
+import { buildPrivacyFilter, buildReadFilter } from "@/lib/build-privacy";
 import { matchingGameSlugs } from "@/lib/i18n/game-labels";
 import { and, asc, eq, ilike, inArray, ne, or, type SQL } from "drizzle-orm";
 import { db, schema } from "@/db";
@@ -17,7 +18,7 @@ export async function getHeroIdsWithBuilds(
     .where(
       and(
         inArray(schema.heroBuilds.heroId, heroIds),
-        buildPrivacyFilter(await getAdminId()),
+        buildReadFilter(await getAdminId(), await getViewerKey()),
       ),
     );
   return new Set(rows.map((row) => row.heroId));
@@ -44,10 +45,13 @@ export async function getBuildsByIds(ids: number[]): Promise<HeroBuild[]> {
 }
 
 async function loadBuilds(where: SQL): Promise<HeroBuild[]> {
+  const adminId = await getAdminId();
   const builds = await db
     .select()
     .from(schema.heroBuilds)
-    .where(and(where, buildPrivacyFilter(await getAdminId())))
+    .where(
+      and(where, buildReadFilter(await getAdminId(), await getViewerKey())),
+    )
     .orderBy(asc(schema.heroBuilds.createdAt), asc(schema.heroBuilds.id));
   if (builds.length === 0) return [];
   const ids = builds.map((b) => b.id);
@@ -124,6 +128,9 @@ async function loadBuilds(where: SQL): Promise<HeroBuild[]> {
   return builds.map(({ privateOwnerId, ...b }) => ({
     ...b,
     isPrivate: privateOwnerId !== null,
+    canManage: Boolean(
+      adminId && (!privateOwnerId || privateOwnerId === adminId),
+    ),
     runes: runeRows
       .filter((r) => r.buildId === b.id)
       .map((r) => ({ ...r.rune, priority: r.priority })),

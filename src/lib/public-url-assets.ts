@@ -47,6 +47,7 @@ export async function isPublicPageAsset(
   page: string,
   asset: string,
   allowedLineupIds?: number[],
+  viewerKey: string | null = null,
 ): Promise<boolean> {
   if (
     !/^\/(heroes|badges|divinities|talents|artifacts|icons|pets|relics|fishes|baits)\/[a-z0-9/-]+\.png$/.test(
@@ -62,9 +63,14 @@ export async function isPublicPageAsset(
   const hero = page.match(/^\/heroes\/([a-z0-9-]+)$/);
   if (hero) {
     if (heroAssets(hero[1], true, true).has(asset)) return true;
-    const previewIds = await heroLineupPreviewIds(hero[1], allowedLineupIds);
+    const previewIds = await heroLineupPreviewIds(
+      hero[1],
+      allowedLineupIds,
+      false,
+      viewerKey,
+    );
     if (!previewIds.length) return false;
-    return isPublicPageAsset("/lineups", asset, previewIds);
+    return isPublicPageAsset("/lineups", asset, previewIds, viewerKey);
   }
   if (page === "/divinities")
     return divinitySeeds.some((item) => item.iconUrl === asset);
@@ -105,7 +111,7 @@ export async function isPublicPageAsset(
       typeof schema.lineupHeroes.lineupId | typeof schema.lineupFishes.lineupId,
   ) =>
     and(
-      visibleLineupFilter(column, null),
+      visibleLineupFilter(column, null, viewerKey),
       lineupId !== null
         ? eq(column, lineupId)
         : allowedLineupIds

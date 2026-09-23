@@ -37,7 +37,7 @@ export default async function EditLineupPage(
     getAllRelics(),
     getAllFishes(),
   ]);
-  if (!lineup) notFound();
+  if (!lineup?.canManage) notFound();
   const builds = await getBuildsForHeroes([
     ...new Set([
       ...heroes.map((hero) => hero.id),
@@ -57,7 +57,7 @@ export default async function EditLineupPage(
         heroes={heroes}
         pets={pets}
         relics={relics}
-        builds={builds}
+        builds={builds.filter((build) => build.canManage)}
         fishes={fishes}
         lineup={lineup}
       />

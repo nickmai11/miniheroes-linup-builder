@@ -4,7 +4,7 @@ import { db, schema } from "@/db";
 import { getAdminId } from "@/lib/admin-access";
 import { getRegisteredDevice } from "@/lib/app-access";
 import { getPublicUrls } from "@/lib/public-urls";
-import { lineupPrivacyFilter } from "@/lib/lineup-privacy";
+import { lineupReadFilter } from "@/lib/lineup-privacy";
 import { lockContentWrites } from "@/lib/change-recording";
 import type { FollowedItem, FollowSummary, FollowTarget } from "./follow-types";
 
@@ -18,6 +18,7 @@ export async function getFollowContext() {
     key: adminId ? `admin:${adminId}` : device ? `device:${device.id}` : null,
     full: Boolean(adminId || device?.fullAccess),
     invited: device?.lineupIds ?? [],
+    sharedHeroSlugs: device?.sharedHeroSlugs ?? [],
   };
 }
 
@@ -38,7 +39,12 @@ async function accessContext() {
       return paths.has("/lineups") ? "/lineups" : null;
     }
     const path = `/heroes/${slug}`;
-    if (context.full || paths.has(path)) return path;
+    if (
+      context.full ||
+      paths.has(path) ||
+      (slug && context.sharedHeroSlugs.includes(slug))
+    )
+      return path;
     return paths.has("/heroes") ? "/heroes" : null;
   }
   return { ...context, href };
@@ -63,7 +69,7 @@ export async function getFollowAccess(target: FollowTarget) {
           .where(
             and(
               eq(schema.lineups.id, target.id),
-              lineupPrivacyFilter(context.adminId),
+              lineupReadFilter(context.adminId, context.key),
             ),
           )
       : await db
@@ -130,7 +136,7 @@ export async function getFollowedItems(): Promise<FollowedItem[]> {
       and(
         eq(f.kind, "lineup"),
         eq(f.targetId, schema.lineups.id),
-        lineupPrivacyFilter(context.adminId),
+        lineupReadFilter(context.adminId, context.key),
       ),
     )
     .leftJoin(

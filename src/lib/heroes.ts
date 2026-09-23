@@ -1,9 +1,10 @@
 import "server-only";
+import { getViewerKey } from "@/lib/viewer-profile";
 import { createHash } from "node:crypto";
 import { cache } from "react";
 import { and, asc, eq, inArray } from "drizzle-orm";
 import { getAdminId } from "@/lib/admin-access";
-import { lineupPrivacyFilter } from "@/lib/lineup-privacy";
+import { lineupReadFilter } from "@/lib/lineup-privacy";
 import { db, schema } from "@/db";
 import { heroDetailSeeds, type HeroAwakeningSkill } from "@/data/hero-details";
 import { heroSeeds } from "@/data/heroes";
@@ -402,7 +403,7 @@ export const getHeroDetail = cache(
           .where(
             and(
               eq(schema.lineupHeroes.heroId, hero.id),
-              lineupPrivacyFilter(await getAdminId()),
+              lineupReadFilter(await getAdminId(), await getViewerKey()),
             ),
           )
           .orderBy(...lineupOrder()),

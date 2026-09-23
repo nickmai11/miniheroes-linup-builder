@@ -39,6 +39,8 @@ test("loading boundaries preserve every public page URL", () => {
     "/lineups/new",
     "/notes",
     "/public-urls",
+    "/shared",
+    "/users",
   ]);
 });
 

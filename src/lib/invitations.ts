@@ -1,4 +1,5 @@
 import "server-only";
+import { sharedDestinations } from "@/lib/share-access";
 
 import { createHash, randomBytes } from "node:crypto";
 import { and, eq, isNull, sql } from "drizzle-orm";
@@ -63,15 +64,29 @@ async function deviceAccess(
     )
     .where(eq(schema.registeredDevices.tokenHash, tokenHash));
   if (!rows.length) return null;
+  const shared = await sharedDestinations(`device:${rows[0].id}`, database);
   return {
+    ...(shared.lineupIds.length
+      ? {
+          invitedLineupIds: [
+            ...new Set(
+              rows.flatMap((row) =>
+                row.lineupId === null ? [] : [row.lineupId],
+              ),
+            ),
+          ],
+        }
+      : {}),
+    ...(shared.heroSlugs.length ? { sharedHeroSlugs: shared.heroSlugs } : {}),
     id: rows[0].id,
     fullAccess: rows.some(
       (row) => row.invitationId !== null && row.lineupId === null,
     ),
     lineupIds: [
-      ...new Set(
-        rows.flatMap((row) => (row.lineupId === null ? [] : [row.lineupId])),
-      ),
+      ...new Set([
+        ...rows.flatMap((row) => (row.lineupId === null ? [] : [row.lineupId])),
+        ...shared.lineupIds,
+      ]),
     ],
   };
 }
@@ -135,7 +150,9 @@ export async function redeemInvitationCode(
     // No need to consume an unused invitation for a lineup already granted.
     if (
       invitation.lineupId !== null &&
-      device?.lineupIds.includes(invitation.lineupId)
+      (device?.invitedLineupIds ?? device?.lineupIds)?.includes(
+        invitation.lineupId,
+      )
     )
       return true;
     const [claimed] = await tx

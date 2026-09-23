@@ -1,7 +1,8 @@
+import { getViewerKey } from "@/lib/viewer-profile";
 import { cache } from "react";
 import { and, asc, eq, inArray, sql } from "drizzle-orm";
 import { getAdminId } from "@/lib/admin-access";
-import { lineupPrivacyFilter } from "@/lib/lineup-privacy";
+import { lineupReadFilter } from "@/lib/lineup-privacy";
 import { db, schema } from "@/db";
 import type { Fish, Hero, Lineup, Pet, Relic } from "@/db/schema";
 import type { HeroBuild } from "@/lib/build-types";
@@ -23,6 +24,7 @@ export type LineupFish = Fish & { quantity: number };
 
 export type LineupWithHeroes = Omit<Lineup, "privateOwnerId"> & {
   isPrivate: boolean;
+  canManage: boolean;
   fishes: LineupFish[];
   /** Slot index -> hero (missing slots are null). */
   slots: (LineupHeroWithAssignments | null)[];
@@ -38,6 +40,7 @@ async function assemble(
     buildId: number | null;
   }[],
 ): Promise<LineupWithHeroes[]> {
+  const adminId = await getAdminId();
   const slotIds = slotRows.map((slot) => slot.id);
   const heroIds = [...new Set(slotRows.map((slot) => slot.hero.id))];
   const [byHero, heroIdsWithBuilds, petRows, relicRows, builds, fishRows] =
@@ -145,6 +148,9 @@ async function assemble(
     return {
       ...lineup,
       isPrivate: privateOwnerId !== null,
+      canManage: Boolean(
+        adminId && (!privateOwnerId || privateOwnerId === adminId),
+      ),
       slots,
       fishes: fishesByLineup.get(l.id) ?? [],
     };
@@ -178,7 +184,7 @@ export async function getAllLineups(
     .from(schema.lineups)
     .where(
       and(
-        lineupPrivacyFilter(await getAdminId()),
+        lineupReadFilter(await getAdminId(), await getViewerKey()),
         lineupIds === null ? undefined : inArray(schema.lineups.id, lineupIds),
       ),
     )
@@ -195,7 +201,10 @@ export const getLineup = cache(async function getLineup(
     .select()
     .from(schema.lineups)
     .where(
-      and(eq(schema.lineups.id, id), lineupPrivacyFilter(await getAdminId())),
+      and(
+        eq(schema.lineups.id, id),
+        lineupReadFilter(await getAdminId(), await getViewerKey()),
+      ),
     );
   if (lineupRows.length === 0) return undefined;
   const slotRows = await loadSlots([id]);

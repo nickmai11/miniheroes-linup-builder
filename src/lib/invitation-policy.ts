@@ -10,6 +10,8 @@ export type DeviceAccess = {
   id: number;
   fullAccess: boolean;
   lineupIds: number[];
+  invitedLineupIds?: number[];
+  sharedHeroSlugs?: string[];
 };
 
 /** Scoped invitations permit the collection and exactly the invited detail pages. */
@@ -19,7 +21,9 @@ export function deviceCanReadPage(
 ): boolean {
   if (device.fullAccess) return true;
   const path = invitationDestination(destination).split(/[?#]/)[0];
-  if (path === "/lineups") return true;
+  if (path === "/lineups" || path === "/shared") return true;
+  const hero = path.match(/^\/heroes\/([a-z0-9-]+)$/);
+  if (hero && device.sharedHeroSlugs?.includes(hero[1])) return true;
   const match = path.match(/^\/lineups\/([1-9][0-9]*)$/);
   return Boolean(match && device.lineupIds.includes(Number(match[1])));
 }

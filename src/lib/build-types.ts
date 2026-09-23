@@ -13,6 +13,7 @@ export type CoreWithSkill = HeroCore & { skill: HeroSkill | null };
 
 export type HeroBuild = Omit<HeroBuildRow, "privateOwnerId"> & {
   isPrivate: boolean;
+  canManage: boolean;
   /** Chosen attributes and cores in pick order, each with its saved tier. */
   runes: Prioritized<RuneAttribute>[];
   weapons: Prioritized<WeaponAttribute>[];

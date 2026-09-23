@@ -1,11 +1,12 @@
 import "server-only";
+import { contentReadFilter, sharedWith } from "@/lib/share-access";
 
 import { and, eq, inArray, sql } from "drizzle-orm";
 import { db, schema } from "@/db";
 import { getAdminId } from "@/lib/admin-access";
 import { getRegisteredDevice } from "@/lib/app-access";
 import { isPublicPage } from "@/lib/public-urls";
-import { lineupPrivacyFilter, visibleLineupFilter } from "@/lib/lineup-privacy";
+import { visibleLineupFilter } from "@/lib/lineup-privacy";
 import type { VoteSummary, VoteTarget, VoteValue } from "@/lib/vote-types";
 
 /** Never trust the supplied page: verify both access and target membership. */
@@ -26,11 +27,29 @@ export async function getVoteAccess(target: VoteTarget) {
     .where(
       and(
         eq(table.id, target.id),
-        lineupPrivacyFilter(adminId, table.privateOwnerId),
+        contentReadFilter(
+          target.kind,
+          table.id,
+          table.privateOwnerId,
+          adminId,
+          voterKey,
+        ),
       ),
     )
     .limit(1);
   if (!exists) return { allowed: false, voterKey: null };
+  if (voterKey) {
+    const [shared] = await db
+      .select({ id: table.id })
+      .from(table)
+      .where(
+        and(
+          eq(table.id, target.id),
+          sharedWith(target.kind, table.id, voterKey),
+        ),
+      );
+    if (shared) return { allowed: true, voterKey };
+  }
   if (adminId || device?.fullAccess) return { allowed: true, voterKey };
 
   if (device?.lineupIds.length) {
@@ -44,7 +63,11 @@ export async function getVoteAccess(target: VoteTarget) {
           and(
             eq(schema.lineupHeroes.buildId, target.id),
             inArray(schema.lineupHeroes.lineupId, device.lineupIds),
-            visibleLineupFilter(schema.lineupHeroes.lineupId, adminId),
+            visibleLineupFilter(
+              schema.lineupHeroes.lineupId,
+              adminId,
+              voterKey,
+            ),
           ),
         )
         .limit(1);
@@ -100,7 +123,7 @@ export async function getVoteAccess(target: VoteTarget) {
       .where(
         and(
           eq(schema.lineupHeroes.buildId, target.id),
-          visibleLineupFilter(schema.lineupHeroes.lineupId, adminId),
+          visibleLineupFilter(schema.lineupHeroes.lineupId, adminId, voterKey),
           lineupMatch
             ? eq(schema.lineupHeroes.lineupId, Number(lineupMatch[1]))
             : undefined,

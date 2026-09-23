@@ -205,6 +205,8 @@ test("build-import SQL matches Vietnamese hero names while preserving hero exclu
   };
   const schema = loadTypeScript("src/db/schema.ts");
   const { getOtherHeroBuilds } = loadTypeScript("src/lib/builds.ts", {
+    "@/lib/admin-access": { getAdminId: async () => "owner" },
+    "@/lib/viewer-profile": { getViewerKey: async () => "admin:owner" },
     "@/db": { db: { select: () => query }, schema },
   });
   await getOtherHeroBuilds(42, "thuyen truong", 2);

@@ -1,4 +1,5 @@
 import "server-only";
+import { contentReadFilter } from "@/lib/share-access";
 
 import {
   and,
@@ -14,7 +15,7 @@ import {
 } from "drizzle-orm";
 import { db, schema } from "@/db";
 import { getFollowContext } from "@/lib/follows";
-import { lineupPrivacyFilter } from "@/lib/lineup-privacy";
+import { lineupReadFilter } from "@/lib/lineup-privacy";
 import type {
   NotificationPage,
   NotificationRead,
@@ -41,8 +42,14 @@ async function access() {
       eq(f.kind, "lineup"),
       eq(c.kind, "lineup"),
       eq(c.event, "updated"),
-      lineupPrivacyFilter(context.adminId),
-      lineupPrivacyFilter(context.adminId, c.privateOwnerId),
+      lineupReadFilter(context.adminId, context.key),
+      contentReadFilter(
+        "lineup",
+        c.targetId,
+        c.privateOwnerId,
+        context.adminId,
+        context.key,
+      ),
       or(direct, published(sql`'/lineups'`)),
     ),
     href: sql<string>`case when ${direct} then '/lineups/' || ${l.id} else '/lineups' end`,

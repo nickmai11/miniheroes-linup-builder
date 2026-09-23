@@ -1,7 +1,9 @@
 import "server-only";
+import { getViewerKey } from "@/lib/viewer-profile";
+import { contentReadFilter, sharedWith } from "@/lib/share-access";
 import {
   buildHistoryPrivacyFilter,
-  buildPrivacyFilter,
+  buildReadFilter,
 } from "@/lib/build-privacy";
 import { and, desc, eq, lt, or, sql, type SQL } from "drizzle-orm";
 import { db, schema } from "@/db";
@@ -9,11 +11,12 @@ import { getRegisteredDevice, hasAppAccess } from "@/lib/app-access";
 import type { ChangeKind, ChangePage } from "./change-types";
 import { getFollowContext } from "@/lib/follows";
 import { getAdminId } from "@/lib/admin-access";
-import { lineupPrivacyFilter, visibleLineupFilter } from "@/lib/lineup-privacy";
+import { lineupReadFilter, visibleLineupFilter } from "@/lib/lineup-privacy";
 
 /** Sharing the home or a hero page does not publish private content history. */
 async function visibility() {
   const adminId = await getAdminId();
+  const key = await getViewerKey();
   const full = await hasAppAccess();
   const device = full ? null : await getRegisteredDevice();
   const invited = device?.lineupIds ?? [];
@@ -21,7 +24,7 @@ async function visibility() {
     sql`exists (select 1 from ${schema.publicUrls} p where p.path = ${path})`;
   const lineupAllowed = (
     id: SQL,
-  ) => sql`(${visibleLineupFilter(id, adminId)} and (
+  ) => sql`(${visibleLineupFilter(id, adminId, key)} and (
     ${
       invited.length
         ? sql`${id} in (${sql.join(
@@ -41,7 +44,7 @@ async function visibility() {
         : sql`false`
     }
     or ${published(sql`'/lineups/' || ${id}`)} then '/lineups/' || ${id} else '/lineups' end`;
-  const buildAllowed = sql`(${published(sql`'/heroes/' || ${schema.heroes.slug}`)} or exists (
+  const buildAllowed = sql`(${sharedWith("build", schema.heroBuilds.id, key)} or ${published(sql`'/heroes/' || ${schema.heroes.slug}`)} or exists (
     select 1 from ${schema.lineupHeroes} a where a.build_id = ${schema.heroBuilds.id}
     and ${lineupAllowed(sql`a.lineup_id`)}))`;
   const audienceAllowed = full
@@ -61,19 +64,34 @@ async function visibility() {
   const href = sql<string | null>`case
     when ${schema.lineups.id} is not null then ${lineupHref(sql`${schema.lineups.id}`)}
     when ${schema.heroBuilds.id} is not null then case
-      when ${full} or ${published(sql`'/heroes/' || ${schema.heroes.slug}`)} then '/heroes/' || ${schema.heroes.slug} || '#build-' || ${schema.heroBuilds.id}
+      when ${full} or ${sharedWith("build", schema.heroBuilds.id, key)} or ${published(sql`'/heroes/' || ${schema.heroes.slug}`)} then '/heroes/' || ${schema.heroes.slug} || '#build-' || ${schema.heroBuilds.id}
       else (select ${lineupHref(sql`a.lineup_id`)} from ${schema.lineupHeroes} a
         where a.build_id = ${schema.heroBuilds.id} and ${lineupAllowed(sql`a.lineup_id`)} order by a.lineup_id limit 1)
       end
     else null end`;
   const allowed = and(
     audienceAllowed,
-    lineupPrivacyFilter(adminId, schema.contentChanges.privateOwnerId),
-    lineupPrivacyFilter(adminId),
-    buildPrivacyFilter(adminId),
-    buildHistoryPrivacyFilter(adminId),
+    contentReadFilter(
+      schema.contentChanges.kind,
+      schema.contentChanges.targetId,
+      schema.contentChanges.privateOwnerId,
+      adminId,
+      key,
+    ),
+    lineupReadFilter(adminId, key),
+    buildReadFilter(adminId, key),
+    buildHistoryPrivacyFilter(adminId, key),
   );
-  return { allowed, href, full, invited, lineupAllowed, buildAllowed, adminId };
+  return {
+    allowed,
+    href,
+    full,
+    invited,
+    lineupAllowed,
+    buildAllowed,
+    adminId,
+    key,
+  };
 }
 
 async function readChanges(
@@ -129,7 +147,7 @@ export async function getChangeHistory(
           .where(
             and(
               eq(schema.lineups.id, id),
-              lineupPrivacyFilter(access.adminId),
+              lineupReadFilter(access.adminId, access.key),
               access.full
                 ? undefined
                 : access.lineupAllowed(sql`${schema.lineups.id}`),
@@ -145,7 +163,7 @@ export async function getChangeHistory(
           .where(
             and(
               eq(schema.heroBuilds.id, id),
-              buildPrivacyFilter(access.adminId),
+              buildReadFilter(access.adminId, access.key),
               access.full ? undefined : access.buildAllowed,
             ),
           );

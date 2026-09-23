@@ -29,12 +29,16 @@ export async function GET(request: Request) {
   try {
     const { id, hero } = parsed.data;
     const fullAccess = await hasAppAccess();
-    if (!fullAccess && !(await isPublicPage(`/heroes/${hero}`)))
+    const device = fullAccess ? null : await getRegisteredDevice();
+    if (
+      !fullAccess &&
+      !device?.sharedHeroSlugs?.includes(hero) &&
+      !(await isPublicPage(`/heroes/${hero}`))
+    )
       return json(
         { error: "Open the lineup with an invitation to view it." },
         403,
       );
-    const device = fullAccess ? null : await getRegisteredDevice();
     const ids = await heroLineupPreviewIds(hero, device?.lineupIds, fullAccess);
     if (!ids.includes(id))
       return json(

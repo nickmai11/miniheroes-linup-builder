@@ -40,7 +40,7 @@ export default async function NewLineupPage(props: PageProps<"/lineups/new">) {
     getAllFishes(),
     searchParams.clone === undefined ? undefined : getLineup(cloneId),
   ]);
-  if (searchParams.clone !== undefined && !cloneFrom) notFound();
+  if (searchParams.clone !== undefined && !cloneFrom?.canManage) notFound();
   const preselect =
     typeof searchParams.hero === "string" ? searchParams.hero : undefined;
   const builds = await getBuildsForHeroes([
@@ -68,7 +68,7 @@ export default async function NewLineupPage(props: PageProps<"/lineups/new">) {
         heroes={heroes}
         pets={pets}
         relics={relics}
-        builds={builds}
+        builds={builds.filter((build) => build.canManage)}
         fishes={fishes}
         preselectSlug={preselect}
         cloneFrom={cloneFrom}

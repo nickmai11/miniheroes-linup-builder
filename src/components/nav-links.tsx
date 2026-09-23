@@ -14,8 +14,10 @@ import {
   Menu,
   Sparkles,
   Swords,
+  Share2,
   Ticket,
   Users,
+  UserRoundCog,
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -26,9 +28,11 @@ const LINKS = [
   { href: "/divinities", label: "Divinities", icon: Sparkles },
   { href: "/fishes", label: "Fishes", icon: Fish },
   { href: "/lineups", label: "Lineups", icon: Swords },
+  { href: "/shared", label: "Shared with me", icon: Share2 },
   { href: "/lineups/new", label: "Build", icon: Hammer },
   { href: "/invitations/new", label: "Invitations", icon: Ticket },
   { href: "/public-urls", label: "Public URLs", icon: Link2 },
+  { href: "/users", label: "Users", icon: UserRoundCog },
   { href: "/about", label: "About", icon: Info },
 ] as const;
 
@@ -47,7 +51,10 @@ function NavigationItems({
   const { t } = useI18n();
   const pathname = usePathname();
   return LINKS.map(({ href, label, icon: Icon }) => {
-    const adminRoute = href === "/invitations/new" || href === "/public-urls";
+    const adminRoute =
+      href === "/invitations/new" ||
+      href === "/public-urls" ||
+      href === "/users";
     if ((href === "/lineups/new" || adminRoute) && !canEdit) return null;
     const active =
       href === "/lineups"

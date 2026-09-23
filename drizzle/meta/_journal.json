@@ -281,6 +281,13 @@
       "when": 1789706831367,
       "tag": "0039_viewer_nicknames",
       "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "7",
+      "when": 1789744798666,
+      "tag": "0040_nickname_sharing",
+      "breakpoints": true
     }
   ]
 }

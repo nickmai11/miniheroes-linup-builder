@@ -106,7 +106,7 @@ export default async function LineupsPage({
                         id={lineup.id}
                         name={lineup.name}
                       />
-                      {canEdit && (
+                      {canEdit && lineup.canManage && (
                         <LineupVisibility
                           id={lineup.id}
                           isPrivate={lineup.isPrivate}
@@ -162,7 +162,7 @@ export default async function LineupsPage({
                       name={lineup.name}
                     />
                   </div>
-                  {canEdit && (
+                  {canEdit && lineup.canManage && (
                     <Link
                       href={`/lineups/new?clone=${lineup.id}`}
                       aria-label={t("Clone {name}", { name: lineup.name })}
@@ -171,7 +171,7 @@ export default async function LineupsPage({
                       <Copy data-icon="inline-start" /> {t("Clone")}
                     </Link>
                   )}
-                  {!lineup.isPrivate && (
+                  {canEdit && lineup.canManage && (
                     <LineupShare lineupId={lineup.id} canInvite={canEdit} />
                   )}
                 </CardFooter>

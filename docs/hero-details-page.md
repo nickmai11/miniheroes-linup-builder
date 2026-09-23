@@ -6,9 +6,10 @@ below was established while building it; follow it for every other hero. Game
 facts behind these rules are in `mini-heroes-magic-throne.md` (Owner-stated facts).
 
 Saved builds have the same eye / crossed-out-eye visibility control as lineups
-(owner, 2026-09-18). Private builds are readable and editable only by the admin
-who hides them; copies and imports preserve privacy. Hidden builds do not appear
-in visitor previews, indicators, reactions, or change history. The owner requested
+(owner, 2026-09-18). Private builds can be read by their owner and selected nickname recipients;
+only their owner can edit or re-share them. The Share button opens a nickname
+checkbox list (owner, 2026-09-18); copies and imports preserve privacy. Hidden builds appear in previews, indicators, reactions, and history only for
+their owner and selected recipients. The owner requested
 all existing builds and lineups be hidden.
 
 ## 1. What the page shows

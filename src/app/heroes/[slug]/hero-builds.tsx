@@ -4,6 +4,7 @@ import {
   BuildVisibility,
   BuildVisibilityToggle,
 } from "@/components/build-visibility";
+import { ContentShare } from "@/components/content-share";
 import { ContentVotes } from "@/components/content-votes";
 import { ChangeHistory } from "@/components/change-history";
 import { ConfirmAction } from "@/components/confirm-action";
@@ -246,8 +247,9 @@ export function HeroBuilds({
                   </p>
                 )}
               </div>
-              {canEdit && (
+              {canEdit && build.canManage !== false && (
                 <div className="flex shrink-0 flex-wrap justify-end gap-1">
+                  <ContentShare kind="build" id={build.id} />
                   <BuildVisibility id={build.id} isPrivate={build.isPrivate} />
                   <Button
                     variant="ghost"
