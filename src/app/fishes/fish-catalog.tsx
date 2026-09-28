@@ -12,7 +12,9 @@ import type { Fish } from "@/db/schema";
 import { versioned } from "@/lib/asset-version";
 import { FISH_CATEGORIES } from "@/lib/fish-selection";
 import { useI18n } from "@/lib/i18n/client";
-import { matchesGameLabel } from "@/lib/i18n/game-labels";
+import { matchesFishFilters } from "@/lib/fish-catalog";
+import { FISH_RARITIES, FISH_RARITY_LABELS } from "@/lib/fish-rarity";
+import { FishFilter } from "./fish-filter";
 import { FishRecordEditor } from "./fish-record-editor";
 
 export function FishCatalog({
@@ -24,25 +26,25 @@ export function FishCatalog({
 }) {
   const { gameLabel, t, formatNumber } = useI18n();
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState("all");
-  const [area, setArea] = useState("all");
-  const [specialStat, setSpecialStat] = useState("all");
+  const [categories, setCategories] = useState<string[]>([]);
+  const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
+  const [qualities, setQualities] = useState<string[]>([]);
+  const [selectedSpecialStats, setSelectedSpecialStats] = useState<string[]>(
+    [],
+  );
   const areas = [...new Set(fishes.map((fish) => fish.area).filter(Boolean))];
   const specialStats = [
     ...new Set(fishes.flatMap((fish) => fish.specialStats)),
   ].sort((a, b) => gameLabel("stat", a).localeCompare(gameLabel("stat", b)));
   const visible = fishes
-    .filter(
-      (fish) =>
-        (category === "all" || fish.fishType === category) &&
-        (area === "all" || fish.area === area) &&
-        (specialStat === "all" ||
-          (specialStat === "any"
-            ? fish.specialStats.length > 0
-            : specialStat === "none"
-              ? fish.specialStats.length === 0
-              : fish.specialStats.includes(specialStat))) &&
-        matchesGameLabel("fish", fish, query),
+    .filter((fish) =>
+      matchesFishFilters(fish, {
+        query,
+        categories,
+        areas: selectedAreas,
+        qualities,
+        specialStats: selectedSpecialStats,
+      }),
     )
     .sort(
       (a, b) =>
@@ -51,14 +53,15 @@ export function FishCatalog({
     );
   const filtered =
     query !== "" ||
-    category !== "all" ||
-    area !== "all" ||
-    specialStat !== "all";
+    categories.length > 0 ||
+    selectedAreas.length > 0 ||
+    qualities.length > 0 ||
+    selectedSpecialStats.length > 0;
 
   return (
-    <div className="flex flex-col gap-5">
-      <div className="flex flex-wrap items-end gap-3">
-        <div className="relative w-full sm:w-64">
+    <div className="flex min-w-0 flex-col gap-5">
+      <div className="grid min-w-0 grid-cols-1 items-end gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="relative min-w-0 sm:col-span-2 lg:col-span-4">
           <Search
             aria-hidden
             className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2"
@@ -68,65 +71,60 @@ export function FishCatalog({
             onChange={(event) => setQuery(event.target.value)}
             placeholder={t("Search fishes…")}
             aria-label={t("Search fishes")}
-            className="h-10 pl-9"
+            className="h-11 pl-9"
           />
         </div>
-        <label className="flex flex-1 flex-col gap-1 text-xs sm:flex-none">
-          <span className="text-muted-foreground">{t("Category")}</span>
-          <select
-            value={category}
-            onChange={(event) => setCategory(event.target.value)}
-            className="bg-background border-input focus-visible:ring-ring h-10 rounded-md border px-3 text-sm focus-visible:ring-2"
-          >
-            <option value="all">{t("All categories")}</option>
-            {FISH_CATEGORIES.map((value) => (
-              <option key={value} value={value}>
-                {t(value)}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="flex flex-1 flex-col gap-1 text-xs sm:flex-none">
-          <span className="text-muted-foreground">{t("Fishing area")}</span>
-          <select
-            value={area}
-            onChange={(event) => setArea(event.target.value)}
-            className="bg-background border-input focus-visible:ring-ring h-10 max-w-full rounded-md border px-3 text-sm focus-visible:ring-2"
-          >
-            <option value="all">{t("All areas")}</option>
-            {areas.map((value) => (
-              <option key={value} value={value}>
-                {gameLabel("fishArea", value)}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="flex min-w-0 flex-1 flex-col gap-1 text-xs sm:flex-none">
-          <span className="text-muted-foreground">{t("Special stats")}</span>
-          <select
-            value={specialStat}
-            onChange={(event) => setSpecialStat(event.target.value)}
-            className="bg-background border-input focus-visible:ring-ring h-10 max-w-full rounded-md border px-3 text-sm focus-visible:ring-2"
-          >
-            <option value="all">{t("All special stats")}</option>
-            <option value="any">{t("Has special stats")}</option>
-            <option value="none">{t("No special stats")}</option>
-            {specialStats.map((stat) => (
-              <option key={stat} value={stat}>
-                {gameLabel("stat", stat)}
-              </option>
-            ))}
-          </select>
-        </label>
+        <FishFilter
+          label={t("Category")}
+          allLabel={t("All categories")}
+          options={FISH_CATEGORIES.map((value) => ({ value, label: t(value) }))}
+          selected={categories}
+          onChange={setCategories}
+        />
+        <FishFilter
+          label={t("Fishing area")}
+          allLabel={t("All areas")}
+          options={areas.map((value) => ({
+            value,
+            label: gameLabel("fishArea", value),
+          }))}
+          selected={selectedAreas}
+          onChange={setSelectedAreas}
+        />
+        <FishFilter
+          label={t("Quality")}
+          allLabel={t("All qualities")}
+          options={FISH_RARITIES.map((value) => ({
+            value,
+            label: t(FISH_RARITY_LABELS[value]),
+          }))}
+          selected={qualities}
+          onChange={setQualities}
+        />
+        <FishFilter
+          label={t("Special stats")}
+          allLabel={t("All special stats")}
+          options={[
+            { value: "any", label: t("Has special stats") },
+            { value: "none", label: t("No special stats") },
+            ...specialStats.map((value) => ({
+              value,
+              label: gameLabel("stat", value),
+            })),
+          ]}
+          selected={selectedSpecialStats}
+          onChange={setSelectedSpecialStats}
+        />
         {filtered && (
           <Button
             variant="ghost"
-            className="h-10"
+            className="min-h-11 justify-self-start"
             onClick={() => {
               setQuery("");
-              setCategory("all");
-              setArea("all");
-              setSpecialStat("all");
+              setCategories([]);
+              setSelectedAreas([]);
+              setQualities([]);
+              setSelectedSpecialStats([]);
             }}
           >
             {t("Clear filters")}

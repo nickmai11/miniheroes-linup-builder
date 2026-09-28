@@ -1556,8 +1556,10 @@ stable profile IDs and per-item recipient grants with RLS; it was applied on
 gate, queries, previews, artwork, reactions, follows, and history. Mutation
 authorization remains owner-only for private content.
 
-Builds also have the same owner-only hide/show control as lineups. Hide all
-existing builds and lineups (owner, 2026-09-18). Hidden builds are excluded from
+Builds also have the same owner-only hide/show control as lineups. The owner
+requested hiding all existing builds and lineups on 2026-09-18, then unhiding
+all lineups and heroes on 2026-09-28 (hero visibility is stored on saved builds).
+Hidden builds are excluded from
 visitor lists, portrait indicators, assignments, imports, reactions, and history.
 
 Lineups need a public/private option. A hidden/private lineup is visible only
@@ -1678,6 +1680,9 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-28 — Unhide all lineups and heroes. The app's hide/show controls
+  apply to lineups and saved hero builds.
 
 - 2026-09-18 — Lineups and builds can be shared to nicknames. Clicking Share
   must show a list of nicknames with checkboxes to select recipients.
@@ -2225,6 +2230,11 @@ is said. These override anything marked (web).
   the existing owner using the normal change-recording transaction. Verification
   found zero public builds or lineups. Hosted build privacy requires deploying
   this code.
+  On 2026-09-28, the owner's unhide request was applied to the configured
+  database through the normal change-recording transaction: 10 hidden lineups
+  and 8 hidden builds became visible. All 11 lineups and 13 builds are now
+  visible under the existing invitation/Public URLs rules. Verification found
+  zero hidden lineups, builds, or history entries for existing content.
 - Lineup privacy uses a nullable `lineups.private_owner_id`: null preserves the
   existing invitation/Public URLs audience; otherwise that verified admin
   account retains management and can select nickname recipients for read access. Public/private controls are available
