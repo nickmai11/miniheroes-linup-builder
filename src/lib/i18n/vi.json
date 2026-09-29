@@ -562,5 +562,13 @@
   "Enter a valid user and nickname.": "Nhập người dùng và biệt danh hợp lệ.",
   "Choose an invited user to revoke access.": "Chọn người dùng được mời để thu hồi quyền truy cập.",
   "Invalid user update.": "Thông tin cập nhật người dùng không hợp lệ.",
-  "Could not update this user. Please try again.": "Không thể cập nhật người dùng này. Vui lòng thử lại."
+  "Could not update this user. Please try again.": "Không thể cập nhật người dùng này. Vui lòng thử lại.",
+  "Enter an app page URL or pattern, such as /heroes, /heroes/* or /lineups/123. Editing pages and APIs cannot be made public.": "Nhập liên kết trang hoặc mẫu, ví dụ /heroes, /heroes/* hoặc /lineups/123. Không thể công khai trang chỉnh sửa và API.",
+  "Public access rule removed: {path}.": "Đã xóa quy tắc truy cập công khai: {path}.",
+  "/heroes/* or paste a page link": "/heroes/* hoặc dán liên kết trang",
+  "Enter a page or use /heroes/*, /divinities/* or /lineups/* for all detail pages in that section, including future ones. Add the catalog page separately. Matching pages include their query variations and images. Editing pages and APIs stay restricted. Changes apply immediately.": "Nhập một trang hoặc dùng /heroes/*, /divinities/* hay /lineups/* cho mọi trang chi tiết trong mục đó, kể cả các trang được thêm sau này. Thêm trang danh sách riêng. Các trang phù hợp bao gồm biến thể truy vấn và hình ảnh. Trang chỉnh sửa và API vẫn bị hạn chế. Thay đổi có hiệu lực ngay.",
+  "All detail pages in this section": "Mọi trang chi tiết trong mục này",
+  "Copy pattern for {path}": "Sao chép mẫu cho {path}",
+  "Copy pattern": "Sao chép mẫu",
+  "Pages covered by this rule will require an invitation or admin login unless another public access rule applies. You can add this rule again later.": "Các trang thuộc quy tắc này sẽ cần lời mời hoặc đăng nhập quản trị, trừ khi có quy tắc truy cập công khai khác áp dụng. Bạn có thể thêm lại quy tắc này sau."
 }

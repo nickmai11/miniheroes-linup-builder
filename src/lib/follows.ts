@@ -4,6 +4,7 @@ import { db, schema } from "@/db";
 import { getAdminId } from "@/lib/admin-access";
 import { getRegisteredDevice } from "@/lib/app-access";
 import { getPublicUrls } from "@/lib/public-urls";
+import { publicPageRules } from "@/lib/public-url-policy";
 import { lineupReadFilter } from "@/lib/lineup-privacy";
 import { lockContentWrites } from "@/lib/change-recording";
 import type { FollowedItem, FollowSummary, FollowTarget } from "./follow-types";
@@ -33,7 +34,7 @@ async function accessContext() {
       if (
         context.full ||
         context.invited.includes(target.id) ||
-        paths.has(path)
+        publicPageRules(path).some((rule) => paths.has(rule))
       )
         return path;
       return paths.has("/lineups") ? "/lineups" : null;
@@ -41,7 +42,7 @@ async function accessContext() {
     const path = `/heroes/${slug}`;
     if (
       context.full ||
-      paths.has(path) ||
+      publicPageRules(path).some((rule) => paths.has(rule)) ||
       (slug && context.sharedHeroSlugs.includes(slug))
     )
       return path;

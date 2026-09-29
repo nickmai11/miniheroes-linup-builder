@@ -49,7 +49,7 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
       if (!remove) setUrl("");
       setMessage(
         remove
-          ? t("{path} now requires an invitation.", { path: result.path })
+          ? t("Public access rule removed: {path}.", { path: result.path })
           : t("{path} is now public.", { path: result.path }),
       );
       return {};
@@ -68,7 +68,9 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
   async function copy(path: string) {
     try {
       await navigator.clipboard.writeText(
-        new URL(path, window.location.origin).toString(),
+        path.endsWith("/*")
+          ? path
+          : new URL(path, window.location.origin).toString(),
       );
       setCopied(path);
       setError("");
@@ -97,7 +99,7 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
                 id="public-url"
                 value={url}
                 onChange={(event) => setUrl(event.target.value)}
-                placeholder={t("/lineups/123 or paste a page link")}
+                placeholder={t("/heroes/* or paste a page link")}
                 required
                 maxLength={4096}
                 autoComplete="off"
@@ -114,7 +116,7 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
             </div>
             <p id="public-url-help" className="text-muted-foreground text-sm">
               {t(
-                "Only this page becomes public, including its query variations and images. Linked pages keep their own access settings. Changes apply immediately.",
+                "Enter a page or use /heroes/*, /divinities/* or /lineups/* for all detail pages in that section, including future ones. Add the catalog page separately. Matching pages include their query variations and images. Editing pages and APIs stay restricted. Changes apply immediately.",
               )}
             </p>
           </form>
@@ -153,7 +155,11 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
                 >
                   <div className="min-w-0 flex-1 basis-48">
                     <p className="font-medium break-all">{path}</p>
-                    <a
+                    {path.endsWith("/*") ? (
+                      <p className="text-muted-foreground mt-1 text-xs">
+                        {t("All detail pages in this section")}
+                      </p>
+                    ) : <a
                       className="text-muted-foreground hover:text-foreground mt-1 inline-flex items-center gap-1 text-xs break-all"
                       href={path}
                       target="_blank"
@@ -161,25 +167,28 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
                     >
                       {path}
                       <ExternalLink className="size-3 shrink-0" aria-hidden />
-                    </a>
+                    </a>}
                   </div>
                   <Button
                     type="button"
                     variant="outline"
                     size="sm"
                     onClick={() => void copy(path)}
-                    aria-label={t("Copy public link for {path}", { path })}
+                    aria-label={t(
+                      path.endsWith("/*") ? "Copy pattern for {path}" : "Copy public link for {path}",
+                      { path },
+                    )}
                   >
                     {copied === path ? (
                       <Check aria-hidden />
                     ) : (
                       <Copy aria-hidden />
                     )}
-                    {copied === path ? t("Copied") : t("Copy link")}
+                    {copied === path ? t("Copied") : t(path.endsWith("/*") ? "Copy pattern" : "Copy link")}
                   </Button>
                   <ConfirmAction
                     title={t('Remove public access to "{path}"?', { path })}
-                    description="Visitors will need an invitation or admin login to open this page. You can make it public again later."
+                    description="Pages covered by this rule will require an invitation or admin login unless another public access rule applies. You can add this rule again later."
                     confirmLabel="Remove"
                     pendingLabel="Removing…"
                     disabled={pending !== null}

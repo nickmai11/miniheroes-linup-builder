@@ -87,18 +87,22 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
           )}
         </div>
 
-        <div className="flex flex-col gap-6">
+        <div className="flex min-w-0 flex-col gap-6">
           <header className="flex flex-col gap-2">
-            <h1 className="flex items-center gap-2 text-3xl font-semibold">
-              <RoleBadge role={hero.role} size={32} />
-              {gameLabel("hero", hero)}
-            </h1>
+            <div className="flex items-center gap-2">
+              <h1 className="flex min-w-0 items-center gap-2 text-3xl font-semibold">
+                <RoleBadge role={hero.role} size={32} />
+                <span className="min-w-0 break-words">
+                  {gameLabel("hero", hero)}
+                </span>
+              </h1>
+              <FollowButton
+                kind="hero"
+                id={hero.id}
+                name={gameLabel("hero", hero)}
+              />
+            </div>
             <p className="text-muted-foreground">{t(ROLE_LABELS[hero.role])}</p>
-            <FollowButton
-              kind="hero"
-              id={hero.id}
-              name={gameLabel("hero", hero)}
-            />
           </header>
 
           {hero.notes && (

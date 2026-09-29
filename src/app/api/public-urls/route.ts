@@ -23,7 +23,7 @@ async function update(request: Request, remove: boolean) {
     return reply(
       {
         error:
-          "Enter an app page URL, such as /heroes or /lineups/123. Editing pages and APIs cannot be made public.",
+          "Enter an app page URL or pattern, such as /heroes, /heroes/* or /lineups/123. Editing pages and APIs cannot be made public.",
       },
       400,
     );

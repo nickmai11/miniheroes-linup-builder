@@ -1718,6 +1718,9 @@ daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
 
+- 2026-09-29 — Put the hero Follow button next to the hero's name on the detail
+  page, with the class label below.
+
 - 2026-09-28 — Requested awakening updates from the supplied Dark Queen and
   Hellscream Chinese guides (`gameplay/heroes/image copy 12.png` / `image copy
   13.png`). Their unique first/third skills supply Trueshot Aura / Dark Mark and
@@ -2297,7 +2300,8 @@ is said. These override anything marked (web).
 
 - `content_follows` stores personal lineup/hero subscriptions per registered
   device or verified admin account, with one row per target and follower.
-  Follow controls appear on hero details and lineup lists/details. Home offers
+  Follow controls appear beside the hero's name on hero details (owner,
+  2026-09-29) and on lineup lists/details. Home offers
   quick links to followed items and an All changes / Following feed filter;
   following a hero includes its recorded build changes. The filter still checks
   current content access. Deleted or inaccessible items retain only a personal

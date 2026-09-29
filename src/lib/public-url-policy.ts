@@ -2,9 +2,9 @@ import { PRODUCTION_APP_URL } from "@/lib/site-url";
 
 const PAGE_PATH =
   /^(?:\/|\/about|\/fishes|\/notes|\/heroes(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)?|\/divinities(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)?|\/lineups(?:\/[1-9][0-9]*)?)$/;
+const PAGE_PATTERN = /^\/(?:heroes|divinities|lineups)\/\*$/;
 
-/** Exact read-only pages; admin pages, APIs and editing routes cannot be published. */
-export function publicPagePath(value: unknown): string | null {
+function appPath(value: unknown): string | null {
   if (typeof value !== "string" || value.length > 4096) return null;
   if (
     !value.startsWith("/") ||
@@ -15,17 +15,38 @@ export function publicPagePath(value: unknown): string | null {
   try {
     const url = new URL(value, "https://app.invalid");
     const path = decodeURIComponent(url.pathname).replace(/\/$/, "") || "/";
-    return PAGE_PATH.test(path) ? path : null;
+    return path;
   } catch {
     return null;
   }
+}
+
+/** Exact read-only pages; patterns are settings, never request destinations. */
+export function publicPagePath(value: unknown): string | null {
+  const path = appPath(value);
+  return path && PAGE_PATH.test(path) ? path : null;
+}
+
+function publicRulePath(value: string): string | null {
+  const path = appPath(value);
+  return path && (PAGE_PATH.test(path) || PAGE_PATTERN.test(path)) ? path : null;
+}
+
+/** Rules that can grant access to this concrete read-only page. */
+export function publicPageRules(value: string): string[] {
+  const path = publicPagePath(value);
+  if (!path) return [];
+  const section = path.match(/^\/(heroes|divinities|lineups)\//)?.[1];
+  return section ? [path, `/${section}/*`] : [path];
 }
 
 /** Accept app links copied from localhost or production, storing only their page path. */
 export function normalizePublicUrl(value: unknown): string | null {
   if (typeof value !== "string" || value.length > 4096) return null;
   const input = value.trim();
-  if (input.startsWith("/")) return publicPagePath(input);
+  if (input.startsWith("/")) return publicRulePath(input);
+  if (/^(?:heroes|divinities|lineups)(?:\/|$)/.test(input))
+    return publicRulePath(`/${input}`);
   try {
     const url = new URL(input);
     const production = new URL(PRODUCTION_APP_URL);
@@ -37,7 +58,7 @@ export function normalizePublicUrl(value: unknown): string | null {
       url.password
     )
       return null;
-    return publicPagePath(url.pathname);
+    return publicRulePath(url.pathname);
   } catch {
     return null;
   }

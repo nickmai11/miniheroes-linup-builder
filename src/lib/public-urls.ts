@@ -1,8 +1,8 @@
 import "server-only";
 import { cache } from "react";
-import { asc, eq } from "drizzle-orm";
+import { asc, eq, inArray } from "drizzle-orm";
 import { db, schema } from "@/db";
-import { publicPagePath } from "@/lib/public-url-policy";
+import { publicPageRules } from "@/lib/public-url-policy";
 
 export const getPublicUrls = cache(async () =>
   db.select().from(schema.publicUrls).orderBy(asc(schema.publicUrls.path)),
@@ -10,12 +10,12 @@ export const getPublicUrls = cache(async () =>
 
 // Request-scoped only: removals take effect on the very next request.
 export const isPublicPage = cache(async (value: string): Promise<boolean> => {
-  const path = publicPagePath(value);
-  if (!path) return false;
+  const rules = publicPageRules(value);
+  if (!rules.length) return false;
   const [row] = await db
     .select({ id: schema.publicUrls.id })
     .from(schema.publicUrls)
-    .where(eq(schema.publicUrls.path, path))
+    .where(inArray(schema.publicUrls.path, rules))
     .limit(1);
   return Boolean(row);
 });

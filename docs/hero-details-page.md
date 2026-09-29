@@ -14,6 +14,9 @@ all existing builds and lineups be hidden.
 
 ## 1. What the page shows
 
+The hero Follow button sits immediately beside the hero's name in the heading
+row, with the class label below (owner, 2026-09-29).
+
 Display rarity names rather than color names (owner, 2026-09-15): artifact
 quality tiers are **Epic**, **Legend**, **Mythic**, and **Eternal**, including
 accessible diamond labels. Stored tier keys and image filenames remain
