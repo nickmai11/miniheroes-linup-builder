@@ -76,13 +76,12 @@ test(
       assert.equal((await post(target, 1, { cookie: "" })).status, 404);
       await sql`insert into public_urls (path) values (${page})`;
       const publicRead = await get(target);
-      assert.equal(publicRead.status, 200);
+      assert.equal(publicRead.status, 404);
       assert.match(
         publicRead.headers.get("cache-control"),
         /private, no-store/,
       );
-      assert.equal((await publicRead.json()).canVote, false);
-      assert.equal((await post(target, 1, { cookie: "" })).status, 401);
+      assert.equal((await post(target, 1, { cookie: "" })).status, 404);
     } finally {
       if (fixtures.lineup)
         await sql`delete from public_urls where path = ${`/lineups/${fixtures.lineup.id}`}`;

@@ -152,6 +152,7 @@ export async function getOtherHeroBuilds(
   query = "",
   page = 0,
 ): Promise<ImportableBuildPage> {
+  if (!(await getViewerKey())) return { builds: [], hasNextPage: false };
   const pageSize = 12;
   const terms = query.trim().split(/\s+/).filter(Boolean);
   const matches = terms.map((term) => {

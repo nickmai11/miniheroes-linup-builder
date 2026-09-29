@@ -1625,7 +1625,9 @@ Dialogs must keep a stable size and position when their contents change
 Saved lineups and hero builds offer like/dislike controls with totals (owner,
 2026-09-15). Registered visitors vote per device; admins vote per account.
 Selecting the current reaction clears it; selecting the other switches it.
-Public visitors can read totals. Votes follow existing content access, including
+Anonymous visitors cannot read saved builds, lineups or their reaction totals,
+even on public hero pages (owner, 2026-09-29). Registered visitors and admins
+retain existing access. Votes follow existing content access, including
 builds assigned to an invited lineup. Clones and imports start with no votes.
 Hovering a lineup on a hero detail page shows its preview in a popover
 (owner, 2026-09-15).
@@ -1726,6 +1728,17 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-29 — Public hero pages must not publish saved builds or lineups.
+  Anonymous visitors can read hero reference details only; saved content,
+  previews, history, reactions and build indicators require a registered
+  visitor or admin and retain existing ownership/sharing restrictions.
+  Removed `/heroes` and `/heroes/*` from the live public rules temporarily to
+  stop the existing exposure. Re-enable both only after deploying the saved
+  content access fix and verifying anonymous responses.
+
+- 2026-09-29 — Enable public access to the Heroes catalog and all hero detail
+  pages using `/heroes` and `/heroes/*`.
 
 - 2026-09-29 — Requested wildcard support for public pages, such as `heroes/*`.
 
@@ -2373,7 +2386,8 @@ is said. These override anything marked (web).
   Migration `0030_content_votes.sql` includes the `lineup_app` RLS policy and
   was applied to the configured database on 2026-09-15. The vote API separately
   verifies target visibility and uses registered-device IDs or verified admin
-  account IDs; public visitors can read totals. English/Vietnamese controls share
+  account IDs; anonymous visitors cannot read saved-content totals (2026-09-29).
+  English/Vietnamese controls share
   state for repeated previews of the same build on a page.
 
 - Invitation codes have an optional `lineupId`: null grants the full library;

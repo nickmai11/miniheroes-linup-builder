@@ -52,6 +52,7 @@ test(
     const lineups = loadTypeScript("src/lib/lineups.ts", overrides);
     const changes = loadTypeScript("src/lib/changes.ts", overrides);
     const votes = loadTypeScript("src/lib/votes.ts", overrides);
+    const { getHeroDetail } = loadTypeScript("src/lib/heroes.ts", overrides);
     const prefix = `build-privacy-${Date.now()}`;
     const fixtures = [];
     const buildIds = [];
@@ -103,6 +104,23 @@ test(
         { path: page },
         { path: `/lineups/${lineup.id}` },
       ]);
+      // Even unhidden saved content stays out of published hero pages and APIs.
+      adminId = null;
+      assert.deepEqual(await builds.getHeroBuilds(heroes[0].id), []);
+      assert.deepEqual(await builds.getBuildsByIds([id]), []);
+      assert.equal((await builds.getHeroIdsWithBuilds([heroes[0].id])).size, 0);
+      assert.deepEqual((await getHeroDetail(heroes[0].slug)).lineups, []);
+      assert.equal(await lineups.getLineup(lineup.id), undefined);
+      assert.equal(await changes.getChangeHistory("build", id), null);
+      assert.equal(
+        (await votes.getVoteAccess({ kind: "build", id, page })).allowed,
+        false,
+      );
+      device = { id: 999, fullAccess: true, lineupIds: [] };
+      assert.equal((await builds.getHeroBuilds(heroes[0].id)).length, 1);
+      assert.equal((await getHeroDetail(heroes[0].slug)).lineups.length, 1);
+      adminId = "owner";
+      device = null;
       assert.equal(
         (await actions.setBuildVisibility(id, true)).error,
         undefined,
@@ -157,7 +175,9 @@ test(
           (await builds.getOtherHeroBuilds(heroes[4].id, prefix)).builds.length,
           0,
         );
-        assert.equal((await lineups.getLineup(lineup.id)).slots[0].build, null);
+        const visibleLineup = await lineups.getLineup(lineup.id);
+        if (!adminId && !device) assert.equal(visibleLineup, undefined);
+        else assert.equal(visibleLineup.slots[0].build, null);
         assert.equal(
           (await votes.getVoteAccess({ kind: "build", id, page })).allowed,
           false,
@@ -173,10 +193,9 @@ test(
           false,
         );
         assert.equal(await changes.getChangeHistory("build", id), null);
-        assert.equal(
-          (await changes.getChangeHistory("lineup", lineup.id)).entries.length,
-          0,
-        );
+        const history = await changes.getChangeHistory("lineup", lineup.id);
+        if (!adminId && !device) assert.equal(history, null);
+        else assert.equal(history.entries.length, 0);
         assert.equal(
           (await changes.getRecentChanges()).some(
             (e) => e.kind === "build" && buildIds.includes(e.targetId),
@@ -210,6 +229,8 @@ test(
         undefined,
       );
       adminId = null;
+      assert.deepEqual(await builds.getBuildsByIds([id]), []);
+      device = { id: 999, fullAccess: true, lineupIds: [] };
       assert.equal((await builds.getBuildsByIds([id])).length, 1);
       assert.equal(
         (await votes.getVoteAccess({ kind: "build", id, page })).allowed,

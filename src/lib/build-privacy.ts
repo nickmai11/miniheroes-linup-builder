@@ -25,6 +25,7 @@ export function buildHistoryPrivacyFilter(
   adminId: string | null,
   key: string | null = null,
 ) {
+  if (!adminId && !key) return sql`false`;
   return sql`not exists (
     select 1 from ${schema.heroBuilds} private_build
     where private_build.id = any(${schema.contentChanges.buildIds})

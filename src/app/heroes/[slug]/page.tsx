@@ -18,6 +18,7 @@ import { versioned } from "@/lib/asset-version";
 import { getHeroBuilds } from "@/lib/builds";
 import { getHeroDetail } from "@/lib/heroes";
 import { canEditContent } from "@/lib/editing";
+import { getViewerKey } from "@/lib/viewer-profile";
 import { getAllRuneAttributes } from "@/lib/runes";
 import { getAllWeaponAttributes } from "@/lib/weapons";
 import { HeroBuilds } from "./hero-builds";
@@ -49,8 +50,9 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
   const hero = await getHeroDetail(slug);
   if (!hero) notFound();
   const canEdit = (await canEditContent()) && (await hasAppAccess());
+  const canViewSavedContent = Boolean(await getViewerKey());
   const [builds, runeAttributes, weaponAttributes] = await Promise.all([
-    getHeroBuilds(hero.id),
+    canViewSavedContent ? getHeroBuilds(hero.id) : [],
     canEdit ? getAllRuneAttributes() : [],
     canEdit ? getAllWeaponAttributes() : [],
   ]);
@@ -370,67 +372,71 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>{t("Builds")}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <HeroBuilds
-                canEdit={canEdit}
-                heroId={hero.id}
-                heroName={gameLabel("hero", hero)}
-                builds={builds}
-                runeAttributes={runeAttributes}
-                weaponAttributes={weaponAttributes}
-                cores={
-                  canEdit
-                    ? hero.cores.map((core) => ({
-                        ...core,
-                        skill:
-                          hero.skills.find(
-                            (skill) => skill.id === core.skillId,
-                          ) ?? null,
-                      }))
-                    : []
-                }
-              />
-            </CardContent>
-          </Card>
+          {canViewSavedContent && (
+            <>
+              <Card>
+                <CardHeader>
+                  <CardTitle>{t("Builds")}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <HeroBuilds
+                    canEdit={canEdit}
+                    heroId={hero.id}
+                    heroName={gameLabel("hero", hero)}
+                    builds={builds}
+                    runeAttributes={runeAttributes}
+                    weaponAttributes={weaponAttributes}
+                    cores={
+                      canEdit
+                        ? hero.cores.map((core) => ({
+                            ...core,
+                            skill:
+                              hero.skills.find(
+                                (skill) => skill.id === core.skillId,
+                              ) ?? null,
+                          }))
+                        : []
+                    }
+                  />
+                </CardContent>
+              </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>{t("Lineups")}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {hero.lineups.length === 0 ? (
-                <p className="text-muted-foreground text-sm">
-                  {t("Not in any saved lineup yet.")}
-                </p>
-              ) : (
-                <ul className="flex flex-col divide-y">
-                  {hero.lineups.map((lineup) => (
-                    <li key={lineup.id}>
-                      <LineupPopover
-                        lineup={{
-                          id: lineup.id,
-                          name: lineup.name,
-                          createdAt: lineup.createdAt,
-                        }}
-                        heroSlug={hero.slug}
-                      />
-                      <div className="pb-2">
-                        <ContentVotes
-                          kind="lineup"
-                          id={lineup.id}
-                          name={lineup.name}
-                        />
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </CardContent>
-          </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle>{t("Lineups")}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {hero.lineups.length === 0 ? (
+                    <p className="text-muted-foreground text-sm">
+                      {t("Not in any saved lineup yet.")}
+                    </p>
+                  ) : (
+                    <ul className="flex flex-col divide-y">
+                      {hero.lineups.map((lineup) => (
+                        <li key={lineup.id}>
+                          <LineupPopover
+                            lineup={{
+                              id: lineup.id,
+                              name: lineup.name,
+                              createdAt: lineup.createdAt,
+                            }}
+                            heroSlug={hero.slug}
+                          />
+                          <div className="pb-2">
+                            <ContentVotes
+                              kind="lineup"
+                              id={lineup.id}
+                              name={lineup.name}
+                            />
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </CardContent>
+              </Card>
+            </>
+          )}
         </div>
       </div>
     </main>

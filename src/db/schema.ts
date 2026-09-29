@@ -142,7 +142,7 @@ export const notes = pgTable("notes", {
 export type Note = typeof notes.$inferSelect;
 export type NewNote = typeof notes.$inferInsert;
 
-/** Exact page paths the owner has made readable without an invitation. */
+/** Page paths or supported section patterns readable without an invitation. */
 export const publicUrls = pgTable("public_urls", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   path: text("path").notNull().unique(),

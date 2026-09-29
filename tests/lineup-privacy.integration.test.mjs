@@ -242,8 +242,10 @@ test(
         }
         if (!adminId && !device?.fullAccess) {
           assert.equal((await votes.getVoteAccess(buildTarget)).allowed, false);
-          // The build is independently readable through its published hero page.
-          assert.ok(await changes.getChangeHistory("build", build.id));
+          // Registered viewers retain hero-page access; anonymous readers do not.
+          const history = await changes.getChangeHistory("build", build.id);
+          if (device) assert.ok(history);
+          else assert.equal(history, null);
         }
       }
       // An unrelated admin cannot reveal, overwrite, or delete the hidden lineup.
@@ -266,10 +268,20 @@ test(
       device = null;
       assert.deepEqual(await actions.setLineupVisibility(id, false), { id });
       adminId = null;
+      assert.equal(await lineups.getLineup(id), undefined);
+      device = { id: 321, fullAccess: true, lineupIds: [] };
       assert.equal((await lineups.getLineup(id)).isPrivate, false);
       assert.equal((await votes.getVoteAccess(target)).allowed, true);
       assert.ok((await changes.getChangeHistory("lineup", id)).entries.length);
-      assert.equal(await assets.isPublicPageAsset(page, pet.iconUrl), true);
+      assert.equal(
+        await assets.isPublicPageAsset(
+          page,
+          pet.iconUrl,
+          undefined,
+          "device:321",
+        ),
+        true,
+      );
 
       // Deletion cannot make old names, notes, or history public again.
       adminId = "owner";

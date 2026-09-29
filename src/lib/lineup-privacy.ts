@@ -28,6 +28,7 @@ export function visibleLineupFilter(
   adminId: string | null,
   key: string | null = null,
 ) {
+  if (!adminId && !key) return sql`false`;
   return sql`exists (select 1 from ${schema.lineups} privacy_lineup
     where privacy_lineup.id = ${id} and
       (privacy_lineup.private_owner_id is null

@@ -277,7 +277,7 @@ test(
       assert.equal((await get(`kind=lineup&id=${lineupId}`)).status, 403);
       assert.equal((await get("kind=lineup&id=-1")).status, 400);
       await insert(schema.publicUrls, { path: `/heroes/${heroes[0].slug}` });
-      assert.equal((await history("build", buildId)).entries.length, 2);
+      assert.equal(await history("build", buildId), null);
       assert.equal(await history("lineup", lineupId), null);
       assert.ok(
         !(await changes.getRecentChanges()).some(
@@ -301,12 +301,12 @@ test(
       device = null;
       await insert(schema.publicUrls, { path: `/lineups/${lineupId}` });
       const publicResponse = await get(`kind=lineup&id=${lineupId}`);
-      assert.equal(publicResponse.status, 200);
+      assert.equal(publicResponse.status, 403);
       assert.equal(
         publicResponse.headers.get("cache-control"),
         "private, no-store",
       );
-      assert.equal((await history("build", buildId)).entries.length, 2);
+      assert.equal(await history("build", buildId), null);
       await db
         .delete(schema.publicUrls)
         .where(eq(schema.publicUrls.path, `/lineups/${lineupId}`));
@@ -317,7 +317,7 @@ test(
       );
 
       await insert(schema.publicUrls, { path: "/lineups" });
-      assert.equal((await history("lineup", lineupId)).entries.length, 2);
+      assert.equal(await history("lineup", lineupId), null);
       assert.ok(
         (await changes.getRecentChanges())
           .filter(

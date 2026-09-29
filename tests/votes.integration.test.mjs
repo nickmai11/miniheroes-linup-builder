@@ -80,14 +80,12 @@ test(
         .insert(schema.heroBuilds)
         .values(heroes.map((hero) => ({ heroId: hero.id, name: "Vote build" })))
         .returning();
-      await db
-        .insert(schema.lineupHeroes)
-        .values({
-          lineupId: lineups[0].id,
-          heroId: heroes[0].id,
-          buildId: builds[0].id,
-          position: 0,
-        });
+      await db.insert(schema.lineupHeroes).values({
+        lineupId: lineups[0].id,
+        heroId: heroes[0].id,
+        buildId: builds[0].id,
+        position: 0,
+      });
       const lineup = {
         kind: "lineup",
         id: lineups[0].id,
@@ -99,14 +97,9 @@ test(
       assert.equal((await get(lineup)).status, 404);
       assert.equal((await post(lineup, 1)).status, 404);
       publicPages.add(lineup.page);
-      assert.deepEqual(await (await get(lineup)).json(), {
-        likes: 0,
-        dislikes: 0,
-        vote: 0,
-        canVote: false,
-      });
-      assert.equal((await post(lineup, 1, { voterKey: "forged" })).status, 401);
-      assert.equal((await get(build)).status, 200);
+      assert.equal((await get(lineup)).status, 404);
+      assert.equal((await post(lineup, 1, { voterKey: "forged" })).status, 404);
+      assert.equal((await get(build)).status, 404);
       assert.equal((await get(hiddenLineup)).status, 404);
       assert.equal((await get(hiddenBuild)).status, 404);
       publicPages.clear();
@@ -177,11 +170,11 @@ test(
       publicPages.add(`/heroes/${heroes[0].slug}`);
       assert.equal(
         (await get({ ...build, page: `/heroes/${heroes[0].slug}` })).status,
-        200,
+        404,
       );
       assert.equal(
         (await get({ ...lineup, page: `/heroes/${heroes[0].slug}` })).status,
-        200,
+        404,
       );
       assert.equal(
         (await get({ ...hiddenBuild, page: `/heroes/${heroes[0].slug}` }))
@@ -190,14 +183,14 @@ test(
       );
       publicPages.clear();
       publicPages.add("/lineups");
-      assert.equal((await get({ ...build, page: "/lineups" })).status, 200);
+      assert.equal((await get({ ...build, page: "/lineups" })).status, 404);
       assert.equal(
         (await get({ ...hiddenBuild, page: "/lineups" })).status,
         404,
       );
       assert.equal(
         (await get({ ...hiddenLineup, page: "/lineups" })).status,
-        200,
+        404,
       );
       assert.match(
         (await get(lineup)).headers.get("cache-control"),

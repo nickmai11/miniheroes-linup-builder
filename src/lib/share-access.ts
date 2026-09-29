@@ -22,6 +22,8 @@ export function contentReadFilter(
   adminId: string | null,
   key: string | null,
 ) {
+  // Publishing reference pages never publishes saved builds, lineups or history.
+  if (!adminId && !key) return sql`false`;
   return or(
     isNull(owner),
     adminId ? eq(owner, adminId) : undefined,

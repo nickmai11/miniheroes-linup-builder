@@ -50,21 +50,14 @@ test(
       assert.equal((await preview()).status, 403);
       assert.equal((await image()).status, 401);
       await sql`insert into public_urls (path) values (${lineupPage})`;
-      let response = await preview();
-      assert.equal(response.status, 200);
-      assert.equal(response.headers.get("cache-control"), "private, no-store");
-      let data = await response.json();
-      assert.equal(data.description, "Protected preview notes");
-      assert.equal(data.slots.length, 5);
-      assert.equal(data.slots[1].build.id, fixtures.build.id);
-      assert.equal(data.contextPage, lineupPage);
-      assert.equal((await image()).status, 200);
+      assert.equal((await preview()).status, 403);
+      assert.equal((await image()).status, 401);
       assert.equal((await preview("", fixtures.other.id)).status, 403);
       const vote = (page) =>
         fetch(
           `${origin}/api/votes?${new URLSearchParams({ kind: "build", id: String(fixtures.build.id), page })}`,
         );
-      assert.equal((await vote(data.contextPage)).status, 200);
+      assert.equal((await vote(lineupPage)).status, 404);
       await sql`delete from public_urls where path = ${lineupPage}`;
       assert.equal((await preview()).status, 403);
       assert.equal((await image()).status, 401);
@@ -79,14 +72,17 @@ test(
       assert.equal((await image(cookie)).status, 200);
       assert.equal((await preview(cookie, fixtures.other.id)).status, 403);
       await sql`insert into public_urls (path) values ('/lineups')`;
-      data = await (await preview()).json();
-      assert.equal(data.contextPage, "/lineups");
-      assert.equal((await vote(data.contextPage)).status, 200);
+      assert.equal((await preview()).status, 403);
+      assert.equal((await vote("/lineups")).status, 404);
       assert.equal((await preview("", fixtures.other.id)).status, 403);
       const heroHtml = await fetch(`${origin}${heroPage}`);
       assert.equal(heroHtml.status, 200);
       const html = await heroHtml.text();
-      assert.match(html, /Preview Preview fixture lineup/);
+      assert.doesNotMatch(html, /Preview fixture|Preview build|build-[0-9]+/);
+      const invitedHtml = await (
+        await fetch(`${origin}${heroPage}`, { headers: { cookie } })
+      ).text();
+      assert.match(invitedHtml, /Preview Preview fixture lineup/);
       assert.equal(
         html.includes("Protected preview notes"),
         false,

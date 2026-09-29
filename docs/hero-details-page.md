@@ -14,6 +14,11 @@ all existing builds and lineups be hidden.
 
 ## 1. What the page shows
 
+Public hero pages expose reference details only (owner, 2026-09-29). Anonymous
+visitors receive no saved builds, lineup names, build indicators, previews,
+history or reactions. Omit Builds and Lineups sections entirely for them;
+registered visitors and admins retain existing ownership/sharing restrictions.
+
 The hero Follow button sits immediately beside the hero's name in the heading
 row, with the class label below (owner, 2026-09-29).
 
