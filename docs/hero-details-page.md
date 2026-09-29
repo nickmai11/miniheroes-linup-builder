@@ -384,6 +384,16 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
 
 ## 6. Known gaps
 
+- **Dark Queen and Hellscream (September 28):** Awakening I (18★) and III (22★)
+  are now translated from the owner's Chinese guides `gameplay/heroes/image copy
+  12.png` and `image copy 13.png`. Dark Queen has **Trueshot Aura / Dark Mark**;
+  Hellscream has **Flame Blade Power / Dark Aura**. Hellscream III's body uses
+  the alternate name **Heavy Strike Resonance** and references **Earth Shatter**.
+  Both heroes now have all required details recorded; the guide exception and
+  provisional English/Vietnamese names follow the existing translated imports.
+  This supersedes their September 14 awakening gaps below. Class-wide II/IV
+  remain documented separately in the game reference.
+
 - **Nether Soul, Nightmare Source, and Panda Warrior (September 17):** all three
   now have six talents, all four artifact tiers, two ordered mythic divinities,
   and talent/artifact images. Nether Soul and Panda Warrior have four linked
@@ -426,7 +436,8 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
   have complete recorded non-awakening details:** Wine Immortal, Abyssal
   Queen, Iron Fan Princess, Otherworld Prisoner, Wizard, Templar, Warlock,
   Darkin Hunter, Earthbreaker, Observer, Dark Shaman, Hellscream, Bone Archer,
-  and Dark Queen. Each still needs **Awakening I (18★) and III (22★)**.
+  and Dark Queen. The other twelve still need **Awakening I (18★) and III (22★)**;
+  Hellscream and Dark Queen's guide translations were added September 28.
   No awakening exclusion applies. Exact sources,
   icon originals, continuations, links, and transcription notes are in the game
   reference's **10.40–10.45 AM screenshot review and import** section.
@@ -446,8 +457,8 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
 - **Hellscream and Dark Queen's Archive gaps are resolved:**
   `gameplay/heroes/image copy 9.png` shows both whole card art panels under
   **Eternal 2/2**, establishing Eternal rarity and confirming Warrior / Marksman
-  respectively. Their non-awakening evidence is complete; only I/III remain
-  missing. Both are now included in the 67-hero seed with Eternal rarity support.
+  respectively. Their non-awakening evidence is complete; their former I/III
+  gaps were resolved September 28. Both are included in the 67-hero seed with Eternal rarity support.
   Their owner-supplied Archive source is included in `scripts/slice-hero-cards.py`,
   producing whole-panel portraits with artifact-progress diamonds removed.
   Their earlier artifact/divinity coverage remains verified.
@@ -517,8 +528,9 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
   missing. The follow-up `gameplay/talents/image copy.png` completes the red bonus
   and fourth core, **Crystal Pendant** for **Destructive Gloom** (6% DMG Reduction
   for 10s after each cast; 100% chance to purge all negative effects from self).
-- Awakening II and IV: class-wide skills are not displayed yet; Support IV is
-  recorded in the game reference. Mage Spell Barrier / Psychic Surge appear only
+- Awakening II and IV: class-wide skills are not displayed yet; Support IV and
+  September 28 Marksman/Warrior guide references are recorded in the game reference.
+  Mage Spell Barrier / Psychic Surge appear only
   in the unverified MR-UK excerpt and need in-game confirmation; the other
   class-wide skills remain unrecorded.
 - The rainbow-tier artifact skill has no icon (the game shows it as text only).

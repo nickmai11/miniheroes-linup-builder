@@ -1818,6 +1818,23 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
     divinities: ["support-atk", "magic-dmg-boost"],
   },
   hellscream: {
+    // Chinese guide translations; III's body calls Dark Aura "Heavy Strike Resonance".
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Flame Blade Power",
+        description:
+          "After entering battle, increases own ATK and DEF by 2.5% every 5s, stacking up to 10 times.",
+        sourceScreenshot: "../heroes/image copy 13.png",
+      },
+      {
+        stage: "III",
+        name: "Dark Aura",
+        description:
+          "After each cast of Earth Shatter, increases all allies' Injured Energy Regen effect by 15% and True DMG Reduction by 15% (only affects True DMG) for 6s. Hellscream receives double these bonuses.",
+        sourceScreenshot: "../heroes/image copy 13.png",
+      },
+    ],
     artifact: {
       name: "Tribe's Judgment",
       iconUrl: "/artifacts/hellscream.png",
@@ -2031,6 +2048,23 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
     divinities: ["marksman-def", "crit-rate"],
   },
   "dark-queen": {
+    // Hero-specific I/III translated from the owner's Chinese guide.
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Trueshot Aura",
+        description:
+          "After entering battle, increases the ATK of Dark Queen and all nearby ranged allies by 10% until the end of battle.",
+        sourceScreenshot: "../heroes/image copy 12.png",
+      },
+      {
+        stage: "III",
+        name: "Dark Mark",
+        description:
+          "Basic ATKs that hit an enemy apply Dark Mark, reducing the target's Physical RES by 10% for 6s. Split Arrows also apply this effect.",
+        sourceScreenshot: "../heroes/image copy 12.png",
+      },
+    ],
     artifact: {
       name: "Whispers of Death",
       iconUrl: "/artifacts/dark-queen.png",

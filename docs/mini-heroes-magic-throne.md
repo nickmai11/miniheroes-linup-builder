@@ -968,6 +968,10 @@ I/III are already screenshot-backed; Radiant Envoy retains its owner-approved
 guide source. Their repeated talents, cores, artifact abilities, and divinities
 agree with the existing seeds.
 
+**September 28 follow-up:** Dark Queen and Hellscream now have guide-translated
+I/III from `gameplay/heroes/image copy 12.png` and `image copy 13.png`; see the
+awakening reference below. The other twelve candidates still need I/III.
+
 **All fourteen new detail candidates now have complete non-awakening screenshot
 evidence.** Abyssal Queen's fourth core is supplied, and Templar now has its
 Artifact tab and full ability popup. Hellscream and Dark Queen's new Archive
@@ -1273,9 +1277,42 @@ ellipsis. Its earlier 9.07.45 AM capture has the
 drops below 30%, immediately restores HP equal to 120% of ATK. (CD: 13s)"
 This is recorded here once as **Support Awakening IV**, following the owner's
 class-wide II/IV rule; it is not a hero-specific I skill. Shared class awakening
-data/display is not implemented yet. II and other classes' IV remain unrecorded.
+data/display is not implemented yet. Marksman and Warrior II/IV guide references
+are recorded below; the other class skills remain unrecorded.
 Thrall's III is inactive in the screenshot, but its full description is visible.
 The game spells his name "Thal" in that description; the transcription preserves it.
+
+#### Dark Queen and Hellscream awakening references (2026-09-28)
+
+The owner's supplied Chinese guides `gameplay/heroes/image copy 12.png` (Dark
+Queen) and `image copy 13.png` (Hellscream) supply the first/third entries marked
+独立技能 (unique skill), corresponding to I (18★) and III (22★). These are guide
+translations, not verified English or Vietnamese game wording. Source paths
+are retained in the seeds. This resolves both heroes' earlier awakening gaps.
+
+| Hero | Stage | Chinese title → app translation | Effect |
+| ---- | ----- | ------------------------------- | ------ |
+| Dark Queen | I | 强击光环 → Trueshot Aura | On entering battle, own and all nearby ranged allies' ATK +10% until battle ends. |
+| Dark Queen | III | 黑暗印记 → Dark Mark | Basic ATK hits apply a mark reducing enemy Physical RES by 10% for 6s; Split Arrows also apply it. |
+| Hellscream | I | 火刃之力 → Flame Blade Power | Every 5s after entering battle, own ATK and DEF +2.5%, up to 10 stacks. |
+| Hellscream | III | 黑暗光环 → Dark Aura | Each Earth Shatter grants all allies +15% Injured Energy Regen effect and +15% True DMG Reduction (True DMG only) for 6s; Hellscream receives double bonuses. |
+
+Hellscream III's title reads 黑暗光环 (Dark Aura), while its body calls the skill
+重击共鸣 (Heavy Strike Resonance). Preserve the printed title; do not invent a
+separate skill. 裂地重击 maps to the existing **Earth Shatter** talent.
+
+The interleaved class-wide entries remain guide references here, separate from
+hero-specific data and UI:
+
+- **Marksman II, 快速击退 (Rapid Knockback):** 10s after entering battle, own
+  knockback effect +15% for 20s, gradually diminishing over time.
+- **Marksman IV, 极限闪避 (Extreme Evasion):** the first HP drop below 40%
+  grants immunity to most negative/control effects and 26% damage reduction
+  for 2.5s.
+- **Warrior II, 梦魇盾甲 (Nightmare Shield):** when attacked, the attacker deals
+  2% less damage to self for 6s, stacking up to 3 times.
+- **Warrior IV, 死亡守护 (Death Guard):** on own death, heals the lowest-HP ally
+  for 10% of that ally's max HP.
 
 #### Dreamstar Spirit awakening reference (owner-approved Chinese guide)
 
@@ -1680,6 +1717,14 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-28 — Requested awakening updates from the supplied Dark Queen and
+  Hellscream Chinese guides (`gameplay/heroes/image copy 12.png` / `image copy
+  13.png`). Their unique first/third skills supply Trueshot Aura / Dark Mark and
+  Flame Blade Power / Dark Aura respectively; effects and the Hellscream III
+  title/body mismatch are recorded in the awakening reference above. Imported
+  names are app translations. Shared Marksman/Warrior II/IV are documented
+  separately as guide references.
 
 - 2026-09-28 — Unhide all lineups and heroes. The app's hide/show controls
   apply to lineups and saved hero builds.
