@@ -3,8 +3,12 @@ import test from "node:test";
 import { NextRequest } from "next/server.js";
 import { loadTypeScript } from "./load-typescript.mjs";
 
-const { normalizePublicUrl, publicPagePath, publicAssetReferrer } =
-  loadTypeScript("src/lib/public-url-policy.ts");
+const {
+  normalizePublicUrl,
+  publicPagePath,
+  publicPageRules,
+  publicAssetReferrer,
+} = loadTypeScript("src/lib/public-url-policy.ts");
 const { ASSET_VERSION } = loadTypeScript("src/lib/asset-version.ts");
 
 test("public URL input accepts app links and normalizes exact page paths", () => {
@@ -28,7 +32,6 @@ test("public URL input accepts app links and normalizes exact page paths", () =>
     "/invitations/new",
     "/invite",
     "/_next/image",
-    "/heroes/*",
     "/lineups/new",
     "/lineups/123/edit",
     "/%70ublic-urls",
@@ -41,6 +44,53 @@ test("public URL input accepts app links and normalizes exact page paths", () =>
   }
 });
 
+test("section wildcards normalize separately from concrete request paths", () => {
+  for (const section of ["heroes", "divinities", "lineups"]) {
+    for (const value of [
+      `${section}/*`,
+      ` /${section}/*/ `,
+      `/${section}/%2A?x=1`,
+      `http://localhost:4000/${section}/*`,
+      `https://miniheroes-library.vercel.app/${section}/*`,
+    ])
+      assert.equal(normalizePublicUrl(value), `/${section}/*`);
+    assert.equal(publicPagePath(`/${section}/*`), null);
+    assert.deepEqual(publicPageRules(`/${section}`), [`/${section}`]);
+  }
+  for (const value of [
+    "/*",
+    "/api/*",
+    "/heroes/**",
+    "/heroes/sea-*",
+    "/heroes/*/edit",
+    "/lineups/new/*",
+    "https://evil.test/heroes/*",
+    "//heroes/*",
+  ])
+    assert.equal(normalizePublicUrl(value), null, value);
+  assert.deepEqual(publicPageRules("/heroes/sea-captain?tab=builds"), [
+    "/heroes/sea-captain",
+    "/heroes/*",
+  ]);
+  assert.deepEqual(publicPageRules("/divinities/atk"), [
+    "/divinities/atk",
+    "/divinities/*",
+  ]);
+  assert.deepEqual(publicPageRules("/lineups/123"), [
+    "/lineups/123",
+    "/lineups/*",
+  ]);
+  for (const value of [
+    "/api/heroes",
+    "/heroes/*",
+    "/heroes/sea-captain/edit",
+    "/lineups/new",
+    "/lineups/123/edit",
+    "/users",
+  ])
+    assert.deepEqual(publicPageRules(value), [], value);
+});
+
 function request(path, options = {}) {
   return new NextRequest(`http://localhost:3000${path}`, options);
 }
@@ -48,7 +98,8 @@ function request(path, options = {}) {
 function routing(publicPaths = new Set(["/heroes/sea-captain"])) {
   return loadTypeScript("src/proxy.ts", {
     "@/lib/public-urls": {
-      isPublicPage: async (path) => publicPaths.has(path),
+      isPublicPage: async (path) =>
+        publicPageRules(path).some((rule) => publicPaths.has(rule)),
     },
     "@/lib/public-url-assets": {
       isPublicPageAsset: async (page, asset) =>
@@ -81,6 +132,68 @@ test("registered visitors do not add public URL lookups to ordinary navigation",
     request("/heroes", { headers: { cookie: `mh_device=${"a".repeat(43)}` } }),
   );
   assert.equal(response.headers.get("x-middleware-next"), "1");
+});
+
+test("wildcards grant only section detail reads and their own artwork, with immediate removal", async () => {
+  const paths = new Set([
+    "/heroes/*",
+    "/divinities/*",
+    "/lineups/*",
+    "/heroes/nezha",
+  ]);
+  const proxy = routing(paths);
+  for (const path of [
+    "/heroes/sea-captain",
+    "/heroes/nezha",
+    "/divinities/atk",
+    "/lineups/123",
+  ]) {
+    for (const options of [{}, { method: "HEAD" }, { headers: { RSC: "1" } }])
+      assert.equal(
+        (await proxy(request(path, options))).headers.get("x-middleware-next"),
+        "1",
+        path,
+      );
+    for (const options of [
+      { method: "POST" },
+      { headers: { "next-action": "action" } },
+    ])
+      assert.notEqual(
+        (await proxy(request(path, options))).headers.get("x-middleware-next"),
+        "1",
+        path,
+      );
+  }
+  for (const path of [
+    "/heroes",
+    "/lineups",
+    "/divinities",
+    "/heroes/sea-captain/edit",
+    "/lineups/new",
+    "/lineups/123/edit",
+    "/api/notes",
+    "/public-urls",
+    "/users",
+  ])
+    assert.notEqual(
+      (await proxy(request(path))).headers.get("x-middleware-next"),
+      "1",
+      path,
+    );
+  const image = () =>
+    proxy(
+      request("/heroes/sea-captain.png", {
+        headers: { referer: "http://localhost:3000/heroes/sea-captain" },
+      }),
+    );
+  assert.equal((await image()).headers.get("x-middleware-next"), "1");
+  paths.delete("/heroes/*");
+  assert.equal((await proxy(request("/heroes/sea-captain"))).status, 307);
+  assert.notEqual((await image()).headers.get("x-middleware-next"), "1");
+  assert.equal(
+    (await proxy(request("/heroes/nezha"))).headers.get("x-middleware-next"),
+    "1",
+  );
 });
 
 test("public HTML, HEAD and RSC reads work without a device; removing a rule restores the gate", async () => {
@@ -371,5 +484,10 @@ test("public URL management validates admin access, origin, paths and duplicate 
   assert.deepEqual([...paths], ["/about"]);
   assert.equal((await POST(post({ url: "/about" }))).status, 409);
   assert.equal((await DELETE(post({ url: "/about" }))).status, 200);
+  assert.equal(paths.size, 0);
+  assert.equal((await POST(post({ url: "heroes/*" }))).status, 201);
+  assert.deepEqual([...paths], ["/heroes/*"]);
+  assert.equal((await POST(post({ url: "/heroes/*" }))).status, 409);
+  assert.equal((await DELETE(post({ url: "/heroes/*" }))).status, 200);
   assert.equal(paths.size, 0);
 });

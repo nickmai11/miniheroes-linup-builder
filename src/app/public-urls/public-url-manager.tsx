@@ -159,15 +159,17 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
                       <p className="text-muted-foreground mt-1 text-xs">
                         {t("All detail pages in this section")}
                       </p>
-                    ) : <a
-                      className="text-muted-foreground hover:text-foreground mt-1 inline-flex items-center gap-1 text-xs break-all"
-                      href={path}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {path}
-                      <ExternalLink className="size-3 shrink-0" aria-hidden />
-                    </a>}
+                    ) : (
+                      <a
+                        className="text-muted-foreground hover:text-foreground mt-1 inline-flex items-center gap-1 text-xs break-all"
+                        href={path}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {path}
+                        <ExternalLink className="size-3 shrink-0" aria-hidden />
+                      </a>
+                    )}
                   </div>
                   <Button
                     type="button"
@@ -175,7 +177,9 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
                     size="sm"
                     onClick={() => void copy(path)}
                     aria-label={t(
-                      path.endsWith("/*") ? "Copy pattern for {path}" : "Copy public link for {path}",
+                      path.endsWith("/*")
+                        ? "Copy pattern for {path}"
+                        : "Copy public link for {path}",
                       { path },
                     )}
                   >
@@ -184,7 +188,9 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
                     ) : (
                       <Copy aria-hidden />
                     )}
-                    {copied === path ? t("Copied") : t(path.endsWith("/*") ? "Copy pattern" : "Copy link")}
+                    {copied === path
+                      ? t("Copied")
+                      : t(path.endsWith("/*") ? "Copy pattern" : "Copy link")}
                   </Button>
                   <ConfirmAction
                     title={t('Remove public access to "{path}"?', { path })}

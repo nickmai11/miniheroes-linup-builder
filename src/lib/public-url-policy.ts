@@ -29,7 +29,9 @@ export function publicPagePath(value: unknown): string | null {
 
 function publicRulePath(value: string): string | null {
   const path = appPath(value);
-  return path && (PAGE_PATH.test(path) || PAGE_PATTERN.test(path)) ? path : null;
+  return path && (PAGE_PATH.test(path) || PAGE_PATTERN.test(path))
+    ? path
+    : null;
 }
 
 /** Rules that can grant access to this concrete read-only page. */

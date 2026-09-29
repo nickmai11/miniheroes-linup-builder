@@ -1657,6 +1657,15 @@ Deleting saved lineups, builds, and notes requires an explicit confirmation
 dialog; removing public page access also asks for confirmation (owner,
 2026-09-15).
 
+Public URLs accepts section patterns such as `heroes/*` or `/heroes/*`
+(owner request, 2026-09-29). Supported patterns are `/heroes/*`,
+`/divinities/*`, and `/lineups/*`; each covers current and future read-only
+detail pages, including their query variations and authorized artwork. The
+section's catalog page must be added separately. Patterns do not grant access
+to editing routes, admin pages, APIs, or private lineup/build content. Exact
+page rules still work alongside patterns. Removing a rule takes effect on the
+next request; a remaining matching rule continues to grant public access.
+
 Saved lineups are editable, including their name, notes, heroes, and each hero's
 pet/relic assignments (owner, 2026-09-13). A hero can be assigned one or more pets
 and one or more relics within that lineup. Assignment controls and selected icons
@@ -1717,6 +1726,8 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-29 — Requested wildcard support for public pages, such as `heroes/*`.
 
 - 2026-09-29 — Put the hero Follow button next to the hero's name on the detail
   page, with the class label below.
