@@ -316,8 +316,10 @@ the screenshot positions; the compendium cards list the same order.
    `artifact { name, iconUrl, bonuses[tier, skill | name, description] }`,
    `skills[kind, name, unlockStars, iconUrl, description]` in unlock order,
    `cores[name, skill, description]`, `divinities[left-slug, right-slug]`.
-   Add `awakeningSkills[stage, name, description, sourceScreenshot]`
-   for I and III. Preserve the source screenshot filename for verification.
+   Add `awakeningSkills[stage, name, description]` for I and III, with exactly
+   one of `sourceScreenshot` (owner screenshot filename) or `sourceUrl`
+   (owner-authorized external reference). Document external attribution and
+   source limitations in the game reference.
    `skill` strings must match a talent name exactly (that is how bonuses and cores
    link to talents).
 4. **Doc** — `docs/mini-heroes-magic-throne.md`: log any new game fact the owner
@@ -356,7 +358,8 @@ write, or an additional database query on page load.
   `sortOrder`.
   These kinds are stored as text; adding Aura requires no database migration.
 - `HeroAwakeningSkill` in `src/data/hero-details.ts`: `stage` (I | III), `name`,
-  `description`, `sourceScreenshot`. The optional `awakeningSkills`
+  `description`, and exactly one source: `sourceScreenshot` or `sourceUrl`.
+  The optional `awakeningSkills`
   array is served as part of `HeroDetail`; unrecorded heroes get an empty array.
 - `hero_artifact_bonuses`: `tier` (purple | gold | red | rainbow), `skillId`
   (null for standalone skills), `name` (standalone skills only), `description`,
@@ -391,6 +394,15 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
 - [ ] Owner-stated facts logged the same turn they were said
 
 ## 6. Known gaps
+
+- **Discord import (September 30):** 48 heroes received 96 previously missing
+  I/III stages. Together with the 20 existing heroes, 68 of 71 now have both
+  descriptions. Only **Swordmaster, Bone Archer, and Nightmare Source** still
+  lack both stages. Snow Hunter/Loli I and III and Lucifer III use **Unnamed
+  awakening** because the source charts omit their names. Community wording,
+  ambiguous units, and alternate names are preserved and documented in the
+  [Discord import](mini-heroes-magic-throne.md#discord-awakening-iiii-import-2026-09-30).
+  This supersedes older I/III gaps below for imported heroes; other gaps remain.
 
 - **Dark Queen and Hellscream (September 28):** Awakening I (18★) and III (22★)
   are now translated from the owner's Chinese guides `gameplay/heroes/image copy

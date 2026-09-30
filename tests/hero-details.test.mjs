@@ -66,7 +66,17 @@ for (const [slug, hero] of Object.entries(heroDetailSeeds)) {
         awakeningStages.has(skill.stage),
         "class-wide II/IV must stay separate",
       );
-      assert.ok(skill.name && skill.description && skill.sourceScreenshot);
+      assert.ok(skill.name && skill.description);
+      assert.ok(
+        Boolean(skill.sourceScreenshot) !== Boolean(skill.sourceUrl),
+        "each awakening has exactly one screenshot or external reference",
+      );
+      if (skill.sourceUrl) {
+        assert.match(
+          skill.sourceUrl,
+          /^https:\/\/discord\.com\/channels\/1214861046125166603\/1435554173113466953\/threads\/\d+$/,
+        );
+      }
       assert.equal("iconUrl" in skill, false, "awakening skills are text-only");
     }
   });

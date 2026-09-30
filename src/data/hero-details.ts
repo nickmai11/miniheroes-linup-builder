@@ -11,14 +11,24 @@ export type HeroAwakeningSkill = {
   stage: (typeof HERO_AWAKENING_STAGES)[number]["stage"];
   name: string;
   description: string;
-  /** Owner screenshot filename under gameplay/talents/. */
-  sourceScreenshot: string;
-};
+} & (
+  | {
+      /** Owner screenshot filename under gameplay/talents/. */
+      sourceScreenshot: string;
+      sourceUrl?: never;
+    }
+  | {
+      /** Owner-authorized external reference, attributed in the game docs. */
+      sourceUrl: string;
+      sourceScreenshot?: never;
+    }
+);
 
 /**
  * Per-hero details transcribed from the owner's in-game screenshots
  * (gameplay/talents/, gameplay/divinities/). Talents, artifacts, cores and divinities
  * sync into the DB on view (syncHeroDetail in src/lib/heroes.ts); awakening skills
+ * also include owner-authorized Discord references (see sourceUrl) and
  * are read directly from this file. Icons come from scripts/slice-talent-icons.py.
  */
 export type HeroDetailSeed = {
@@ -643,6 +653,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // September 14 10.40–10.45 AM screenshots and 10.57–10.58 AM follow-ups.
   // Full source mapping and exact transcription notes are in the game reference.
   "wine-immortal": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Powerful Strike",
+        description:
+          "A normal attack randomly triggers one of the following effects (identical effects do not stack): Effect 1: Reduces the target's attack by 6%, lasts 5 seconds. Effect 2: Reduces the target's defense by 10%, lasts 5 seconds.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446076424996782121",
+      },
+      {
+        stage: "III",
+        name: "Elemental Resistance",
+        description:
+          "When health first decreases to 50% or below, immediately activates one of the following effects: Effect 1: Immunity to all physical damage for 5 seconds. Effect 2: Immunity to all magical damage for 5 seconds.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446076424996782121",
+      },
+    ],
     artifact: {
       name: "Dragon's Secret",
       iconUrl: "/artifacts/wine-immortal.png",
@@ -750,6 +778,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
     divinities: ["spd-reduction-res", "control-res"],
   },
   "abyssal-queen": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Aura of Suffering",
+        description:
+          "Upon entering combat, restores 0.4% of max HP and 8 energy per second, and reduces incoming magic damage by 8%.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446347170612772904",
+      },
+      {
+        stage: "III",
+        name: "Soul Possession",
+        description:
+          "Every 8 seconds, attempts to possess an enemy hero. If successful, the enemy loses 80% movement speed and cannot attack for 3.5 seconds. If unsuccessful, deals 150% magic damage to the enemy.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446347170612772904",
+      },
+    ],
     artifact: {
       name: "Sickle of Fear",
       iconUrl: "/artifacts/abyssal-queen.png",
@@ -855,6 +901,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
     divinities: ["hp", "dmg-reduction"],
   },
   "iron-fan-princess": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Outstanding Personality",
+        description:
+          'Iron Fan skills apply various effects to enemies: Effect 1: "Banana Fan: Wind" on hit reduces enemy movement speed by 20% for 5 sec. Effect 2: "Banana Fan: Fire" on hit reduces enemy critical hit chance by 30% for 5 sec. Effect 3: "Banana Fan: Strength" reduces enemy knockback resistance by 15% for 5 sec.',
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446353430607298692",
+      },
+      {
+        stage: "III",
+        name: "Wind Sweeps Clouds",
+        description:
+          "After entering combat, increases movement speed of all allies by 20 and attack by 20 for 6 sec.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446353430607298692",
+      },
+    ],
     artifact: {
       name: "Palm-Leaf Fan",
       iconUrl: "/artifacts/iron-fan-princess.png",
@@ -964,6 +1028,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
     divinities: ["ranged-dmg-boost", "dmg-increase"],
   },
   "otherworld-prisoner": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Fire Meteor",
+        description:
+          "Every 10 sec., summons a meteor that randomly attacks one enemy, dealing 170% magic damage and stunning for 2 sec.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448512189521592401",
+      },
+      {
+        stage: "III",
+        name: "Embrace of Flames",
+        description:
+          "When dealing damage to an enemy, reduces their energy regeneration by 13% for 5 sec.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448512189521592401",
+      },
+    ],
     artifact: {
       name: "Magic Oath Mask",
       iconUrl: "/artifacts/otherworld-prisoner.png",
@@ -1070,6 +1152,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
     divinities: ["hp", "magic-dmg-boost"],
   },
   wizard: {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Potent Poison",
+        description:
+          "A normal attack with a 30% chance throws a vial of potent poison at the enemy with the highest energy, dealing 150% magic damage and reducing its energy by 70 energy.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447512310280224768",
+      },
+      {
+        stage: "III",
+        name: "Healing Potion",
+        description:
+          "Every 11 sec. casts a vial of healing potion on the weakest ally, restoring health equal to 120% of the Warlock's attack and 70 energy.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447512310280224768",
+      },
+    ],
     artifact: {
       name: "Dark Codex",
       iconUrl: "/artifacts/wizard.png",
@@ -1177,6 +1277,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
     divinities: ["support-atk", "heavy-injury"],
   },
   templar: {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Stealth",
+        description:
+          "When the target's DEF is higher than your own, deals an additional 30% damage to the target.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1465918065068736629",
+      },
+      {
+        stage: "III",
+        name: "Hunt",
+        description:
+          "Each time Templar Assassin kills an enemy, increases own Energy Recovery per Second by 25%. Can stack up to 3 times.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1465918065068736629",
+      },
+    ],
     artifact: {
       name: "Spectral Blade",
       iconUrl: "/artifacts/templar.png",
@@ -1284,6 +1402,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
     divinities: ["dmg-increase", "physical-dmg-boost"],
   },
   warlock: {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Messenger of the Abyss",
+        description:
+          "After summoning Infernal, increases its defense by 35% for 8 sec.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447793610291544116",
+      },
+      {
+        stage: "III",
+        name: "Servant Obedience",
+        description:
+          "Upon the death of Infernal, permanently increases the attack speed and magic resistance of the Blacksmith by 10%. Can be stacked up to 4 times.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447793610291544116",
+      },
+    ],
     artifact: {
       name: "Demon's Cloak",
       iconUrl: "/artifacts/warlock.png",
@@ -1392,6 +1528,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
     divinities: ["control-res", "healing-effect"],
   },
   "darkin-hunter": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Thirst for Vengeance",
+        description:
+          "Upon entering combat, increases own damage resistance by 30% for 40 seconds. The effect gradually fades over time. Each subsequent use of any skill increases damage resistance by 5% for 5 seconds. Effects can stack, but duration does not refresh.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1501864401471541370",
+      },
+      {
+        stage: "III",
+        name: "Enhanced Mark",
+        description:
+          "Maximum number of Withering Mark stacks increased. When 3 stacks are reached, the mark explodes.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1501864401471541370",
+      },
+    ],
     artifact: {
       name: "Shadow Bow",
       iconUrl: "/artifacts/darkin-hunter.png",
@@ -1498,6 +1652,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
     divinities: ["dmg-increase", "crit-rate"],
   },
   earthbreaker: {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Invasion War",
+        description:
+          "When self HP first drops below 35%, immediately deals Physical DMG equal to 1000% ATK to all enemies and applies knockback (triggers once only).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1503486549952561422",
+      },
+      {
+        stage: "III",
+        name: "Enrage",
+        description:
+          "Increases damage dealt by [Empowered Totem] and [Aftershock] by 100%.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1503486549952561422",
+      },
+    ],
     artifact: {
       name: "Battle Chant Drum",
       iconUrl: "/artifacts/earthbreaker.png",
@@ -1604,6 +1776,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
     divinities: ["atk", "melee-dmg-boost"],
   },
   observer: {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Matter Deconstruction",
+        description:
+          "When using any skill, reduces the attack of all enemies by 4% for 8 seconds, cooldown 3 seconds (effect stacks, duration does not refresh).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1465919670145257582",
+      },
+      {
+        stage: "III",
+        name: "Shockwave",
+        description:
+          "After entering battle, increases own ranged damage enhancement by 15% and knockback effect by 15% for 18 seconds.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1465919670145257582",
+      },
+    ],
     artifact: {
       name: "Shadow Pendant",
       iconUrl: "/artifacts/observer.png",
@@ -1711,6 +1901,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
     divinities: ["heavy-injury", "ranged-dmg-boost"],
   },
   "dark-shaman": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Shackles",
+        description:
+          "When self HP falls below 65% for the first time, absorbs 12% Max HP from 1 random enemy hero (prioritizes Marksman, max up to 350% of self ATK) and binds the hero for 2s, making them unable to move and attack.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1525225059021754378",
+      },
+      {
+        stage: "III",
+        name: "Healing Wave",
+        description:
+          "Released 9s after entering battle, unleashes an energy wave to the weakest ally hero that bounces 3 times between allies. Each bounce restores HP equal to 250% of Dark Shaman's Attack (each ally hero can only be healed once). Subsequent cooldown: 15s.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1525225059021754378",
+      },
+    ],
     artifact: {
       name: "Voodoo Staff",
       iconUrl: "/artifacts/dark-shaman.png",
@@ -2178,6 +2386,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Artifact tab: 9.58.42 AM.png; abilities: 9.58.43 AM.png.
   // Blizzard icon uses the fully visible 9.58.26 AM ring; see the crop override.
   snowoman: {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Ice Seal",
+        description:
+          "Freezes for 1.5 sec. every 8 sec. the enemy that deals the most cumulative damage to your team. The frozen enemy cannot regenerate energy (each freeze increases the time until the next freeze by 2 seconds, up to a maximum of 12 seconds).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447790308963258460",
+      },
+      {
+        stage: "III",
+        name: "Frost Shield",
+        description:
+          "Upon entering combat, casts a Frost Shield that reduces damage received by 8% and reduces the attacker's attack speed and critical hit chance by 8% for 5 sec. (effect does not stack).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447790308963258460",
+      },
+    ],
     artifact: {
       name: "Soulseeker Staff",
       iconUrl: "/artifacts/snowoman.png",
@@ -2287,6 +2513,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Talent/core continuations: 9.58.48 AM.png.
   // Artifact tab: 9.58.56 AM.png; abilities: 9.58.57 AM.png.
   "bamboo-hat": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Energy Accumulation",
+        description:
+          'Each hit of the "Energy Strike" skill on an enemy restores 40 energy.',
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447505615659339806",
+      },
+      {
+        stage: "III",
+        name: "MAXIMUM Power",
+        description:
+          "After entering combat, increases own attack and attack speed by 20% for 20 sec. After the effect ends, enters an exhausted state for 10 sec., reducing attack and attack speed by 10%.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447505615659339806",
+      },
+    ],
     artifact: {
       name: "Witherwood Staff",
       iconUrl: "/artifacts/bamboo-hat.png",
@@ -2398,6 +2642,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Talent/core continuations: 9.59.09 AM.png.
   // Artifact tab: 9.59.18 AM.png; abilities: 9.59.19 AM.png, 9.59.20 AM.png.
   "fire-sorceress": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Enhanced Flame",
+        description:
+          'Each use of the "Fire Push" skill permanently increases own attack speed by 15% and critical hit chance by 15% (can stack up to 2 times).',
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447517075114430484",
+      },
+      {
+        stage: "III",
+        name: "Spell Enhancement",
+        description:
+          "When using normal attacks or skills, permanently increases own attack by 2.5% (can stack up to 8 times).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447517075114430484",
+      },
+    ],
     artifact: {
       name: "Flame Crown",
       iconUrl: "/artifacts/fire-sorceress.png",
@@ -2509,6 +2771,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Talent/core continuations: 9.59.31 AM.png, 9.59.35 AM.png.
   // Artifact tab: 9.59.37 AM.png; abilities: 9.59.38 AM.png.
   "red-hood": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Drunken Frenzy",
+        description:
+          "After entering combat, attack speed increases by 65%. The effect disappears when HP first drops to 40% or below.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448511328565198928",
+      },
+      {
+        stage: "III",
+        name: "Toxic Erosion",
+        description:
+          "With each subsequent normal attack on the same target after 3 hits, reduces its defense by 30% and knockback resistance by 20% for 5 sec.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448511328565198928",
+      },
+    ],
     artifact: {
       name: "Captain Headgear",
       iconUrl: "/artifacts/red-hood.png",
@@ -2620,6 +2900,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Talent/core continuations: 9.59.44 AM.png, 9.59.48 AM.png.
   // Artifact tab: 9.59.50 AM.png; abilities: 9.59.51 AM.png.
   "little-goblin": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Mechanical Factory",
+        description:
+          "15 sec. after combat begins, summons 5 sappers to attack enemies. Each sapper deals 75% area damage.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447518820964241529",
+      },
+      {
+        stage: "III",
+        name: "Automatic Repair",
+        description:
+          "For every 10% of max HP lost, increases own energy regeneration by 2% and HP regeneration by 0.2%.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447518820964241529",
+      },
+    ],
     artifact: {
       name: "Goblin Wrench",
       iconUrl: "/artifacts/little-goblin.png",
@@ -2730,6 +3028,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Talent/core continuations: 10.00.03 AM.png.
   // Artifact tab: 10.00.05 AM.png; abilities: 10.00.05 AM 1.png, 10.00.06 AM.png.
   "radiant-angel": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Angelic Defense",
+        description:
+          "Upon entering combat, protects the ally with the lowest defense, increasing it by 18% (the effect disappears upon your death).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447510493269856357",
+      },
+      {
+        stage: "III",
+        name: "Shining Holy Light",
+        description:
+          "Upon entering combat, increases the block chance of the frontmost hero by 17%. The effect lasts until the end of the battle.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447510493269856357",
+      },
+    ],
     artifact: {
       name: "Angel Staff",
       iconUrl: "/artifacts/radiant-angel.png",
@@ -2840,6 +3156,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Talent/core continuations: 10.00.15 AM 1.png, 10.00.23 AM.png.
   // Artifact tab: 10.00.25 AM.png; abilities: 10.00.26 AM.png.
   diva: {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Random Tune",
+        description:
+          'Each use of the "Protagonist Appearance" and "Total Fun" skills activates one of the following effects with a 35% chance: Effect 1: Stuns all enemies for 1 sec. Effect 2: Reduces the energy of all enemies by 100 units.',
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448504449843597353",
+      },
+      {
+        stage: "III",
+        name: "Special Note",
+        description:
+          "A normal attack with a 35% chance restores 125 units of energy to a random ally.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448504449843597353",
+      },
+    ],
     artifact: {
       name: "Crystal Necklace",
       iconUrl: "/artifacts/diva.png",
@@ -2948,6 +3282,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Talent popups (0/2/5/8/12/16★): 10.00.42 AM.png, 10.00.30 AM.png, 10.00.33 AM.png, 10.00.34 AM.png, 10.00.39 AM.png, 10.00.40 AM.png.
   // Artifact tab: 10.00.45 AM.png; abilities: 10.00.46 AM.png.
   "little-deer": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Logical Inference",
+        description:
+          "A normal attack inflicts an additional repulsion effect depending on the distance to the target. The farther away the target, the stronger the repulsion. Up to a maximum of 1.5 times.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448503631598063707",
+      },
+      {
+        stage: "III",
+        name: "Charm",
+        description:
+          "Randomly enchant 1 enemy every 10 sec, rendering them unable to move or regenerate energy for 3 sec.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448503631598063707",
+      },
+    ],
     artifact: {
       name: "Ironskin Staff",
       iconUrl: "/artifacts/little-deer.png",
@@ -3057,6 +3409,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Talent/core continuations: 10.01.07 AM.png, 10.01.11 AM.png, 10.01.16 AM.png.
   // Artifact tab: 10.01.19 AM.png; abilities: 10.01.21 AM 1.png, 10.01.21 AM.png.
   lucifer: {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Breath of Death",
+        description:
+          "Every few seconds emits Breath of Death, which deals 300% physical damage to a random enemy and stuns them for 2 seconds. If the enemy's energy is above 50%, they additionally receive damage equal to 10% of their max health (but no more than 500% of Lucifer's attack).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446322023776129035",
+      },
+      {
+        stage: "III",
+        name: "Unnamed awakening",
+        description:
+          "Upon summoning creatures or illusions on the battlefield, immediately deals 1000% true damage to them, simultaneously increasing own energy recovery speed by 50% and creating a shield equal to 10% of max health for 5 seconds. (Cooldown: 12 seconds)",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446322023776129035",
+      },
+    ],
     artifact: {
       name: "Blood Demon Crystal",
       iconUrl: "/artifacts/lucifer.png",
@@ -3168,6 +3538,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Talent/core continuations: 10.01.30 AM.png, 10.01.35 AM 1.png.
   // Artifact tab: 10.01.37 AM.png; abilities: 10.01.38 AM.png, 10.01.39 AM.png.
   "captain-pilot": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Queue",
+        description:
+          "The Captain's first attack deals 2 hits to the enemy, each hit dealing damage equal to 70%/100% of the Captain's attack power.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447800887090089994",
+      },
+      {
+        stage: "III",
+        name: "Suppressing Fire",
+        description:
+          "After entering combat, every 2 seconds increases your attack speed by 3% and armor penetration by 2.5%. Can be stacked up to 10 times. The cooldown of the Incendiary Bomb and Suppressing Fire skills is reduced by 20%.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447800887090089994",
+      },
+    ],
     artifact: {
       name: "Energy Spring",
       iconUrl: "/artifacts/captain-pilot.png",
@@ -3279,6 +3667,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Talent/core continuations: 10.01.51 AM.png.
   // Artifact tab: 10.01.53 AM.png; abilities: 10.01.54 AM.png, 10.01.55 AM.png.
   "li-bai": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Pour the wine!",
+        description:
+          'When using the skills "Sword that Tears the Sky" and "Wind Like Blades", removes all debilitating negative effects from yourself and increases your defense by 25% for 3 sec.',
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446343862892105860",
+      },
+      {
+        stage: "III",
+        name: "Green Lotus Resolve",
+        description:
+          'When HP falls below 45%, damage from the "Great Sword and Small Sword" is converted to pure damage, simultaneously reducing the enemy\'s Energy by 35. The effect lasts until the end of the battle.',
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446343862892105860",
+      },
+    ],
     artifact: {
       name: "Lotus Nectar",
       iconUrl: "/artifacts/li-bai.png",
@@ -3390,6 +3796,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Talent/core continuations: 10.02.01 AM.png, 10.02.04 AM.png.
   // Artifact tab: 10.02.09 AM.png; abilities: 10.02.10 AM.png, 10.02.11 AM.png.
   "lady-pan": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "The Holy of Holies of the Kitchen",
+        description:
+          "Enemies entering your half of the battlefield lose 20 units of energy per second (the effect disappears when you die).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447792419499409511",
+      },
+      {
+        stage: "III",
+        name: "Moldy Treat",
+        description:
+          "Throws a moldy treat at the enemy with a 30% chance as a normal attack. The hit reduces the target's energy recovery rate by 35% for 6 sec. (does not stack).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447792419499409511",
+      },
+    ],
     artifact: {
       name: "Nonstick Pan",
       iconUrl: "/artifacts/lady-pan.png",
@@ -3500,6 +3924,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Talent popups (0/2/5/8/12/16★): 8.35.46 AM.png, 8.35.38 AM.png, 8.35.40 AM.png, 8.35.41 AM.png, 8.35.42 AM.png, 8.35.44 AM.png.
   // Artifact tab: 8.36.27 AM.png; abilities: 8.36.29 AM.png.
   "skeleton-king": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Curse of the Evil Spirit",
+        description:
+          "Randomly curses one enemy at the start of combat, reducing their attack by 15% for 15 sec. (may re-trigger after resurrection).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448501592629186600",
+      },
+      {
+        stage: "III",
+        name: "Curse of Death",
+        description:
+          "When health drops to 30% or lower for the first time, randomly curses one enemy, reducing their energy recovery rate by 35% for 15 sec. (may trigger again after resurrection).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448501592629186600",
+      },
+    ],
     artifact: {
       name: "Blade of Destruction",
       iconUrl: "/artifacts/skeleton-king.png",
@@ -3610,6 +4052,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Artifact tab: 8.36.44 AM.png; abilities: 8.36.47 AM.png.
   // Core continuations: 8.36.34 AM.png, 8.36.38 AM.png.
   "whirlpool-ninja": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Quick Healing",
+        description:
+          "When receiving damage equal to 13% of max health, restores 2.5% of max health (cooldown: 2 sec.).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448500671832916069",
+      },
+      {
+        stage: "III",
+        name: "Pulse of Fighting Spirit",
+        description:
+          "After entering battle, depending on lost health activates the following effects: Effect 1: Upon first drop of health to 75% or below, damage dealt increases by 12% for 20 sec. Effect 2: Upon first drop of health to 50% or below, damage taken decreases by 12% for 20 sec.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448500671832916069",
+      },
+    ],
     artifact: {
       name: "Whirlwind Meteor",
       iconUrl: "/artifacts/whirlpool-ninja.png",
@@ -3721,6 +4181,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Artifact tab: 8.37.03 AM.png; abilities: 8.37.04 AM.png, 8.37.05 AM.png.
   // Core continuations: 8.36.54 AM.png.
   "foxy-spirit": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Curse of Madness",
+        description:
+          "Hitting an enemy with normal attacks and skills reduces their physical damage resistance and magic damage resistance by 4% for 10 seconds (can be stacked up to 3 times).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446355327099342971",
+      },
+      {
+        stage: "III",
+        name: "Demonic Aura Release",
+        description:
+          'Each use of the skill "Night Fox Fire" increases your own energy recovery rate by 25% and critical strike chance by 8% (can be stacked up to 2 times).',
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446355327099342971",
+      },
+    ],
     artifact: {
       name: "Exquisite Lamp",
       iconUrl: "/artifacts/foxy-spirit.png",
@@ -3832,6 +4310,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Artifact tab: 8.38.58 AM.png; abilities: 8.38.59 AM.png.
   // Core continuations: 8.38.30 AM.png, 8.37.10 AM.png.
   loli: {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Unnamed awakening",
+        description:
+          "For each enemy on the battlefield, increases your own attack by 5.5%.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447515960910024735",
+      },
+      {
+        stage: "III",
+        name: "Unnamed awakening",
+        description:
+          "When you critically hit an enemy, increase your own attack speed by 25% and critical strike damage by 20% for 5 sec.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447515960910024735",
+      },
+    ],
     artifact: {
       name: "Gatling",
       iconUrl: "/artifacts/loli.png",
@@ -3943,6 +4439,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Artifact tab: 8.39.16 AM.png; abilities: 8.39.17 AM.png.
   // Core continuations: 8.39.07 AM.png.
   "googoo-fish": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Bloody Pact",
+        description:
+          "Upon entering the battle sacrifices 5% of current max health, simultaneously increasing own life steal by 150% for 8 seconds. (Does not trigger if health is below 30%. Cooldown: 12 seconds.)",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447505797616631818",
+      },
+      {
+        stage: "III",
+        name: "Dark Pact",
+        description:
+          "Upon first dropping health to 50% or below, removes some negative effects from self and simultaneously increases own defense by 50% for 10 seconds.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447505797616631818",
+      },
+    ],
     artifact: {
       name: "Dragon Scale",
       iconUrl: "/artifacts/googoo-fish.png",
@@ -4052,6 +4566,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Talent popups (0/2/5/8/12/16★): 8.39.36 AM.png, 8.39.22 AM.png, 8.39.23 AM.png, 8.39.31 AM.png, 8.39.33 AM.png, 8.39.35 AM.png.
   // Artifact tab: 8.39.38 AM.png; abilities: 8.39.40 AM.png, 8.40.40 AM.png.
   "moon-goddess": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Star Summoning",
+        description:
+          "After entering battle, every 10 sec. summons a meteor that randomly attacks 1 enemy, dealing 180% physical damage and burning 80 enemy energy.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448507437538869471",
+      },
+      {
+        stage: "III",
+        name: "Charged Shot",
+        description:
+          "A normal attack deals additional damage depending on the distance to the target. The farther the target, the higher the damage. Maximum damage is up to 1.6 times.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448507437538869471",
+      },
+    ],
     artifact: {
       name: "Merciless Crossbow",
       iconUrl: "/artifacts/moon-goddess.png",
@@ -4161,6 +4693,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Artifact tab: 8.41.21 AM.png; abilities: 8.41.22 AM.png.
   // Core continuations: 8.41.18 AM.png, 8.41.08 AM 1.png, 8.41.12 AM.png.
   "cowboy-killer": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Bounty Assignment",
+        description:
+          "5 seconds after the start of combat, places a bounty mark on the weakest enemy. The marked enemy takes 14% increased damage. The effect lasts until the end of combat.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448510075265351690",
+      },
+      {
+        stage: "III",
+        name: "Armor-Piercing Shell",
+        description:
+          "Barrage and Armor-Piercing Shell attacks apply an Armor Penetration buff. Hit enemies lose 10% Defense and 0.4% Health Regeneration for 5 seconds (can stack up to 2 times).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448510075265351690",
+      },
+    ],
     artifact: {
       name: "Desert Revolver",
       iconUrl: "/artifacts/cowboy-killer.png",
@@ -4271,6 +4821,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Artifact tab: 8.42.09 AM.png; abilities: 8.42.10 AM.png.
   // Core continuations: 9.01.19 AM.png, 9.01.14 AM 1.png.
   "jungle-archer": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Power Shot",
+        description:
+          "After entering combat, every 2 seconds, increase your own armor penetration by 5% (can be stacked up to 12 times).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447513352439070782",
+      },
+      {
+        stage: "III",
+        name: "Rapid Fire",
+        description:
+          "After entering combat, increase your own attack by 25% for 15 sec.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447513352439070782",
+      },
+    ],
     artifact: {
       name: "Forest Longbow",
       iconUrl: "/artifacts/jungle-archer.png",
@@ -4380,6 +4948,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Artifact tab: 8.44.09 AM.png; abilities: 8.44.10 AM.png.
   // Core continuations: 8.44.07 AM 1.png, 8.43.56 AM.png.
   "white-ox": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Giant's Legacy",
+        description:
+          "For each enemy on the battlefield, gains 12% stun resistance and 5% defense (stacks up to 5 times).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446076234323726447",
+      },
+      {
+        stage: "III",
+        name: "Valiant Fighting Spirit",
+        description:
+          "Upon first dropping to 50% HP or below, emits a stunning roar that stuns all enemies for 2 seconds and reduces incoming damage by 18% for 12 seconds.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446076234323726447",
+      },
+    ],
     artifact: {
       name: "Mountain Splitting Axe",
       iconUrl: "/artifacts/white-ox.png",
@@ -4492,6 +5078,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Artifact tab: 8.44.23 AM.png; abilities: 8.44.24 AM.png.
   // Core continuations: 8.44.21 AM.png.
   "hidden-ninja": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Underworld Technique",
+        description:
+          "Reduces the attacker's attack power by 8% for 6 sec. when taking damage (effect does not stack).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448508529781637140",
+      },
+      {
+        stage: "III",
+        name: "Divine Power",
+        description:
+          'Using the skill "Stalking Thunder Beast" with a 60% chance increases your own energy recovery rate by 80% for 6 sec.',
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448508529781637140",
+      },
+    ],
     artifact: {
       name: "Shuriken",
       iconUrl: "/artifacts/hidden-ninja.png",
@@ -4604,6 +5208,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Artifact tab: 8.44.37 AM.png; abilities: 8.44.38 AM.png.
   // Core continuations: 8.44.35 AM 1.png, 8.44.31 AM.png.
   "snow-hunter": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Unnamed awakening",
+        description:
+          "After entering combat, every 2 seconds increases your own armor penetration by 6% (can stack up to 8 times).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447514318567374928",
+      },
+      {
+        stage: "III",
+        name: "Unnamed awakening",
+        description:
+          "Normal attacks have a 33% chance of freezing the enemy for 1.5 seconds.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447514318567374928",
+      },
+    ],
     artifact: {
       name: "Flash Bow",
       iconUrl: "/artifacts/snow-hunter.png",
@@ -4715,6 +5337,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Artifact tab: 8.45.10 AM.png; abilities: 8.45.11 AM.png, 8.45.12 AM.png.
   // Core continuations: 8.45.08 AM 1.png, 8.45.03 AM 1.png.
   swordevil: {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Switching Attack and Defense",
+        description:
+          "In battle, your attack power increases by an amount equal to 30% of your defense.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446077148661284925",
+      },
+      {
+        stage: "III",
+        name: "Vampire Mask",
+        description:
+          "When a normal attack deals damage to an enemy, 35% of the damage dealt is converted to your health. In addition, there is a 50% chance to reduce the enemy's attack by 5% for 5 seconds.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446077148661284925",
+      },
+    ],
     artifact: {
       name: "Slaughter",
       iconUrl: "/artifacts/swordevil.png",
@@ -4826,6 +5466,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Artifact tab: 8.45.27 AM.png; abilities: 8.45.28 AM.png.
   // Core continuations: 8.45.25 AM.png, 8.45.17 AM.png.
   mars: {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Watchful Guardian",
+        description:
+          "Increases the defense of you and allies behind you by 8%.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446069390201327729",
+      },
+      {
+        stage: "III",
+        name: "Valor and Fearlessness",
+        description:
+          "For every 5% health lost, increases knockback effect by 3%.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446069390201327729",
+      },
+    ],
     artifact: {
       name: "Spear of War",
       iconUrl: "/artifacts/mars.png",
@@ -4935,6 +5593,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   // Owner screenshots from 2026-09-14; Awakening I/III intentionally unrecorded.
   // Talent popups (0/2/5/8/12/16★): 7.53.30 AM.png, 7.53.22 AM.png, 7.53.24 AM.png, 7.53.25 AM.png, 7.53.27 AM.png, 7.53.28 AM.png.
   hela: {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Life Absorption",
+        description:
+          "Every 10 sec., absorbs 6% of one enemy's max HP. The enemy whose life is absorbed receives 0.5% less healing for 5 sec. (Prioritizes the enemy with the highest HP. Absorbed HP cannot exceed 150% of Hela's attack).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446350739529011362",
+      },
+      {
+        stage: "III",
+        name: "Energy Absorption",
+        description:
+          "Every 13 sec., absorbs 90 energy from one enemy. The enemy whose energy is absorbed regenerates energy 30% slower for 7 sec. (Prioritizes the enemy with the most energy).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446350739529011362",
+      },
+    ],
     artifact: {
       name: "Spectral Crystal",
       iconUrl: "/artifacts/hela.png",
@@ -5043,6 +5719,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   },
   // Talent popups (0/2/5/8/12/16★): 7.54.16 AM.png, 7.54.03 AM 1.png, 7.54.05 AM.png, 7.54.07 AM.png, 7.54.09 AM.png, 7.54.11 AM.png.
   "shadow-master": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Energy Absorption",
+        description:
+          "When an enemy uses an energy skill, increase your own energy recovery speed by 50% for 6 sec. (Cooldown: 5 sec.)",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447797076984332388",
+      },
+      {
+        stage: "III",
+        name: "Hereditary Limit",
+        description:
+          "Upon entering combat, lose 0.4% of your max health every second, while simultaneously increasing your attack speed by 60% and your knockback by 25%. The effect ends when your health drops below 25%.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447797076984332388",
+      },
+    ],
     artifact: {
       name: "Grass Cutting Sword",
       iconUrl: "/artifacts/shadow-master.png",
@@ -5152,6 +5846,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   },
   // Talent popups (0/2/5/8/12/16★): 7.54.48 AM.png, 7.54.40 AM.png, 7.54.41 AM.png, 7.54.42 AM.png, 7.54.45 AM.png, 7.54.46 AM.png.
   medusa: {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Control Shield",
+        description:
+          "While Energy Barrier is active, damage taken is reduced by 7% and resistance to control effects is increased by 60%.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446341883197657181",
+      },
+      {
+        stage: "III",
+        name: "Decomposition",
+        description:
+          'Every 6 sec. Turns a random enemy to stone for 1.5 seconds, simultaneously absorbing 65 damage. its energy (each petrification increases the time until the next use of "Decomposition" by 1 sec., up to a maximum of 10 sec.).',
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446341883197657181",
+      },
+    ],
     artifact: {
       name: "Succubus Mask",
       iconUrl: "/artifacts/medusa.png",
@@ -5261,6 +5973,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   },
   // Talent popups (0/2/5/8/12/16★): 7.55.06 AM.png, 7.54.59 AM.png, 7.55.01 AM.png, 7.55.02 AM.png, 7.55.04 AM.png, 7.55.05 AM.png.
   "two-headed-dragon": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Ice Sphere",
+        description:
+          "Every 10 seconds, randomly freezes 1 enemy for 1-3 seconds. After the freeze ends, permanently reduces the enemy's attack speed by 10% and movement speed by 10% (effect does not stack).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447804357461676042",
+      },
+      {
+        stage: "III",
+        name: "Dragon Nature",
+        description:
+          "Upon receiving crowd control (stun, silence, freeze, shackles), restores 7% of max HP and 100 energy (cooldown: 12 sec.). Passive: For every 10% of max HP lost, increases own resistance to crowd control effects by 5%.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447804357461676042",
+      },
+    ],
     artifact: {
       name: "Icy Heart",
       iconUrl: "/artifacts/two-headed-dragon.png",
@@ -5369,6 +6099,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   },
   // Talent popups (0/2/5/8/12/16★): 7.55.28 AM.png, 7.55.19 AM.png, 7.55.20 AM.png, 7.55.21 AM.png, 7.55.24 AM.png, 7.55.26 AM.png.
   "mermaid-princess": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Curse of the Deep",
+        description:
+          "Normal attack permanently reduces the target's movement speed by 3% and repulsion resistance by 4%. Can be stacked up to 5 times.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448506309505712169",
+      },
+      {
+        stage: "III",
+        name: "Water Barrier",
+        description:
+          "Restores 16% of lost health to the weakest ally every 10 seconds.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448506309505712169",
+      },
+    ],
     artifact: {
       name: "Shallow Staff",
       iconUrl: "/artifacts/mermaid-princess.png",
@@ -5477,6 +6225,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   },
   // Talent popups (0/2/5/8/12/16★): 7.55.46 AM.png, 7.55.39 AM.png, 7.55.40 AM.png, 7.55.41 AM.png, 7.55.43 AM.png, 7.55.45 AM.png.
   "soul-doll": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Wounded by Wounds",
+        description:
+          "When first damaging an enemy, converts 30% of the damage dealt into its own health. At the same time, the attacked enemy receives 30% less healing for 5 sec. (effect does not stack).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448502783513723031",
+      },
+      {
+        stage: "III",
+        name: "Berserk",
+        description:
+          "When health is first reduced to 50% or lower, increases energy recovery rate by 40% and attack power by 18% for 12 sec.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448502783513723031",
+      },
+    ],
     artifact: {
       name: "Ghost Blade",
       iconUrl: "/artifacts/soul-doll.png",
@@ -5582,6 +6348,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   },
   // Talent popups (0/2/5/8/12/16★): 7.56.21 AM.png, 7.56.14 AM.png, 7.56.15 AM.png, 7.56.16 AM.png, 7.56.19 AM.png, 7.56.20 AM.png.
   baphomet: {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Fanaticism",
+        description:
+          "Upon entering combat, reduces own current max health by 8%, while simultaneously increasing energy regeneration speed by 20% and energy gained from damage by 20% for 30 seconds. Excitement: In transformed form, attacks drain 40 energy from the enemy (only affects the first target hit, shield effects do not apply).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447784175187923027",
+      },
+      {
+        stage: "III",
+        name: "Perfect Evasion",
+        description:
+          "When receiving damage exceeding 16% of max health, evades that damage (cooldown: 15 sec.).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447784175187923027",
+      },
+    ],
     artifact: {
       name: "Demonic Slash",
       iconUrl: "/artifacts/baphomet.png",
@@ -5687,6 +6471,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   },
   // Talent popups (0/2/5/8/12/16★): 7.56.40 AM.png, 7.56.33 AM.png, 7.56.35 AM.png, 7.56.36 AM.png, 7.56.37 AM.png, 7.56.39 AM.png.
   "masked-ninja": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Demonic Power Release",
+        description:
+          "For every 15% of max health lost, permanently increases own energy recovery speed by 3% and defense by 3% (can stack up to 10 times).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448498812795752458",
+      },
+      {
+        stage: "III",
+        name: "Protective Barrier",
+        description:
+          "Each time a protective barrier is created, also applies a barrier with base effect to the weakest ally.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448498812795752458",
+      },
+    ],
     artifact: {
       name: "Silverwolf Sword",
       iconUrl: "/artifacts/masked-ninja.png",
@@ -5795,6 +6597,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   },
   // Talent popups (0/2/5/8/12/16★): 7.56.58 AM.png, 7.56.52 AM.png, 7.56.53 AM.png, 7.56.54 AM.png, 7.56.55 AM.png, 7.56.56 AM.png.
   "whaley-imp": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Resistance Armor",
+        description:
+          "For every 10% max health lost, increases own control effect resistance by 8%.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448496710216192030",
+      },
+      {
+        stage: "III",
+        name: "Deep Sea Shield",
+        description:
+          "When summoning a tsunami, creates a shield equal to 11% of max health.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448496710216192030",
+      },
+    ],
     artifact: {
       name: "Trident",
       iconUrl: "/artifacts/whaley-imp.png",
@@ -5902,6 +6722,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   },
   // Talent popups (0/2/5/8/12/16★): 7.57.14 AM.png, 7.57.08 AM.png, 7.57.09 AM.png, 7.57.10 AM.png, 7.57.11 AM.png, 7.57.12 AM.png.
   "ironblade-mixed-race": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Aura of Demonic Energy",
+        description:
+          "For every 5% of health lost, the effect of receiving energy from damage is increased by 7%.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448497741083705344",
+      },
+      {
+        stage: "III",
+        name: "Bloody Battle Aura",
+        description:
+          "Each hit of the Void Tearing Battle Aura technique on an enemy restores 6.5% of the lost health.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448497741083705344",
+      },
+    ],
     artifact: {
       name: "Ironwolf Blade",
       iconUrl: "/artifacts/ironblade-mixed-race.png",
@@ -6009,6 +6847,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   },
   // Talent popups (0/2/5/8/12/16★): 7.57.29 AM.png, 7.57.23 AM.png, 7.57.25 AM.png, 7.57.26 AM.png, 7.57.27 AM.png, 7.57.28 AM.png.
   "roar-warrior": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Tough Skin",
+        description:
+          "When taking damage, increases own defense by 1.5% (can stack up to 12 times).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447507361575993396",
+      },
+      {
+        stage: "III",
+        name: "Bloody Axe",
+        description:
+          "Each use of the Axe of Annihilation restores 15% of lost health.",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447507361575993396",
+      },
+    ],
     artifact: {
       name: "Blazing Sun Axe",
       iconUrl: "/artifacts/roar-warrior.png",
@@ -6116,6 +6972,24 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
   },
   // Talent popups (0/2/5/8/12/16★): 7.57.47 AM.png, 7.57.38 AM.png, 7.57.39 AM.png, 7.57.40 AM.png, 7.57.44 AM.png, 7.57.45 AM.png.
   "monkey-king": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Perceptive Gaze",
+        description:
+          "When receiving control effects (stun, silence, freeze, shackles), increases defense by 13% and critical resistance by 13% for 5 seconds (cooldown: 10 sec.).",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447781934129221663",
+      },
+      {
+        stage: "III",
+        name: "Illusion",
+        description:
+          "When the clone is defeated, you gain a shield equal to 15% of your max health and increase your attack by 20% for 10 seconds. (Triggers once per battle)",
+        sourceUrl:
+          "https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447781934129221663",
+      },
+    ],
     artifact: {
       name: "Golden Cudgel",
       iconUrl: "/artifacts/monkey-king.png",

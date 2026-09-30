@@ -109,6 +109,101 @@ Awakening skills are text-only; the owner does not want icons for them.
 The owner confirmed the unlock thresholds: **Awakening I at 18★** and
 **Awakening III at 22★**. Show these alongside the stage labels.
 
+### Discord Awakening I/III import (2026-09-30)
+
+The owner authorized the **heroes-awakening** Discord forum as a source for
+missing hero-specific I/III. This import adds **96 stages across 48 heroes**,
+with each stage retaining its thread URL in `sourceUrl`. The 20 heroes with
+existing awakening data retain their original entries and screenshot sources.
+Descriptions are transcribed from forum text or the English charts posted in
+those threads. These are attributed community references, not newly verified
+in-game wording. Vietnamese skill names are app translations, following the
+existing localization convention. No class-wide II/IV, portraits, talents,
+artifacts, cores, or divinities were imported from Discord.
+
+Validation: TypeScript and ESLint passed (ESLint retains the existing unused
+`buttonVariants` warning in `lineup-popover.tsx`). The test suite completed with
+329 passing tests and 19 skipped integrations; two localhost-socket tests passed
+when rerun outside the restricted sandbox. A baseline comparison confirmed all
+20 prior awakening sets and all non-awakening hero data are unchanged. Local
+Dark Shaman and Loli pages rendered both stages, including unnamed placeholders.
+
+**Remaining I/III gaps:** Swordmaster, Bone Archer, and Nightmare Source.
+The forum's title search returned no matching posts for Swordmaster, Bone,
+and Nightmare; the broader Sword search returned only Swordevil. Their empty
+states remain. Historical batch-specific missing-awakening lists below are
+superseded by this import for the 48 heroes in the table.
+
+**Source limitations retained for later verification:**
+
+- Snow Hunter and Loli have descriptions but no skill names for either stage;
+  Lucifer III also has no name. Those five entries display **Unnamed awakening**
+  as an explicit placeholder, not an inferred game name.
+- Lucifer I gives only “every few seconds”; no exact interval was invented.
+- Medusa III contains the malformed phrase “simultaneously absorbing 65 damage.
+  its energy”. The transcription preserves it; the amount's unit is unresolved.
+- Iron Fan Princess III lists movement speed and attack increases of `20`
+  without percent signs. Hela I explicitly says `0.5%` less healing.
+- Wizard III calls its attack basis “Warlock's attack”; Warlock III refers to
+  “the Blacksmith”. These source aliases remain uncorrected.
+- Captain Pilot I gives `70%/100%` without explaining the alternatives. Its
+  awakening names are **Queue / Suppressing Fire**, as the chart labels them.
+- Earthbreaker III, Foxy Spirit III, Hidden Ninja III, and other charts use
+  alternate talent names. Preserve source wording rather than infer name links.
+- Baphomet I includes the chart's **Excitement** effect; Two-headed Dragon III
+  includes the **Passive** effect printed in the same stage row.
+
+| Hero | I | III | Forum source / contributor |
+| --- | --- | --- | --- |
+| Abyssal Queen | Aura of Suffering | Soul Possession | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446347170612772904) — Marty |
+| Bamboo Hat | Energy Accumulation | MAXIMUM Power | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447505615659339806) — Marty |
+| Baphomet | Fanaticism | Perfect Evasion | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447784175187923027) — Marty |
+| Captain Pilot | Queue | Suppressing Fire | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447800887090089994) — Marty |
+| Cowboy Killer | Bounty Assignment | Armor-Piercing Shell | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448510075265351690) — Marty |
+| Dark Shaman | Shackles | Healing Wave | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1525225059021754378) — MR-UK |
+| Darkin Hunter | Thirst for Vengeance | Enhanced Mark | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1501864401471541370) — Marty |
+| Diva | Random Tune | Special Note | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448504449843597353) — Marty |
+| Earthbreaker | Invasion War | Enrage | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1503486549952561422) — MR-UK |
+| Fire Sorceress | Enhanced Flame | Spell Enhancement | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447517075114430484) — Marty |
+| Foxy Spirit | Curse of Madness | Demonic Aura Release | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446355327099342971) — Marty |
+| GooGoo Fish | Bloody Pact | Dark Pact | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447505797616631818) — Marty |
+| Hela | Life Absorption | Energy Absorption | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446350739529011362) — Marty |
+| Hidden Ninja | Underworld Technique | Divine Power | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448508529781637140) — Marty |
+| Iron Fan Princess | Outstanding Personality | Wind Sweeps Clouds | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446353430607298692) — Marty |
+| Ironblade Mixed-Race | Aura of Demonic Energy | Bloody Battle Aura | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448497741083705344) — Marty |
+| Jungle Archer | Power Shot | Rapid Fire | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447513352439070782) — Marty |
+| Lady Pan | The Holy of Holies of the Kitchen | Moldy Treat | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447792419499409511) — Marty |
+| Li Bai | Pour the wine! | Green Lotus Resolve | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446343862892105860) — Marty |
+| Little Deer | Logical Inference | Charm | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448503631598063707) — Marty |
+| Little Goblin | Mechanical Factory | Automatic Repair | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447518820964241529) — Marty |
+| Loli | Unnamed awakening | Unnamed awakening | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447515960910024735) — Marty |
+| Lucifer | Breath of Death | Unnamed awakening | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446322023776129035) — Marty |
+| Mars | Watchful Guardian | Valor and Fearlessness | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446069390201327729) — Marty |
+| Masked Ninja | Demonic Power Release | Protective Barrier | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448498812795752458) — Marty |
+| Medusa | Control Shield | Decomposition | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446341883197657181) — Marty |
+| Mermaid Princess | Curse of the Deep | Water Barrier | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448506309505712169) — Marty |
+| Monkey King | Perceptive Gaze | Illusion | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447781934129221663) — Marty |
+| Moon Goddess | Star Summoning | Charged Shot | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448507437538869471) — Marty |
+| Observer | Matter Deconstruction | Shockwave | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1465919670145257582) — ELLA |
+| Otherworld Prisoner | Fire Meteor | Embrace of Flames | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448512189521592401) — Marty |
+| Radiant Angel | Angelic Defense | Shining Holy Light | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447510493269856357) — Marty |
+| Red Hood | Drunken Frenzy | Toxic Erosion | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448511328565198928) — Marty |
+| Roar Warrior | Tough Skin | Bloody Axe | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447507361575993396) — Marty |
+| Shadow Master | Energy Absorption | Hereditary Limit | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447797076984332388) — Marty |
+| Skeleton King | Curse of the Evil Spirit | Curse of Death | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448501592629186600) — Marty |
+| Snow Hunter | Unnamed awakening | Unnamed awakening | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447514318567374928) — Marty |
+| Snowoman | Ice Seal | Frost Shield | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447790308963258460) — Marty |
+| Soul Doll | Wounded by Wounds | Berserk | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448502783513723031) — Marty |
+| Swordevil | Switching Attack and Defense | Vampire Mask | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446077148661284925) — Marty |
+| Templar | Stealth | Hunt | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1465918065068736629) — Marty |
+| Two-Headed Dragon | Ice Sphere | Dragon Nature | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447804357461676042) — Marty |
+| Warlock | Messenger of the Abyss | Servant Obedience | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447793610291544116) — Marty |
+| Whaley Imp | Resistance Armor | Deep Sea Shield | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448496710216192030) — Marty |
+| Whirlpool Ninja | Quick Healing | Pulse of Fighting Spirit | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448500671832916069) — Marty |
+| White Ox | Giant's Legacy | Valiant Fighting Spirit | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446076234323726447) — Marty |
+| Wine Immortal | Powerful Strike | Elemental Resistance | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446076424996782121) — Marty |
+| Wizard | Potent Poison | Healing Potion | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447512310280224768) — Marty |
+
 For the **2026-09-14 7.52–8.05 AM screenshot batch and subsequent import**, the owner explicitly
 excluded Awakening I/III from the requested scope. Those stages do not block
 adding the supplied details; leave unrecorded awakenings empty and preserve any
@@ -1728,6 +1823,12 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-09-30 — The owner authorized using the Discord **heroes-awakening**
+  forum (`1435554173113466953` in server `1214861046125166603`) to fill missing
+  hero awakenings, then clarified the scope as **I and III**, not I and II.
+  These imports are attributed Discord references; existing recorded awakenings
+  remain intact, and class-wide II/IV remain separate.
 
 - 2026-09-29 — Public hero pages must not publish saved builds or lineups.
   Anonymous visitors can read hero reference details only; saved content,
