@@ -8495,9 +8495,9 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
         {
           tier: "rainbow",
           name: "Exhaustion Aura",
-          // The 9.19.54 popup's Max Quality footer obscures the remaining text.
+          // Source: gameplay/talents/necromancer-ghostlight-bone-2026-10-04.png.
           description:
-            "Releases Exhaustion Aura upon entering battle, reducing all enemies' DMG by 12% and Energy Regen by…",
+            "Releases Exhaustion Aura upon entering battle, reducing all enemies' DMG by 12% and Energy Regen by 12% until the end of battle (cannot be dispelled, effect ends upon self death).",
         },
       ],
     },
@@ -8599,7 +8599,7 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
     artifact: {
       name: "Soul Mask",
       iconUrl: "/artifacts/shadow-fiend.png",
-      // Only talent-popup bonuses are available; the rainbow tier is unrecorded.
+      // Full popup: gameplay/talents/shadow-fiend-soul-mask-2026-10-04.png.
       bonuses: [
         {
           tier: "purple",
@@ -8619,6 +8619,12 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
           // Completed by the owner's scrolled gameplay/talents/image copy.png.
           description:
             "Immediately releases Destructive Gloom once upon entering battle. Physical DMG from Shadow increases by 90%.",
+        },
+        {
+          tier: "rainbow",
+          name: "King Descent",
+          description:
+            "The Shadow Fiend's presence unnerves nearby enemies, reducing all enemies' DEF by 10% and Energy Regen SPD by 12%.",
         },
       ],
     },

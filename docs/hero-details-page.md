@@ -538,16 +538,14 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
   Awakening I/III. The owner excluded these stages from the authorized import;
   the pages retain their 18★/22★ empty states. All supplied non-awakening details,
   including Mermaid Princess's formerly missing fourth core, are recorded.
-- Necromancer: Ghostlight Bone's rainbow skill **Exhaustion Aura** is partly
-  hidden behind the artifact popup's Max Quality footer; its Energy Regen
-  reduction value and any following text are not visible. All four cores are now
-  recorded, including **Crystal Staff** for **Death Pulse** from the 9.31.17 AM
-  capture (DMG and Heal +30% of Attack). Awakening I and the full Luminous Visor
-  core are also recorded.
-- Shadow Fiend: the full Soul Mask ability popup and rainbow ability are still
-  missing. The follow-up `gameplay/talents/image copy.png` completes the red bonus
-  and fourth core, **Crystal Pendant** for **Destructive Gloom** (6% DMG Reduction
-  for 10s after each cast; 100% chance to purge all negative effects from self).
+- **Shadow Fiend and Necromancer (October 4): artifact gaps resolved.**
+  `gameplay/talents/shadow-fiend-soul-mask-2026-10-04.png` supplies Soul Mask's
+  standalone Eternal **King Descent**: all enemies' DEF −10% and Energy Regen
+  SPD −12%. It confirms the three existing lower-tier abilities.
+  `gameplay/talents/necromancer-ghostlight-bone-2026-10-04.png` completes
+  **Exhaustion Aura**: enemy DMG −12% and Energy Regen −12% until battle ends;
+  cannot be dispelled, ends upon self death. Both heroes now have all required
+  hero-specific fields recorded, including four artifact tiers and four cores.
 - Awakening II and IV: class-wide skills are not displayed yet; Support IV and
   September 28 Marksman/Warrior guide references are recorded in the game reference.
   Mage Spell Barrier / Psychic Surge appear only

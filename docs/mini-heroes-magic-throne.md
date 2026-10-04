@@ -461,8 +461,12 @@ once-per-battle revive) is not attached to any talent. Full descriptions are in
 The two red divinity icons on the Artifact tab match **Physical DMG Boost**
 (left) and **CRIT Damage** (right) in the owner's screenshot-derived catalog.
 Both gold and red artifact bonuses modify **Destructive Gloom**, so a talent may
-have more than one artifact bonus. The full Soul Mask ability popup is missing:
-its rainbow-tier ability is unrecorded. The scrolled follow-up
+have more than one artifact bonus. The October 4 full Soul Mask popup
+`gameplay/talents/shadow-fiend-soul-mask-2026-10-04.png` completes its standalone
+Eternal/rainbow ability **King Descent**: "The Shadow Fiend's presence unnerves
+nearby enemies, reducing all enemies' DEF by 10% and Energy Regen SPD by 12%."
+It also confirms the existing three talent-linked tiers. The Vietnamese display
+name **Quân Vương Giáng Thế** is an app translation. The scrolled follow-up
 `gameplay/talents/image copy.png` completes the red bonus and fourth core,
 **Crystal Pendant**, linked to **Destructive Gloom**. The popup names
 **Arrow Core·Core**; removing only the final UI suffix gives **Arrow Core**.
@@ -478,13 +482,15 @@ Full visible descriptions are transcribed in `src/data/hero-details.ts`.
 | Ghost Shield | Special Skill | 8★ | gold: immediately casts upon entering battle; first cast also shields the frontmost ally | Luminous Visor: HP Regen +0.2%(0.6%) and Energy Regen +2%(6%) |
 | Soul Offering | Passive | 12★ | — | — |
 | Necro Arts | Enhance | 16★ | — | Resonance Pendant: ally recovery effects +10%(30%) |
-| Exhaustion Aura | Artifact | Rainbow tier | On entering battle, reduces all enemies' DMG by 12% and Energy Regen by… (remaining text obscured) | — |
+| Exhaustion Aura | Artifact | Rainbow tier | On entering battle, reduces all enemies' DMG and Energy Regen by 12% until battle ends; cannot be dispelled, ends upon self death | — |
 
 The Artifact tab's red badges match **Healing Effect** (left) and **CRIT DMG
 Reduction** (right) in the screenshot-derived catalog. The 9.19.54 AM artifact
-popup confirms all four tiers, but its Max Quality footer hides the rest of
-**Exhaustion Aura** after "and Energy Regen by". This rainbow skill is not attached
-to a talent. All four cores are now recorded: the scrolled 9.31.17 AM capture
+popup confirms all four tiers; the October 4 follow-up
+`gameplay/talents/necromancer-ghostlight-bone-2026-10-04.png` supplies the formerly
+obscured **Exhaustion Aura** ending: Energy Regen reduction is **12%**, lasts
+until the end of battle, cannot be dispelled, and ends upon self death.
+This rainbow skill is not attached to a talent. All four cores are now recorded: the scrolled 9.31.17 AM capture
 shows **Crystal Staff·Core**, which enhances **Death Pulse** DMG and Heal by
 **30% of Attack**. Luminous Visor's full description is recorded from the
 scrolled 9.21.52 AM capture. The Tome of
@@ -1823,6 +1829,16 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-10-04 — The owner supplied full artifact text for Shadow Fiend and
+  Necromancer and requested their updates. Soul Mask's standalone Eternal
+  **King Descent** reduces all enemies' DEF by **10%** and Energy Regen SPD by
+  **12%**. Ghostlight Bone's **Exhaustion Aura** reduces all enemies' DMG by
+  **12%** and Energy Regen by **12%** until battle ends, cannot be dispelled,
+  and ends upon self death. Original uploads `public/heroes/image.png` and
+  `public/heroes/image copy.png` are preserved respectively under
+  `gameplay/talents/shadow-fiend-soul-mask-2026-10-04.png` and
+  `gameplay/talents/necromancer-ghostlight-bone-2026-10-04.png`.
 
 - 2026-09-30 — The owner authorized using the Discord **heroes-awakening**
   forum (`1435554173113466953` in server `1214861046125166603`) to fill missing
