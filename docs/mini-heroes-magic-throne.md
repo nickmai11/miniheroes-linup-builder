@@ -742,14 +742,14 @@ the existing catalog; no additional divinity popup is needed for this batch.
 | Skeleton King / Warrior | Blade of Destruction | HP → Heavy Injury | 8.35.37–8.36.29 | Complete |
 | Whirlpool Ninja / Warrior | Whirlwind Meteor | HP → CRIT Damage | 8.36.32–8.36.47 | Complete |
 | Foxy Spirit / Mage | Exquisite Lamp | Magic RES → CRIT Damage | 8.36.52–8.37.05 | Complete |
-| Loli / Marksman | Gatling | Marksman DEF → CRIT Damage | 8.37.08–8.38.59 | Complete |
+| Loli / Marksman | Gatling | DEF → CRIT Damage | 8.37.08–8.38.59 | Complete |
 | GooGoo Fish / Warrior | Dragon Scale | ATK → CRIT Damage | 8.39.04–8.39.17 | Complete |
-| Moon Goddess / Marksman | Merciless Crossbow | Marksman DEF → Heavy Injury | 8.39.20–8.40.40 | Complete |
-| Cowboy Killer / Marksman | Desert Revolver | Marksman DEF → Physical DMG Boost | 8.41.06–8.41.22 | Complete |
-| Jungle Archer / Marksman | Forest Longbow | Marksman DEF → Anti-CRIT Rate | 8.42.09–8.42.10; 9.01.10–9.01.19 | Complete after follow-up |
+| Moon Goddess / Marksman | Merciless Crossbow | DEF → Heavy Injury | 8.39.20–8.40.40 | Complete |
+| Cowboy Killer / Marksman | Desert Revolver | DEF → Physical DMG Boost | 8.41.06–8.41.22 | Complete |
+| Jungle Archer / Marksman | Forest Longbow | DEF → Anti-CRIT Rate | 8.42.09–8.42.10; 9.01.10–9.01.19 | Complete after follow-up |
 | White Ox / Warrior | Mountain Splitting Axe | Knockback Effect → Heavy Injury | 8.43.51–8.44.10 | Complete |
-| Hidden Ninja / Marksman | Shuriken | Marksman DEF → ATK SPD | 8.44.13–8.44.24 | Complete |
-| Snow Hunter / Marksman | Flash Bow | Marksman DEF → CRIT DMG Reduction | 8.44.27–8.44.38 | Complete |
+| Hidden Ninja / Marksman | Shuriken | DEF → ATK SPD | 8.44.13–8.44.24 | Complete |
+| Snow Hunter / Marksman | Flash Bow | DEF → CRIT DMG Reduction | 8.44.27–8.44.38 | Complete |
 | Gunslinger / Marksman | Flame-red Robe | Ranged DMG Reduction → CRIT Damage | 8.44.40–8.44.56 | Already recorded |
 | Swordevil / Warrior | Slaughter | CRIT Damage → CRIT Rate | 8.44.59–8.45.12 | Complete |
 | Mars / Warrior | Spear of War | ATK → Physical RES | 8.45.15–8.45.28 | Complete |
@@ -824,7 +824,7 @@ Review notes for a future authorized import:
 belong to Jungle Archer / Marksman. The **9.01.10** talent-ring screenshot
 establishes the order above. All six original popups provide full descriptions
 and usable icons. The existing Forest Longbow artwork, all four artifact tiers,
-and Marksman DEF / Anti-CRIT Rate badges remain verified from **8.42.09 / 8.42.10**.
+and DEF (All DEF) / Anti-CRIT Rate badges remain recorded from **8.42.09 / 8.42.10**.
 
 | Talent | Kind | Unlock | Effect shown in the follow-up |
 | --- | --- | --- | --- |
@@ -1506,7 +1506,7 @@ duplicates; produced by `scripts/slice-divinities.py`):
 | Kind          | Divinities (stat rows)                                                                                      |
 | ------------- | ----------------------------------------------------------------------------------------------------------- |
 | ATK           | ATK, Mage ATK, Support ATK, Warrior ATK (flat numbers)                                                      |
-| DEF           | DEF, Marksman DEF (flat)                                                                                    |
+| DEF           | DEF (All DEF), Marksman DEF — Bone Archer only (flat)                                                       |
 | HP            | HP (flat)                                                                                                   |
 | DMG Increase  | DMG Increase, Physical DMG Boost, Magic DMG Boost, Melee DMG Boost, Ranged DMG Boost (%)                    |
 | DMG Reduction | DMG Reduction, Physical RES, Magic RES, Melee DMG Reduction*, Ranged DMG Reduction, CRIT DMG Reduction, Anti-CRIT Rate (%) |
@@ -1829,6 +1829,12 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-10-12 — Among the DEF divinities, **only Bone Archer** has
+  **Marksman DEF**; every other hero with a DEF divinity has **All DEF** (the
+  catalog's plain `def`). Loli, Moon Goddess, Cowboy Killer, Jungle Archer,
+  Hidden Ninja, and Snow Hunter were corrected from Marksman DEF to DEF; the
+  earlier visual badge comparison for those six was wrong.
 
 - 2026-10-04 — The owner supplied full artifact text for Shadow Fiend and
   Necromancer and requested their updates. Soul Mask's standalone Eternal

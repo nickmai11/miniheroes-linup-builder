@@ -4432,7 +4432,7 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
           "「Explosive Strike」 additionally reduces the Target's Knockback Resist by 5% (15%)",
       },
     ],
-    divinities: ["marksman-def", "crit-damage"],
+    divinities: ["def", "crit-damage"],
   },
   // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
   // Talent popups (0/2/5/8/12/16★): 8.39.13 AM.png, 8.39.05 AM.png, 8.39.08 AM.png, 8.39.09 AM.png, 8.39.10 AM.png, 8.39.12 AM.png.
@@ -4686,7 +4686,7 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
           "「ATK SPD Aura」 further increases the Attack Speed of allied Ranged Heroes by 5%(15%)",
       },
     ],
-    divinities: ["marksman-def", "heavy-injury"],
+    divinities: ["def", "heavy-injury"],
   },
   // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
   // Talent popups (0/2/5/8/12/16★): 8.41.17 AM.png, 8.41.08 AM.png, 8.41.10 AM.png, 8.41.11 AM.png, 8.41.13 AM.png, 8.41.15 AM.png.
@@ -4814,7 +4814,7 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
           "「Growth Favors」 Each stack additionally increases the final DMG Result by 0.5%(1.5%).",
       },
     ],
-    divinities: ["marksman-def", "physical-dmg-boost"],
+    divinities: ["def", "physical-dmg-boost"],
   },
   // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
   // Talent popups (0/2/5/8/12/16★): 9.01.18 AM.png, 9.01.11 AM.png, 9.01.12 AM.png, 9.01.14 AM.png, 9.01.16 AM.png, 9.01.17 AM.png.
@@ -4941,7 +4941,7 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
           "「High Speed」 additionally increases ATK SPD and MOV SPD by 5%(15%)",
       },
     ],
-    divinities: ["marksman-def", "anti-crit-rate"],
+    divinities: ["def", "anti-crit-rate"],
   },
   // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
   // Talent popups (0/2/5/8/12/16★): 8.44.07 AM.png, 8.43.55 AM.png, 8.44.01 AM.png, 8.44.03 AM.png, 8.44.04 AM.png, 8.44.05 AM.png.
@@ -5201,7 +5201,7 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
           "「Super Beast」 increases True DMG by 50%(150%) of Attack",
       },
     ],
-    divinities: ["marksman-def", "atk-spd"],
+    divinities: ["def", "atk-spd"],
   },
   // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
   // Talent popups (0/2/5/8/12/16★): 8.44.35 AM.png, 8.44.28 AM.png, 8.44.29 AM.png, 8.44.30 AM.png, 8.44.32 AM.png, 8.44.34 AM.png.
@@ -5330,7 +5330,7 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
           "「Explosive Arrows」 additionally increases Explosion Radius by 3%(9%)",
       },
     ],
-    divinities: ["marksman-def", "crit-dmg-reduction"],
+    divinities: ["def", "crit-dmg-reduction"],
   },
   // Owner screenshots from 2026-09-14; Awakening I/III not supplied.
   // Talent popups (0/2/5/8/12/16★): 8.45.08 AM.png, 8.45.00 AM.png, 8.45.01 AM.png, 8.45.03 AM.png, 8.45.04 AM.png, 8.45.06 AM.png.
