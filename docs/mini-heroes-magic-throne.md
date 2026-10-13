@@ -1688,7 +1688,11 @@ Lineups and builds support sharing with selected nicknames through a checkbox
 list opened by Share (owner, 2026-09-18). This adds specific readers to private
 content; it does not make that content public or grant editing rights. Each
 lineup/build has its own recipient list, and removing a recipient revokes that
-share. Recipients can find their items on Shared with me. Migration 0040 adds
+share. Sharing a lineup also grants read access to the builds currently
+assigned in its slots (owner, 2026-10-13); the hero's other builds stay
+private, the hero page itself is not opened, and the access ends when the
+lineup share is revoked or the build is unassigned. Recipients can find their
+items on Shared with me. Migration 0040 adds
 stable profile IDs and per-item recipient grants with RLS; it was applied on
 2026-09-18 with no automatic grants. Sharing adds read access across the page
 gate, queries, previews, artwork, reactions, follows, and history. Mutation
@@ -1829,6 +1833,12 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-10-13 — Sharing a lineup with a person also gives them access to the
+  related builds (the builds assigned in that lineup).
+
+- 2026-10-13 — Hide all lineups and builds. Applied as the existing
+  public/private control: every lineup and saved hero build is private.
 
 - 2026-10-12 — Among the DEF divinities, **only Bone Archer** has
   **Marksman DEF**; every other hero with a DEF divinity has **All DEF** (the
@@ -2430,6 +2440,11 @@ is said. These override anything marked (web).
   and 8 hidden builds became visible. All 11 lineups and 13 builds are now
   visible under the existing invitation/Public URLs rules. Verification found
   zero hidden lineups, builds, or history entries for existing content.
+  On 2026-10-13, the owner's hide request was applied to the configured
+  database through the normal change-recording transaction: 11 public lineups
+  and 12 public builds became private for the existing owner. All 12 lineups
+  and 13 builds are now private. Verification found zero public lineups,
+  builds, or history entries.
 - Lineup privacy uses a nullable `lineups.private_owner_id`: null preserves the
   existing invitation/Public URLs audience; otherwise that verified admin
   account retains management and can select nickname recipients for read access. Public/private controls are available

@@ -262,7 +262,9 @@ test(
       let lineup = await lineups.getLineup(savedLineup.id);
       assert.equal(lineup.isPrivate, true);
       assert.equal(lineup.canManage, false);
-      assert.equal(lineup.slots[0].build, null);
+      // Sharing a lineup shares its assigned builds, not the hero's other builds.
+      assert.equal(lineup.slots[0].build.id, savedBuild.id);
+      assert.deepEqual(await builds.getBuildsByIds([sibling.id]), []);
       assert.equal(await lineups.getLineup(unrelated.id), undefined);
       assert.equal(
         (
