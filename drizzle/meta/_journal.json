@@ -288,6 +288,13 @@
       "when": 1789744798666,
       "tag": "0040_nickname_sharing",
       "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "7",
+      "when": 1791864039665,
+      "tag": "0041_all_content_access",
+      "breakpoints": true
     }
   ]
 }

@@ -29,6 +29,7 @@ function UserRow({
   const router = useRouter();
   const [nickname, setNickname] = useState(user.nickname ?? "");
   const [savedNickname, setSavedNickname] = useState(user.nickname);
+  const [allContent, setAllContent] = useState(user.allContent);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -85,6 +86,38 @@ function UserRow({
     }
   }
 
+  async function saveAllContent(next: boolean) {
+    if (inFlight.current) return;
+    inFlight.current = true;
+    setPending(true);
+    setError("");
+    setMessage("");
+    try {
+      const response = await fetch("/api/users", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ viewerKey: user.viewerKey, allContent: next }),
+      });
+      const result = await response.json();
+      if (!response.ok)
+        throw new Error(
+          result.error || "Could not update this user. Please try again.",
+        );
+      setAllContent(result.allContent);
+      setMessage(t("Access saved."));
+      router.refresh();
+    } catch (reason) {
+      setError(
+        reason instanceof Error
+          ? reason.message
+          : "Could not update this user. Please try again.",
+      );
+    } finally {
+      inFlight.current = false;
+      setPending(false);
+    }
+  }
+
   return (
     <li className="bg-card flex flex-col gap-4 rounded-xl border p-4 sm:p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -134,6 +167,18 @@ function UserRow({
           {" · "}
           {t("{count} shared items", { count: user.sharedItems })}
         </p>
+      )}
+      {!user.isYou && savedNickname && (
+        <label className="flex cursor-pointer items-center gap-3 text-sm">
+          <input
+            type="checkbox"
+            className="accent-primary size-4 shrink-0"
+            checked={allContent}
+            disabled={pending}
+            onChange={(event) => void saveAllContent(event.target.checked)}
+          />
+          {t("Can access all lineups and builds")}
+        </label>
       )}
       <form
         aria-busy={pending}

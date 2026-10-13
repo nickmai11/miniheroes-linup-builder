@@ -1,0 +1,1 @@
+ALTER TABLE "viewer_profiles" ADD COLUMN "all_content" boolean DEFAULT false NOT NULL;

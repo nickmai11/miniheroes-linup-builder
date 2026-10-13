@@ -26,6 +26,8 @@ export const viewerProfiles = pgTable(
     id: integer("id").notNull().generatedAlwaysAsIdentity().unique(),
     viewerKey: text("viewer_key").primaryKey(),
     nickname: text("nickname").notNull(),
+    // Admin-chosen readers of every private lineup and build.
+    allContent: boolean("all_content").notNull().default(false),
   },
   (t) => [
     check(

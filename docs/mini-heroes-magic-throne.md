@@ -1692,7 +1692,19 @@ share. Sharing a lineup also grants read access to the builds currently
 assigned in its slots (owner, 2026-10-13); the hero's other builds stay
 private, the hero page itself is not opened, and the access ends when the
 lineup share is revoked or the build is unassigned. Recipients can find their
-items on Shared with me. Migration 0040 adds
+items on Shared with me.
+
+The owner can also choose specific people who read **every** lineup and build
+(owner, 2026-10-13): the Users page has a **Can access all lineups and builds**
+checkbox per person (not on the admin's own row, and only once the person has
+a nickname, because the grant is stored on the profile as
+`viewer_profiles.all_content`). It grants read-only access to all private
+lineups and builds, current and future, across the same reads as a share, and
+gives an invited browser full-library page access so it can open the hero
+pages the builds live on. Unchecking it, or revoking the user, removes the
+access. Migration 0041 adds the column; it was applied to the configured
+database on 2026-10-13 with the transaction fallback, with nobody granted.
+The hosted site needs this code deployed for the checkbox to appear. Migration 0040 adds
 stable profile IDs and per-item recipient grants with RLS; it was applied on
 2026-09-18 with no automatic grants. Sharing adds read access across the page
 gate, queries, previews, artwork, reactions, follows, and history. Mutation
@@ -1833,6 +1845,9 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-10-13 — The owner can choose specific people who can access all
+  lineups/builds.
 
 - 2026-10-13 — Sharing a lineup with a person also gives them access to the
   related builds (the builds assigned in that lineup).

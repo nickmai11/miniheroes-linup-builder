@@ -4,6 +4,7 @@ import { eq, like, sql } from "drizzle-orm";
 import { db, schema } from "@/db";
 import { getAdminId } from "@/lib/admin-access";
 import {
+  allContentSchema,
   managedNicknameSchema,
   revokeUserSchema,
   type ManagedUser,
@@ -27,6 +28,7 @@ export async function getManagedUsers(): Promise<ManagedUser[]> {
       .select({
         id: devices.id,
         nickname: profiles.nickname,
+        allContent: profiles.allContent,
         createdAt: devices.createdAt,
         fullAccess: sql<boolean>`bool_or(${invitations.id} is not null and ${invitations.lineupId} is null)`,
         invitedLineups: sql<number>`count(distinct ${invitations.lineupId})::integer`,
@@ -45,10 +47,14 @@ export async function getManagedUsers(): Promise<ManagedUser[]> {
           sql`coalesce(${redemptions.invitationId}, ${devices.invitationId})`,
         ),
       )
-      .groupBy(devices.id, profiles.nickname)
+      .groupBy(devices.id, profiles.nickname, profiles.allContent)
       .orderBy(devices.createdAt, devices.id),
     db
-      .select({ viewerKey: profiles.viewerKey, nickname: profiles.nickname })
+      .select({
+        viewerKey: profiles.viewerKey,
+        nickname: profiles.nickname,
+        allContent: profiles.allContent,
+      })
       .from(profiles)
       .where(like(profiles.viewerKey, "admin:%"))
       .orderBy(profiles.nickname, profiles.viewerKey),
@@ -71,6 +77,7 @@ export async function getManagedUsers(): Promise<ManagedUser[]> {
       isYou: true,
       createdAt: null,
       fullAccess: true,
+      allContent: false,
       invitedLineups: 0,
       sharedItems: 0,
     });
@@ -83,6 +90,7 @@ export async function getManagedUsers(): Promise<ManagedUser[]> {
       isYou: false,
       createdAt: row.createdAt.toISOString(),
       fullAccess: row.fullAccess,
+      allContent: row.allContent ?? false,
       invitedLineups: row.invitedLineups,
       sharedItems: row.sharedItems,
     })),
@@ -122,6 +130,22 @@ export async function updateManagedNickname(input: unknown) {
       });
     return { viewerKey, nickname, status: 200 };
   });
+}
+
+/** The grant lives on the profile, so the person needs a nickname first. */
+export async function setManagedAllContent(input: unknown) {
+  const adminId = await getAdminId();
+  if (!adminId) return forbidden;
+  const parsed = allContentSchema.safeParse(input);
+  if (!parsed.success || parsed.data.viewerKey === `admin:${adminId}`)
+    return { error: "Choose another user to change access.", status: 400 };
+  const { viewerKey, allContent } = parsed.data;
+  const [saved] = await db
+    .update(schema.viewerProfiles)
+    .set({ allContent })
+    .where(eq(schema.viewerProfiles.viewerKey, viewerKey))
+    .returning({ viewerKey: schema.viewerProfiles.viewerKey });
+  return saved ? { viewerKey, allContent, status: 200 } : missing;
 }
 
 export async function revokeManagedUser(input: unknown) {

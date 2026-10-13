@@ -4,7 +4,8 @@ import { db, schema } from "@/db";
 
 /**
  * A nickname is display text only; grants always use a stable authenticated identity.
- * Sharing a lineup also shares the builds currently assigned in it.
+ * Sharing a lineup also shares the builds currently assigned in it, and people
+ * chosen on the Users page read every lineup and build.
  */
 export function sharedWith(
   kind: string | SQLWrapper,
@@ -12,13 +13,15 @@ export function sharedWith(
   key: string | null,
 ) {
   if (!key) return sql`false`;
-  return sql`exists (select 1 from ${schema.contentShares} shared_content
+  return sql`(exists (select 1 from ${schema.viewerProfiles} all_reader
+    where all_reader.viewer_key = ${key} and all_reader.all_content)
+  or exists (select 1 from ${schema.contentShares} shared_content
     where shared_content.recipient_key = ${key}
       and ((${kind} = 'lineup' and shared_content.lineup_id = ${id})
         or (${kind} = 'build' and (shared_content.build_id = ${id}
           or exists (select 1 from ${schema.lineupHeroes} shared_slot
             where shared_slot.lineup_id = shared_content.lineup_id
-              and shared_slot.build_id = ${id})))))`;
+              and shared_slot.build_id = ${id}))))))`;
 }
 
 export function contentReadFilter(

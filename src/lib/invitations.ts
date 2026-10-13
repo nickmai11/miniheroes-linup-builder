@@ -64,7 +64,13 @@ async function deviceAccess(
     )
     .where(eq(schema.registeredDevices.tokenHash, tokenHash));
   if (!rows.length) return null;
-  const shared = await sharedDestinations(`device:${rows[0].id}`, database);
+  const key = `device:${rows[0].id}`;
+  const shared = await sharedDestinations(key, database);
+  // Reading every lineup and build needs every page they appear on.
+  const [profile] = await database
+    .select({ allContent: schema.viewerProfiles.allContent })
+    .from(schema.viewerProfiles)
+    .where(eq(schema.viewerProfiles.viewerKey, key));
   return {
     ...(shared.lineupIds.length
       ? {
@@ -79,9 +85,9 @@ async function deviceAccess(
       : {}),
     ...(shared.heroSlugs.length ? { sharedHeroSlugs: shared.heroSlugs } : {}),
     id: rows[0].id,
-    fullAccess: rows.some(
-      (row) => row.invitationId !== null && row.lineupId === null,
-    ),
+    fullAccess:
+      profile?.allContent === true ||
+      rows.some((row) => row.invitationId !== null && row.lineupId === null),
     lineupIds: [
       ...new Set([
         ...rows.flatMap((row) => (row.lineupId === null ? [] : [row.lineupId])),

@@ -3,6 +3,7 @@ import { isSameOriginInvitationRequest } from "@/lib/invitation-policy";
 import { reportAccessError } from "@/lib/access-error";
 import {
   revokeManagedUser,
+  setManagedAllContent,
   updateManagedNickname,
 } from "@/lib/user-management";
 
@@ -29,7 +30,9 @@ async function update(request: Request, revoke: boolean) {
   try {
     const { status, ...result } = await (revoke
       ? revokeManagedUser(input)
-      : updateManagedNickname(input));
+      : typeof input === "object" && input !== null && "allContent" in input
+        ? setManagedAllContent(input)
+        : updateManagedNickname(input));
     return json(result, status);
   } catch (error) {
     reportAccessError("user-management", error);

@@ -395,6 +395,39 @@ test(
       assert.equal(await lineups.getLineup(savedLineup.id), undefined);
       assert.deepEqual(await builds.getHeroBuilds(heroes[0].id), []);
       assert.deepEqual(await sharing.getSharedItems(), []);
+      // A person chosen on the Users page reads every lineup and build.
+      const everything = eq(
+        schema.viewerProfiles.viewerKey,
+        `device:${devices[1].id}`,
+      );
+      await db
+        .update(schema.viewerProfiles)
+        .set({ allContent: true })
+        .where(everything);
+      device = await invitations.findRegisteredDevice(token);
+      assert.equal(device.fullAccess, true);
+      assert.equal(
+        deviceCanReadPage(device, `/heroes/${heroes[1].slug}`),
+        true,
+      );
+      assert.equal((await lineups.getLineup(unrelated.id)).canManage, false);
+      assert.deepEqual(
+        (await builds.getHeroBuilds(heroes[0].id)).map((b) => b.id),
+        [savedBuild.id, sibling.id],
+      );
+      assert.ok(
+        (await lineupActions.setLineupVisibility(unrelated.id, false)).error,
+      );
+      await db
+        .update(schema.viewerProfiles)
+        .set({ allContent: false })
+        .where(everything);
+      assert.equal(
+        (await invitations.findRegisteredDevice(token)).fullAccess,
+        false,
+      );
+      assert.equal(await lineups.getLineup(unrelated.id), undefined);
+      assert.deepEqual(await builds.getHeroBuilds(heroes[0].id), []);
       adminId = `${prefix}-reader`;
       token = null;
       assert.equal(

@@ -11,6 +11,9 @@ const viewerKey = z.union([
 ]);
 
 export const managedNicknameSchema = nicknameInputSchema.extend({ viewerKey });
+export const allContentSchema = z
+  .object({ viewerKey, allContent: z.boolean() })
+  .strict();
 export const revokeUserSchema = z.object({ viewerKey: deviceKey }).strict();
 
 export type ManagedUser = {
@@ -20,6 +23,8 @@ export type ManagedUser = {
   isYou: boolean;
   createdAt: string | null;
   fullAccess: boolean;
+  /** Reads every private lineup and build. */
+  allContent: boolean;
   invitedLineups: number;
   sharedItems: number;
 };

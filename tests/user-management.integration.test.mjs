@@ -105,6 +105,38 @@ test(
         ).status,
         404,
       );
+      const grant = { viewerKey: `device:${scoped.id}`, allContent: true };
+      // The grant is stored on the profile, so it needs a nickname first.
+      assert.equal((await service.setManagedAllContent(grant)).status, 404);
+      assert.equal(
+        (
+          await service.updateManagedNickname({
+            viewerKey: grant.viewerKey,
+            nickname: "Scoped",
+          })
+        ).status,
+        200,
+      );
+      assert.equal((await service.setManagedAllContent(grant)).status, 200);
+      assert.equal(
+        (await service.getManagedUsers()).find(
+          (u) => u.viewerKey === grant.viewerKey,
+        ).allContent,
+        true,
+      );
+      assert.equal(
+        (await invitations.findRegisteredDevice(scopedToken)).fullAccess,
+        true,
+      );
+      assert.equal(
+        (
+          await service.setManagedAllContent({
+            viewerKey: `admin:${adminId}`,
+            allContent: true,
+          })
+        ).status,
+        400,
+      );
       await db
         .insert(schema.contentShares)
         .values({ recipientKey: key, lineupId: lineup.id });
