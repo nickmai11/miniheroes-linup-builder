@@ -1,6 +1,6 @@
 import "server-only";
 
-/** Log a diagnostic code without SQL parameters, invitation codes, or cookies. */
+/** Log a diagnostic code without SQL parameters, access codes, or cookies. */
 export function reportAccessError(operation: string, error: unknown): void {
   let code = "UNKNOWN";
   let cause = error;

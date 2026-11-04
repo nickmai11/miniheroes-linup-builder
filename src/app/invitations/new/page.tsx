@@ -20,7 +20,7 @@ export default async function NewInvitationPage() {
   if (!(await canEditContent())) notFound();
   return (
     <PageShell
-      title={t("Invitation codes")}
+      title={t("Access codes")}
       description={t(
         "Generate a code and share it with someone you’d like to invite.",
       )}

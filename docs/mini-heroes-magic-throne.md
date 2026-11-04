@@ -1846,6 +1846,9 @@ daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
 
+- 2026-10-13 — The concept "Invitation code" is renamed **"Access code"**
+  (Vietnamese: "Mã truy cập"). Earlier entries below keep the old name.
+
 - 2026-10-13 — The owner can choose specific people who can access all
   lineups/builds.
 
@@ -2543,7 +2546,7 @@ is said. These override anything marked (web).
   English/Vietnamese controls share
   state for repeated previews of the same build on a page.
 
-- Invitation codes have an optional `lineupId`: null grants the full library;
+- Access codes (called invitation codes before 2026-10-13) have an optional `lineupId`: null grants the full library;
   a lineup ID grants that lineup only. `invitation_redemptions` links each
   single-use code to one device and allows many grants per device. Migration
   `0026_lineup_invitations.sql` preserves existing full-library registrations.

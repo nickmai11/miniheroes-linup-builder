@@ -30,7 +30,7 @@ const LINKS = [
   { href: "/lineups", label: "Lineups", icon: Swords },
   { href: "/shared", label: "Shared with me", icon: Share2 },
   { href: "/lineups/new", label: "Build", icon: Hammer },
-  { href: "/invitations/new", label: "Invitations", icon: Ticket },
+  { href: "/invitations/new", label: "Access codes", icon: Ticket },
   { href: "/public-urls", label: "Public URLs", icon: Link2 },
   { href: "/users", label: "Users", icon: UserRoundCog },
   { href: "/about", label: "About", icon: Info },

@@ -2,9 +2,9 @@ export const DEVICE_COOKIE = "mh_device";
 /** One-time query parameter that moves a registered browser between hosts. */
 export const TRANSFER_PARAM = "mt";
 export const DEVICE_COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
-export const INVITATION_REQUIRED = "Enter an invitation code to continue.";
+export const INVITATION_REQUIRED = "Enter an access code to continue.";
 export const INVALID_INVITATION =
-  "This invitation code is invalid or has already been used.";
+  "This access code is invalid or has already been used.";
 
 export type DeviceAccess = {
   id: number;

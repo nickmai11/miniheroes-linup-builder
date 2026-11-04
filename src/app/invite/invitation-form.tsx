@@ -80,7 +80,7 @@ export function InvitationForm({
       }}
     >
       <div className="flex flex-col gap-2">
-        <Label htmlFor="invitation-code">{t("Invitation code")}</Label>
+        <Label htmlFor="invitation-code">{t("Access code")}</Label>
         <Input
           id="invitation-code"
           name="code"
@@ -89,7 +89,7 @@ export function InvitationForm({
             setCode(event.target.value);
             setError("");
           }}
-          placeholder={t("Paste your invitation code")}
+          placeholder={t("Paste your access code")}
           autoComplete="off"
           autoCapitalize="characters"
           spellCheck={false}
@@ -145,7 +145,7 @@ export function InvitationForm({
             )}
       </p>
       <noscript>
-        <p>{t("Enable JavaScript to use your invitation code.")}</p>
+        <p>{t("Enable JavaScript to use your access code.")}</p>
       </noscript>
     </form>
   );

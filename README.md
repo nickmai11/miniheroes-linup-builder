@@ -62,7 +62,7 @@ Region changes take effect on the next deployment. See
 
 Vercel Web Analytics tracks page views and client-side navigation through the root
 layout's `SiteAnalytics` component. Tracked page URLs omit query strings and
-fragments, including invitation codes, device-transfer tokens, and nested
+fragments, including access codes, device-transfer tokens, and nested
 invitation destinations. The invitation proxy allows Vercel's
 `/_vercel/insights/` routes through for public and invitation-screen visitors.
 
@@ -76,7 +76,7 @@ No additional environment variables are required. See the
 
 Click **Admin login** in the header and enter your Supabase Auth email and
 password. The dialog is also available on the invitation screen; admins do not
-need an invitation code. Authentication uses the official `@supabase/supabase-js`
+need an access code. Authentication uses the official `@supabase/supabase-js`
 and `@supabase/ssr` packages.
 
 Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` from the
@@ -100,7 +100,7 @@ session cookies are HTTP-only and require HTTPS in production.
 Signed-in admins can create, edit, import, and delete content, generate invitation
 codes, and manage public URLs. **Sign out** signs out the current Supabase session
 while preserving the browser's existing invitation registration. Admin login
-does not register a visitor's browser or consume an invitation code, and requires
+does not register a visitor's browser or consume an access code, and requires
 no application database migration.
 
 ### Required nicknames
@@ -133,7 +133,7 @@ user represents one browser registration, including users without a nickname.
 
 **Revoke access** requires confirmation and removes that browser registration,
 its nickname, shares, follows, notifications, and votes in one transaction. Old
-browser credentials stop working and used invitation codes remain consumed. A
+browser credentials stop working and used access codes remain consumed. A
 new invitation can register the browser again; public pages remain public.
 Admin profiles support nickname edits only; Supabase still manages admin roles,
 passwords, and account deletion. The page and API independently enforce admin
@@ -329,7 +329,7 @@ RLS and cascading target/profile references. Applied to the configured database
 on 2026-09-18; no recipients were selected automatically. Deploy the updated
 app to enable the new Share dialog and recipient access. Test with
 `SHARING_TEST_DATABASE_URL=postgres://vote_test@127.0.0.1:55443/votes_test node --experimental-strip-types --test tests/sharing.integration.test.mjs`.
-Existing invitation codes and invitation links continue to work.
+Existing access codes and invitation links continue to work.
 
 Unregistered browsers see `/invite` and can enter a valid, unused code or sign in
 as admin. Opening
@@ -367,7 +367,7 @@ connections, closing idle connections after 20 seconds and recycling them after
 five minutes. These limits apply per runtime, not across the whole deployment.
 Deploy the updated pool settings to apply them to production; they do not require
 a schema migration. The access gate continues to deny access on lookup failures.
-Diagnostics omit invitation codes, device cookies, and SQL parameters.
+Diagnostics omit access codes, device cookies, and SQL parameters.
 
 Pages, metadata, APIs (including health), actions, and original game images require
 the appropriate invitation scope or an admin session unless a page is explicitly

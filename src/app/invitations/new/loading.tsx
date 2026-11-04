@@ -14,10 +14,10 @@ export default function Loading() {
 
   return (
     <LoadingPage
-      label={t("invitation codes")}
+      label={t("access codes")}
       className="max-w-2xl gap-6 px-4 py-8 sm:px-6"
     >
-      <PageHeadingSkeleton title={t("Invitation codes")} description />
+      <PageHeadingSkeleton title={t("Access codes")} description />
       <Card>
         <CardHeader>
           <CardTitle>{t("Invite someone")}</CardTitle>

@@ -25,7 +25,7 @@ export default async function PublicUrlsPage() {
     <PageShell
       title={t("Public URLs")}
       description={t(
-        "Choose which pages anyone can open without an invitation code.",
+        "Choose which pages anyone can open without an access code.",
       )}
       width="max-w-3xl"
     >

@@ -35,7 +35,7 @@ export async function generateInvitationCode(
       .returning({ id: schema.invitationCodes.id });
     if (inserted) return code.match(/.{4}/g)!.join("-");
   }
-  throw new Error("Could not generate a unique invitation code.");
+  throw new Error("Could not generate a unique access code.");
 }
 
 async function deviceAccess(

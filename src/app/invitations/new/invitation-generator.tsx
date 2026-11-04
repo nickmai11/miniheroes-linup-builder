@@ -92,9 +92,7 @@ export function InvitationGenerator() {
         {code && (
           <div className="flex flex-col gap-5" aria-live="polite">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="generated-code">
-                {t("Your invitation code")}
-              </Label>
+              <Label htmlFor="generated-code">{t("Your access code")}</Label>
               <Input
                 id="generated-code"
                 value={code}

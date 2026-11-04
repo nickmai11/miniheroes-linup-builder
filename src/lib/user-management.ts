@@ -160,7 +160,7 @@ export async function revokeManagedUser(input: unknown) {
       .where(eq(schema.registeredDevices.id, Number(viewerKey.slice(7))))
       .returning({ id: schema.registeredDevices.id });
     if (!removed) return missing;
-    // Used invitation codes stay consumed. Profile deletion cascades shares;
+    // Used access codes stay consumed. Profile deletion cascades shares;
     // follow deletion cascades notifications. No credentials leave the server.
     await tx
       .delete(schema.viewerProfiles)

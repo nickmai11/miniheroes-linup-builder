@@ -158,5 +158,5 @@ test("server locale resolution agrees with the client provider", async () => {
     },
   });
   assert.equal((await getI18n()).locale, "vi");
-  assert.equal((await getI18n()).t("Invitation code"), "Mã mời");
+  assert.equal((await getI18n()).t("Access code"), "Mã truy cập");
 });
