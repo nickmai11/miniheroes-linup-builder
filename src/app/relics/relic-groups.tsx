@@ -57,8 +57,39 @@ function RelicIcon({
           </span>
         )}
       </TooltipTrigger>
-      <TooltipContent>{label}</TooltipContent>
+      <TooltipContent className="flex-col items-start">
+        <span className="font-medium">{label}</span>
+        {relic?.recipe && <DirectRecipe recipe={relic.recipe} />}
+      </TooltipContent>
     </Tooltip>
+  );
+}
+
+/** A relic's own one-step recipe, for its tooltip: = icon + icon ×2 … */
+function DirectRecipe({ recipe }: { recipe: Ingredient[] }) {
+  const { gameLabel } = useI18n();
+  return (
+    <span className="flex items-center gap-1">
+      <span className="opacity-70">=</span>
+      {recipe.map((part, index) => {
+        const relic = relicBySlug.get(part.slug)!;
+        return (
+          <span key={part.slug} className="flex items-center gap-1">
+            {index > 0 && <span className="opacity-70">+</span>}
+            <Image
+              src={versioned(`/relics/${part.slug}.png`)}
+              alt={gameLabel("relic", relic)}
+              width={28}
+              height={28}
+              className="rounded"
+            />
+            {part.count > 1 && (
+              <span className="font-bold tabular-nums">×{part.count}</span>
+            )}
+          </span>
+        );
+      })}
+    </span>
   );
 }
 
