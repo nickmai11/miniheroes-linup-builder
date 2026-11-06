@@ -34,8 +34,8 @@ fingerprints remain stable. Add corresponding keys to `game-en.json` and
 `game-vi.json` when importing new names. Descriptions remain source transcriptions.
 
 The Heroes catalog has Released / Unreleased tabs, defaulting to Released.
-Dreamstar Spirit, Nether Soul, Nightmare Source, and Panda Warrior are Unreleased
-(owner, 2026-09-17). Search and class filters apply within the selected tab.
+Dreamstar Spirit, Nether Soul, and Panda Warrior are Unreleased (owner,
+2026-09-17); Nightmare Source was released on 2026-11-06 (owner). Search and class filters apply within the selected tab.
 The catalog includes these four roster entries even while detail imports are
 pending. Lineup pickers and divinity hero lists still require an entry in
 `heroDetailSeeds`. Partly recorded heroes remain visible; adding a detail entry
@@ -89,16 +89,16 @@ lineups. Keep it in sync when changing the page layout.
 In this order, top to bottom of the right column (portrait + "Start a lineup"
 button in the left column):
 
-| Section        | Content                                                                                                                                                                                                                                          | Source of truth                                         |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------- |
-| Header         | class badge + name, class label                                                                                                                                                                                                                  | `heroes` row (from Archive slices)                      |
-| Notes          | free text, only if set                                                                                                                                                                                                                           | `heroes.notes`                                          |
-| **Talents**    | six cards: icon, kind, unlock stars, name, description; under a card: its Artifact Bonus (tier diamond) and Core bonus (core gem)                                                                                                                | `hero_skills`, `hero_artifact_bonuses`, `hero_cores`    |
-| **Awakening skills** | I (18★) and III (22★): stage, unlock stars, skill name and description, without icons; an unrecorded stage has an empty state | `HERO_AWAKENING_STAGES` and `heroDetailSeeds[slug].awakeningSkills` in `src/data/hero-details.ts` |
-| **Artifacts**  | artifact image + name; one row per quality tier (Epic, Legend, Mythic, Eternal) with the diamond, the talent it modifies or the artifact's own skill, and the description                                                                           | `heroes.artifactName/IconUrl`, `hero_artifact_bonuses`  |
-| **Divinities** | the hero's mythic (red) divinities as equal-width badge cards, each linking to `/divinities/<slug>` (the heroes that share it)                                                                                                                   | `hero_divinities` → `divinities`                        |
-| **Builds**     | the owner's builds for the hero: name, notes, chosen rune attributes grouped by rune type, weapon attributes, and hero cores, all with Important / Should have / OK to have priority tiers; editable in place (new / edit / delete) | `hero_builds`, `hero_build_runes`, `hero_build_weapons`, `hero_build_cores` |
-| Lineups        | saved lineups that use the hero                                                                                                                                                                                                                  | `lineup_heroes`                                         |
+| Section              | Content                                                                                                                                                                                                                             | Source of truth                                                                                   |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Header               | class badge + name, class label                                                                                                                                                                                                     | `heroes` row (from Archive slices)                                                                |
+| Notes                | free text, only if set                                                                                                                                                                                                              | `heroes.notes`                                                                                    |
+| **Talents**          | six cards: icon, kind, unlock stars, name, description; under a card: its Artifact Bonus (tier diamond) and Core bonus (core gem)                                                                                                   | `hero_skills`, `hero_artifact_bonuses`, `hero_cores`                                              |
+| **Awakening skills** | I (18★) and III (22★): stage, unlock stars, skill name and description, without icons; an unrecorded stage has an empty state                                                                                                       | `HERO_AWAKENING_STAGES` and `heroDetailSeeds[slug].awakeningSkills` in `src/data/hero-details.ts` |
+| **Artifacts**        | artifact image + name; one row per quality tier (Epic, Legend, Mythic, Eternal) with the diamond, the talent it modifies or the artifact's own skill, and the description                                                           | `heroes.artifactName/IconUrl`, `hero_artifact_bonuses`                                            |
+| **Divinities**       | the hero's mythic (red) divinities as equal-width badge cards, each linking to `/divinities/<slug>` (the heroes that share it)                                                                                                      | `hero_divinities` → `divinities`                                                                  |
+| **Builds**           | the owner's builds for the hero: name, notes, chosen rune attributes grouped by rune type, weapon attributes, and hero cores, all with Important / Should have / OK to have priority tiers; editable in place (new / edit / delete) | `hero_builds`, `hero_build_runes`, `hero_build_weapons`, `hero_build_cores`                       |
+| Lineups              | saved lineups that use the hero                                                                                                                                                                                                     | `lineup_heroes`                                                                                   |
 
 Awakening I and III are recorded for **Sea Captain**, **Nezha**, **Shadow Fiend**,
 **Necromancer**, **Thrall**, **Jungle Envoy**, **Radiant Paladin**, **Silence**,
@@ -276,7 +276,7 @@ keep the same device/scale). Put them in:
 | `gameplay/talents/`    | Talent tab with **each** talent's popup open — the popup must show the talent, and its Artifact Bonus and Core panels when they exist | 6     |
 | `gameplay/talents/`    | Artifact tab (the weapon with the six divinity badges)                                                                                | 1     |
 | `gameplay/talents/`    | Artifact popup (tap the weapon: name, stars, four tier abilities)                                                                     | 1     |
-| `gameplay/talents/`    | Hero Awaken screen with I and III selected; show each skill's name and full description | 2 |
+| `gameplay/talents/`    | Hero Awaken screen with I and III selected; show each skill's name and full description                                               | 2     |
 | `gameplay/divinities/` | A divinity popup for any **red** badge whose divinity is not yet in the catalog                                                       | 0+    |
 
 From these you read: talent kind / name / description; unlock order; artifact
@@ -406,7 +406,7 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
 
 - **Dark Queen and Hellscream (September 28):** Awakening I (18★) and III (22★)
   are now translated from the owner's Chinese guides `gameplay/heroes/image copy
-  12.png` and `image copy 13.png`. Dark Queen has **Trueshot Aura / Dark Mark**;
+12.png` and `image copy 13.png`. Dark Queen has **Trueshot Aura / Dark Mark**;
   Hellscream has **Flame Blade Power / Dark Aura**. Hellscream III's body uses
   the alternate name **Heavy Strike Resonance** and references **Earth Shatter**.
   Both heroes now have all required details recorded; the guide exception and

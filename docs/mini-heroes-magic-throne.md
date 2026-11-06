@@ -28,12 +28,12 @@ the in-game **Archive** screen:
 | Mage     | blue, staff icon          | area / magic damage             |
 | Support  | purple, shield-cross icon | healing, buffs, debuffs, energy |
 
-| Rarity | Card background | Count |
-| ------ | --------------- | ----- |
-| Eternal | cyan/blue-to-purple gradient | 2 |
-| Mythic | red             | 44    |
-| Legend | gold            | 14    |
-| Epic   | purple          | 11    |
+| Rarity  | Card background              | Count |
+| ------- | ---------------------------- | ----- |
+| Eternal | cyan/blue-to-purple gradient | 2     |
+| Mythic  | red                          | 44    |
+| Legend  | gold                         | 14    |
+| Epic    | purple                       | 11    |
 
 The small **diamond in the bottom-left of a card is artifact progress**, not part of
 the hero art. It is removed from the portraits in this app.
@@ -43,8 +43,8 @@ Hero portraits show an indicator when that hero has at least one saved build
 of whether a build is assigned to a particular lineup slot.
 The hero catalog is labeled **Heroes** in the UI (owner, 2026-09-15).
 The catalog has **Released** and **Unreleased** tabs, defaulting to Released
-(owner, 2026-09-17). Dreamstar Spirit, Nether Soul, Nightmare Source, and Panda
-Warrior belong to Unreleased. Search and class filters apply within the selected
+(owner, 2026-09-17). Dreamstar Spirit, Nether Soul, and Panda Warrior belong to
+Unreleased; Nightmare Source was released (owner, 2026-11-06). Search and class filters apply within the selected
 tab. Release status is maintained in `src/data/hero-release-status.ts`, separately
 from rarity and detail coverage. The catalog includes these four even when their
 detail import is pending; existing lineup/detail listing rules are preserved.
@@ -153,56 +153,56 @@ superseded by this import for the 48 heroes in the table.
 - Baphomet I includes the chart's **Excitement** effect; Two-headed Dragon III
   includes the **Passive** effect printed in the same stage row.
 
-| Hero | I | III | Forum source / contributor |
-| --- | --- | --- | --- |
-| Abyssal Queen | Aura of Suffering | Soul Possession | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446347170612772904) — Marty |
-| Bamboo Hat | Energy Accumulation | MAXIMUM Power | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447505615659339806) — Marty |
-| Baphomet | Fanaticism | Perfect Evasion | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447784175187923027) — Marty |
-| Captain Pilot | Queue | Suppressing Fire | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447800887090089994) — Marty |
-| Cowboy Killer | Bounty Assignment | Armor-Piercing Shell | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448510075265351690) — Marty |
-| Dark Shaman | Shackles | Healing Wave | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1525225059021754378) — MR-UK |
-| Darkin Hunter | Thirst for Vengeance | Enhanced Mark | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1501864401471541370) — Marty |
-| Diva | Random Tune | Special Note | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448504449843597353) — Marty |
-| Earthbreaker | Invasion War | Enrage | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1503486549952561422) — MR-UK |
-| Fire Sorceress | Enhanced Flame | Spell Enhancement | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447517075114430484) — Marty |
-| Foxy Spirit | Curse of Madness | Demonic Aura Release | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446355327099342971) — Marty |
-| GooGoo Fish | Bloody Pact | Dark Pact | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447505797616631818) — Marty |
-| Hela | Life Absorption | Energy Absorption | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446350739529011362) — Marty |
-| Hidden Ninja | Underworld Technique | Divine Power | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448508529781637140) — Marty |
-| Iron Fan Princess | Outstanding Personality | Wind Sweeps Clouds | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446353430607298692) — Marty |
-| Ironblade Mixed-Race | Aura of Demonic Energy | Bloody Battle Aura | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448497741083705344) — Marty |
-| Jungle Archer | Power Shot | Rapid Fire | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447513352439070782) — Marty |
-| Lady Pan | The Holy of Holies of the Kitchen | Moldy Treat | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447792419499409511) — Marty |
-| Li Bai | Pour the wine! | Green Lotus Resolve | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446343862892105860) — Marty |
-| Little Deer | Logical Inference | Charm | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448503631598063707) — Marty |
-| Little Goblin | Mechanical Factory | Automatic Repair | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447518820964241529) — Marty |
-| Loli | Unnamed awakening | Unnamed awakening | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447515960910024735) — Marty |
-| Lucifer | Breath of Death | Unnamed awakening | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446322023776129035) — Marty |
-| Mars | Watchful Guardian | Valor and Fearlessness | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446069390201327729) — Marty |
-| Masked Ninja | Demonic Power Release | Protective Barrier | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448498812795752458) — Marty |
-| Medusa | Control Shield | Decomposition | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446341883197657181) — Marty |
-| Mermaid Princess | Curse of the Deep | Water Barrier | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448506309505712169) — Marty |
-| Monkey King | Perceptive Gaze | Illusion | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447781934129221663) — Marty |
-| Moon Goddess | Star Summoning | Charged Shot | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448507437538869471) — Marty |
-| Observer | Matter Deconstruction | Shockwave | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1465919670145257582) — ELLA |
-| Otherworld Prisoner | Fire Meteor | Embrace of Flames | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448512189521592401) — Marty |
-| Radiant Angel | Angelic Defense | Shining Holy Light | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447510493269856357) — Marty |
-| Red Hood | Drunken Frenzy | Toxic Erosion | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448511328565198928) — Marty |
-| Roar Warrior | Tough Skin | Bloody Axe | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447507361575993396) — Marty |
-| Shadow Master | Energy Absorption | Hereditary Limit | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447797076984332388) — Marty |
-| Skeleton King | Curse of the Evil Spirit | Curse of Death | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448501592629186600) — Marty |
-| Snow Hunter | Unnamed awakening | Unnamed awakening | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447514318567374928) — Marty |
-| Snowoman | Ice Seal | Frost Shield | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447790308963258460) — Marty |
-| Soul Doll | Wounded by Wounds | Berserk | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448502783513723031) — Marty |
-| Swordevil | Switching Attack and Defense | Vampire Mask | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446077148661284925) — Marty |
-| Templar | Stealth | Hunt | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1465918065068736629) — Marty |
-| Two-Headed Dragon | Ice Sphere | Dragon Nature | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447804357461676042) — Marty |
-| Warlock | Messenger of the Abyss | Servant Obedience | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447793610291544116) — Marty |
-| Whaley Imp | Resistance Armor | Deep Sea Shield | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448496710216192030) — Marty |
-| Whirlpool Ninja | Quick Healing | Pulse of Fighting Spirit | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448500671832916069) — Marty |
-| White Ox | Giant's Legacy | Valiant Fighting Spirit | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446076234323726447) — Marty |
-| Wine Immortal | Powerful Strike | Elemental Resistance | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446076424996782121) — Marty |
-| Wizard | Potent Poison | Healing Potion | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447512310280224768) — Marty |
+| Hero                 | I                                 | III                      | Forum source / contributor                                                                                         |
+| -------------------- | --------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| Abyssal Queen        | Aura of Suffering                 | Soul Possession          | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446347170612772904) — Marty |
+| Bamboo Hat           | Energy Accumulation               | MAXIMUM Power            | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447505615659339806) — Marty |
+| Baphomet             | Fanaticism                        | Perfect Evasion          | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447784175187923027) — Marty |
+| Captain Pilot        | Queue                             | Suppressing Fire         | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447800887090089994) — Marty |
+| Cowboy Killer        | Bounty Assignment                 | Armor-Piercing Shell     | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448510075265351690) — Marty |
+| Dark Shaman          | Shackles                          | Healing Wave             | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1525225059021754378) — MR-UK |
+| Darkin Hunter        | Thirst for Vengeance              | Enhanced Mark            | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1501864401471541370) — Marty |
+| Diva                 | Random Tune                       | Special Note             | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448504449843597353) — Marty |
+| Earthbreaker         | Invasion War                      | Enrage                   | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1503486549952561422) — MR-UK |
+| Fire Sorceress       | Enhanced Flame                    | Spell Enhancement        | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447517075114430484) — Marty |
+| Foxy Spirit          | Curse of Madness                  | Demonic Aura Release     | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446355327099342971) — Marty |
+| GooGoo Fish          | Bloody Pact                       | Dark Pact                | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447505797616631818) — Marty |
+| Hela                 | Life Absorption                   | Energy Absorption        | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446350739529011362) — Marty |
+| Hidden Ninja         | Underworld Technique              | Divine Power             | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448508529781637140) — Marty |
+| Iron Fan Princess    | Outstanding Personality           | Wind Sweeps Clouds       | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446353430607298692) — Marty |
+| Ironblade Mixed-Race | Aura of Demonic Energy            | Bloody Battle Aura       | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448497741083705344) — Marty |
+| Jungle Archer        | Power Shot                        | Rapid Fire               | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447513352439070782) — Marty |
+| Lady Pan             | The Holy of Holies of the Kitchen | Moldy Treat              | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447792419499409511) — Marty |
+| Li Bai               | Pour the wine!                    | Green Lotus Resolve      | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446343862892105860) — Marty |
+| Little Deer          | Logical Inference                 | Charm                    | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448503631598063707) — Marty |
+| Little Goblin        | Mechanical Factory                | Automatic Repair         | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447518820964241529) — Marty |
+| Loli                 | Unnamed awakening                 | Unnamed awakening        | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447515960910024735) — Marty |
+| Lucifer              | Breath of Death                   | Unnamed awakening        | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446322023776129035) — Marty |
+| Mars                 | Watchful Guardian                 | Valor and Fearlessness   | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446069390201327729) — Marty |
+| Masked Ninja         | Demonic Power Release             | Protective Barrier       | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448498812795752458) — Marty |
+| Medusa               | Control Shield                    | Decomposition            | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446341883197657181) — Marty |
+| Mermaid Princess     | Curse of the Deep                 | Water Barrier            | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448506309505712169) — Marty |
+| Monkey King          | Perceptive Gaze                   | Illusion                 | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447781934129221663) — Marty |
+| Moon Goddess         | Star Summoning                    | Charged Shot             | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448507437538869471) — Marty |
+| Observer             | Matter Deconstruction             | Shockwave                | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1465919670145257582) — ELLA  |
+| Otherworld Prisoner  | Fire Meteor                       | Embrace of Flames        | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448512189521592401) — Marty |
+| Radiant Angel        | Angelic Defense                   | Shining Holy Light       | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447510493269856357) — Marty |
+| Red Hood             | Drunken Frenzy                    | Toxic Erosion            | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448511328565198928) — Marty |
+| Roar Warrior         | Tough Skin                        | Bloody Axe               | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447507361575993396) — Marty |
+| Shadow Master        | Energy Absorption                 | Hereditary Limit         | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447797076984332388) — Marty |
+| Skeleton King        | Curse of the Evil Spirit          | Curse of Death           | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448501592629186600) — Marty |
+| Snow Hunter          | Unnamed awakening                 | Unnamed awakening        | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447514318567374928) — Marty |
+| Snowoman             | Ice Seal                          | Frost Shield             | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447790308963258460) — Marty |
+| Soul Doll            | Wounded by Wounds                 | Berserk                  | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448502783513723031) — Marty |
+| Swordevil            | Switching Attack and Defense      | Vampire Mask             | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446077148661284925) — Marty |
+| Templar              | Stealth                           | Hunt                     | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1465918065068736629) — Marty |
+| Two-Headed Dragon    | Ice Sphere                        | Dragon Nature            | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447804357461676042) — Marty |
+| Warlock              | Messenger of the Abyss            | Servant Obedience        | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447793610291544116) — Marty |
+| Whaley Imp           | Resistance Armor                  | Deep Sea Shield          | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448496710216192030) — Marty |
+| Whirlpool Ninja      | Quick Healing                     | Pulse of Fighting Spirit | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1448500671832916069) — Marty |
+| White Ox             | Giant's Legacy                    | Valiant Fighting Spirit  | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446076234323726447) — Marty |
+| Wine Immortal        | Powerful Strike                   | Elemental Resistance     | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1446076424996782121) — Marty |
+| Wizard               | Potent Poison                     | Healing Potion           | [Thread](https://discord.com/channels/1214861046125166603/1435554173113466953/threads/1447512310280224768) — Marty |
 
 For the **2026-09-14 7.52–8.05 AM screenshot batch and subsequent import**, the owner explicitly
 excluded Awakening I/III from the requested scope. Those stages do not block
@@ -230,11 +230,11 @@ Source folders: `gameplay/heroes/Nether Soul/`, `Nightmare Source/`, and
 roster-only pages are now populated. Runes screenshots show no owner-selected
 build to import. All three remain Unreleased.
 
-| Hero | Talents in unlock order | Artifact | Bottom red divinities, left / right |
-| --- | --- | --- | --- |
-| Nether Soul | Samsara's End; Doom Hammer; Nether Suppression; Soul Choke; Iron Body; Soul Reaping | Nightfall Axe | HP / Knockback Resist |
-| Nightmare Source | Demonic Claw; Brain Sap; Enhanced Claw; Nightmare; Dark Blood; Endless Fear | Slumber Staff | Melee DMG Reduction / Healing Effect |
-| Panda Warrior | Mega Beast; Fury Swipes; Beast Power; Earthquake; Beast Heart; Beast Strike | Rending Claws | Physical RES / Anti-CRIT Rate |
+| Hero             | Talents in unlock order                                                             | Artifact      | Bottom red divinities, left / right  |
+| ---------------- | ----------------------------------------------------------------------------------- | ------------- | ------------------------------------ |
+| Nether Soul      | Samsara's End; Doom Hammer; Nether Suppression; Soul Choke; Iron Body; Soul Reaping | Nightfall Axe | HP / Knockback Resist                |
+| Nightmare Source | Demonic Claw; Brain Sap; Enhanced Claw; Nightmare; Dark Blood; Endless Fear         | Slumber Staff | Melee DMG Reduction / Healing Effect |
+| Panda Warrior    | Mega Beast; Fury Swipes; Beast Power; Earthquake; Beast Heart; Beast Strike         | Rending Claws | Physical RES / Anti-CRIT Rate        |
 
 Each has Ultimate / Battle / Enhance / Special / Passive / Enhance kinds.
 Full descriptions and exact numeric values are preserved in `heroDetailSeeds`.
@@ -273,12 +273,12 @@ and third **unique skill** entries in `Nether Soul/CN.png` and
 not verified English in-game names. The second/fourth entries are explicitly
 Warrior common skills and are excluded from hero-specific data.
 
-| Hero | Stage | Chinese name / translated label | Translation |
-| --- | --- | --- | --- |
-| Nether Soul | I | 灵魂巫术 / Soul Witchcraft | Doom Hammer or Soul Choke has a 35% chance to restore 30% of own lost HP and grant 15% Ranged DMG Reduction for 6s; 8s cooldown. |
-| Nether Soul | III | 黑暗光环 / Dark Aura | On battle entry, an aura surrounds the caster's feet; own MOV SPD +10%, with 1% Max HP damage each second to enemies inside, capped at 50% of own ATK. The guide does not explicitly identify whose Max HP; preserve that ambiguity. |
-| Panda Warrior | I | 命令光环 / Command Aura | On entry, own and nearby allies' ATK +10%; self gains 20 Energy per second. |
-| Panda Warrior | III | 激怒 / Enrage | On entry, own ATK increases by an amount equal to 0.6% of own Max HP. |
+| Hero          | Stage | Chinese name / translated label | Translation                                                                                                                                                                                                                          |
+| ------------- | ----- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Nether Soul   | I     | 灵魂巫术 / Soul Witchcraft      | Doom Hammer or Soul Choke has a 35% chance to restore 30% of own lost HP and grant 15% Ranged DMG Reduction for 6s; 8s cooldown.                                                                                                     |
+| Nether Soul   | III   | 黑暗光环 / Dark Aura            | On battle entry, an aura surrounds the caster's feet; own MOV SPD +10%, with 1% Max HP damage each second to enemies inside, capped at 50% of own ATK. The guide does not explicitly identify whose Max HP; preserve that ambiguity. |
+| Panda Warrior | I     | 命令光环 / Command Aura         | On entry, own and nearby allies' ATK +10%; self gains 20 Energy per second.                                                                                                                                                          |
+| Panda Warrior | III   | 激怒 / Enrage                   | On entry, own ATK increases by an amount equal to 0.6% of own Max HP.                                                                                                                                                                |
 
 Nightmare Source has no supplied awakening guide or in-game I/III panels.
 
@@ -315,14 +315,14 @@ The overview uses a two-column talent list, in the same progression order as
 the existing talent model: ultimate, then 2★/5★/8★/12★/16★. The captures do not
 show the unlock stars themselves.
 
-| Talent | Kind | Core | Artifact bonus |
-| --- | --- | --- | --- |
-| Night Lullaby | Ultimate Skill | Crystal Staff: Healing +100%(300%) ATK | Mythic: sleeping enemies' DMG Reduction, Physical RES, Magic RES, Ranged DMG Reduct, and Melee DMG Reduct −15% for 5s; waking enemies take 200% of Dreamstar's ATK as Magic DMG |
-| Vortex Seed | Battle Skill | Tome of Radiance: trigger chance +5%(15%); stun duration +0.3(1)s | Epic: Magic DMG +150% |
-| Dream Echo | Enhance | — | — |
-| Blossom Whip | Special Skill | Luminous Visor: first cast interval −2(6)s; True DMG +20%(60%) of ATK | Legend: on cast, heal all melee allies for 200% of Dreamstar Spirit's ATK |
-| Petal Whirl | Passive | — | — |
-| Slumber Garden | Enhance | Resonance Pendant: after waking, enemies' damage dealt −7%(21%) for 6 seconds | — |
+| Talent         | Kind           | Core                                                                          | Artifact bonus                                                                                                                                                                  |
+| -------------- | -------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Night Lullaby  | Ultimate Skill | Crystal Staff: Healing +100%(300%) ATK                                        | Mythic: sleeping enemies' DMG Reduction, Physical RES, Magic RES, Ranged DMG Reduct, and Melee DMG Reduct −15% for 5s; waking enemies take 200% of Dreamstar's ATK as Magic DMG |
+| Vortex Seed    | Battle Skill   | Tome of Radiance: trigger chance +5%(15%); stun duration +0.3(1)s             | Epic: Magic DMG +150%                                                                                                                                                           |
+| Dream Echo     | Enhance        | —                                                                             | —                                                                                                                                                                               |
+| Blossom Whip   | Special Skill  | Luminous Visor: first cast interval −2(6)s; True DMG +20%(60%) of ATK         | Legend: on cast, heal all melee allies for 200% of Dreamstar Spirit's ATK                                                                                                       |
+| Petal Whirl    | Passive        | —                                                                             | —                                                                                                                                                                               |
+| Slumber Garden | Enhance        | Resonance Pendant: after waking, enemies' damage dealt −7%(21%) for 6 seconds | —                                                                                                                                                                               |
 
 Nightstar Cup's Eternal ability is standalone **Panicwood**: enters battle;
 after 4s, smashes the ground for 200% ATK as Magic DMG to all enemies, knocking
@@ -431,15 +431,15 @@ Full descriptions are in `src/data/hero-details.ts`.
 **Nezha** (Warrior · DPS · Eternal; artifact Fire-Tipped Spear, 4★ — the divine
 weapon shares its name with the Battle Skill talent):
 
-| Talent               | Kind           | Artifact Bonus                              | Core                                                 |
-| -------------------- | -------------- | ------------------------------------------- | ---------------------------------------------------- |
-| Wind Fire Wheels     | Ultimate Skill | red: releases 2 wheels per cast             | Blade of Valor: +35%(105%) Physical DMG from attacks |
-| Fire-Tipped Spear    | Battle Skill   | purple: trigger chance +10%                 | Cavalier Helm: True DMG chance +6%(18%)              |
-| Windfire             | Enhance        | —                                           | Brawler's Armor: +2.5%(7.5%) Magic RES per stack     |
-| Armillary Sash       | Special Skill  | gold: +15% DEF for 4 s after each cast      | Brawler's Boots: enemy Energy Regen −10%(30%) more   |
-| Threefold Arms       | Passive        | —                                           | —                                                    |
-| Scorching Ember      | Enhance        | —                                           | —                                                    |
-| Immortal Divine Body | Artifact       | rainbow tier ability of Fire-Tipped Spear   | —                                                    |
+| Talent               | Kind           | Artifact Bonus                            | Core                                                 |
+| -------------------- | -------------- | ----------------------------------------- | ---------------------------------------------------- |
+| Wind Fire Wheels     | Ultimate Skill | red: releases 2 wheels per cast           | Blade of Valor: +35%(105%) Physical DMG from attacks |
+| Fire-Tipped Spear    | Battle Skill   | purple: trigger chance +10%               | Cavalier Helm: True DMG chance +6%(18%)              |
+| Windfire             | Enhance        | —                                         | Brawler's Armor: +2.5%(7.5%) Magic RES per stack     |
+| Armillary Sash       | Special Skill  | gold: +15% DEF for 4 s after each cast    | Brawler's Boots: enemy Energy Regen −10%(30%) more   |
+| Threefold Arms       | Passive        | —                                         | —                                                    |
+| Scorching Ember      | Enhance        | —                                         | —                                                    |
+| Immortal Divine Body | Artifact       | rainbow tier ability of Fire-Tipped Spear | —                                                    |
 
 Unlock order (clockwise from lower-left): Fire-Tipped Spear 2★, Windfire 5★,
 Armillary Sash 8★, Threefold Arms 12★, Scorching Ember 16★; Wind Fire Wheels
@@ -449,14 +449,14 @@ once-per-battle revive) is not attached to any talent. Full descriptions are in
 
 **Shadow Fiend** (Marksman · DPS · Eternal; artifact **Soul Mask**):
 
-| Talent | Kind | Unlock | Artifact Bonus | Core |
-| ------ | ---- | ------ | -------------- | ---- |
-| Soul Requiem | Ultimate Skill | Start | — | Swift Longbow: +60% Attack's Physical DMG |
-| Soul Burn | Battle Skill | 2★ | purple: each Basic ATK/Skill Cast adds 0.6% ATK, up to 15 stacks | Arrow Core: +0.5%(1.5%) ATK SPD |
-| Ghost Curse | Enhance | 5★ | — | Hunter's Cloak: duration +1(3)s, enemy Ranged DMG Boost −5%(15%) |
-| Destructive Gloom | Special Skill | 8★ | gold: 1s stun and 14% damage-to-HP conversion; red: free cast on entering battle, Shadow Physical DMG +90% | Crystal Pendant: after each cast, 6% DMG Reduction for 10s and 100% chance to purge all negative effects from self |
-| Haunted | Passive | 12★ | — | — |
-| Spiteful Curse | Enhance | 16★ | — | — |
+| Talent            | Kind           | Unlock | Artifact Bonus                                                                                             | Core                                                                                                               |
+| ----------------- | -------------- | ------ | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Soul Requiem      | Ultimate Skill | Start  | —                                                                                                          | Swift Longbow: +60% Attack's Physical DMG                                                                          |
+| Soul Burn         | Battle Skill   | 2★     | purple: each Basic ATK/Skill Cast adds 0.6% ATK, up to 15 stacks                                           | Arrow Core: +0.5%(1.5%) ATK SPD                                                                                    |
+| Ghost Curse       | Enhance        | 5★     | —                                                                                                          | Hunter's Cloak: duration +1(3)s, enemy Ranged DMG Boost −5%(15%)                                                   |
+| Destructive Gloom | Special Skill  | 8★     | gold: 1s stun and 14% damage-to-HP conversion; red: free cast on entering battle, Shadow Physical DMG +90% | Crystal Pendant: after each cast, 6% DMG Reduction for 10s and 100% chance to purge all negative effects from self |
+| Haunted           | Passive        | 12★    | —                                                                                                          | —                                                                                                                  |
+| Spiteful Curse    | Enhance        | 16★    | —                                                                                                          | —                                                                                                                  |
 
 The two red divinity icons on the Artifact tab match **Physical DMG Boost**
 (left) and **CRIT Damage** (right) in the owner's screenshot-derived catalog.
@@ -474,15 +474,15 @@ Full visible descriptions are transcribed in `src/data/hero-details.ts`.
 
 **Necromancer** (Support · Heal · Eternal; artifact **Ghostlight Bone**):
 
-| Talent | Kind | Unlock | Artifact Bonus | Core |
-| ------ | ---- | ------ | -------------- | ---- |
-| Death Pulse | Ultimate Skill | Start | red: +1 pulse; free cast the first time any ally or self falls below 35% HP, once per battle | Crystal Staff: DMG and Heal +30% of Attack |
-| Reaper Scythe | Battle Skill | 2★ | purple: enemy ATK −10% for 8s on hit | Tome of Radiance: additional Magic DMG equal to 80%(240%) of Attack |
-| Dark Pulse | Enhance | 5★ | — | — |
-| Ghost Shield | Special Skill | 8★ | gold: immediately casts upon entering battle; first cast also shields the frontmost ally | Luminous Visor: HP Regen +0.2%(0.6%) and Energy Regen +2%(6%) |
-| Soul Offering | Passive | 12★ | — | — |
-| Necro Arts | Enhance | 16★ | — | Resonance Pendant: ally recovery effects +10%(30%) |
-| Exhaustion Aura | Artifact | Rainbow tier | On entering battle, reduces all enemies' DMG and Energy Regen by 12% until battle ends; cannot be dispelled, ends upon self death | — |
+| Talent          | Kind           | Unlock       | Artifact Bonus                                                                                                                    | Core                                                                |
+| --------------- | -------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| Death Pulse     | Ultimate Skill | Start        | red: +1 pulse; free cast the first time any ally or self falls below 35% HP, once per battle                                      | Crystal Staff: DMG and Heal +30% of Attack                          |
+| Reaper Scythe   | Battle Skill   | 2★           | purple: enemy ATK −10% for 8s on hit                                                                                              | Tome of Radiance: additional Magic DMG equal to 80%(240%) of Attack |
+| Dark Pulse      | Enhance        | 5★           | —                                                                                                                                 | —                                                                   |
+| Ghost Shield    | Special Skill  | 8★           | gold: immediately casts upon entering battle; first cast also shields the frontmost ally                                          | Luminous Visor: HP Regen +0.2%(0.6%) and Energy Regen +2%(6%)       |
+| Soul Offering   | Passive        | 12★          | —                                                                                                                                 | —                                                                   |
+| Necro Arts      | Enhance        | 16★          | —                                                                                                                                 | Resonance Pendant: ally recovery effects +10%(30%)                  |
+| Exhaustion Aura | Artifact       | Rainbow tier | On entering battle, reduces all enemies' DMG and Energy Regen by 12% until battle ends; cannot be dispelled, ends upon self death | —                                                                   |
 
 The Artifact tab's red badges match **Healing Effect** (left) and **CRIT DMG
 Reduction** (right) in the screenshot-derived catalog. The 9.19.54 AM artifact
@@ -500,14 +500,14 @@ is **Reaper Scythe**; link the core to that title. Sources: the owner's
 
 **Thrall** (Support · Heal · Eternal; artifact **Hammer of Destruction**):
 
-| Talent | Kind | Unlock | Artifact Bonus | Core |
-| ------ | ---- | ------ | -------------- | ---- |
-| Electric storm | Ultimate Skill | Start | purple: storm knockback reduction +8% | Crystal Staff: enemy HP Regen per second −1.2%(3.6%) |
-| Thunder Strike | Battle Skill | 2★ | gold: each strike hits one extra enemy; rainbow: briefly reduces ATK/MOV SPD and reduces Energy Regen SPD by 50% per sec for 6s | Tome of Radiance: True DMG equal to 15%(45%) of Attack |
-| Enhanced Storm | Enhance | 5★ | — | — |
-| Guardian Rune | Special Skill | 8★ | red: on application, damage taken −20% for 8s; fatal-hit healing +16% max HP | Luminous Visor: additionally restores 3%(9%) of Max HP |
-| Orc Soul | Passive | 12★ | — | — |
-| Electric Overload | Enhance | 16★ | — | Resonance Pendant: maximum additional damage taken raised to 130%(200%) |
+| Talent            | Kind           | Unlock | Artifact Bonus                                                                                                                  | Core                                                                    |
+| ----------------- | -------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Electric storm    | Ultimate Skill | Start  | purple: storm knockback reduction +8%                                                                                           | Crystal Staff: enemy HP Regen per second −1.2%(3.6%)                    |
+| Thunder Strike    | Battle Skill   | 2★     | gold: each strike hits one extra enemy; rainbow: briefly reduces ATK/MOV SPD and reduces Energy Regen SPD by 50% per sec for 6s | Tome of Radiance: True DMG equal to 15%(45%) of Attack                  |
+| Enhanced Storm    | Enhance        | 5★     | —                                                                                                                               | —                                                                       |
+| Guardian Rune     | Special Skill  | 8★     | red: on application, damage taken −20% for 8s; fatal-hit healing +16% max HP                                                    | Luminous Visor: additionally restores 3%(9%) of Max HP                  |
+| Orc Soul          | Passive        | 12★    | —                                                                                                                               | —                                                                       |
+| Electric Overload | Enhance        | 16★    | —                                                                                                                               | Resonance Pendant: maximum additional damage taken raised to 130%(200%) |
 
 The two red Artifact-tab badges match **Knockback Effect** (left) and **Anti-CRIT
 Rate** (right) in the owner's screenshot-derived catalog. All four cores and
@@ -527,17 +527,17 @@ and hero-specific Awakening I/III. Existing Archive portraits are retained even
 when the gameplay capture uses a different skin. Sources below are AM captures
 in `gameplay/talents/`, including scrolled continuations and `AM 1` variants.
 
-| Hero / class | Artifact | Mythic divinities (left → right) | Source range |
-| --- | --- | --- | --- |
-| Jungle Envoy / Mage | Verdant Staff | Magic DMG Boost → Knockback Effect | 11.33.24–11.33.49; Pulse Nova 11.49.48 and 11.50.02 |
-| Radiant Paladin / Support | Sacred Book | Physical RES → Anti-Control Rate | 11.33.58–11.34.20 |
-| Silence / Support | Blood Knight | Support ATK → Magic DMG Boost | 11.34.28–11.34.46 |
-| Gunslinger / Marksman | Flame-red Robe | Ranged DMG Reduction → CRIT Damage | 11.34.51–11.35.15 |
-| Dark Knight / Warrior | Sorrow Frost | Receive Healing → DMG Reduction | 11.35.22–11.35.46 |
-| Arcane Saint / Support | Starshine Staff | DEF → HP | 11.35.50–11.36.14 |
-| Witch Dictator / Mage | Mana Potion | Magic DMG Boost → Magic RES | 11.36.20–11.36.41; I completed by 11.50.20 and 11.51.47 |
-| Silver Warrior / Warrior | Gunblade | ATK → Melee DMG Reduction | 11.36.52–11.37.22 |
-| Holy Healer / Support | Recover Staff | Support ATK → Melee DMG Boost | 11.37.31–11.37.50 |
+| Hero / class              | Artifact        | Mythic divinities (left → right)   | Source range                                            |
+| ------------------------- | --------------- | ---------------------------------- | ------------------------------------------------------- |
+| Jungle Envoy / Mage       | Verdant Staff   | Magic DMG Boost → Knockback Effect | 11.33.24–11.33.49; Pulse Nova 11.49.48 and 11.50.02     |
+| Radiant Paladin / Support | Sacred Book     | Physical RES → Anti-Control Rate   | 11.33.58–11.34.20                                       |
+| Silence / Support         | Blood Knight    | Support ATK → Magic DMG Boost      | 11.34.28–11.34.46                                       |
+| Gunslinger / Marksman     | Flame-red Robe  | Ranged DMG Reduction → CRIT Damage | 11.34.51–11.35.15                                       |
+| Dark Knight / Warrior     | Sorrow Frost    | Receive Healing → DMG Reduction    | 11.35.22–11.35.46                                       |
+| Arcane Saint / Support    | Starshine Staff | DEF → HP                           | 11.35.50–11.36.14                                       |
+| Witch Dictator / Mage     | Mana Potion     | Magic DMG Boost → Magic RES        | 11.36.20–11.36.41; I completed by 11.50.20 and 11.51.47 |
+| Silver Warrior / Warrior  | Gunblade        | ATK → Melee DMG Reduction          | 11.36.52–11.37.22                                       |
+| Holy Healer / Support     | Recover Staff   | Support ATK → Melee DMG Boost      | 11.37.31–11.37.50                                       |
 
 Talents below are in **0★ / 2★ / 5★ / 8★ / 12★ / 16★** order. Full effects and
 exact core-to-talent links are in `src/data/hero-details.ts`.
@@ -583,15 +583,15 @@ exact core-to-talent links are in `src/data/hero-details.ts`.
 Artifact-tab badges match **DMG Increase** (left) and **Magic DMG Boost** (right).
 Sources: the owner's 12.47.59–12.48.15 PM captures in `gameplay/talents/`.
 
-| Talent | Kind | Unlock | Artifact Bonus | Core |
-| ------ | ---- | ------ | -------------- | ---- |
-| Final Spark | Ultimate Skill | Start | red: full-screen beam plus 55% of Attack as True DMG | Wizard's Wand: additional Magic DMG equal to 30% (90%) of Attack |
-| Light Binding | Battle Skill | 2★ | purple: binding duration +1s | Arcane Hat: light orb launch chance +10% (30%) |
-| Enhanced Flash | Enhance | 5★ | — | — |
-| Prismatic Barrier | Special Skill | 8★ | gold: first cast at 5s; subsequent cooldowns −3s | Mage Robe: additionally reduces enemies' Attack Speed by 12% (36%) for 6s |
-| Light Body | Passive | 12★ | — | — |
-| Beam Charge | Enhance | 16★ | — | Spell Tome: enemies' Melee DMG Reduction reduced by 27% (80%) for 6s |
-| Lucent Singularity | Artifact | Rainbow tier | At 8s, creates a zone at the farthest enemy, reduces ATK SPD by 25%, silences Supports, then detonates after 3s for 300% of Attack as Magic DMG; 15s cooldown | — |
+| Talent             | Kind           | Unlock       | Artifact Bonus                                                                                                                                                | Core                                                                      |
+| ------------------ | -------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| Final Spark        | Ultimate Skill | Start        | red: full-screen beam plus 55% of Attack as True DMG                                                                                                          | Wizard's Wand: additional Magic DMG equal to 30% (90%) of Attack          |
+| Light Binding      | Battle Skill   | 2★           | purple: binding duration +1s                                                                                                                                  | Arcane Hat: light orb launch chance +10% (30%)                            |
+| Enhanced Flash     | Enhance        | 5★           | —                                                                                                                                                             | —                                                                         |
+| Prismatic Barrier  | Special Skill  | 8★           | gold: first cast at 5s; subsequent cooldowns −3s                                                                                                              | Mage Robe: additionally reduces enemies' Attack Speed by 12% (36%) for 6s |
+| Light Body         | Passive        | 12★          | —                                                                                                                                                             | —                                                                         |
+| Beam Charge        | Enhance        | 16★          | —                                                                                                                                                             | Spell Tome: enemies' Melee DMG Reduction reduced by 27% (80%) for 6s      |
+| Lucent Singularity | Artifact       | Rainbow tier | At 8s, creates a zone at the farthest enemy, reduces ATK SPD by 25%, silences Supports, then detonates after 3s for 300% of Attack as Magic DMG; 15s cooldown | —                                                                         |
 
 **Lucent Singularity** is standalone. The scrolled 12.48.15 PM artifact popup
 completes its description, and 12.48.06 PM completes the Mage Robe core. Preserve
@@ -614,20 +614,20 @@ badges match the existing divinity catalog. With the Mermaid Princess follow-up,
 artifact images come from the normal screenshot crop pipeline. Awakening I/III
 remain unrecorded for this batch, as requested by the owner.
 
-| Hero / class | Artifact | Mythic divinities (left → right) | AM source range | Core coverage |
-| --- | --- | --- | --- | --- |
-| Hela / Mage | Spectral Crystal | SPD Reduction RES → CRIT Rate | 7.53.21–7.53.36 | 4 |
-| Shadow Master / Marksman | Grass Cutting Sword | Ranged DMG Boost → Knockback Effect | 7.54.01–7.54.19 | 4 |
-| Medusa / Marksman | Succubus Mask | Ranged DMG Boost → DMG Increase | 7.54.39–7.54.53 | 4 |
-| Two-Headed Dragon / Mage | Icy Heart | HP → Heavy Injury | 7.54.58–7.55.12 | 4 |
-| Mermaid Princess / Support | Shallow Staff | HP → Anti-Control Rate | 7.55.18–7.55.33; 8.05.14 | 4 |
-| Soul Doll / Warrior | Ghost Blade | Receive Healing → Melee DMG Boost | 7.55.38–7.55.51 | 4 |
-| Baphomet / Warrior | Demonic Slash | Heavy Injury → ATK SPD | 7.56.13–7.56.29 | 4 |
-| Masked Ninja / Warrior | Silverwolf Sword | HP → Magic RES | 7.56.31–7.56.46 | 4 |
-| Whaley Imp / Warrior | Trident | HP → Anti-Control Rate | 7.56.50–7.57.03 | 4 |
-| Ironblade Mixed-Race / Warrior | Ironwolf Blade | HP → Control RES | 7.57.07–7.57.18 | 4 |
-| Roar Warrior / Warrior | Blazing Sun Axe | ATK → Heavy Injury | 7.57.22–7.57.34 | 4 |
-| Monkey King / Warrior | Golden Cudgel | Knockback Resist → DMG Reduction | 7.57.37–7.57.51 | 4 |
+| Hero / class                   | Artifact            | Mythic divinities (left → right)    | AM source range          | Core coverage |
+| ------------------------------ | ------------------- | ----------------------------------- | ------------------------ | ------------- |
+| Hela / Mage                    | Spectral Crystal    | SPD Reduction RES → CRIT Rate       | 7.53.21–7.53.36          | 4             |
+| Shadow Master / Marksman       | Grass Cutting Sword | Ranged DMG Boost → Knockback Effect | 7.54.01–7.54.19          | 4             |
+| Medusa / Marksman              | Succubus Mask       | Ranged DMG Boost → DMG Increase     | 7.54.39–7.54.53          | 4             |
+| Two-Headed Dragon / Mage       | Icy Heart           | HP → Heavy Injury                   | 7.54.58–7.55.12          | 4             |
+| Mermaid Princess / Support     | Shallow Staff       | HP → Anti-Control Rate              | 7.55.18–7.55.33; 8.05.14 | 4             |
+| Soul Doll / Warrior            | Ghost Blade         | Receive Healing → Melee DMG Boost   | 7.55.38–7.55.51          | 4             |
+| Baphomet / Warrior             | Demonic Slash       | Heavy Injury → ATK SPD              | 7.56.13–7.56.29          | 4             |
+| Masked Ninja / Warrior         | Silverwolf Sword    | HP → Magic RES                      | 7.56.31–7.56.46          | 4             |
+| Whaley Imp / Warrior           | Trident             | HP → Anti-Control Rate              | 7.56.50–7.57.03          | 4             |
+| Ironblade Mixed-Race / Warrior | Ironwolf Blade      | HP → Control RES                    | 7.57.07–7.57.18          | 4             |
+| Roar Warrior / Warrior         | Blazing Sun Axe     | ATK → Heavy Injury                  | 7.57.22–7.57.34          | 4             |
+| Monkey King / Warrior          | Golden Cudgel       | Knockback Resist → DMG Reduction    | 7.57.37–7.57.51          | 4             |
 
 Mermaid Princess's supplied cores are **Luminous Visor → Sanctus Waterball**
 (7.55.22), **Resonance Pendant → Abyssal Waters** (7.55.26), and **Crystal Staff →
@@ -640,20 +640,20 @@ for Mermaid Princess are now satisfied and imported.
 
 The recorded talent order is **0 / 2 / 5 / 8 / 12 / 16★**:
 
-| Hero | Talents in unlock order |
-| --- | --- |
-| Hela | Spectral Servant / Dark Swarm / Spectral Drain / Soul Shackles / Undead Corpse / Spectres |
-| Shadow Master | Phantom Slash / Illusory Nightmare / Enhance Slash / Flame Bullet / Weakness Break / Blood Thirst |
-| Medusa | Energy Barrier / Piercing Arrows / Ultimate Empower / Arcane Serpent / Succubus Ancestry / Sharp Arrowhead |
-| Two-Headed Dragon | Frost Domain / Ice and Fire / Enhance Chill / Icy Inferno / Dragon's Blood / Extreme Cold |
-| Mermaid Princess | Tide of Sighs / Deep Sea Blessing / Tidal Phenomenon / Sanctus Waterball / Knockback / Abyssal Waters |
-| Soul Doll | Soul Scissors / ATK Enhancement / Enhance Scissors / Thread Bind / Spiritual Cultivation / Heavy Blow |
-| Baphomet | Demonify / Fanatic / Rebirth / Devil's Entanglement / Devil's Wit / RES Skin |
-| Masked Ninja | Barrier Shield / Silent Movement / Enhance Shield / Power Regen / Protect Charm / Super Barrier |
-| Whaley Imp | Tsunami / Wave Slash / Enhance Tide / Surge Guard / Deep Sea Buildup / Sea God's Wrath |
-| Ironblade Mixed-Race | Sky-Cutting Strike / Armor-Breaking Blow / Enhance Aura / Demonic Lineage / Demonic Boost / Soul Hack |
-| Roar Warrior | Elimination Axe / Thirst / Enhance Great Axe / Roar / Battle Soul / Axe of Greatness |
-| Monkey King | Golden Cudgel / Stabilizing Cudgel / Enhanced Strike / Monkey Clone / Forest Dance / Ruyi Technique |
+| Hero                 | Talents in unlock order                                                                                    |
+| -------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Hela                 | Spectral Servant / Dark Swarm / Spectral Drain / Soul Shackles / Undead Corpse / Spectres                  |
+| Shadow Master        | Phantom Slash / Illusory Nightmare / Enhance Slash / Flame Bullet / Weakness Break / Blood Thirst          |
+| Medusa               | Energy Barrier / Piercing Arrows / Ultimate Empower / Arcane Serpent / Succubus Ancestry / Sharp Arrowhead |
+| Two-Headed Dragon    | Frost Domain / Ice and Fire / Enhance Chill / Icy Inferno / Dragon's Blood / Extreme Cold                  |
+| Mermaid Princess     | Tide of Sighs / Deep Sea Blessing / Tidal Phenomenon / Sanctus Waterball / Knockback / Abyssal Waters      |
+| Soul Doll            | Soul Scissors / ATK Enhancement / Enhance Scissors / Thread Bind / Spiritual Cultivation / Heavy Blow      |
+| Baphomet             | Demonify / Fanatic / Rebirth / Devil's Entanglement / Devil's Wit / RES Skin                               |
+| Masked Ninja         | Barrier Shield / Silent Movement / Enhance Shield / Power Regen / Protect Charm / Super Barrier            |
+| Whaley Imp           | Tsunami / Wave Slash / Enhance Tide / Surge Guard / Deep Sea Buildup / Sea God's Wrath                     |
+| Ironblade Mixed-Race | Sky-Cutting Strike / Armor-Breaking Blow / Enhance Aura / Demonic Lineage / Demonic Boost / Soul Hack      |
+| Roar Warrior         | Elimination Axe / Thirst / Enhance Great Axe / Roar / Battle Soul / Axe of Greatness                       |
+| Monkey King          | Golden Cudgel / Stabilizing Cudgel / Enhanced Strike / Monkey Clone / Forest Dance / Ruyi Technique        |
 
 Core links and exact descriptions are stored in `src/data/hero-details.ts`.
 Not every core follows the usual ultimate/2★/8★/16★ pattern: Hela and Two-Headed
@@ -737,41 +737,41 @@ the narrow no-break space before `AM` and any ` 1` suffix. Ranges below are AM.
 Divinities are the bottom red badges in left/right order, compared visually with
 the existing catalog; no additional divinity popup is needed for this batch.
 
-| Hero / class | Artifact | Mythic divinities (left → right) | Source range | Non-awakening evidence |
-| --- | --- | --- | --- | --- |
-| Skeleton King / Warrior | Blade of Destruction | HP → Heavy Injury | 8.35.37–8.36.29 | Complete |
-| Whirlpool Ninja / Warrior | Whirlwind Meteor | HP → CRIT Damage | 8.36.32–8.36.47 | Complete |
-| Foxy Spirit / Mage | Exquisite Lamp | Magic RES → CRIT Damage | 8.36.52–8.37.05 | Complete |
-| Loli / Marksman | Gatling | DEF → CRIT Damage | 8.37.08–8.38.59 | Complete |
-| GooGoo Fish / Warrior | Dragon Scale | ATK → CRIT Damage | 8.39.04–8.39.17 | Complete |
-| Moon Goddess / Marksman | Merciless Crossbow | DEF → Heavy Injury | 8.39.20–8.40.40 | Complete |
-| Cowboy Killer / Marksman | Desert Revolver | DEF → Physical DMG Boost | 8.41.06–8.41.22 | Complete |
-| Jungle Archer / Marksman | Forest Longbow | DEF → Anti-CRIT Rate | 8.42.09–8.42.10; 9.01.10–9.01.19 | Complete after follow-up |
-| White Ox / Warrior | Mountain Splitting Axe | Knockback Effect → Heavy Injury | 8.43.51–8.44.10 | Complete |
-| Hidden Ninja / Marksman | Shuriken | DEF → ATK SPD | 8.44.13–8.44.24 | Complete |
-| Snow Hunter / Marksman | Flash Bow | DEF → CRIT DMG Reduction | 8.44.27–8.44.38 | Complete |
-| Gunslinger / Marksman | Flame-red Robe | Ranged DMG Reduction → CRIT Damage | 8.44.40–8.44.56 | Already recorded |
-| Swordevil / Warrior | Slaughter | CRIT Damage → CRIT Rate | 8.44.59–8.45.12 | Complete |
-| Mars / Warrior | Spear of War | ATK → Physical RES | 8.45.15–8.45.28 | Complete |
+| Hero / class              | Artifact               | Mythic divinities (left → right)   | Source range                     | Non-awakening evidence   |
+| ------------------------- | ---------------------- | ---------------------------------- | -------------------------------- | ------------------------ |
+| Skeleton King / Warrior   | Blade of Destruction   | HP → Heavy Injury                  | 8.35.37–8.36.29                  | Complete                 |
+| Whirlpool Ninja / Warrior | Whirlwind Meteor       | HP → CRIT Damage                   | 8.36.32–8.36.47                  | Complete                 |
+| Foxy Spirit / Mage        | Exquisite Lamp         | Magic RES → CRIT Damage            | 8.36.52–8.37.05                  | Complete                 |
+| Loli / Marksman           | Gatling                | DEF → CRIT Damage                  | 8.37.08–8.38.59                  | Complete                 |
+| GooGoo Fish / Warrior     | Dragon Scale           | ATK → CRIT Damage                  | 8.39.04–8.39.17                  | Complete                 |
+| Moon Goddess / Marksman   | Merciless Crossbow     | DEF → Heavy Injury                 | 8.39.20–8.40.40                  | Complete                 |
+| Cowboy Killer / Marksman  | Desert Revolver        | DEF → Physical DMG Boost           | 8.41.06–8.41.22                  | Complete                 |
+| Jungle Archer / Marksman  | Forest Longbow         | DEF → Anti-CRIT Rate               | 8.42.09–8.42.10; 9.01.10–9.01.19 | Complete after follow-up |
+| White Ox / Warrior        | Mountain Splitting Axe | Knockback Effect → Heavy Injury    | 8.43.51–8.44.10                  | Complete                 |
+| Hidden Ninja / Marksman   | Shuriken               | DEF → ATK SPD                      | 8.44.13–8.44.24                  | Complete                 |
+| Snow Hunter / Marksman    | Flash Bow              | DEF → CRIT DMG Reduction           | 8.44.27–8.44.38                  | Complete                 |
+| Gunslinger / Marksman     | Flame-red Robe         | Ranged DMG Reduction → CRIT Damage | 8.44.40–8.44.56                  | Already recorded         |
+| Swordevil / Warrior       | Slaughter              | CRIT Damage → CRIT Rate            | 8.44.59–8.45.12                  | Complete                 |
+| Mars / Warrior            | Spear of War           | ATK → Physical RES                 | 8.45.15–8.45.28                  | Complete                 |
 
 Verified talent order is **0 / 2 / 5 / 8 / 12 / 16★**. The matching original
 popup times are listed in the same order; these provide usable icon sources.
 
-| Hero | Talents in unlock order | Original popup times (AM) |
-| --- | --- | --- |
-| Skeleton King | Dark Soul Fireball / Bloodthirsty Curse / Hellfire Heavy Strike / Return from the Underworld / Dark Soul Real Body / Hell King's Howl | 8.35.46 / 8.35.38 / 8.35.40 / 8.35.41 / 8.35.42 / 8.35.44 |
-| Whirlpool Ninja | Energy Vortex / Cloning Technique / Enhance Vortex / Unyielding / Ninjutsu / Super Charge | 8.36.42 / 8.36.33 / 8.36.35 / 8.36.37 / 8.36.39 / 8.36.41 |
-| Foxy Spirit | Nightfire / Soul Snatcher Orb / Spell Surge / Mind's Mirror / Heart Cleansing / Fox Fire | 8.37.00 / 8.36.53 / 8.36.55 / 8.36.56 / 8.36.57 / 8.36.59 |
-| Loli | Super Bullet / Explosive Flying Bullet / Enhance Missile / Explosive Strike / ATK Amplification / Concussion Bullet | 8.38.29 / 8.37.09 / 8.37.11 / 8.37.12 / 8.37.16 / 8.38.06 |
-| GooGoo Fish | Aqua Dance / Steal / Water Burst / Sudden Assault / Contract / Dark Shadow | 8.39.13 / 8.39.05 / 8.39.08 / 8.39.09 / 8.39.10 / 8.39.12 |
-| Moon Goddess | Meteor Shower / Moon Goddess's Arrow / Meteor Strike / Encourage / ATK Amplification / ATK SPD Aura | 8.39.36 / 8.39.22 / 8.39.23 / 8.39.31 / 8.39.33 / 8.39.35 |
-| Cowboy Killer | Barrage Bullets / PEN Bullet / Enhance Ammo / Growth Favors / Precise / Metal Slug | 8.41.17 / 8.41.08 / 8.41.10 / 8.41.11 / 8.41.13 / 8.41.15 |
-| Jungle Archer | Gale Arrow / Fiery Barrage / Enhance Arrows / High Speed / Hunter's Lineage / Upgraded Arrows | 9.01.18 / 9.01.11 / 9.01.12 / 9.01.14 / 9.01.16 / 9.01.17 |
-| White Ox | Brute Charge / Warrior Charge / Heavy Strike / HP Shield / Indomitable / Brute Strength | 8.44.07 / 8.43.55 / 8.44.01 / 8.44.03 / 8.44.04 / 8.44.05 |
-| Hidden Ninja | Beast Pursuit / Paralysis ATK / Beast Possession / Seal Technique / Quick Regen / Super Beast | 8.44.20 / 8.44.14 / 8.44.16 / 8.44.17 / 8.44.18 / 8.44.19 |
-| Snow Hunter | Freezing Arrows / Frost Arrows / Speedfrost Arrowhead / Multiarrow / Focus / Explosive Arrows | 8.44.35 / 8.44.28 / 8.44.29 / 8.44.30 / 8.44.32 / 8.44.34 |
-| Swordevil | Sweep Army / Thunder Strike / Skill Immunity / Phantom Combo / Strength Awakening / Gale Aura | 8.45.08 / 8.45.00 / 8.45.01 / 8.45.03 / 8.45.04 / 8.45.06 |
-| Mars | Spear of War / Shield Bash / Enhance Spear Strike / DEF Stance / Protective Shield / Blood-Stained Spear | 8.45.24 / 8.45.16 / 8.45.18 / 8.45.20 / 8.45.22 / 8.45.23 |
+| Hero            | Talents in unlock order                                                                                                               | Original popup times (AM)                                 |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| Skeleton King   | Dark Soul Fireball / Bloodthirsty Curse / Hellfire Heavy Strike / Return from the Underworld / Dark Soul Real Body / Hell King's Howl | 8.35.46 / 8.35.38 / 8.35.40 / 8.35.41 / 8.35.42 / 8.35.44 |
+| Whirlpool Ninja | Energy Vortex / Cloning Technique / Enhance Vortex / Unyielding / Ninjutsu / Super Charge                                             | 8.36.42 / 8.36.33 / 8.36.35 / 8.36.37 / 8.36.39 / 8.36.41 |
+| Foxy Spirit     | Nightfire / Soul Snatcher Orb / Spell Surge / Mind's Mirror / Heart Cleansing / Fox Fire                                              | 8.37.00 / 8.36.53 / 8.36.55 / 8.36.56 / 8.36.57 / 8.36.59 |
+| Loli            | Super Bullet / Explosive Flying Bullet / Enhance Missile / Explosive Strike / ATK Amplification / Concussion Bullet                   | 8.38.29 / 8.37.09 / 8.37.11 / 8.37.12 / 8.37.16 / 8.38.06 |
+| GooGoo Fish     | Aqua Dance / Steal / Water Burst / Sudden Assault / Contract / Dark Shadow                                                            | 8.39.13 / 8.39.05 / 8.39.08 / 8.39.09 / 8.39.10 / 8.39.12 |
+| Moon Goddess    | Meteor Shower / Moon Goddess's Arrow / Meteor Strike / Encourage / ATK Amplification / ATK SPD Aura                                   | 8.39.36 / 8.39.22 / 8.39.23 / 8.39.31 / 8.39.33 / 8.39.35 |
+| Cowboy Killer   | Barrage Bullets / PEN Bullet / Enhance Ammo / Growth Favors / Precise / Metal Slug                                                    | 8.41.17 / 8.41.08 / 8.41.10 / 8.41.11 / 8.41.13 / 8.41.15 |
+| Jungle Archer   | Gale Arrow / Fiery Barrage / Enhance Arrows / High Speed / Hunter's Lineage / Upgraded Arrows                                         | 9.01.18 / 9.01.11 / 9.01.12 / 9.01.14 / 9.01.16 / 9.01.17 |
+| White Ox        | Brute Charge / Warrior Charge / Heavy Strike / HP Shield / Indomitable / Brute Strength                                               | 8.44.07 / 8.43.55 / 8.44.01 / 8.44.03 / 8.44.04 / 8.44.05 |
+| Hidden Ninja    | Beast Pursuit / Paralysis ATK / Beast Possession / Seal Technique / Quick Regen / Super Beast                                         | 8.44.20 / 8.44.14 / 8.44.16 / 8.44.17 / 8.44.18 / 8.44.19 |
+| Snow Hunter     | Freezing Arrows / Frost Arrows / Speedfrost Arrowhead / Multiarrow / Focus / Explosive Arrows                                         | 8.44.35 / 8.44.28 / 8.44.29 / 8.44.30 / 8.44.32 / 8.44.34 |
+| Swordevil       | Sweep Army / Thunder Strike / Skill Immunity / Phantom Combo / Strength Awakening / Gale Aura                                         | 8.45.08 / 8.45.00 / 8.45.01 / 8.45.03 / 8.45.04 / 8.45.06 |
+| Mars            | Spear of War / Shield Bash / Enhance Spear Strike / DEF Stance / Protective Shield / Blood-Stained Spear                              | 8.45.24 / 8.45.16 / 8.45.18 / 8.45.20 / 8.45.22 / 8.45.23 |
 
 Review notes for a future authorized import:
 
@@ -826,23 +826,23 @@ establishes the order above. All six original popups provide full descriptions
 and usable icons. The existing Forest Longbow artwork, all four artifact tiers,
 and DEF (All DEF) / Anti-CRIT Rate badges remain recorded from **8.42.09 / 8.42.10**.
 
-| Talent | Kind | Unlock | Effect shown in the follow-up |
-| --- | --- | --- | --- |
-| Gale Arrow | Ultimate Skill | 0★ | Pierces all enemies for Physical DMG equal to 360% of ATK with Knockback; DMG Result and Knockback diminish by 8% with each enemy hit. |
-| Fiery Barrage | Battle Skill | 2★ | Basic ATK have a 35% chance to shoot two arrows, each dealing Physical DMG equal to 100% of ATK. |
-| Enhance Arrows | Enhance | 5★ | Gale Arrow's Physical DMG increases by 90%. |
-| High Speed | Special Skill | 8★ | On entering battle, MOV SPD and ATK SPD increase by 30% for 10s. |
-| Hunter's Lineage | Attribute | 12★ | ATK increases by 10%, Armor PEN by 15%. |
-| Upgraded Arrows | Enhance | 16★ | Gale Arrow's DMG Result and Knockback Effect no longer diminish upon hitting an enemy. |
+| Talent           | Kind           | Unlock | Effect shown in the follow-up                                                                                                          |
+| ---------------- | -------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Gale Arrow       | Ultimate Skill | 0★     | Pierces all enemies for Physical DMG equal to 360% of ATK with Knockback; DMG Result and Knockback diminish by 8% with each enemy hit. |
+| Fiery Barrage    | Battle Skill   | 2★     | Basic ATK have a 35% chance to shoot two arrows, each dealing Physical DMG equal to 100% of ATK.                                       |
+| Enhance Arrows   | Enhance        | 5★     | Gale Arrow's Physical DMG increases by 90%.                                                                                            |
+| High Speed       | Special Skill  | 8★     | On entering battle, MOV SPD and ATK SPD increase by 30% for 10s.                                                                       |
+| Hunter's Lineage | Attribute      | 12★    | ATK increases by 10%, Armor PEN by 15%.                                                                                                |
+| Upgraded Arrows  | Enhance        | 16★    | Gale Arrow's DMG Result and Knockback Effect no longer diminish upon hitting an enemy.                                                 |
 
 All four complete core panels are supplied:
 
-| Gear | Talent link | Displayed core effect | Full-text source (AM) |
-| --- | --- | --- | --- |
-| Swift Longbow | Gale Arrow | Increases Physical DMG by 40%(120%) of Attack. | 9.01.18; clearer scroll 9.01.19 |
-| Arrow Core | Fiery Barrage | Increases each arrow's Physical DMG by 20%(60%) of Attack. | 9.01.11 |
-| Hunter's Cloak | Enhance Arrows | “Empowered Arrows” increases Physical DMG by 40%(120%) of Attack. | 9.01.12 |
-| Crystal Pendant | High Speed | Additionally increases ATK SPD and MOV SPD by 5%(15%). | 9.01.14 AM 1.png |
+| Gear            | Talent link    | Displayed core effect                                             | Full-text source (AM)           |
+| --------------- | -------------- | ----------------------------------------------------------------- | ------------------------------- |
+| Swift Longbow   | Gale Arrow     | Increases Physical DMG by 40%(120%) of Attack.                    | 9.01.18; clearer scroll 9.01.19 |
+| Arrow Core      | Fiery Barrage  | Increases each arrow's Physical DMG by 20%(60%) of Attack.        | 9.01.11                         |
+| Hunter's Cloak  | Enhance Arrows | “Empowered Arrows” increases Physical DMG by 40%(120%) of Attack. | 9.01.12                         |
+| Crystal Pendant | High Speed     | Additionally increases ATK SPD and MOV SPD by 5%(15%).            | 9.01.14 AM 1.png                |
 
 **Empowered Arrows** is the Hunter's Cloak description's alias for the popup
 title **Enhance Arrows**; link to the actual title. The original
@@ -898,42 +898,42 @@ no-break space and any ` 1` suffix. Divinities were compared visually with
 `src/data/divinities.ts` and `public/divinities/`, in bottom-left → bottom-right
 order. No new divinity popup is needed for this batch.
 
-| Hero / class | Artifact | Mythic divinities (left → right) | AM source range | Non-awakening evidence |
-| --- | --- | --- | --- | --- |
-| Snowoman / Support | Soulseeker Staff | Support ATK → Melee DMG Reduction | 9.58.26–9.58.43; 10.10.23 / 10.10.48 | Complete after follow-up |
-| Bamboo Hat / Mage | Witherwood Staff | HP → Ranged DMG Reduction | 9.58.46–9.58.57 | Complete |
-| Fire Sorceress / Mage | Flame Crown | Mage ATK → Magic RES | 9.59.01–9.59.20 | Complete |
-| Red Hood / Mage | Captain Headgear | Receive Healing → Knockback Resist | 9.59.23–9.59.38 | Complete |
-| Little Goblin / Mage | Goblin Wrench | Mage ATK → Heavy Injury | 9.59.40–9.59.51 | Complete |
-| Radiant Angel / Support | Angel Staff | Support ATK → Knockback Resist | 9.59.54–10.00.06 | Complete |
-| Diva / Support | Crystal Necklace | HP → Healing Effect | 10.00.14–10.00.26 | Complete |
-| Little Deer / Support | Ironskin Staff | HP → Melee DMG Reduction | 10.00.29–10.00.46 | Complete |
-| Witch Dictator / Mage | Mana Potion | Magic DMG Boost → Magic RES | 10.00.50–10.01.03 | Already recorded; agrees |
-| Lucifer / Warrior | Blood Demon Crystal | SPD Reduction RES → Physical RES | 10.01.06–10.01.21 | Complete |
-| Captain Pilot / Marksman | Energy Spring | CRIT Damage → Ranged DMG Reduction | 10.01.27–10.01.39 | Complete |
-| Li Bai / Marksman | Lotus Nectar | Physical RES → Ranged DMG Reduction | 10.01.41–10.01.55 | Complete |
-| Lady Pan / Support | Nonstick Pan | ATK → HP | 10.01.59–10.02.11 | Complete |
-| Silver Warrior / Warrior | Gunblade | ATK → Melee DMG Reduction | 10.02.13–10.02.24 | Already recorded; agrees |
-| Arcane Saint / Support | Starshine Staff | DEF → HP | 10.02.27–10.02.38 | Already recorded; agrees |
+| Hero / class             | Artifact            | Mythic divinities (left → right)    | AM source range                      | Non-awakening evidence   |
+| ------------------------ | ------------------- | ----------------------------------- | ------------------------------------ | ------------------------ |
+| Snowoman / Support       | Soulseeker Staff    | Support ATK → Melee DMG Reduction   | 9.58.26–9.58.43; 10.10.23 / 10.10.48 | Complete after follow-up |
+| Bamboo Hat / Mage        | Witherwood Staff    | HP → Ranged DMG Reduction           | 9.58.46–9.58.57                      | Complete                 |
+| Fire Sorceress / Mage    | Flame Crown         | Mage ATK → Magic RES                | 9.59.01–9.59.20                      | Complete                 |
+| Red Hood / Mage          | Captain Headgear    | Receive Healing → Knockback Resist  | 9.59.23–9.59.38                      | Complete                 |
+| Little Goblin / Mage     | Goblin Wrench       | Mage ATK → Heavy Injury             | 9.59.40–9.59.51                      | Complete                 |
+| Radiant Angel / Support  | Angel Staff         | Support ATK → Knockback Resist      | 9.59.54–10.00.06                     | Complete                 |
+| Diva / Support           | Crystal Necklace    | HP → Healing Effect                 | 10.00.14–10.00.26                    | Complete                 |
+| Little Deer / Support    | Ironskin Staff      | HP → Melee DMG Reduction            | 10.00.29–10.00.46                    | Complete                 |
+| Witch Dictator / Mage    | Mana Potion         | Magic DMG Boost → Magic RES         | 10.00.50–10.01.03                    | Already recorded; agrees |
+| Lucifer / Warrior        | Blood Demon Crystal | SPD Reduction RES → Physical RES    | 10.01.06–10.01.21                    | Complete                 |
+| Captain Pilot / Marksman | Energy Spring       | CRIT Damage → Ranged DMG Reduction  | 10.01.27–10.01.39                    | Complete                 |
+| Li Bai / Marksman        | Lotus Nectar        | Physical RES → Ranged DMG Reduction | 10.01.41–10.01.55                    | Complete                 |
+| Lady Pan / Support       | Nonstick Pan        | ATK → HP                            | 10.01.59–10.02.11                    | Complete                 |
+| Silver Warrior / Warrior | Gunblade            | ATK → Melee DMG Reduction           | 10.02.13–10.02.24                    | Already recorded; agrees |
+| Arcane Saint / Support   | Starshine Staff     | DEF → HP                            | 10.02.27–10.02.38                    | Already recorded; agrees |
 
 The imported heroes' talent order is **0 / 2 / 5 / 8 / 12 / 16★**. Names and kinds
 come from their actual popups; Snowoman's **10.10.23 AM** follow-up confirms
 Blizzard's Ultimate Skill kind and full base description, matching the ring.
 
-| Hero | Talents in unlock order |
-| --- | --- |
-| Snowoman | Blizzard / Ice Blast / Bone-Chilling Cold / Glorious Aura / Ice Purification / Storm Domain |
-| Bamboo Hat | Energy Impact / Weakness Sensing / Energy Overload / Qi Mantra / ATK Amplification / Energy Burst |
-| Fire Sorceress | Flame Shock / Burn / Blazing Slash / Blaze / ATK Amplification / Enhance Impact |
-| Red Hood | Mushroom Bomb / Poisoned Shooting / Here comes the bomb / Time Bomb / I am Red Hood / Big-headed Mushroom |
-| Little Goblin | Master of Machinery / Throw Mastery / Quick Release / DEF Formation / Knockback Boost / Spare Tool |
-| Radiant Angel | Holy Light Protection / Judgement / Enhance Protection / Holy Light Shines / Holy Soul / Super Protection |
-| Diva | Protagonist Arrive / Full-out Merrying / Enhance Stage / Revisit / Excited / Plot Armor |
-| Little Deer | Awaken / Poisoned Spear / Purify / Nourishment / Assist / Cleanse |
-| Lucifer | Doomsday Curse / Flame Blade / Strengthen Curse / Demon Fire / Demonic Contract / Hatred Deepens |
-| Captain Pilot | Warrior Strike / Molotov Cocktail / Enhance Bullet / Suppressive Shoot / Weakness Break / Explosive Bullet |
-| Li Bai | Sky-Splitting Sword / Twin Swords / Sword Breaker / Sword Beam / Lotus Sword / Man and Sword |
-| Lady Pan | Cutlery Throw / Home Delivery / Precise Throw / Deluxe Cake / Culinary Mastery / Spare Cutlery |
+| Hero           | Talents in unlock order                                                                                    |
+| -------------- | ---------------------------------------------------------------------------------------------------------- |
+| Snowoman       | Blizzard / Ice Blast / Bone-Chilling Cold / Glorious Aura / Ice Purification / Storm Domain                |
+| Bamboo Hat     | Energy Impact / Weakness Sensing / Energy Overload / Qi Mantra / ATK Amplification / Energy Burst          |
+| Fire Sorceress | Flame Shock / Burn / Blazing Slash / Blaze / ATK Amplification / Enhance Impact                            |
+| Red Hood       | Mushroom Bomb / Poisoned Shooting / Here comes the bomb / Time Bomb / I am Red Hood / Big-headed Mushroom  |
+| Little Goblin  | Master of Machinery / Throw Mastery / Quick Release / DEF Formation / Knockback Boost / Spare Tool         |
+| Radiant Angel  | Holy Light Protection / Judgement / Enhance Protection / Holy Light Shines / Holy Soul / Super Protection  |
+| Diva           | Protagonist Arrive / Full-out Merrying / Enhance Stage / Revisit / Excited / Plot Armor                    |
+| Little Deer    | Awaken / Poisoned Spear / Purify / Nourishment / Assist / Cleanse                                          |
+| Lucifer        | Doomsday Curse / Flame Blade / Strengthen Curse / Demon Fire / Demonic Contract / Hatred Deepens           |
+| Captain Pilot  | Warrior Strike / Molotov Cocktail / Enhance Bullet / Suppressive Shoot / Weakness Break / Explosive Bullet |
+| Li Bai         | Sky-Splitting Sword / Twin Swords / Sword Breaker / Sword Beam / Lotus Sword / Man and Sword               |
+| Lady Pan       | Cutlery Throw / Home Delivery / Precise Throw / Deluxe Cake / Culinary Mastery / Spare Cutlery             |
 
 At 2★, **Ice Blast, Full-out Merrying, and Home Delivery are Special Skill**;
 the other new candidates' 2★ popups are Battle Skill. At 8★, **Glorious Aura is
@@ -946,20 +946,20 @@ Talent popup times below follow the same unlock order. These provide original
 icons except Snowoman's scrolled Blizzard follow-up: use its **9.58.26 AM**
 ring for the full icon. A suffix explicitly shown as `AM 1.png` is part of the filename.
 
-| Hero | Talent popups (0 / 2 / 5 / 8 / 12 / 16★) | Artifact tab | Ability popup / continuation |
-| --- | --- | --- | --- |
-| Snowoman | 10.10.23 / 9.58.29 / 9.58.31 / 9.58.32 / 9.58.33 / 9.58.35 | 9.58.42 | 9.58.43 |
-| Bamboo Hat | 9.58.54 / 9.58.47 / 9.58.49 / 9.58.50 / 9.58.52 / 9.58.53 | 9.58.56 | 9.58.57 |
-| Fire Sorceress | 9.59.17 / 9.59.02 / 9.59.11 / 9.59.13 / 9.59.14 / 9.59.15 | 9.59.18 | 9.59.19 / 9.59.20 |
-| Red Hood | 9.59.34 / 9.59.24 / 9.59.25 / 9.59.26 / 9.59.32 / 9.59.33 | 9.59.37 | 9.59.38 |
-| Little Goblin | 9.59.47 / 9.59.41 / 9.59.42 / 9.59.43 / 9.59.45 / 9.59.46 | 9.59.50 | 9.59.51 |
-| Radiant Angel | 10.00.02 / 9.59.55 / 9.59.57 / 9.59.58 / 10.00.00 / 10.00.01 | 10.00.05 | 10.00.05 AM 1.png / 10.00.06 |
-| Diva | 10.00.22 / 10.00.15 / 10.00.16 / 10.00.18 AM 1.png / 10.00.18 / 10.00.21 | 10.00.25 | 10.00.26 |
-| Little Deer | 10.00.42 / 10.00.30 / 10.00.33 / 10.00.34 / 10.00.39 / 10.00.40 | 10.00.45 | 10.00.46 |
-| Lucifer | 10.01.16 AM 1.png / 10.01.07 AM 1.png / 10.01.09 / 10.01.10 / 10.01.12 / 10.01.13 | 10.01.19 | 10.01.21 AM 1.png / 10.01.21 |
-| Captain Pilot | 10.01.35 / 10.01.27 / 10.01.28 / 10.01.29 / 10.01.32 / 10.01.33 | 10.01.37 | 10.01.38 / 10.01.39 |
-| Li Bai | 10.01.50 / 10.01.42 / 10.01.44 / 10.01.45 / 10.01.46 / 10.01.48 | 10.01.53 | 10.01.54 / 10.01.55 |
-| Lady Pan | 10.02.07 / 10.02.00 / 10.02.02 / 10.02.03 / 10.02.05 / 10.02.06 | 10.02.09 | 10.02.10 / 10.02.11 |
+| Hero           | Talent popups (0 / 2 / 5 / 8 / 12 / 16★)                                          | Artifact tab | Ability popup / continuation |
+| -------------- | --------------------------------------------------------------------------------- | ------------ | ---------------------------- |
+| Snowoman       | 10.10.23 / 9.58.29 / 9.58.31 / 9.58.32 / 9.58.33 / 9.58.35                        | 9.58.42      | 9.58.43                      |
+| Bamboo Hat     | 9.58.54 / 9.58.47 / 9.58.49 / 9.58.50 / 9.58.52 / 9.58.53                         | 9.58.56      | 9.58.57                      |
+| Fire Sorceress | 9.59.17 / 9.59.02 / 9.59.11 / 9.59.13 / 9.59.14 / 9.59.15                         | 9.59.18      | 9.59.19 / 9.59.20            |
+| Red Hood       | 9.59.34 / 9.59.24 / 9.59.25 / 9.59.26 / 9.59.32 / 9.59.33                         | 9.59.37      | 9.59.38                      |
+| Little Goblin  | 9.59.47 / 9.59.41 / 9.59.42 / 9.59.43 / 9.59.45 / 9.59.46                         | 9.59.50      | 9.59.51                      |
+| Radiant Angel  | 10.00.02 / 9.59.55 / 9.59.57 / 9.59.58 / 10.00.00 / 10.00.01                      | 10.00.05     | 10.00.05 AM 1.png / 10.00.06 |
+| Diva           | 10.00.22 / 10.00.15 / 10.00.16 / 10.00.18 AM 1.png / 10.00.18 / 10.00.21          | 10.00.25     | 10.00.26                     |
+| Little Deer    | 10.00.42 / 10.00.30 / 10.00.33 / 10.00.34 / 10.00.39 / 10.00.40                   | 10.00.45     | 10.00.46                     |
+| Lucifer        | 10.01.16 AM 1.png / 10.01.07 AM 1.png / 10.01.09 / 10.01.10 / 10.01.12 / 10.01.13 | 10.01.19     | 10.01.21 AM 1.png / 10.01.21 |
+| Captain Pilot  | 10.01.35 / 10.01.27 / 10.01.28 / 10.01.29 / 10.01.32 / 10.01.33                   | 10.01.37     | 10.01.38 / 10.01.39          |
+| Li Bai         | 10.01.50 / 10.01.42 / 10.01.44 / 10.01.45 / 10.01.46 / 10.01.48                   | 10.01.53     | 10.01.54 / 10.01.55          |
+| Lady Pan       | 10.02.07 / 10.02.00 / 10.02.02 / 10.02.03 / 10.02.05 / 10.02.06                   | 10.02.09     | 10.02.10 / 10.02.11          |
 
 Ring references are the first image in each hero's source range, except Captain
 Pilot: no separate unobstructed ring was supplied, but its positions/names are
@@ -967,20 +967,20 @@ visible behind the 10.01.28 / 10.01.32 popups. The separate ring is optional.
 
 Verified core links (full effects are transcribed in `src/data/hero-details.ts`):
 
-| Hero | Gear → talent |
-| --- | --- |
-| Snowoman | Crystal Staff → Blizzard; Tome of Radiance → Ice Blast; Luminous Visor → Bone-Chilling Cold; Resonance Pendant → Glorious Aura |
-| Bamboo Hat | Wizard's Wand → Energy Impact; Arcane Hat → Weakness Sensing; Mage Robe → Qi Mantra; Spell Tome → Energy Burst |
-| Fire Sorceress | Wizard's Wand → Flame Shock; Arcane Hat → Burn; Mage Robe → Blaze; Spell Tome → Enhance Impact |
-| Red Hood | Wizard's Wand → Mushroom Bomb; Arcane Hat → Poisoned Shooting; Mage Robe → Time Bomb; Spell Tome → Big-headed Mushroom |
-| Little Goblin | Wizard's Wand → Master of Machinery; Arcane Hat → Throw Mastery; Mage Robe → Quick Release; Spell Tome → DEF Formation |
-| Radiant Angel | Crystal Staff → Holy Light Protection; Tome of Radiance → Judgement; Luminous Visor → Holy Light Shines; Resonance Pendant → Super Protection |
-| Diva | Crystal Staff → Protagonist Arrive; Tome of Radiance → Full-out Merrying; Luminous Visor → Revisit; Resonance Pendant → Plot Armor |
-| Little Deer | Crystal Staff → Awaken; Tome of Radiance → Poisoned Spear; Luminous Visor → Nourishment; Resonance Pendant → Cleanse |
-| Lucifer | Blade of Valor → Doomsday Curse; Cavalier Helm → Flame Blade; Brawler's Armor → Strengthen Curse; Brawler's Boots → Demon Fire |
-| Captain Pilot | Swift Longbow → Warrior Strike; Arrow Core → Molotov Cocktail; Hunter's Cloak → Suppressive Shoot; Crystal Pendant → Explosive Bullet |
-| Li Bai | Swift Longbow → Sky-Splitting Sword; Arrow Core → Twin Swords; Hunter's Cloak → Sword Beam; Crystal Pendant → Man and Sword |
-| Lady Pan | Crystal Staff → Cutlery Throw; Tome of Radiance → Home Delivery; Luminous Visor → Deluxe Cake; Resonance Pendant → Spare Cutlery |
+| Hero           | Gear → talent                                                                                                                                 |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Snowoman       | Crystal Staff → Blizzard; Tome of Radiance → Ice Blast; Luminous Visor → Bone-Chilling Cold; Resonance Pendant → Glorious Aura                |
+| Bamboo Hat     | Wizard's Wand → Energy Impact; Arcane Hat → Weakness Sensing; Mage Robe → Qi Mantra; Spell Tome → Energy Burst                                |
+| Fire Sorceress | Wizard's Wand → Flame Shock; Arcane Hat → Burn; Mage Robe → Blaze; Spell Tome → Enhance Impact                                                |
+| Red Hood       | Wizard's Wand → Mushroom Bomb; Arcane Hat → Poisoned Shooting; Mage Robe → Time Bomb; Spell Tome → Big-headed Mushroom                        |
+| Little Goblin  | Wizard's Wand → Master of Machinery; Arcane Hat → Throw Mastery; Mage Robe → Quick Release; Spell Tome → DEF Formation                        |
+| Radiant Angel  | Crystal Staff → Holy Light Protection; Tome of Radiance → Judgement; Luminous Visor → Holy Light Shines; Resonance Pendant → Super Protection |
+| Diva           | Crystal Staff → Protagonist Arrive; Tome of Radiance → Full-out Merrying; Luminous Visor → Revisit; Resonance Pendant → Plot Armor            |
+| Little Deer    | Crystal Staff → Awaken; Tome of Radiance → Poisoned Spear; Luminous Visor → Nourishment; Resonance Pendant → Cleanse                          |
+| Lucifer        | Blade of Valor → Doomsday Curse; Cavalier Helm → Flame Blade; Brawler's Armor → Strengthen Curse; Brawler's Boots → Demon Fire                |
+| Captain Pilot  | Swift Longbow → Warrior Strike; Arrow Core → Molotov Cocktail; Hunter's Cloak → Suppressive Shoot; Crystal Pendant → Explosive Bullet         |
+| Li Bai         | Swift Longbow → Sky-Splitting Sword; Arrow Core → Twin Swords; Hunter's Cloak → Sword Beam; Crystal Pendant → Man and Sword                   |
+| Lady Pan       | Crystal Staff → Cutlery Throw; Tome of Radiance → Home Delivery; Luminous Visor → Deluxe Cake; Resonance Pendant → Spare Cutlery              |
 
 Review and transcription notes:
 
@@ -1114,46 +1114,46 @@ All supplied bottom red badges, now including Templar's **DMG Increase →
 Physical DMG Boost**, match `src/data/divinities.ts` and the actual
 `public/divinities/` icons. Only I/III remain missing for the fourteen candidates.
 
-| Hero / class | Artifact | Mythic divinities, left → right | Additional gap beyond I/III |
-| --- | --- | --- | --- |
-| Wine Immortal / Warrior | Dragon's Secret | SPD Reduction RES → Control RES | None |
-| Abyssal Queen / Mage | Sickle of Fear | HP → DMG Reduction | None; fourth core resolved by 10.57.41 AM |
-| Iron Fan Princess / Mage | Palm-Leaf Fan | Ranged DMG Boost → DMG Increase | None |
-| Otherworld Prisoner / Mage | Magic Oath Mask | HP → Magic DMG Boost | None |
-| Wizard / Support | Dark Codex | Support ATK → Heavy Injury | None |
-| Templar / Marksman | Spectral Blade | DMG Increase → Physical DMG Boost | None; 10.57.58–10.58.01 AM follow-ups |
-| Warlock / Support | Demon's Cloak | Control RES → Healing Effect | None |
-| Darkin Hunter / Marksman | Shadow Bow | DMG Increase → CRIT Rate | None |
-| Earthbreaker / Warrior | Battle Chant Drum | ATK → Melee DMG Boost | None |
-| Observer / Mage | Shadow Pendant | Heavy Injury → Ranged DMG Boost | None |
-| Dark Shaman / Support | Voodoo Staff | Support ATK → Magic DMG Boost | None |
-| Hellscream / Warrior | Tribe's Judgment | Melee DMG Reduction → Knockback Effect | None; Eternal Archive portrait imported |
-| Bone Archer / Marksman | Blood Bow | Marksman DEF → CRIT Rate | None |
-| Dark Queen / Marksman | Whispers of Death | Physical DMG Boost → DMG Reduction | None; Eternal Archive portrait imported |
-| Thrall / Support | Hammer of Destruction | Knockback Effect → Anti-CRIT Rate | Already recorded, including I/III |
-| Radiant Envoy / Mage | Wand of Light | DMG Increase → Magic DMG Boost | Already recorded, including approved I/III |
+| Hero / class               | Artifact              | Mythic divinities, left → right        | Additional gap beyond I/III                |
+| -------------------------- | --------------------- | -------------------------------------- | ------------------------------------------ |
+| Wine Immortal / Warrior    | Dragon's Secret       | SPD Reduction RES → Control RES        | None                                       |
+| Abyssal Queen / Mage       | Sickle of Fear        | HP → DMG Reduction                     | None; fourth core resolved by 10.57.41 AM  |
+| Iron Fan Princess / Mage   | Palm-Leaf Fan         | Ranged DMG Boost → DMG Increase        | None                                       |
+| Otherworld Prisoner / Mage | Magic Oath Mask       | HP → Magic DMG Boost                   | None                                       |
+| Wizard / Support           | Dark Codex            | Support ATK → Heavy Injury             | None                                       |
+| Templar / Marksman         | Spectral Blade        | DMG Increase → Physical DMG Boost      | None; 10.57.58–10.58.01 AM follow-ups      |
+| Warlock / Support          | Demon's Cloak         | Control RES → Healing Effect           | None                                       |
+| Darkin Hunter / Marksman   | Shadow Bow            | DMG Increase → CRIT Rate               | None                                       |
+| Earthbreaker / Warrior     | Battle Chant Drum     | ATK → Melee DMG Boost                  | None                                       |
+| Observer / Mage            | Shadow Pendant        | Heavy Injury → Ranged DMG Boost        | None                                       |
+| Dark Shaman / Support      | Voodoo Staff          | Support ATK → Magic DMG Boost          | None                                       |
+| Hellscream / Warrior       | Tribe's Judgment      | Melee DMG Reduction → Knockback Effect | None; Eternal Archive portrait imported    |
+| Bone Archer / Marksman     | Blood Bow             | Marksman DEF → CRIT Rate               | None                                       |
+| Dark Queen / Marksman      | Whispers of Death     | Physical DMG Boost → DMG Reduction     | None; Eternal Archive portrait imported    |
+| Thrall / Support           | Hammer of Destruction | Knockback Effect → Anti-CRIT Rate      | Already recorded, including I/III          |
+| Radiant Envoy / Mage       | Wand of Light         | DMG Increase → Magic DMG Boost         | Already recorded, including approved I/III |
 
 The six talent names and kinds below are in **0 / 2 / 5 / 8 / 12 / 16★** order,
 verified against each ring. Kinds: **U** Ultimate Skill, **B** Battle Skill,
 **S** Special Skill, **E** Enhance, **A** Attribute, **P** Passive. Every candidate
 has six complete talent descriptions and usable original popup icons.
 
-| Hero | Talents in unlock order |
-| --- | --- |
-| Wine Immortal | Storm Warrior (U) / Ground-Shaking Hit (B) / Swift Steps (E) / Wine Mist Flame (S) / Drunken Dance (A) / Earth Element (E) |
-| Abyssal Queen | Abyss Roar (U) / Poisoned Blade (B) / Sonic Enhance (E) / Queen's Shriek (S) / ATK Amplification (A) / Super Sonic Wave (E) |
-| Iron Fan Princess | Palm-Leaf Fan·Wind (U) / Palm-Leaf Fan·Power (B) / Windborne Steps (E) / Palm-Leaf Fan·Fire (S) / Wind Guardian (A) / Wind Fury (E) |
-| Otherworld Prisoner | Flame Impact (U) / Ignite (B) / Flame Enhancement (E) / Imprint (E) / Passionate Soul (A) / Blazing Flames (E) |
-| Wizard | Paralysis Potion (U) / Poison (B) / Enhance Potion (E) / Curse (S) / Energy Regen (A) / Potent Potion (E) |
-| Templar | Phase Shift (U) / Psi Blade (B) / Phase Boost (E) / Mind Trap (S) / Assassin Pact (P) / Shadow Rush (E) |
-| Warlock | Infernal (U) / Cataclysm (S) / Hell Harbinger (E) / Dark Word (S) / Corrupting Heart (A) / Hell Fist (E) |
-| Darkin Hunter | Corrupt Chains (U) / Blight Quiver (B) / Chain Power (E) / Pierce Bolt (S) / Darkin Blood (P) / Vine Bind (E) |
-| Earthbreaker | Fissure (U) / Empowered Totem (B) / Rupture (E) / Aftershock (S) / Brawny (P) / Shattered Ground (E) |
-| Observer | Annihilator (U) / Ion Split (B) / Ray Boost (E) / Void Rift (S) / Void Force (P) / Ray Charge (E) |
-| Dark Shaman | Serpent Ward (U) / Celestial Shock (B) / Enhanced Ward (E) / Hex (S) / Troll Bloodline (P) / Serpent Urn (E) |
-| Hellscream | War Cry (U) / Bloodlust (B) / For the Tribe (E) / Earth Shatter (S) / Orc Bloodline (P) / Ancient Energy (E) |
-| Bone Archer | Deathly Pact (U) / Specter Curse (B) / Flaming Arrow (E) / Rapid Fire (S) / Undead Body (P) / Revenant Pact (E) |
-| Dark Queen | Dread Arrow (U) / Dark Arrow (B) / Wail of the Dead (E) / Withering Shot (S) / Ranger General (P) / Surging Energy (E) |
+| Hero                | Talents in unlock order                                                                                                             |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Wine Immortal       | Storm Warrior (U) / Ground-Shaking Hit (B) / Swift Steps (E) / Wine Mist Flame (S) / Drunken Dance (A) / Earth Element (E)          |
+| Abyssal Queen       | Abyss Roar (U) / Poisoned Blade (B) / Sonic Enhance (E) / Queen's Shriek (S) / ATK Amplification (A) / Super Sonic Wave (E)         |
+| Iron Fan Princess   | Palm-Leaf Fan·Wind (U) / Palm-Leaf Fan·Power (B) / Windborne Steps (E) / Palm-Leaf Fan·Fire (S) / Wind Guardian (A) / Wind Fury (E) |
+| Otherworld Prisoner | Flame Impact (U) / Ignite (B) / Flame Enhancement (E) / Imprint (E) / Passionate Soul (A) / Blazing Flames (E)                      |
+| Wizard              | Paralysis Potion (U) / Poison (B) / Enhance Potion (E) / Curse (S) / Energy Regen (A) / Potent Potion (E)                           |
+| Templar             | Phase Shift (U) / Psi Blade (B) / Phase Boost (E) / Mind Trap (S) / Assassin Pact (P) / Shadow Rush (E)                             |
+| Warlock             | Infernal (U) / Cataclysm (S) / Hell Harbinger (E) / Dark Word (S) / Corrupting Heart (A) / Hell Fist (E)                            |
+| Darkin Hunter       | Corrupt Chains (U) / Blight Quiver (B) / Chain Power (E) / Pierce Bolt (S) / Darkin Blood (P) / Vine Bind (E)                       |
+| Earthbreaker        | Fissure (U) / Empowered Totem (B) / Rupture (E) / Aftershock (S) / Brawny (P) / Shattered Ground (E)                                |
+| Observer            | Annihilator (U) / Ion Split (B) / Ray Boost (E) / Void Rift (S) / Void Force (P) / Ray Charge (E)                                   |
+| Dark Shaman         | Serpent Ward (U) / Celestial Shock (B) / Enhanced Ward (E) / Hex (S) / Troll Bloodline (P) / Serpent Urn (E)                        |
+| Hellscream          | War Cry (U) / Bloodlust (B) / For the Tribe (E) / Earth Shatter (S) / Orc Bloodline (P) / Ancient Energy (E)                        |
+| Bone Archer         | Deathly Pact (U) / Specter Curse (B) / Flaming Arrow (E) / Rapid Fire (S) / Undead Body (P) / Revenant Pact (E)                     |
+| Dark Queen          | Dread Arrow (U) / Dark Arrow (B) / Wail of the Dead (E) / Withering Shot (S) / Ranger General (P) / Surging Energy (E)              |
 
 Source key: every item below is the exact suffix after
 `gameplay/talents/Screenshot 2026-09-14 at ` and before `.png`. The narrow
@@ -1161,43 +1161,43 @@ no-break space before **AM** and any trailing **` 1`** are part of the filename.
 Original popup columns use the same six-talent order above (and the existing
 seed order for Thrall/Radiant Envoy). Continuations complete text, not icon crops.
 
-| Hero | Ring | Six original talent popups | Talent/core continuations |
-| --- | --- | --- | --- |
-| Wine Immortal | 10.40.34 AM | 10.40.44 AM / 10.40.36 AM / 10.40.39 AM / 10.40.40 AM / 10.40.42 AM / 10.40.43 AM | 10.40.46 AM |
-| Abyssal Queen | 10.40.52 AM | 10.41.00 AM / 10.40.53 AM / 10.40.54 AM / 10.40.55 AM / 10.40.57 AM / 10.40.59 AM | 10.40.56 AM / 10.57.41 AM |
-| Iron Fan Princess | 10.41.11 AM | 10.41.19 AM / 10.41.12 AM / 10.41.14 AM / 10.41.15 AM / 10.41.17 AM / 10.41.18 AM | 10.41.13 AM / 10.41.16 AM / 10.41.20 AM |
-| Thrall | 10.41.30 AM | 10.41.41 AM / 10.41.32 AM / 10.41.34 AM / 10.41.36 AM / 10.41.38 AM / 10.41.39 AM | 10.41.32 AM 1 / 10.41.36 AM 1 |
-| Otherworld Prisoner | 10.41.49 AM | 10.41.57 AM / 10.41.50 AM / 10.41.52 AM / 10.41.53 AM / 10.41.54 AM / 10.41.56 AM | 10.41.50 AM 1 |
-| Wizard | 10.42.03 AM | 10.42.13 AM / 10.42.04 AM / 10.42.06 AM / 10.42.07 AM / 10.42.09 AM / 10.42.11 AM | 10.42.08 AM |
-| Templar | 10.42.20 AM | 10.42.29 AM / 10.42.22 AM / 10.42.23 AM / 10.42.25 AM 1 / 10.42.26 AM / 10.42.27 AM | 10.42.25 AM / 10.42.31 AM |
-| Warlock | 10.42.35 AM | 10.42.44 AM / 10.42.36 AM / 10.42.38 AM / 10.42.39 AM / 10.42.41 AM / 10.42.43 AM | 10.42.40 AM / 10.42.44 AM 1 |
-| Darkin Hunter | 10.42.54 AM | 10.43.03 AM / 10.42.55 AM / 10.42.57 AM / 10.42.58 AM / 10.43.00 AM / 10.43.01 AM | 10.43.03 AM 1 |
-| Earthbreaker | 10.43.10 AM | 10.43.20 AM / 10.43.11 AM / 10.43.13 AM / 10.43.14 AM / 10.43.17 AM / 10.43.18 AM | 10.43.12 AM |
-| Observer | 10.43.27 AM | 10.43.36 AM / 10.43.28 AM / 10.43.30 AM / 10.43.31 AM / 10.43.33 AM / 10.43.34 AM | 10.43.37 AM |
-| Radiant Envoy | 10.43.43 AM | 10.43.52 AM / 10.43.44 AM / 10.43.46 AM / 10.43.47 AM / 10.43.50 AM / 10.43.51 AM | 10.43.48 AM |
-| Dark Shaman | 10.43.58 AM | 10.44.06 AM / 10.44.00 AM / 10.44.01 AM / 10.44.02 AM / 10.44.04 AM / 10.44.05 AM | 10.44.03 AM / 10.44.08 AM |
-| Hellscream | 10.44.16 AM | 10.44.25 AM / 10.44.17 AM / 10.44.19 AM / 10.44.20 AM / 10.44.22 AM / 10.44.24 AM | 10.44.18 AM / 10.44.21 AM / 10.44.26 AM |
-| Bone Archer | 10.44.35 AM | 10.44.43 AM / 10.44.36 AM / 10.44.38 AM / 10.44.39 AM / 10.44.40 AM / 10.44.41 AM | 10.44.44 AM |
-| Dark Queen | 10.44.50 AM | 10.44.59 AM / 10.44.51 AM / 10.44.53 AM / 10.44.54 AM / 10.44.56 AM / 10.44.57 AM | 10.44.52 AM / 10.44.55 AM / 10.44.59 AM 1 |
+| Hero                | Ring        | Six original talent popups                                                          | Talent/core continuations                 |
+| ------------------- | ----------- | ----------------------------------------------------------------------------------- | ----------------------------------------- |
+| Wine Immortal       | 10.40.34 AM | 10.40.44 AM / 10.40.36 AM / 10.40.39 AM / 10.40.40 AM / 10.40.42 AM / 10.40.43 AM   | 10.40.46 AM                               |
+| Abyssal Queen       | 10.40.52 AM | 10.41.00 AM / 10.40.53 AM / 10.40.54 AM / 10.40.55 AM / 10.40.57 AM / 10.40.59 AM   | 10.40.56 AM / 10.57.41 AM                 |
+| Iron Fan Princess   | 10.41.11 AM | 10.41.19 AM / 10.41.12 AM / 10.41.14 AM / 10.41.15 AM / 10.41.17 AM / 10.41.18 AM   | 10.41.13 AM / 10.41.16 AM / 10.41.20 AM   |
+| Thrall              | 10.41.30 AM | 10.41.41 AM / 10.41.32 AM / 10.41.34 AM / 10.41.36 AM / 10.41.38 AM / 10.41.39 AM   | 10.41.32 AM 1 / 10.41.36 AM 1             |
+| Otherworld Prisoner | 10.41.49 AM | 10.41.57 AM / 10.41.50 AM / 10.41.52 AM / 10.41.53 AM / 10.41.54 AM / 10.41.56 AM   | 10.41.50 AM 1                             |
+| Wizard              | 10.42.03 AM | 10.42.13 AM / 10.42.04 AM / 10.42.06 AM / 10.42.07 AM / 10.42.09 AM / 10.42.11 AM   | 10.42.08 AM                               |
+| Templar             | 10.42.20 AM | 10.42.29 AM / 10.42.22 AM / 10.42.23 AM / 10.42.25 AM 1 / 10.42.26 AM / 10.42.27 AM | 10.42.25 AM / 10.42.31 AM                 |
+| Warlock             | 10.42.35 AM | 10.42.44 AM / 10.42.36 AM / 10.42.38 AM / 10.42.39 AM / 10.42.41 AM / 10.42.43 AM   | 10.42.40 AM / 10.42.44 AM 1               |
+| Darkin Hunter       | 10.42.54 AM | 10.43.03 AM / 10.42.55 AM / 10.42.57 AM / 10.42.58 AM / 10.43.00 AM / 10.43.01 AM   | 10.43.03 AM 1                             |
+| Earthbreaker        | 10.43.10 AM | 10.43.20 AM / 10.43.11 AM / 10.43.13 AM / 10.43.14 AM / 10.43.17 AM / 10.43.18 AM   | 10.43.12 AM                               |
+| Observer            | 10.43.27 AM | 10.43.36 AM / 10.43.28 AM / 10.43.30 AM / 10.43.31 AM / 10.43.33 AM / 10.43.34 AM   | 10.43.37 AM                               |
+| Radiant Envoy       | 10.43.43 AM | 10.43.52 AM / 10.43.44 AM / 10.43.46 AM / 10.43.47 AM / 10.43.50 AM / 10.43.51 AM   | 10.43.48 AM                               |
+| Dark Shaman         | 10.43.58 AM | 10.44.06 AM / 10.44.00 AM / 10.44.01 AM / 10.44.02 AM / 10.44.04 AM / 10.44.05 AM   | 10.44.03 AM / 10.44.08 AM                 |
+| Hellscream          | 10.44.16 AM | 10.44.25 AM / 10.44.17 AM / 10.44.19 AM / 10.44.20 AM / 10.44.22 AM / 10.44.24 AM   | 10.44.18 AM / 10.44.21 AM / 10.44.26 AM   |
+| Bone Archer         | 10.44.35 AM | 10.44.43 AM / 10.44.36 AM / 10.44.38 AM / 10.44.39 AM / 10.44.40 AM / 10.44.41 AM   | 10.44.44 AM                               |
+| Dark Queen          | 10.44.50 AM | 10.44.59 AM / 10.44.51 AM / 10.44.53 AM / 10.44.54 AM / 10.44.56 AM / 10.44.57 AM   | 10.44.52 AM / 10.44.55 AM / 10.44.59 AM 1 |
 
-| Hero | Artifact tab | Ability popup → continuation |
-| --- | --- | --- |
-| Wine Immortal | 10.40.48 AM; repeated 10.41.08 AM | 10.40.49 AM |
-| Abyssal Queen | 10.41.03 AM | 10.41.04 AM |
-| Iron Fan Princess | 10.41.22 AM | 10.41.23 AM |
-| Thrall | 10.41.43 AM | 10.41.44 AM → 10.41.45 AM |
-| Otherworld Prisoner | 10.41.59 AM | 10.42.00 AM |
-| Wizard | 10.42.16 AM | 10.42.17 AM |
-| Templar | 10.57.58 AM | 10.58.00 AM → 10.58.01 AM |
-| Warlock | 10.42.47 AM | 10.42.48 AM → 10.42.49 AM |
-| Darkin Hunter | 10.43.05 AM | 10.43.06 AM → 10.43.07 AM |
-| Earthbreaker | 10.43.23 AM | 10.43.24 AM → 10.43.24 AM 1 |
-| Observer | 10.43.39 AM | 10.43.40 AM → 10.43.41 AM |
-| Radiant Envoy | 10.43.54 AM | 10.43.55 AM → 10.43.56 AM |
-| Dark Shaman | 10.44.09 AM | 10.44.10 AM → 10.44.13 AM |
-| Hellscream | 10.44.31 AM | 10.44.32 AM → 10.44.33 AM |
-| Bone Archer | 10.44.46 AM | 10.44.47 AM → 10.44.47 AM 1 |
-| Dark Queen | 10.45.01 AM | 10.45.02 AM → 10.45.03 AM |
+| Hero                | Artifact tab                      | Ability popup → continuation |
+| ------------------- | --------------------------------- | ---------------------------- |
+| Wine Immortal       | 10.40.48 AM; repeated 10.41.08 AM | 10.40.49 AM                  |
+| Abyssal Queen       | 10.41.03 AM                       | 10.41.04 AM                  |
+| Iron Fan Princess   | 10.41.22 AM                       | 10.41.23 AM                  |
+| Thrall              | 10.41.43 AM                       | 10.41.44 AM → 10.41.45 AM    |
+| Otherworld Prisoner | 10.41.59 AM                       | 10.42.00 AM                  |
+| Wizard              | 10.42.16 AM                       | 10.42.17 AM                  |
+| Templar             | 10.57.58 AM                       | 10.58.00 AM → 10.58.01 AM    |
+| Warlock             | 10.42.47 AM                       | 10.42.48 AM → 10.42.49 AM    |
+| Darkin Hunter       | 10.43.05 AM                       | 10.43.06 AM → 10.43.07 AM    |
+| Earthbreaker        | 10.43.23 AM                       | 10.43.24 AM → 10.43.24 AM 1  |
+| Observer            | 10.43.39 AM                       | 10.43.40 AM → 10.43.41 AM    |
+| Radiant Envoy       | 10.43.54 AM                       | 10.43.55 AM → 10.43.56 AM    |
+| Dark Shaman         | 10.44.09 AM                       | 10.44.10 AM → 10.44.13 AM    |
+| Hellscream          | 10.44.31 AM                       | 10.44.32 AM → 10.44.33 AM    |
+| Bone Archer         | 10.44.46 AM                       | 10.44.47 AM → 10.44.47 AM 1  |
+| Dark Queen          | 10.45.01 AM                       | 10.45.02 AM → 10.45.03 AM    |
 
 All fourteen candidates now have four complete gear-core descriptions.
 `Screenshot 2026-09-14 at 10.57.41 AM.png` completes the earlier **10.41.00 AM**
@@ -1206,22 +1206,22 @@ Abyss Roar popup and reveals **Wizard's Wand·Core → Abyss Roar**:
 Its gold/red bonuses agree with the original popup. Keep the unscrolled
 **10.41.00 AM** capture as the icon source; the follow-up is for the core text.
 
-| Hero | Verified core → talent links |
-| --- | --- |
-| Wine Immortal | Blade of Valor → Storm Warrior; Cavalier Helm → Ground-Shaking Hit; Brawler's Armor → Wine Mist Flame; Brawler's Boots → Earth Element |
-| Abyssal Queen | Wizard's Wand → Abyss Roar; Arcane Hat → Poisoned Blade; Mage Robe → Queen's Shriek; Spell Tome → Super Sonic Wave |
-| Iron Fan Princess | Wizard's Wand → Palm-Leaf Fan·Wind; Arcane Hat → Palm-Leaf Fan·Power; Mage Robe → Windborne Steps; Spell Tome → Palm-Leaf Fan·Fire |
-| Otherworld Prisoner | Wizard's Wand → Flame Impact; Arcane Hat → Ignite; Mage Robe → Flame Enhancement; Spell Tome → Imprint |
-| Wizard | Crystal Staff → Paralysis Potion; Tome of Radiance → Poison; Luminous Visor → Enhance Potion; Resonance Pendant → Curse |
-| Templar | Swift Longbow → Phase Shift; Arrow Core → Phase Boost; Hunter's Cloak → Mind Trap; Crystal Pendant → Shadow Rush |
-| Warlock | Crystal Staff → Infernal; Tome of Radiance → Cataclysm; Luminous Visor → Hell Harbinger; Resonance Pendant → Dark Word |
-| Darkin Hunter | Swift Longbow → Corrupt Chains; Arrow Core → Blight Quiver; Hunter's Cloak → Pierce Bolt; Crystal Pendant → Vine Bind |
-| Earthbreaker | Blade of Valor → Fissure; Cavalier Helm → Empowered Totem; Brawler's Armor → Aftershock; Brawler's Boots → Shattered Ground |
-| Observer | Wizard's Wand → Annihilator; Arcane Hat → Ion Split; Mage Robe → Void Rift; Spell Tome → Ray Charge |
-| Dark Shaman | Crystal Staff → Serpent Ward; Tome of Radiance → Celestial Shock; Luminous Visor → Hex; Resonance Pendant → Serpent Urn |
-| Hellscream | Blade of Valor → War Cry; Cavalier Helm → Bloodlust; Brawler's Armor → Earth Shatter; Brawler's Boots → Ancient Energy |
-| Bone Archer | Swift Longbow → Deathly Pact; Arrow Core → Specter Curse; Hunter's Cloak → Flaming Arrow; Crystal Pendant → Revenant Pact |
-| Dark Queen | Swift Longbow → Dread Arrow; Arrow Core → Dark Arrow; Hunter's Cloak → Withering Shot; Crystal Pendant → Surging Energy |
+| Hero                | Verified core → talent links                                                                                                           |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Wine Immortal       | Blade of Valor → Storm Warrior; Cavalier Helm → Ground-Shaking Hit; Brawler's Armor → Wine Mist Flame; Brawler's Boots → Earth Element |
+| Abyssal Queen       | Wizard's Wand → Abyss Roar; Arcane Hat → Poisoned Blade; Mage Robe → Queen's Shriek; Spell Tome → Super Sonic Wave                     |
+| Iron Fan Princess   | Wizard's Wand → Palm-Leaf Fan·Wind; Arcane Hat → Palm-Leaf Fan·Power; Mage Robe → Windborne Steps; Spell Tome → Palm-Leaf Fan·Fire     |
+| Otherworld Prisoner | Wizard's Wand → Flame Impact; Arcane Hat → Ignite; Mage Robe → Flame Enhancement; Spell Tome → Imprint                                 |
+| Wizard              | Crystal Staff → Paralysis Potion; Tome of Radiance → Poison; Luminous Visor → Enhance Potion; Resonance Pendant → Curse                |
+| Templar             | Swift Longbow → Phase Shift; Arrow Core → Phase Boost; Hunter's Cloak → Mind Trap; Crystal Pendant → Shadow Rush                       |
+| Warlock             | Crystal Staff → Infernal; Tome of Radiance → Cataclysm; Luminous Visor → Hell Harbinger; Resonance Pendant → Dark Word                 |
+| Darkin Hunter       | Swift Longbow → Corrupt Chains; Arrow Core → Blight Quiver; Hunter's Cloak → Pierce Bolt; Crystal Pendant → Vine Bind                  |
+| Earthbreaker        | Blade of Valor → Fissure; Cavalier Helm → Empowered Totem; Brawler's Armor → Aftershock; Brawler's Boots → Shattered Ground            |
+| Observer            | Wizard's Wand → Annihilator; Arcane Hat → Ion Split; Mage Robe → Void Rift; Spell Tome → Ray Charge                                    |
+| Dark Shaman         | Crystal Staff → Serpent Ward; Tome of Radiance → Celestial Shock; Luminous Visor → Hex; Resonance Pendant → Serpent Urn                |
+| Hellscream          | Blade of Valor → War Cry; Cavalier Helm → Bloodlust; Brawler's Armor → Earth Shatter; Brawler's Boots → Ancient Energy                 |
+| Bone Archer         | Swift Longbow → Deathly Pact; Arrow Core → Specter Curse; Hunter's Cloak → Flaming Arrow; Crystal Pendant → Revenant Pact              |
+| Dark Queen          | Swift Longbow → Dread Arrow; Arrow Core → Dark Arrow; Hunter's Cloak → Withering Shot; Crystal Pendant → Surging Energy                |
 
 Artifact links and transcription cautions for a later authorized import:
 
@@ -1286,14 +1286,14 @@ artifact abilities are recorded; **Awakening I (18★) and III (22★)** were no
 supplied or excluded and remain unrecorded. This completes detail-entry coverage
 for the 67-hero roster, with the documented evidence gaps still applying.
 
-| Talent | Kind | Unlock | Artifact bonus | Core |
-| --- | --- | --- | --- | --- |
-| Infernal Oni Slash | Ultimate Skill | 0★ | — | Blade of Valor: Physical DMG equal to 60%(180%) of Attack |
-| 36 Pound Cannon | Battle Skill | 2★ | Purple: after silence ends, energy recovery speed −40% for 5s | — |
-| Enhanced Slash | Enhance | 5★ | — | Cavalier Helm: each slash adds DMG equal to 1.5%(4.5%) of target's lost HP, capped at 150%(450%) of Swordmaster's Attack |
-| Rashomon | Special Skill | 8★ | Gold: reflect DMG +30%, duration +2s; rainbow: restores 13% max HP, barrier grants +35% energy recovery speed and +0.8% HP regeneration per second | Brawler's Armor: Reflect DMG +10%(30%) |
-| Armament Haki | Passive | 12★ | — | — |
-| Path of Asura | Enhance | 16★ | — | Brawler's Boots: True DMG equal to 20%(60%) of Attack, duration +1(3) s |
+| Talent             | Kind           | Unlock | Artifact bonus                                                                                                                                     | Core                                                                                                                     |
+| ------------------ | -------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Infernal Oni Slash | Ultimate Skill | 0★     | —                                                                                                                                                  | Blade of Valor: Physical DMG equal to 60%(180%) of Attack                                                                |
+| 36 Pound Cannon    | Battle Skill   | 2★     | Purple: after silence ends, energy recovery speed −40% for 5s                                                                                      | —                                                                                                                        |
+| Enhanced Slash     | Enhance        | 5★     | —                                                                                                                                                  | Cavalier Helm: each slash adds DMG equal to 1.5%(4.5%) of target's lost HP, capped at 150%(450%) of Swordmaster's Attack |
+| Rashomon           | Special Skill  | 8★     | Gold: reflect DMG +30%, duration +2s; rainbow: restores 13% max HP, barrier grants +35% energy recovery speed and +0.8% HP regeneration per second | Brawler's Armor: Reflect DMG +10%(30%)                                                                                   |
+| Armament Haki      | Passive        | 12★    | —                                                                                                                                                  | —                                                                                                                        |
+| Path of Asura      | Enhance        | 16★    | —                                                                                                                                                  | Brawler's Boots: True DMG equal to 20%(60%) of Attack, duration +1(3) s                                                  |
 
 **Great Chiliocosm** is Devil Fruit's standalone **red** ability. After 13s on
 the battlefield, Swordmaster unleashes an unavoidable sword aura storm; targets
@@ -1338,36 +1338,36 @@ Hero-specific I and III are read from the Hero Awaken screenshots in
 the panel below. The player's Activated/Inactivated state, currency inventory,
 and padlock overlays are not part of the recorded hero skill.
 
-| Hero | Stage | Skill | Effect | Screenshot (2026-09-13 AM) |
-| ---- | ----- | ----- | ------ | ------------------------- |
-| Sea Captain | I | Commander | At the start of battle, increases all allies' DEF by 15%; the effect disappears upon own death. | 8.42.24 |
-| Sea Captain | III | Assault | Reduces the cooldown time of Torrent and Ship Raid by 25%. | 8.42.25 |
-| Nezha | I | Samadhi Flame | Attacks deal bonus damage equal to 3% of the enemy's Max HP, capped at 150% of Nezha's Attack. | 8.42.32 |
-| Nezha | III | Lotus Ward | For every 10% max HP lost, increases own energy recovery upon taking damage by 10%. | 8.42.37 |
-| Shadow Fiend | I | Soul Reaping | Every hero death instantly restores 100 Energy and grants 30% ATK SPD for 6s; the buff refreshes instead of stacking. | 8.54.42 |
-| Shadow Fiend | III | Soul Borrowing | Gains an additional 2.5% ATK SPD and 2.5% ATK for every enemy on the battlefield. | 8.54.44 |
-| Necromancer | I | Sadist's Heart | Every enemy killed (excluding summons) grants 3% Ranged DMG Reduction and 0.3% HP Regen per second, up to 5 stacks. | 9.19.39 |
-| Necromancer | III | Necro Possession | On entering battle, grants the highest-ATK ally (excluding self) 25% Ranged DMG Reduction, decaying to 10% after 15s; the screenshot says it "lasts until the end". | 9.22.05 |
-| Thrall | I | Kinetic Field | While Thrall is alive, enemies except illusions and summons have movement speed −10% and control resistance −30%. | 9.27.26 |
-| Thrall | III | Guardian Purification | Casting any skill randomly dispels some debuffs from one ally and restores HP equal to 50% of "Thal's" ATK every second for 6s, with an 8s cooldown. | 9.27.29 |
-| Jungle Envoy | I | Force of Nature | Enemy ATK −15% for 12s on entry, then gradually diminishes over 18s, ending at 30s. | 11.33.24 |
-| Jungle Envoy | III | Tranquil Redemption | Lightning Storm or Demonic Edict heals the lowest-HP ally for 130% of own ATK. | 11.33.25 |
-| Radiant Paladin | I | Sacred Body | Each 10% max HP lost adds 3% Physical RES and 3.5% Injured Energy Regen. | 11.33.58 |
-| Radiant Paladin | III | Wings of Purity | First HP drop below 40% grants 4s Physical DMG immunity and 5% max HP healing per second. | 11.34.00 |
-| Silence | I | Blade Break | Wisdom Blade has a 40% chance to hit two front enemies; four attacks on the same target reduce DEF by 10% for 5s. | 11.34.28 |
-| Silence | III | Soul Sustenance | Each fallen ally grants 4.5% ATK and DEF until battle ends. | 11.34.29 |
-| Gunslinger | I | Swift Victory | Entry grants 40% Energy Recovery SPD for 25s, gradually diminishing. | 11.34.51 |
-| Gunslinger | III | Frenzy | Each Snipe adds 10% ATK and ATK SPD until battle ends, up to two stacks. | 11.34.53 |
-| Dark Knight | I | Undead Guard | Entry grants all allies 10% Magic RES; the description calls it "Undead Guardian". | 11.35.22 |
-| Dark Knight | III | Death Pact | Fatal damage delays death by 3.5s; cannot recover energy during this time. | 11.35.24 |
-| Arcane Saint | I | Gourd Guard | Entry protects the lowest-DEF ally, increasing Energy gained from damage taken by 80% until that unit dies. | 11.35.52 |
-| Arcane Saint | III | Nature's Power | Each Golden Holy Bloom adds 8% Physical and Magic RES to all allies, up to two stacks. | 11.35.55 |
-| Witch Dictator | I | Dark Faded | Enemies take 5% more Magic DMG; Basic ATKs have a 30% chance to freeze for 1.5s. All own freezes drain 30 enemy energy (3s CD). | 11.50.20 + 11.51.47 |
-| Witch Dictator | III | Dark Ritual | Entry consumes 3% current maximum HP for 100 energy (10s CD); cannot activate below 30% HP. | 11.36.22 |
-| Silver Warrior | I | Lone And Brave | First HP drop below 50% grants immunity to certain control/slow effects for 7.5s. | 11.36.52 |
-| Silver Warrior | III | Killing Intent | Godslayer Strike's final hit stuns for 4s and reduces Dawn Slash cooldown by 1.5s. | 11.36.54 |
-| Holy Healer | I | Eudaemon Blessing | Enemy energy skills shield the weakest ally for 200% of Holy Healer's ATK (12s CD). | 11.37.31 |
-| Holy Healer | III | Conviction | Every 8s, reduces the highest-damage enemy's Energy Regen SPD by 55% for 5s. | 11.37.33 |
+| Hero            | Stage | Skill                 | Effect                                                                                                                                                              | Screenshot (2026-09-13 AM) |
+| --------------- | ----- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| Sea Captain     | I     | Commander             | At the start of battle, increases all allies' DEF by 15%; the effect disappears upon own death.                                                                     | 8.42.24                    |
+| Sea Captain     | III   | Assault               | Reduces the cooldown time of Torrent and Ship Raid by 25%.                                                                                                          | 8.42.25                    |
+| Nezha           | I     | Samadhi Flame         | Attacks deal bonus damage equal to 3% of the enemy's Max HP, capped at 150% of Nezha's Attack.                                                                      | 8.42.32                    |
+| Nezha           | III   | Lotus Ward            | For every 10% max HP lost, increases own energy recovery upon taking damage by 10%.                                                                                 | 8.42.37                    |
+| Shadow Fiend    | I     | Soul Reaping          | Every hero death instantly restores 100 Energy and grants 30% ATK SPD for 6s; the buff refreshes instead of stacking.                                               | 8.54.42                    |
+| Shadow Fiend    | III   | Soul Borrowing        | Gains an additional 2.5% ATK SPD and 2.5% ATK for every enemy on the battlefield.                                                                                   | 8.54.44                    |
+| Necromancer     | I     | Sadist's Heart        | Every enemy killed (excluding summons) grants 3% Ranged DMG Reduction and 0.3% HP Regen per second, up to 5 stacks.                                                 | 9.19.39                    |
+| Necromancer     | III   | Necro Possession      | On entering battle, grants the highest-ATK ally (excluding self) 25% Ranged DMG Reduction, decaying to 10% after 15s; the screenshot says it "lasts until the end". | 9.22.05                    |
+| Thrall          | I     | Kinetic Field         | While Thrall is alive, enemies except illusions and summons have movement speed −10% and control resistance −30%.                                                   | 9.27.26                    |
+| Thrall          | III   | Guardian Purification | Casting any skill randomly dispels some debuffs from one ally and restores HP equal to 50% of "Thal's" ATK every second for 6s, with an 8s cooldown.                | 9.27.29                    |
+| Jungle Envoy    | I     | Force of Nature       | Enemy ATK −15% for 12s on entry, then gradually diminishes over 18s, ending at 30s.                                                                                 | 11.33.24                   |
+| Jungle Envoy    | III   | Tranquil Redemption   | Lightning Storm or Demonic Edict heals the lowest-HP ally for 130% of own ATK.                                                                                      | 11.33.25                   |
+| Radiant Paladin | I     | Sacred Body           | Each 10% max HP lost adds 3% Physical RES and 3.5% Injured Energy Regen.                                                                                            | 11.33.58                   |
+| Radiant Paladin | III   | Wings of Purity       | First HP drop below 40% grants 4s Physical DMG immunity and 5% max HP healing per second.                                                                           | 11.34.00                   |
+| Silence         | I     | Blade Break           | Wisdom Blade has a 40% chance to hit two front enemies; four attacks on the same target reduce DEF by 10% for 5s.                                                   | 11.34.28                   |
+| Silence         | III   | Soul Sustenance       | Each fallen ally grants 4.5% ATK and DEF until battle ends.                                                                                                         | 11.34.29                   |
+| Gunslinger      | I     | Swift Victory         | Entry grants 40% Energy Recovery SPD for 25s, gradually diminishing.                                                                                                | 11.34.51                   |
+| Gunslinger      | III   | Frenzy                | Each Snipe adds 10% ATK and ATK SPD until battle ends, up to two stacks.                                                                                            | 11.34.53                   |
+| Dark Knight     | I     | Undead Guard          | Entry grants all allies 10% Magic RES; the description calls it "Undead Guardian".                                                                                  | 11.35.22                   |
+| Dark Knight     | III   | Death Pact            | Fatal damage delays death by 3.5s; cannot recover energy during this time.                                                                                          | 11.35.24                   |
+| Arcane Saint    | I     | Gourd Guard           | Entry protects the lowest-DEF ally, increasing Energy gained from damage taken by 80% until that unit dies.                                                         | 11.35.52                   |
+| Arcane Saint    | III   | Nature's Power        | Each Golden Holy Bloom adds 8% Physical and Magic RES to all allies, up to two stacks.                                                                              | 11.35.55                   |
+| Witch Dictator  | I     | Dark Faded            | Enemies take 5% more Magic DMG; Basic ATKs have a 30% chance to freeze for 1.5s. All own freezes drain 30 enemy energy (3s CD).                                     | 11.50.20 + 11.51.47        |
+| Witch Dictator  | III   | Dark Ritual           | Entry consumes 3% current maximum HP for 100 energy (10s CD); cannot activate below 30% HP.                                                                         | 11.36.22                   |
+| Silver Warrior  | I     | Lone And Brave        | First HP drop below 50% grants immunity to certain control/slow effects for 7.5s.                                                                                   | 11.36.52                   |
+| Silver Warrior  | III   | Killing Intent        | Godslayer Strike's final hit stuns for 4s and reduces Dawn Slash cooldown by 1.5s.                                                                                  | 11.36.54                   |
+| Holy Healer     | I     | Eudaemon Blessing     | Enemy energy skills shield the weakest ally for 200% of Holy Healer's ATK (12s CD).                                                                                 | 11.37.31                   |
+| Holy Healer     | III   | Conviction            | Every 8s, reduces the highest-damage enemy's Energy Regen SPD by 55% for 5s.                                                                                        | 11.37.33                   |
 
 Awakening I unlocks at **18★** and III at **22★** (owner-confirmed).
 Necromancer's Awakening I is recorded from the follow-up 9.19.39 AM screenshot.
@@ -1391,12 +1391,12 @@ Queen) and `image copy 13.png` (Hellscream) supply the first/third entries marke
 translations, not verified English or Vietnamese game wording. Source paths
 are retained in the seeds. This resolves both heroes' earlier awakening gaps.
 
-| Hero | Stage | Chinese title → app translation | Effect |
-| ---- | ----- | ------------------------------- | ------ |
-| Dark Queen | I | 强击光环 → Trueshot Aura | On entering battle, own and all nearby ranged allies' ATK +10% until battle ends. |
-| Dark Queen | III | 黑暗印记 → Dark Mark | Basic ATK hits apply a mark reducing enemy Physical RES by 10% for 6s; Split Arrows also apply it. |
-| Hellscream | I | 火刃之力 → Flame Blade Power | Every 5s after entering battle, own ATK and DEF +2.5%, up to 10 stacks. |
-| Hellscream | III | 黑暗光环 → Dark Aura | Each Earth Shatter grants all allies +15% Injured Energy Regen effect and +15% True DMG Reduction (True DMG only) for 6s; Hellscream receives double bonuses. |
+| Hero       | Stage | Chinese title → app translation | Effect                                                                                                                                                        |
+| ---------- | ----- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Dark Queen | I     | 强击光环 → Trueshot Aura        | On entering battle, own and all nearby ranged allies' ATK +10% until battle ends.                                                                             |
+| Dark Queen | III   | 黑暗印记 → Dark Mark            | Basic ATK hits apply a mark reducing enemy Physical RES by 10% for 6s; Split Arrows also apply it.                                                            |
+| Hellscream | I     | 火刃之力 → Flame Blade Power    | Every 5s after entering battle, own ATK and DEF +2.5%, up to 10 stacks.                                                                                       |
+| Hellscream | III   | 黑暗光环 → Dark Aura            | Each Earth Shatter grants all allies +15% Injured Energy Regen effect and +15% True DMG Reduction (True DMG only) for 6s; Hellscream receives double bonuses. |
 
 Hellscream III's title reads 黑暗光环 (Dark Aura), while its body calls the skill
 重击共鸣 (Heavy Strike Resonance). Preserve the printed title; do not invent a
@@ -1503,18 +1503,18 @@ Divinities have rarities; the app only includes **mythic (red)** ones (owner). T
 30 mythic divinities read from the owner's popups (`gameplay/divinities/`, 131 shots with
 duplicates; produced by `scripts/slice-divinities.py`):
 
-| Kind          | Divinities (stat rows)                                                                                      |
-| ------------- | ----------------------------------------------------------------------------------------------------------- |
-| ATK           | ATK, Mage ATK, Support ATK, Warrior ATK (flat numbers)                                                      |
-| DEF           | DEF (All DEF), Marksman DEF — Bone Archer only (flat)                                                       |
-| HP            | HP (flat)                                                                                                   |
-| DMG Increase  | DMG Increase, Physical DMG Boost, Magic DMG Boost, Melee DMG Boost, Ranged DMG Boost (%)                    |
+| Kind          | Divinities (stat rows)                                                                                                     |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| ATK           | ATK, Mage ATK, Support ATK, Warrior ATK (flat numbers)                                                                     |
+| DEF           | DEF (All DEF), Marksman DEF — Bone Archer only (flat)                                                                      |
+| HP            | HP (flat)                                                                                                                  |
+| DMG Increase  | DMG Increase, Physical DMG Boost, Magic DMG Boost, Melee DMG Boost, Ranged DMG Boost (%)                                   |
 | DMG Reduction | DMG Reduction, Physical RES, Magic RES, Melee DMG Reduction*, Ranged DMG Reduction, CRIT DMG Reduction, Anti-CRIT Rate (%) |
-| CRIT          | CRIT Rate, CRIT Damage (%)                                                                                  |
-| Control       | Anti-Control Rate, Control RES (%)                                                                         |
-| Knockback     | Knockback Effect, Knockback Resist, SPD Reduction RES (%)                                                  |
-| Healing       | Heavy Injury, Healing Effect, Receive Healing (%)                                                         |
-| SPD Boost     | ATK SPD (%)                                                                                                 |
+| CRIT          | CRIT Rate, CRIT Damage (%)                                                                                                 |
+| Control       | Anti-Control Rate, Control RES (%)                                                                                         |
+| Knockback     | Knockback Effect, Knockback Resist, SPD Reduction RES (%)                                                                  |
+| Healing       | Heavy Injury, Healing Effect, Receive Healing (%)                                                                          |
+| SPD Boost     | ATK SPD (%)                                                                                                                |
 
 \* The in-game row is truncated to "All Melee DMG Reduct"; expanded to match
 "Ranged DMG Reduction".
@@ -1675,15 +1675,15 @@ is unchanged.
 
 The owner's September 17 aquarium follow-ups add seven complete samples:
 
-| Fish | Catch size (cm) | Sample stats | Source in `gameplay/fishes/` |
-| --- | --- | --- | --- |
-| Zebrafish | 18 | Mage ATK 5211; DEF 693; Anti-CRIT Rate 4.37% | `image copy 3.png` |
-| Rose Fish | 26.1 | Mage ATK 5940; DEF 792; Receive Healing 9.90% | `image copy 3.png` |
-| Kissing Fish | 26.1 | Mage HP 78412; DEF 738; DMG Reduction 3.24% | `image copy 3.png` |
-| Lophiomus | 53.1 | Marksman ATK 4545; HP 37440; MOV SPD 6.57% | `image copy 4.png` |
-| Oarfish | 384.3 | ATK 2083; Support HP 73822; Knockback Effect 6.08% | `image copy 4.png`, repeated in `image copy 5.png` |
-| Ancient Black Fish | 1107 | ATK 2245; Support HP 79560; Physical DMG Boost 4.68% | `image copy 5.png` |
-| Hermit Crab | 21.6 | Warrior HP 69232; DMG Reduction 2.84%; Physical DMG Boost 4.41% | `image copy 5.png` |
+| Fish               | Catch size (cm) | Sample stats                                                    | Source in `gameplay/fishes/`                       |
+| ------------------ | --------------- | --------------------------------------------------------------- | -------------------------------------------------- |
+| Zebrafish          | 18              | Mage ATK 5211; DEF 693; Anti-CRIT Rate 4.37%                    | `image copy 3.png`                                 |
+| Rose Fish          | 26.1            | Mage ATK 5940; DEF 792; Receive Healing 9.90%                   | `image copy 3.png`                                 |
+| Kissing Fish       | 26.1            | Mage HP 78412; DEF 738; DMG Reduction 3.24%                     | `image copy 3.png`                                 |
+| Lophiomus          | 53.1            | Marksman ATK 4545; HP 37440; MOV SPD 6.57%                      | `image copy 4.png`                                 |
+| Oarfish            | 384.3           | ATK 2083; Support HP 73822; Knockback Effect 6.08%              | `image copy 4.png`, repeated in `image copy 5.png` |
+| Ancient Black Fish | 1107            | ATK 2245; Support HP 79560; Physical DMG Boost 4.68%            | `image copy 5.png`                                 |
+| Hermit Crab        | 21.6            | Warrior HP 69232; DMG Reduction 2.84%; Physical DMG Boost 4.41% | `image copy 5.png`                                 |
 
 Zebrafish's screenshot label Anti-CRIT Rate maps to the catalog key
 `Anti-Crit Rate`. Repeated Kissing Fish, Lophiomus, Oarfish, and Hermit Crab
@@ -1894,6 +1894,10 @@ daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
 
+- 2026-11-06 — **Nightmare Source was released.** Removed from the unreleased
+  list in `src/data/hero-release-status.ts`; the hero now appears under the
+  Released tab. Dreamstar Spirit, Nether Soul, and Panda Warrior remain unreleased.
+
 - 2026-10-13 — The concept "Invitation code" is renamed **"Access code"**
   (Vietnamese: "Mã truy cập"). Earlier entries below keep the old name.
 
@@ -1946,7 +1950,7 @@ daily/weekly missions, limited events, redemption codes.
 
 - 2026-09-28 — Requested awakening updates from the supplied Dark Queen and
   Hellscream Chinese guides (`gameplay/heroes/image copy 12.png` / `image copy
-  13.png`). Their unique first/third skills supply Trueshot Aura / Dark Mark and
+13.png`). Their unique first/third skills supply Trueshot Aura / Dark Mark and
   Flame Blade Power / Dark Aura respectively; effects and the Hellscream III
   title/body mismatch are recorded in the awakening reference above. Imported
   names are app translations. Shared Marksman/Warrior II/IV are documented
@@ -2463,8 +2467,7 @@ is said. These override anything marked (web).
   completes **Crystal Pendant → High Speed**: ATK SPD and MOV SPD additionally
   increase by 5%(15%). Together with the earlier Forest Longbow captures, this
   closes every non-awakening gap for Jungle Archer, bringing all 13 new
-  candidates to complete non-awakening coverage. I/III remain missing for all
-  13. This is a review, not an import.
+  candidates to complete non-awakening coverage. I/III remain missing for all 13. This is a review, not an import.
 
 ## How the app models it
 
@@ -2940,78 +2943,78 @@ a CATALOG name never seen, fails the run: add the row (or the screenshot) and re
 
 <!-- ROSTER:START -->
 
-| Hero                 | Role     | Rarity | Slug                   |
-| -------------------- | -------- | ------ | ---------------------- |
-| Hellscream | Warrior | Eternal | `hellscream` |
-| Baphomet             | Warrior  | Mythic | `baphomet`             |
-| Dark Knight          | Warrior  | Mythic | `dark-knight`          |
-| Earthbreaker         | Warrior  | Mythic | `earthbreaker`         |
-| Lucifer              | Warrior  | Mythic | `lucifer`              |
-| Monkey King          | Warrior  | Mythic | `monkey-king`          |
-| Nezha                | Warrior  | Mythic | `nezha`                |
-| Sea Captain          | Warrior  | Mythic | `sea-captain`          |
-| Silver Warrior       | Warrior  | Mythic | `silver-warrior`       |
-| Swordevil            | Warrior  | Mythic | `swordevil`            |
-| Swordmaster          | Warrior  | Mythic | `swordmaster`          |
-| White Ox             | Warrior  | Mythic | `white-ox`             |
-| Wine Immortal        | Warrior  | Mythic | `wine-immortal`        |
-| Ironblade Mixed-Race | Warrior  | Legend | `ironblade-mixed-race` |
-| Masked Ninja         | Warrior  | Legend | `masked-ninja`         |
-| Skeleton King        | Warrior  | Legend | `skeleton-king`        |
-| Soul Doll            | Warrior  | Legend | `soul-doll`            |
-| Whaley Imp           | Warrior  | Legend | `whaley-imp`           |
-| Whirlpool Ninja      | Warrior  | Legend | `whirlpool-ninja`      |
-| GooGoo Fish          | Warrior  | Epic   | `googoo-fish`          |
-| Mars                 | Warrior  | Epic   | `mars`                 |
-| Roar Warrior         | Warrior  | Epic   | `roar-warrior`         |
-| Dark Queen | Marksman | Eternal | `dark-queen` |
-| Bone Archer          | Marksman | Mythic | `bone-archer`          |
-| Captain Pilot        | Marksman | Mythic | `captain-pilot`        |
-| Darkin Hunter        | Marksman | Mythic | `darkin-hunter`        |
-| Gunslinger           | Marksman | Mythic | `gunslinger`           |
-| Li Bai               | Marksman | Mythic | `li-bai`               |
-| Medusa               | Marksman | Mythic | `medusa`               |
-| Shadow Fiend         | Marksman | Mythic | `shadow-fiend`         |
-| Shadow Master        | Marksman | Mythic | `shadow-master`        |
-| Templar              | Marksman | Mythic | `templar`              |
-| Cowboy Killer        | Marksman | Legend | `cowboy-killer`        |
-| Hidden Ninja         | Marksman | Legend | `hidden-ninja`         |
-| Moon Goddess         | Marksman | Legend | `moon-goddess`         |
-| Jungle Archer        | Marksman | Epic   | `jungle-archer`        |
-| Loli                 | Marksman | Epic   | `loli`                 |
-| Snow Hunter          | Marksman | Epic   | `snow-hunter`          |
-| Abyssal Queen        | Mage     | Mythic | `abyssal-queen`        |
-| Foxy Spirit          | Mage     | Mythic | `foxy-spirit`          |
-| Hela                 | Mage     | Mythic | `hela`                 |
-| Iron Fan Princess    | Mage     | Mythic | `iron-fan-princess`    |
-| Jungle Envoy         | Mage     | Mythic | `jungle-envoy`         |
-| Observer             | Mage     | Mythic | `observer`             |
-| Radiant Envoy        | Mage     | Mythic | `radiant-envoy`        |
-| Two-Headed Dragon    | Mage     | Mythic | `two-headed-dragon`    |
-| Witch Dictator       | Mage     | Mythic | `witch-dictator`       |
-| Otherworld Prisoner  | Mage     | Legend | `otherworld-prisoner`  |
-| Red Hood             | Mage     | Legend | `red-hood`             |
-| Bamboo Hat           | Mage     | Epic   | `bamboo-hat`           |
-| Fire Sorceress       | Mage     | Epic   | `fire-sorceress`       |
-| Little Goblin        | Mage     | Epic   | `little-goblin`        |
-| Arcane Saint         | Support  | Mythic | `arcane-saint`         |
-| Dark Shaman          | Support  | Mythic | `dark-shaman`          |
-| Dreamstar Spirit     | Support  | Mythic | `dreamstar-spirit`     |
-| Nether Soul          | Warrior  | Mythic | `nether-soul`          |
-| Nightmare Source     | Support  | Mythic | `nightmare-source`     |
-| Panda Warrior        | Warrior  | Mythic | `panda-warrior`        |
-| Holy Healer          | Support  | Mythic | `holy-healer`          |
-| Lady Pan             | Support  | Mythic | `lady-pan`             |
-| Necromancer          | Support  | Mythic | `necromancer`          |
-| Radiant Paladin      | Support  | Mythic | `radiant-paladin`      |
-| Silence              | Support  | Mythic | `silence`              |
-| Snowoman             | Support  | Mythic | `snowoman`             |
-| Thrall               | Support  | Mythic | `thrall`               |
-| Warlock              | Support  | Mythic | `warlock`              |
-| Diva                 | Support  | Legend | `diva`                 |
-| Little Deer          | Support  | Legend | `little-deer`          |
-| Mermaid Princess     | Support  | Legend | `mermaid-princess`     |
-| Radiant Angel        | Support  | Epic   | `radiant-angel`        |
-| Wizard               | Support  | Epic   | `wizard`               |
+| Hero                 | Role     | Rarity  | Slug                   |
+| -------------------- | -------- | ------- | ---------------------- |
+| Hellscream           | Warrior  | Eternal | `hellscream`           |
+| Baphomet             | Warrior  | Mythic  | `baphomet`             |
+| Dark Knight          | Warrior  | Mythic  | `dark-knight`          |
+| Earthbreaker         | Warrior  | Mythic  | `earthbreaker`         |
+| Lucifer              | Warrior  | Mythic  | `lucifer`              |
+| Monkey King          | Warrior  | Mythic  | `monkey-king`          |
+| Nezha                | Warrior  | Mythic  | `nezha`                |
+| Sea Captain          | Warrior  | Mythic  | `sea-captain`          |
+| Silver Warrior       | Warrior  | Mythic  | `silver-warrior`       |
+| Swordevil            | Warrior  | Mythic  | `swordevil`            |
+| Swordmaster          | Warrior  | Mythic  | `swordmaster`          |
+| White Ox             | Warrior  | Mythic  | `white-ox`             |
+| Wine Immortal        | Warrior  | Mythic  | `wine-immortal`        |
+| Ironblade Mixed-Race | Warrior  | Legend  | `ironblade-mixed-race` |
+| Masked Ninja         | Warrior  | Legend  | `masked-ninja`         |
+| Skeleton King        | Warrior  | Legend  | `skeleton-king`        |
+| Soul Doll            | Warrior  | Legend  | `soul-doll`            |
+| Whaley Imp           | Warrior  | Legend  | `whaley-imp`           |
+| Whirlpool Ninja      | Warrior  | Legend  | `whirlpool-ninja`      |
+| GooGoo Fish          | Warrior  | Epic    | `googoo-fish`          |
+| Mars                 | Warrior  | Epic    | `mars`                 |
+| Roar Warrior         | Warrior  | Epic    | `roar-warrior`         |
+| Dark Queen           | Marksman | Eternal | `dark-queen`           |
+| Bone Archer          | Marksman | Mythic  | `bone-archer`          |
+| Captain Pilot        | Marksman | Mythic  | `captain-pilot`        |
+| Darkin Hunter        | Marksman | Mythic  | `darkin-hunter`        |
+| Gunslinger           | Marksman | Mythic  | `gunslinger`           |
+| Li Bai               | Marksman | Mythic  | `li-bai`               |
+| Medusa               | Marksman | Mythic  | `medusa`               |
+| Shadow Fiend         | Marksman | Mythic  | `shadow-fiend`         |
+| Shadow Master        | Marksman | Mythic  | `shadow-master`        |
+| Templar              | Marksman | Mythic  | `templar`              |
+| Cowboy Killer        | Marksman | Legend  | `cowboy-killer`        |
+| Hidden Ninja         | Marksman | Legend  | `hidden-ninja`         |
+| Moon Goddess         | Marksman | Legend  | `moon-goddess`         |
+| Jungle Archer        | Marksman | Epic    | `jungle-archer`        |
+| Loli                 | Marksman | Epic    | `loli`                 |
+| Snow Hunter          | Marksman | Epic    | `snow-hunter`          |
+| Abyssal Queen        | Mage     | Mythic  | `abyssal-queen`        |
+| Foxy Spirit          | Mage     | Mythic  | `foxy-spirit`          |
+| Hela                 | Mage     | Mythic  | `hela`                 |
+| Iron Fan Princess    | Mage     | Mythic  | `iron-fan-princess`    |
+| Jungle Envoy         | Mage     | Mythic  | `jungle-envoy`         |
+| Observer             | Mage     | Mythic  | `observer`             |
+| Radiant Envoy        | Mage     | Mythic  | `radiant-envoy`        |
+| Two-Headed Dragon    | Mage     | Mythic  | `two-headed-dragon`    |
+| Witch Dictator       | Mage     | Mythic  | `witch-dictator`       |
+| Otherworld Prisoner  | Mage     | Legend  | `otherworld-prisoner`  |
+| Red Hood             | Mage     | Legend  | `red-hood`             |
+| Bamboo Hat           | Mage     | Epic    | `bamboo-hat`           |
+| Fire Sorceress       | Mage     | Epic    | `fire-sorceress`       |
+| Little Goblin        | Mage     | Epic    | `little-goblin`        |
+| Arcane Saint         | Support  | Mythic  | `arcane-saint`         |
+| Dark Shaman          | Support  | Mythic  | `dark-shaman`          |
+| Dreamstar Spirit     | Support  | Mythic  | `dreamstar-spirit`     |
+| Nether Soul          | Warrior  | Mythic  | `nether-soul`          |
+| Nightmare Source     | Support  | Mythic  | `nightmare-source`     |
+| Panda Warrior        | Warrior  | Mythic  | `panda-warrior`        |
+| Holy Healer          | Support  | Mythic  | `holy-healer`          |
+| Lady Pan             | Support  | Mythic  | `lady-pan`             |
+| Necromancer          | Support  | Mythic  | `necromancer`          |
+| Radiant Paladin      | Support  | Mythic  | `radiant-paladin`      |
+| Silence              | Support  | Mythic  | `silence`              |
+| Snowoman             | Support  | Mythic  | `snowoman`             |
+| Thrall               | Support  | Mythic  | `thrall`               |
+| Warlock              | Support  | Mythic  | `warlock`              |
+| Diva                 | Support  | Legend  | `diva`                 |
+| Little Deer          | Support  | Legend  | `little-deer`          |
+| Mermaid Princess     | Support  | Legend  | `mermaid-princess`     |
+| Radiant Angel        | Support  | Epic    | `radiant-angel`        |
+| Wizard               | Support  | Epic    | `wizard`               |
 
 <!-- ROSTER:END -->

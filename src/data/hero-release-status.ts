@@ -1,8 +1,7 @@
-/** Owner-confirmed unreleased heroes, September 17, 2026. */
+/** Owner-confirmed unreleased heroes (Sep 17, 2026); Nightmare Source released Nov 6, 2026. */
 export const UNRELEASED_HERO_SLUGS = [
   "dreamstar-spirit",
   "nether-soul",
-  "nightmare-source",
   "panda-warrior",
 ] as const;
 

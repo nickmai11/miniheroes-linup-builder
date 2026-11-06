@@ -382,12 +382,7 @@ test("catalog portraits are allowed for unreleased heroes before detail import",
     "@/data/hero-details": { heroDetailSeeds: {} },
     "@/lib/lineup-preview-access": { heroLineupPreviewIds: async () => [] },
   });
-  for (const slug of [
-    "dreamstar-spirit",
-    "nether-soul",
-    "nightmare-source",
-    "panda-warrior",
-  ]) {
+  for (const slug of ["dreamstar-spirit", "nether-soul", "panda-warrior"]) {
     assert.equal(
       await isPublicPageAsset("/heroes", `/heroes/${slug}.png`),
       true,

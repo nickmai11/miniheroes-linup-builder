@@ -10,17 +10,12 @@ import {
 } from "../src/data/hero-release-status.ts";
 import { loadTypeScript } from "./load-typescript.mjs";
 
-test("the owner's four unreleased heroes have roster entries and portrait assets", () => {
+test("the owner's three unreleased heroes have roster entries and portrait assets", () => {
   const names = heroSeeds
     .filter((hero) => getHeroReleaseStatus(hero.slug) === "unreleased")
     .map((hero) => hero.name)
     .sort();
-  assert.deepEqual(names, [
-    "Dreamstar Spirit",
-    "Nether Soul",
-    "Nightmare Source",
-    "Panda Warrior",
-  ]);
+  assert.deepEqual(names, ["Dreamstar Spirit", "Nether Soul", "Panda Warrior"]);
   for (const slug of UNRELEASED_HERO_SLUGS) {
     const hero = heroSeeds.find((candidate) => candidate.slug === slug);
     assert.ok(hero.imageUrl);
