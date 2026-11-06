@@ -135,8 +135,12 @@ test("navigation translates labels while preserving URLs and active state", () =
     assert.match(html, locale === "vi" ? /Anh hùng/ : /Heroes/);
   }
   const admin = render(NavLinks, { canEdit: true }, "en");
-  const adminStart = admin.indexOf(">Admin<");
+  const adminStart = admin.indexOf('aria-label="Admin navigation"');
   assert.ok(adminStart > admin.indexOf('href="/about"'));
+  assert.ok(
+    admin.indexOf('href="/about"') >
+      admin.indexOf('aria-label="Main navigation"'),
+  );
   for (const href of [
     "/lineups/new",
     "/invitations/new",

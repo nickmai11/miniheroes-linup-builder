@@ -88,23 +88,23 @@ export function NavLinks(props: NavigationProps) {
   const { t } = useI18n();
 
   return (
-    <nav
-      aria-label={t("Main navigation")}
-      className="bg-background/85 supports-[backdrop-filter]:bg-background/70 sticky top-0 z-40 hidden border-b backdrop-blur md:block"
-    >
-      <div className="mx-auto flex min-h-12 w-full max-w-6xl min-w-0 items-center gap-1 overflow-x-auto px-6 py-2 text-sm">
-        <NavigationItems links={USER_LINKS} />
-        {props.canEdit && (
-          <>
-            <span className="bg-border mx-2 h-5 w-px shrink-0" aria-hidden />
-            <span className="text-muted-foreground px-1 text-xs font-medium tracking-wide uppercase">
-              {t("Admin")}
-            </span>
+    <div className="bg-background/85 supports-[backdrop-filter]:bg-background/70 sticky top-0 z-40 hidden border-b backdrop-blur md:block">
+      <nav aria-label={t("Main navigation")}>
+        <div className="mx-auto flex min-h-12 w-full max-w-6xl min-w-0 items-center gap-1 overflow-x-auto px-6 py-2 text-sm">
+          <NavigationItems links={USER_LINKS} />
+        </div>
+      </nav>
+      {props.canEdit && (
+        <nav
+          aria-label={t("Admin navigation")}
+          className="bg-muted/40 border-t"
+        >
+          <div className="mx-auto flex min-h-10 w-full max-w-6xl min-w-0 items-center gap-1 overflow-x-auto px-6 py-1.5 text-sm">
             <NavigationItems links={ADMIN_LINKS} />
-          </>
-        )}
-      </div>
-    </nav>
+          </div>
+        </nav>
+      )}
+    </div>
   );
 }
 
@@ -162,9 +162,7 @@ export function MobileNavigation(props: NavigationProps) {
               />
               {props.canEdit && (
                 <>
-                  <span className="text-muted-foreground mt-3 border-t px-3 pt-3 text-xs font-medium tracking-wide uppercase">
-                    {t("Admin")}
-                  </span>
+                  <span className="mt-3 mb-2 border-t" aria-hidden />
                   <NavigationItems
                     links={ADMIN_LINKS}
                     mobile

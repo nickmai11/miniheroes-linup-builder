@@ -1613,7 +1613,10 @@ inferred (one red chest icon for all eight recipes); the page no longer notes it
 
 Navigation (owner, 2026-11-06): the nav is split into user links (Heroes,
 Divinities, Fishes, Relics, Lineups, Shared with me, About) and, for a signed-in
-admin only, a separate "Admin" group (Build, Access codes, Public URLs, Users).
+admin only, a separate admin nav bar under the main one (Build, Access codes,
+Public URLs, Users) — one shared row overflowed and scrolled (owner, 2026-11-06).
+No "Admin" label (owner, 2026-11-06). On mobile the admin links follow a divider
+at the bottom of the menu.
 
 ### Fishes (owner-defined, 2026-09-13)
 
