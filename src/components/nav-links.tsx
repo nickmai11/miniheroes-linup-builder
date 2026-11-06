@@ -8,6 +8,7 @@ import { Dialog } from "@base-ui/react/dialog";
 import {
   Crown,
   Fish,
+  Gem,
   Hammer,
   Info,
   Link2,
@@ -23,17 +24,22 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const LINKS = [
+const USER_LINKS = [
   { href: "/heroes", label: "Heroes", icon: Users },
   { href: "/divinities", label: "Divinities", icon: Sparkles },
   { href: "/fishes", label: "Fishes", icon: Fish },
+  { href: "/relics", label: "Relics", icon: Gem },
   { href: "/lineups", label: "Lineups", icon: Swords },
   { href: "/shared", label: "Shared with me", icon: Share2 },
+  { href: "/about", label: "About", icon: Info },
+] as const;
+
+/** Shown only to a signed-in admin, as a separate group. */
+const ADMIN_LINKS = [
   { href: "/lineups/new", label: "Build", icon: Hammer },
   { href: "/invitations/new", label: "Access codes", icon: Ticket },
   { href: "/public-urls", label: "Public URLs", icon: Link2 },
   { href: "/users", label: "Users", icon: UserRoundCog },
-  { href: "/about", label: "About", icon: Info },
 ] as const;
 
 type NavigationProps = {
@@ -41,21 +47,17 @@ type NavigationProps = {
 };
 
 function NavigationItems({
-  canEdit,
+  links,
   mobile = false,
   onSelect,
-}: NavigationProps & {
+}: {
+  links: typeof USER_LINKS | typeof ADMIN_LINKS;
   mobile?: boolean;
   onSelect?: () => void;
 }) {
   const { t } = useI18n();
   const pathname = usePathname();
-  return LINKS.map(({ href, label, icon: Icon }) => {
-    const adminRoute =
-      href === "/invitations/new" ||
-      href === "/public-urls" ||
-      href === "/users";
-    if ((href === "/lineups/new" || adminRoute) && !canEdit) return null;
+  return links.map(({ href, label, icon: Icon }) => {
     const active =
       href === "/lineups"
         ? pathname === "/lineups" || /^\/lineups\/\d+/.test(pathname)
@@ -91,7 +93,16 @@ export function NavLinks(props: NavigationProps) {
       className="bg-background/85 supports-[backdrop-filter]:bg-background/70 sticky top-0 z-40 hidden border-b backdrop-blur md:block"
     >
       <div className="mx-auto flex min-h-12 w-full max-w-6xl min-w-0 items-center gap-1 overflow-x-auto px-6 py-2 text-sm">
-        <NavigationItems {...props} />
+        <NavigationItems links={USER_LINKS} />
+        {props.canEdit && (
+          <>
+            <span className="bg-border mx-2 h-5 w-px shrink-0" aria-hidden />
+            <span className="text-muted-foreground px-1 text-xs font-medium tracking-wide uppercase">
+              {t("Admin")}
+            </span>
+            <NavigationItems links={ADMIN_LINKS} />
+          </>
+        )}
       </div>
     </nav>
   );
@@ -145,10 +156,22 @@ export function MobileNavigation(props: NavigationProps) {
               className="mt-4 flex flex-col gap-1 text-sm"
             >
               <NavigationItems
-                {...props}
+                links={USER_LINKS}
                 mobile
                 onSelect={() => setOpen(false)}
               />
+              {props.canEdit && (
+                <>
+                  <span className="text-muted-foreground mt-3 border-t px-3 pt-3 text-xs font-medium tracking-wide uppercase">
+                    {t("Admin")}
+                  </span>
+                  <NavigationItems
+                    links={ADMIN_LINKS}
+                    mobile
+                    onSelect={() => setOpen(false)}
+                  />
+                </>
+              )}
             </nav>
           </Dialog.Popup>
         </Dialog.Viewport>

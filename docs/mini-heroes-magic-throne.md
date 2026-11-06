@@ -1567,6 +1567,54 @@ Shield**, **Spiked Armor**, **Soulcalm Gem**, **Boots of Haste**, **Silverblade*
 their catalog names. `gameplay/relics/image.png` supplies the eight clean icon
 tiles, matched to the 12.57.40–12.58.16 PM popups.
 
+#### Relic fusion (read from the game, 2026-11-06)
+
+`src/data/relic-fusion.ts` records the whole
+Relic Archive (36 relics) and Fusion Archive as read on the owner's Kong account
+(`gameplay/relics/archive-2026-11-06-*.png`, `fusion-archive-2026-11-06-*.png`;
+the 28 new icons are sliced by `scripts/slice-relic-archive.py`). Tiers, with
+fragments per relic from the Fragment screen: base 20 (Bronze Mirror, Beast
+Bone, Limestone), Common 30 (Stone Hammer, Bone Saw, Bronze Dagger), Rare 40
+(6), Legend 50 (8), Mythic 60 (8), Eternal 60 (8). The eight relics above are
+the **Mythic** tier (red frames in the archive); their popups say "Common Relic",
+which is a game text bug (the archive section header says Mythic).
+
+Recipes: Stone Hammer = 2 Bronze Mirror + 4 Limestone, Bone Saw = 4 Beast Bone +
+2 Limestone, Bronze Dagger = 4 Bronze Mirror + 2 Beast Bone. Every Rare = 3
+Commons of two kinds (e.g. Mithril Axe = Bronze Dagger + 2 Stone Hammer), every
+Legend = 3 different Rares. Mythic and Eternal relics have no recipe of their
+own: a tier chest (random relic of the tier) is fused from 3 relics of the tier
+below — the Fusion Archive lists 8 Mythic-chest and 8 Eternal-chest recipes,
+each group of four lower relics giving its four triples; an Eternal chest also
+takes 1 **Rite Stone**. Lower chests: Common = 2 + 2 + 2 base, Rare = Dagger +
+Saw + Hammer, Legend = Puppet Doll + Beast Totem + Assembly Flag or Tribal
+Goblet + Bone Scepter + Mithril Axe. So one Common = 6 base relics, Rare 18,
+Legend 54, Mythic 162, Eternal 486. Whether a chest gives a random relic or a
+choice is not verified. One Mythic-chest row (Heart of Cleansing + Tideblade +
+Arcane Key) was cut off by the scroll and is filled in from the pattern.
+
+The `/relics` page leads with the **two Mythic groups** (owner, 2026-11-06:
+"show the formula for each group of mythic relics (there are 2 groups)"):
+group 1 = Night Twinblades, Charge Shield, Spiked Armor, Soulcalm Gem, fused
+from Broadsword, Buckler, Dragon Seal, Memorial Stele; group 2 = Boots of Haste,
+Silverblade, Pendant of Purity, Arcane Cloak, from Ruby Cup, Heart of Cleansing,
+Tideblade, Arcane Key. Each card shows the four chest formulas (any 3 different
+Legends of the group) and the group's Legend formulas, icons only with the name
+on hover, counts as a badge on the icon (owner, 2026-11-06). Rare and Common
+relics are independent of the groups (owner, 2026-11-06): the "Common" tab lists all 6 Rare and 3 Common formulas. Every formula row continues
+tier by tier down to base relics (Mythic chest = Legends = Rares = Commons =
+base; owner, 2026-11-06), one tier per line, relics in catalog order with no
+blank slots, each formula in its own boxed panel. The two groups are tabs
+("Mythic group 1" / "Mythic group 2", owner, 2026-11-06), and a third
+"Common" tab holds the shared Rare and Common formulas (owner, 2026-11-06). Nothing else is on the page (owner removed the calculator, the per-group cost line and the Legend
+checkboxes, 2026-11-06). The Mythic grouping is
+the Eternal recipes' pairing; which Legend group feeds which Mythic group is
+inferred (one red chest icon for all eight recipes); the page no longer notes it.
+
+Navigation (owner, 2026-11-06): the nav is split into user links (Heroes,
+Divinities, Fishes, Relics, Lineups, Shared with me, About) and, for a signed-in
+admin only, a separate "Admin" group (Build, Access codes, Public URLs, Users).
+
 ### Fishes (owner-defined, 2026-09-13)
 
 The fish catalog and dedicated Fishes page must show each fish’s icon, name,

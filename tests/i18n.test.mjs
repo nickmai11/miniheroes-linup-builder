@@ -131,8 +131,19 @@ test("navigation translates labels while preserving URLs and active state", () =
     assert.match(html, /href="\/heroes"/);
     assert.match(html, /aria-current="page"/);
     assert.doesNotMatch(html, /href="\/lineups\/new"/);
+    assert.doesNotMatch(html, /href="\/users"/);
     assert.match(html, locale === "vi" ? /Anh hùng/ : /Heroes/);
   }
+  const admin = render(NavLinks, { canEdit: true }, "en");
+  const adminStart = admin.indexOf(">Admin<");
+  assert.ok(adminStart > admin.indexOf('href="/about"'));
+  for (const href of [
+    "/lineups/new",
+    "/invitations/new",
+    "/public-urls",
+    "/users",
+  ])
+    assert.ok(admin.indexOf(`href="${href}"`) > adminStart, href);
 });
 
 test("build priorities and empty states render in both languages", () => {
