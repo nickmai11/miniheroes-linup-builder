@@ -52,7 +52,7 @@ export async function POST(request: Request) {
     const access = await getFollowAccess(parsed.data);
     if (!access.key)
       return json(
-        { error: "Use an invitation or sign in as admin to follow." },
+        { error: "Use an access code or sign in as admin to follow." },
         401,
       );
     // Removing a personal follow remains possible after deletion or access revocation.

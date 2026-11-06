@@ -61,7 +61,7 @@ export function FollowButton({
         <TooltipContent>
           {t(
             summary && !summary.canFollow && !summary.following
-              ? "Use an invitation or sign in as admin to follow."
+              ? "Use an access code or sign in as admin to follow."
               : summary?.following
                 ? "Following"
                 : "Follow",

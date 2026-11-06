@@ -26,7 +26,7 @@ export default async function UsersPage() {
           href="/invitations/new"
           className="text-primary text-sm font-medium underline underline-offset-4"
         >
-          {t("Invite a user")}
+          {t("Create an access code")}
         </Link>
       }
     >

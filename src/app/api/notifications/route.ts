@@ -24,7 +24,7 @@ export async function GET(request: Request) {
     return page
       ? json(page)
       : json(
-          { error: "Sign in or use an invitation to see notifications." },
+          { error: "Sign in or use an access code to see notifications." },
           401,
         );
   } catch (error) {
@@ -55,7 +55,7 @@ export async function POST(request: Request) {
   try {
     if (!(await markNotificationsRead(parsed.data)))
       return json(
-        { error: "Sign in or use an invitation to see notifications." },
+        { error: "Sign in or use an access code to see notifications." },
         401,
       );
     return json({ ok: true });

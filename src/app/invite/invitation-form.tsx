@@ -37,7 +37,7 @@ export function InvitationForm({
         if (!response.ok)
           throw new Error(
             result.error ||
-              "Could not check your invitation. Please try again.",
+              "Could not check your access code. Please try again.",
           );
         const target = invitationDestination(result.destination);
         window.location.replace(
@@ -111,7 +111,7 @@ export function InvitationForm({
           {error === INVALID_INVITATION && (
             <p className="mt-1">
               {t(
-                "Check that you copied the whole code, or ask for a new invitation.",
+                "Check that you copied the whole code, or ask for a new access code.",
               )}
             </p>
           )}
@@ -126,11 +126,11 @@ export function InvitationForm({
         {pending ? (
           <>
             <LoaderCircle className="animate-spin" aria-hidden />
-            {t("Checking invitation…")}
+            {t("Checking access code…")}
           </>
         ) : (
           <>
-            {t("Open invitation")} <ArrowRight aria-hidden />
+            {t("Use access code")} <ArrowRight aria-hidden />
           </>
         )}
       </Button>
@@ -141,7 +141,7 @@ export function InvitationForm({
         {pending
           ? t("You’ll continue automatically once your code is checked.")
           : t(
-              "Have an invitation link? Open it directly — the code is filled in for you.",
+              "Have an access link? Open it directly — the code is filled in for you.",
             )}
       </p>
       <noscript>

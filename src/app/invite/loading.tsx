@@ -18,7 +18,7 @@ export default function Loading() {
 
   return (
     <LoadingPage
-      label={t("invitation form")}
+      label={t("access code form")}
       className="max-w-md flex-1 justify-center px-4 py-10 sm:py-16"
     >
       <Card className="[--card-spacing:--spacing(6)]">

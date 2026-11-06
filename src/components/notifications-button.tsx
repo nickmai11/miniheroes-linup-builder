@@ -40,7 +40,7 @@ export function NotificationsButton() {
       );
       if (response.status === 401) {
         setPage(null);
-        throw new Error("Sign in or use an invitation to see notifications.");
+        throw new Error("Sign in or use an access code to see notifications.");
       }
       if (!response.ok)
         throw new Error("Could not load notifications. Please try again.");

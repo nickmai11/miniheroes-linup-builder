@@ -68,7 +68,7 @@ export function InvitationGenerator() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Invite someone")}</CardTitle>
+        <CardTitle>{t("Create an access code")}</CardTitle>
         <CardDescription>
           {t(
             "Each code unlocks access for one browser. Unused codes do not expire.",
@@ -114,7 +114,7 @@ export function InvitationGenerator() {
               </Button>
             </div>
             <div className="flex flex-col gap-2 border-t pt-5">
-              <Label htmlFor="invitation-link">{t("Invitation link")}</Label>
+              <Label htmlFor="invitation-link">{t("Access link")}</Label>
               <p className="text-muted-foreground text-xs">
                 {t(
                   "This link opens the app and enters the code automatically.",
@@ -124,7 +124,7 @@ export function InvitationGenerator() {
                 <>
                   <Input
                     id="invitation-link"
-                    aria-label={t("Invitation link")}
+                    aria-label={t("Access link")}
                     value={link}
                     readOnly
                     onFocus={(event) => event.target.select()}
@@ -141,7 +141,7 @@ export function InvitationGenerator() {
                     )}
                     {copied === "link"
                       ? t("Copied link")
-                      : t("Copy invitation link")}
+                      : t("Copy access link")}
                   </Button>
                 </>
               )}

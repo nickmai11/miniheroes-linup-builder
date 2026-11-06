@@ -9,7 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getI18n();
 
   return {
-    title: t("Generate invitation"),
+    title: t("Generate access code"),
     robots: { index: false, follow: false },
   };
 }
@@ -22,7 +22,7 @@ export default async function NewInvitationPage() {
     <PageShell
       title={t("Access codes")}
       description={t(
-        "Generate a code and share it with someone you’d like to invite.",
+        "Generate an access code and share it with someone you’d like to give access.",
       )}
       width="max-w-2xl"
     >

@@ -46,6 +46,6 @@ export async function POST(request: NextRequest) {
     return privateInvitationResponse(response);
   } catch (error) {
     reportAccessError("invitation-redemption", error);
-    return reply("Could not check your invitation. Please try again.", 503);
+    return reply("Could not check your access code. Please try again.", 503);
   }
 }

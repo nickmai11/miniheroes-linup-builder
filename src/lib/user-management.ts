@@ -152,7 +152,7 @@ export async function revokeManagedUser(input: unknown) {
   if (!(await getAdminId())) return forbidden;
   const parsed = revokeUserSchema.safeParse(input);
   if (!parsed.success)
-    return { error: "Choose an invited user to revoke access.", status: 400 };
+    return { error: "Choose an access code user to revoke access.", status: 400 };
   const { viewerKey } = parsed.data;
   return db.transaction(async (tx) => {
     const [removed] = await tx

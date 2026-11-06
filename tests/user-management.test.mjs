@@ -41,7 +41,7 @@ test("user directory renders localized controls and only offers invited-user rev
       React.createElement(UserManager, { initialUsers: fixtureUsers }),
     );
     assert.ok(markup.includes(i18n.t("Search users")));
-    assert.ok(markup.includes(i18n.t("{count} invited lineups", { count: 2 })));
+    assert.ok(markup.includes(i18n.t("{count} shared lineups", { count: 2 })));
     assert.ok(markup.includes(i18n.t("{count} shared items", { count: 1 })));
     assert.equal(markup.split(i18n.t("Revoke access")).length - 1, 1);
     assert.ok(markup.includes('value="Owner"'));

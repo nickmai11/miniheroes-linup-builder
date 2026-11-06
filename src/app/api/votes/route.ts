@@ -45,7 +45,7 @@ export async function POST(request: Request) {
     if (!access.allowed) return json({ error: "Not found." }, 404);
     if (!access.voterKey)
       return json(
-        { error: "Use an invitation or sign in as admin to vote." },
+        { error: "Use an access code or sign in as admin to vote." },
         401,
       );
     return json(await setVote(parsed.data, access.voterKey, parsed.data.value));

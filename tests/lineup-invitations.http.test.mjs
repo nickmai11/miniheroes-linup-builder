@@ -95,7 +95,7 @@ test(
         const form = await request(gate.pathname + gate.search);
         assert.equal(form.status, 200);
         const formHtml = await form.text();
-        assert.ok(formHtml.includes("Invitation access"));
+        assert.ok(formHtml.includes("Access code"));
         assert.ok(
           formHtml
             .match(/<input[^>]*name="code"[^>]*>/)?.[0]

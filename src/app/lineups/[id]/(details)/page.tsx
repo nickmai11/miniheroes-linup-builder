@@ -86,7 +86,7 @@ export default async function LineupPage(props: PageProps<"/lineups/[id]">) {
           </Link>
           <ConfirmAction
             title={t('Delete lineup "{name}"?', { name: lineup.name })}
-            description="This permanently deletes the lineup, its votes, and its invitation links. This cannot be undone."
+            description="This permanently deletes the lineup, its votes, and its access codes. This cannot be undone."
             action={deleteLineup.bind(null, lineup.id)}
             trigger={
               <Button type="button" variant="destructive">

@@ -29,7 +29,7 @@ export async function saveViewerNickname(input: unknown) {
   const key = await getViewerKey();
   if (!key)
     return {
-      error: "Use an invitation or sign in to set your nickname.",
+      error: "Use an access code or sign in to set your nickname.",
       status: 401,
     };
   const parsed = nicknameInputSchema.safeParse(input);

@@ -143,7 +143,7 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
           {paths.length === 0 ? (
             <p className="text-muted-foreground py-4 text-sm">
               {t(
-                "No public URLs yet. Add a page above to share it without an invitation.",
+                "No public URLs yet. Add a page above to share it without an access code.",
               )}
             </p>
           ) : (
@@ -194,7 +194,7 @@ export function PublicUrlManager({ initialPaths }: { initialPaths: string[] }) {
                   </Button>
                   <ConfirmAction
                     title={t('Remove public access to "{path}"?', { path })}
-                    description="Pages covered by this rule will require an invitation or admin login unless another public access rule applies. You can add this rule again later."
+                    description="Pages covered by this rule will require an access code or admin login unless another public access rule applies. You can add this rule again later."
                     confirmLabel="Remove"
                     pendingLabel="Removing…"
                     disabled={pending !== null}

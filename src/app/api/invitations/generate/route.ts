@@ -36,7 +36,7 @@ export async function POST(request: Request) {
   } catch {
     return privateInvitationResponse(
       NextResponse.json(
-        { error: "Invalid invitation request." },
+        { error: "Invalid access code request." },
         { status: 400 },
       ),
     );

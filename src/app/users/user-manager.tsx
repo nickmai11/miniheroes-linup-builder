@@ -130,7 +130,7 @@ function UserRow({
             )}
             <h2 className="font-semibold wrap-anywhere">{displayName}</h2>
             <Badge variant="secondary">
-              {t(user.kind === "admin" ? "Admin profile" : "Invited user")}
+              {t(user.kind === "admin" ? "Admin profile" : "Access code user")}
             </Badge>
             {user.isYou && <Badge variant="outline">{t("You")}</Badge>}
           </div>
@@ -145,7 +145,7 @@ function UserRow({
         {user.kind === "invited" && (
           <ConfirmAction
             title={t('Revoke access for "{name}"?', { name: displayName })}
-            description="This removes this browser registration, nickname, shares, follows, and votes. The user will need a new invitation to return. Public pages remain accessible."
+            description="This removes this browser registration, nickname, shares, follows, and votes. The user will need a new access code to return. Public pages remain accessible."
             confirmLabel="Revoke access"
             pendingLabel="Revoking…"
             disabled={pending}
@@ -163,7 +163,7 @@ function UserRow({
         <p className="text-muted-foreground text-sm">
           {user.fullAccess
             ? t("Full library access")
-            : t("{count} invited lineups", { count: user.invitedLineups })}
+            : t("{count} shared lineups", { count: user.invitedLineups })}
           {" · "}
           {t("{count} shared items", { count: user.sharedItems })}
         </p>
@@ -241,7 +241,7 @@ export function UserManager({ initialUsers }: { initialUsers: ManagedUser[] }) {
   );
   const search = query.trim().toLocaleLowerCase();
   const visible = users.filter((user) =>
-    `${user.nickname ?? ""} ${user.kind === "admin" ? t("Admin profile") : `${t("Invited user")} ${user.viewerKey.slice(7)}`}`
+    `${user.nickname ?? ""} ${user.kind === "admin" ? t("Admin profile") : `${t("Access code user")} ${user.viewerKey.slice(7)}`}`
       .toLocaleLowerCase()
       .includes(search),
   );
@@ -249,7 +249,7 @@ export function UserManager({ initialUsers }: { initialUsers: ManagedUser[] }) {
     <div className="flex flex-col gap-5">
       <p className="text-muted-foreground text-sm">
         {t(
-          "Each invited user represents one registered browser. Admin profiles appear after they use the app.",
+          "Each access code user represents one registered browser. Admin profiles appear after they use the app.",
         )}
       </p>
       <div className="flex flex-wrap items-end justify-between gap-3">

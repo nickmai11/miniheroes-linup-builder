@@ -63,8 +63,8 @@ Region changes take effect on the next deployment. See
 Vercel Web Analytics tracks page views and client-side navigation through the root
 layout's `SiteAnalytics` component. Tracked page URLs omit query strings and
 fragments, including access codes, device-transfer tokens, and nested
-invitation destinations. The invitation proxy allows Vercel's
-`/_vercel/insights/` routes through for public and invitation-screen visitors.
+access code destinations. The access proxy allows Vercel's
+`/_vercel/insights/` routes through for public and access-screen visitors.
 
 To activate collection, open the project in Vercel, select **Analytics**, click
 **Enable**, and deploy this change. View traffic in that same dashboard. Local
@@ -75,7 +75,7 @@ No additional environment variables are required. See the
 ## Admin login and editing
 
 Click **Admin login** in the header and enter your Supabase Auth email and
-password. The dialog is also available on the invitation screen; admins do not
+password. The dialog is also available on the access code screen; admins do not
 need an access code. Authentication uses the official `@supabase/supabase-js`
 and `@supabase/ssr` packages.
 
@@ -97,9 +97,9 @@ both the browser and Server Components. Passwords and a custom signing secret
 are not stored in app environment variables. Auth runs on the server, and SDK
 session cookies are HTTP-only and require HTTPS in production.
 
-Signed-in admins can create, edit, import, and delete content, generate invitation
+Signed-in admins can create, edit, import, and delete content, generate access
 codes, and manage public URLs. **Sign out** signs out the current Supabase session
-while preserving the browser's existing invitation registration. Admin login
+while preserving the browser's existing access code registration. Admin login
 does not register a visitor's browser or consume an access code, and requires
 no application database migration.
 
@@ -127,14 +127,14 @@ against a migrated disposable database to check persistence and identity isolati
 ### User management
 
 Signed-in admins can open **Users** (`/users`) to search registered browsers and
-saved admin profiles, edit nicknames, and inspect invitation access and share
-counts. **Invite a user** opens the existing invitation generator. Each invited
+saved admin profiles, edit nicknames, and inspect access code access and share
+counts. **Create an access code** opens the existing access code generator. Each access code
 user represents one browser registration, including users without a nickname.
 
 **Revoke access** requires confirmation and removes that browser registration,
 its nickname, shares, follows, notifications, and votes in one transaction. Old
 browser credentials stop working and used access codes remain consumed. A
-new invitation can register the browser again; public pages remain public.
+new access code can register the browser again; public pages remain public.
 Admin profiles support nickname edits only; Supabase still manages admin roles,
 passwords, and account deletion. The page and API independently enforce admin
 access, and mutations reject cross-origin requests.
@@ -171,10 +171,10 @@ latest recorded lineup change, falling back to the creation date. Migration
 
 Admins can click the **eye / crossed-out-eye icon** on lineup cards, on the
 detail page, or in the editor to show or hide a lineup. The eye means visible;
-the crossed-out eye means **Private — owner and selected people**. Public keeps the existing invitation and Public
+the crossed-out eye means **Private — owner and selected people**. Public keeps the existing access code and Public
 URLs rules; this setting does not automatically publish a page to the internet.
 Private lineups belong to the admin account that hides them. Selected nickname recipients can read private content; other admins,
-registered devices, scoped invitations, and published URLs cannot override it.
+registered devices, scoped access codes, and published URLs cannot override it.
 Existing lineups keep their current visibility. Clones retain the source privacy.
 
 Privacy applies to lineup lists and pages, metadata, hero previews, votes,
@@ -230,7 +230,7 @@ while the page is visible and the dialog is closed, on window focus, and when
 opened. Notifications are in-app and belong to the same device or admin account
 as the follow. They start with new edits after this feature is deployed; existing
 history is not backfilled. Unchanged saves do not notify. Unfollowing clears that
-subscription's notifications, and refollowing starts fresh. Current invitation
+subscription's notifications, and refollowing starts fresh. Current access code
 and privacy rules apply to the list, unread count, links, and read-state updates.
 Hidden or deleted lineups never appear for unauthorized viewers.
 
@@ -250,7 +250,7 @@ recording with their next change; earlier edits cannot be reconstructed.
 
 Migration `0031_content_changes.sql` adds the history table and has been applied
 to the configured database. History follows
-current content access, including scoped invitations and public pages; publishing
+current content access, including scoped access codes and public pages; publishing
 the home page does not publish private history. Deleted-item records remain visible
 only to full-library viewers. The history API is uncached and paginates 20 entries.
 
@@ -267,7 +267,7 @@ Lineups default to newest first, including on hero pages. The Lineups page also
 offers Most liked, with newest creation date breaking ties. The selected sort is
 stored in the URL; changing a lineup vote refreshes the current order.
 Public visitors can read totals. Voting requires access to the target, including
-builds assigned to a lineup shared through a scoped invitation.
+builds assigned to a lineup shared through a scoped access code.
 
 Migration `0030_content_votes.sql` adds the vote table, uniqueness constraints,
 target deletion cleanup, and the `lineup_app` RLS policy. It has been applied to
@@ -288,28 +288,28 @@ database and add `VOTES_TEST_ORIGIN=http://127.0.0.1:4403` when running
 `tests/votes.http.test.mjs`. These tests reject other database addresses and never
 use `DATABASE_URL` for fixtures.
 
-## Invitation access
+## Access codes
 
-Sign in as admin and choose **Invitations** (locally,
+Sign in as admin and choose **Access codes** (locally,
 **http://localhost:3000/invitations/new**). Click
 **Generate**, then **Copy code**. No input is required. Each randomly generated
 standalone code grants one browser full-library access and does not expire
-before use. An invitation link containing `?ic=CODE` is also ready to copy and
+before use. An access link containing `?ic=CODE` is also ready to copy and
 opens the app on the browser's current origin, including its port.
 
 The former address `miniheroes-linup-builder.vercel.app` stays attached to the
 same deployment and forwards every page to the new one, keeping unused
-invitation links intact. A browser registered on the old address is moved
+access links intact. A browser registered on the old address is moved
 along: the proxy there adds a sealed, two-minute copy of its device token to
 the redirect, and the new address exchanges that copy for a fresh cookie,
 retiring the old one only at that moment. The seal is derived from
 `DATABASE_URL`, which every host already shares. Do not set a Vercel-level
 redirect on the old domain, or that hand-off never runs and existing visitors
-would need a fresh invitation. The hosts are listed in `src/lib/site-url.ts`.
+would need a fresh access code. The hosts are listed in `src/lib/site-url.ts`.
 
 The generator page and its POST endpoint are available only to signed-in admins,
 using the same access policy as editing. They work before that browser is
-registered, so you can generate the first invitation.
+registered, so you can generate the first access code.
 
 Saved lineup cards, lineup details, and saved builds have a **Share** button
 that opens a searchable nickname checkbox list. Existing recipients are checked;
@@ -329,7 +329,7 @@ RLS and cascading target/profile references. Applied to the configured database
 on 2026-09-18; no recipients were selected automatically. Deploy the updated
 app to enable the new Share dialog and recipient access. Test with
 `SHARING_TEST_DATABASE_URL=postgres://vote_test@127.0.0.1:55443/votes_test node --experimental-strip-types --test tests/sharing.integration.test.mjs`.
-Existing access codes and invitation links continue to work.
+Existing access codes and access links continue to work.
 
 Unregistered browsers see `/invite` and can enter a valid, unused code or sign in
 as admin. Opening
@@ -370,11 +370,11 @@ a schema migration. The access gate continues to deny access on lookup failures.
 Diagnostics omit access codes, device cookies, and SQL parameters.
 
 Pages, metadata, APIs (including health), actions, and original game images require
-the appropriate invitation scope or an admin session unless a page is explicitly
-made public as described below. Scoped artwork access is limited to the invited
+the appropriate access code scope or an admin session unless a page is explicitly
+made public as described below. Scoped artwork access is limited to the shared
 lineup or filtered lineup list identified by a same-origin referrer.
 Framework CSS, JavaScript, fonts, and the favicon remain accessible
-to render the invitation screen. Images use their original authenticated URLs;
+to render the access code screen. Images use their original authenticated URLs;
 the shared Next.js image optimizer is disabled to avoid caching private artwork.
 Authorized PNG responses are cached privately in the browser: current `?v=` URLs
 for one year, and unversioned or older URLs with revalidation on every use. Bump
@@ -382,7 +382,7 @@ for one year, and unversioned or older URLs with revalidation on every use. Bump
 caches vary by cookie and referrer; shared caches cannot store them. Pages, APIs,
 redirects, and access-denied responses remain `private, no-store`.
 
-`pnpm test` includes invitation routing, input validation, and access checks.
+`pnpm test` includes access code routing, input validation, and access checks.
 To exercise concurrent claims and transaction rollback, migrate a disposable local
 Postgres database and run:
 
@@ -394,7 +394,7 @@ INVITATION_TEST_DATABASE_URL=postgres://invitation_test@127.0.0.1:55441/invitati
 The integration test requires this isolated host, port, user, and database name;
 it never uses the app's `DATABASE_URL`.
 
-To exercise the complete lineup invitation flow, run a separate app at
+To exercise the complete lineup access code flow, run a separate app at
 `http://127.0.0.1:3111` against that same disposable database with Supabase Auth
 disabled, then run:
 
@@ -404,7 +404,7 @@ INVITATION_TEST_DATABASE_URL=postgres://invitation_test@127.0.0.1:55441/invitati
   node --experimental-strip-types --test tests/lineup-invitations.http.test.mjs
 ```
 
-This test creates temporary lineups and invitations, redeems two links through
+This test creates temporary lineups and access codes, redeems two links through
 the real HTTP endpoint, and checks filtered HTML/RSC, assigned builds, artwork,
 private-page denial, single-use codes, and retry behavior. It cleans up its fixtures.
 
@@ -412,15 +412,15 @@ private-page denial, single-use codes, and retry behavior. It cleans up its fixt
 
 Sign in as admin and choose **Public URLs** (locally,
 **http://localhost:3000/public-urls**). This settings page
-works without an invitation for signed-in admins on every host. Paste an app link
+works without an access code for signed-in admins on every host. Paste an app link
 or a path such as `/lineups/123`, then click **Add public URL**. The list provides
-**Copy link** for the browser's current origin and **Remove** to restore invitation access.
+**Copy link** for the browser's current origin and **Remove** to restore access code access.
 
 Each entry publishes one exact page path, including its query variations;
-`/lineups` does not publish `/lineups/123`. Query strings, fragments and invitation
+`/lineups` does not publish `/lineups/123`. Query strings, fragments and access code
 codes are omitted from stored URLs. Supported pages are Home, About, Notes,
 Heroes, Divinities, Lineups and their existing detail routes. Editing routes,
-invitation/settings pages and APIs cannot be published. Public viewing does not
+access code/settings pages and APIs cannot be published. Public viewing does not
 register a browser or grant access to actions or private pages.
 
 Public pages include their artwork. Image requests are allowed only when their
@@ -445,7 +445,7 @@ The interface supports English and Vietnamese. The header language selector save
 `Accept-Language` preference, falling back to English. The server and client use
 the same resolved locale, including page metadata and the document's `lang`.
 Switching language refreshes server content while preserving client form state,
-the current URL, query parameters, and hash. Invitation and shared lineup URLs
+the current URL, query parameters, and hash. Access code and shared lineup URLs
 remain language-independent.
 
 Translations live in `src/lib/i18n/vi.json`, keyed by the English source message.

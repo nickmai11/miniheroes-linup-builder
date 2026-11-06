@@ -56,7 +56,7 @@ export default async function LineupsPage({
       description={
         lineupIds !== null
           ? t(
-              "Lineups shared with you. Open another invitation link to add a lineup.",
+              "Lineups shared with you. Open another access link to add a lineup.",
             )
           : undefined
       }

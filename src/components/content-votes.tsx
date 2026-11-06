@@ -86,7 +86,7 @@ export function ContentVotes({
       </div>
       {summary && !summary.canVote && (
         <p className="text-muted-foreground text-xs">
-          {t("Use an invitation or sign in as admin to vote.")}
+          {t("Use an access code or sign in as admin to vote.")}
         </p>
       )}
       {error && (

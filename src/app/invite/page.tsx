@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getI18n();
 
   return {
-    title: t("Open your invitation"),
+    title: t("Enter your access code"),
     robots: { index: false, follow: false },
   };
 }
@@ -37,7 +37,7 @@ export default async function InvitePage(props: PageProps<"/invite">) {
             <KeyRound className="size-6" aria-hidden />
           </div>
           <CardTitle>
-            <h1 className="text-2xl">{t("Open your invitation")}</h1>
+            <h1 className="text-2xl">{t("Enter your access code")}</h1>
           </CardTitle>
           <CardDescription className="leading-relaxed">
             {t("Enter the code shared with you to continue.")}
@@ -50,10 +50,10 @@ export default async function InvitePage(props: PageProps<"/invite">) {
           />
         </CardContent>
         <CardFooter className="flex-col items-start gap-1.5">
-          <p className="font-medium">{t("Need an invitation?")}</p>
+          <p className="font-medium">{t("Need an access code?")}</p>
           <p className="text-muted-foreground text-sm leading-relaxed">
             {t(
-              "Ask the person sharing with you for an invitation link or code.",
+              "Ask the person sharing with you for an access link or code.",
             )}
           </p>
         </CardFooter>

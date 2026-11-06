@@ -47,7 +47,7 @@ test("vote buttons expose selected state, totals, pending state, and Vietnamese 
     pending: false,
     summary: { ...state.summary, canVote: false, vote: 0 },
   };
-  assert.match(render(), /Use an invitation or sign in as admin to vote/);
+  assert.match(render(), /Use an access code or sign in as admin to vote/);
 });
 
 test("vote routes reject cross-origin and malformed writes before authorization", async () => {

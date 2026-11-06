@@ -89,7 +89,7 @@ function LineupPreview({
         if (!response.ok) {
           throw new Error(
             response.status === 401 || response.status === 403
-              ? "Open the lineup with an invitation to view it."
+              ? "Open the lineup with an access code to view it."
               : response.status === 404
                 ? "This lineup is no longer available."
                 : "Could not load the lineup preview. Please try again.",

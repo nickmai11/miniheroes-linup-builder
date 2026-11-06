@@ -20,7 +20,7 @@ export default function Loading() {
       <PageHeadingSkeleton title={t("Access codes")} description />
       <Card>
         <CardHeader>
-          <CardTitle>{t("Invite someone")}</CardTitle>
+          <CardTitle>{t("Create an access code")}</CardTitle>
           <TextSkeleton lines={2} />
         </CardHeader>
         <CardContent className="flex flex-col gap-6">

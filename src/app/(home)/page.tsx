@@ -60,14 +60,13 @@ const SECTIONS = [
   },
 ] as const;
 
-export default async function Home({ searchParams }: PageProps<"/">) {
+export default async function Home() {
   const { t, gameLabel } = await getI18n();
 
   await requirePageAccess();
   const canEdit = (await canEditContent()) && (await hasAppAccess());
-  const followingOnly = (await searchParams).feed === "following";
   const [recentChanges, followedItems, followContext] = await Promise.all([
-    getRecentChanges(followingOnly),
+    getRecentChanges(true),
     getFollowedItems(),
     getFollowContext(),
   ]);
@@ -144,40 +143,11 @@ export default async function Home({ searchParams }: PageProps<"/">) {
             {t("Recent changes")}
           </h2>
           <p className="text-muted-foreground mt-1 text-sm">
-            {t("Latest lineup and build changes.")}
+            {t("Latest changes from followed lineups and heroes.")}
           </p>
-          {followContext.key && (
-            <nav
-              aria-label={t("Filter recent changes")}
-              className="mt-3 flex gap-2"
-            >
-              <Link
-                href="/"
-                scroll={false}
-                className={buttonVariants({
-                  variant: followingOnly ? "outline" : "secondary",
-                  size: "sm",
-                })}
-                aria-current={!followingOnly ? "page" : undefined}
-              >
-                {t("All changes")}
-              </Link>
-              <Link
-                href="/?feed=following"
-                scroll={false}
-                className={buttonVariants({
-                  variant: followingOnly ? "secondary" : "outline",
-                  size: "sm",
-                })}
-                aria-current={followingOnly ? "page" : undefined}
-              >
-                {t("Following")}
-              </Link>
-            </nav>
-          )}
         </div>
         <div className="bg-card rounded-xl border p-5">
-          {followingOnly && recentChanges.length === 0 ? (
+          {recentChanges.length === 0 ? (
             <p className="text-muted-foreground text-sm">
               {t("No changes from followed lineups or heroes yet.")}
             </p>

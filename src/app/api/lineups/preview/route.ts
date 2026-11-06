@@ -36,13 +36,13 @@ export async function GET(request: Request) {
       !(await isPublicPage(`/heroes/${hero}`))
     )
       return json(
-        { error: "Open the lineup with an invitation to view it." },
+        { error: "Open the lineup with an access code to view it." },
         403,
       );
     const ids = await heroLineupPreviewIds(hero, device?.lineupIds, fullAccess);
     if (!ids.includes(id))
       return json(
-        { error: "Open the lineup with an invitation to view it." },
+        { error: "Open the lineup with an access code to view it." },
         403,
       );
     const lineup = await getLineup(id);
