@@ -1606,7 +1606,10 @@ tier by tier down to base relics (Mythic chest = Legends = Rares = Commons =
 base; owner, 2026-11-06), one tier per line, relics in catalog order with no
 blank slots, each formula in its own boxed panel. The two groups are tabs
 ("Mythic group 1" / "Mythic group 2", owner, 2026-11-06), and a third
-"Common" tab holds the shared Rare and Common formulas (owner, 2026-11-06). Nothing else is on the page (owner removed the calculator, the per-group cost line and the Legend
+"Common" tab holds the shared Rare and Common formulas (owner, 2026-11-06). The Common tab leads with the **Legend chest** (random Legend relic)
+and its two formulas, Puppet Doll + Beast Totem + Assembly Flag and Tribal Goblet +
+Bone Scepter + Mithril Axe (owner, 2026-11-07: the page had missed it; icon sliced
+by `scripts/slice-relic-archive.py` from `fusion-archive-2026-11-06-2.png`). Nothing else is on the page (owner removed the calculator, the per-group cost line and the Legend
 checkboxes, 2026-11-06). The Mythic grouping is
 the Eternal recipes' pairing; which Legend group feeds which Mythic group is
 inferred (one red chest icon for all eight recipes); the page no longer notes it.

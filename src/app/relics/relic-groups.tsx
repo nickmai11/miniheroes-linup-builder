@@ -14,6 +14,7 @@ import {
 import {
   chestRecipes,
   expandToBase,
+  legendChestRecipes,
   mythicGroups,
   relicBySlug,
   relics,
@@ -22,6 +23,11 @@ import {
 import { versioned } from "@/lib/asset-version";
 
 const MYTHIC_CHEST = "mythic-chest";
+const LEGEND_CHEST = "legend-chest";
+const chestNames: Record<string, string> = {
+  [MYTHIC_CHEST]: "Mythic chest",
+  [LEGEND_CHEST]: "Legend chest",
+};
 
 /** A relic icon; the name shows on hover (and is the accessible label). */
 function RelicIcon({
@@ -35,7 +41,7 @@ function RelicIcon({
 }) {
   const { gameLabel, t } = useI18n();
   const relic = relicBySlug.get(slug);
-  const name = relic ? gameLabel("relic", relic) : t("Mythic chest");
+  const name = relic ? gameLabel("relic", relic) : t(chestNames[slug]);
   const label = count ? `${name} ×${count}` : name;
   return (
     <Tooltip>
@@ -219,6 +225,18 @@ export function RelicGroups() {
               </CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
+              <div className="flex flex-col gap-3">
+                <span className="text-sm font-medium">
+                  {t("Legend chest: a random Legend relic")}
+                </span>
+                {legendChestRecipes.map((recipe, i) => (
+                  <Formula
+                    key={i}
+                    result={<RelicIcon slug={LEGEND_CHEST} />}
+                    parts={recipe}
+                  />
+                ))}
+              </div>
               <FormulaList
                 label={t("Rare formulas")}
                 slugs={relics

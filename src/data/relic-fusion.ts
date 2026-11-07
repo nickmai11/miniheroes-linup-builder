@@ -125,6 +125,12 @@ export const chestRecipes = (legends: string[]): Ingredient[][] =>
     legends.filter((_, i) => i !== skip).map((slug) => r(slug)),
   );
 
+/** The Legend chest (random Legend relic): the Fusion Archive's two formulas, 3 different Rares each. */
+export const legendChestRecipes: Ingredient[][] = [
+  [r("puppet-doll"), r("beast-totem"), r("assembly-flag")],
+  [r("tribal-goblet"), r("bone-scepter"), r("mithril-axe")],
+];
+
 export const relicBySlug = new Map(relics.map((relic) => [relic.slug, relic]));
 
 /** Rarities that make up the parts, tier by tier: [parts, their recipes merged, ...] down to base relics. */

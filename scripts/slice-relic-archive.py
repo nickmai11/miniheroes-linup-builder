@@ -39,3 +39,8 @@ for file, rows in GRID.items():
             tile = image.crop((x - 66, y - 66, x + 66, y + 66)).resize((101, 101), Image.LANCZOS)
             tile.save(OUTPUT / f"{slug}.png")
             print(slug)
+
+# Legend chest: first chest in the Fusion Archive's Legend rows (540x960 screenshot, tile centre 114,380).
+chest = Image.open(SOURCE / "fusion-archive-2026-11-06-2.png").convert("RGBA")
+chest.crop((81, 347, 147, 413)).resize((101, 101), Image.LANCZOS).save(OUTPUT / "legend-chest.png")
+print("legend-chest")

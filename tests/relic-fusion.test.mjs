@@ -5,9 +5,8 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { loadTypeScript } from "./load-typescript.mjs";
 
-const { relics, relicBySlug, mythicGroups, chestRecipes } = loadTypeScript(
-  "src/data/relic-fusion.ts",
-);
+const { relics, relicBySlug, mythicGroups, chestRecipes, legendChestRecipes } =
+  loadTypeScript("src/data/relic-fusion.ts");
 
 test("36 relics with icons; recipes follow the archive's tier ladder", () => {
   assert.equal(relics.length, 36);
@@ -32,6 +31,14 @@ test("36 relics with icons; recipes follow the archive's tier ladder", () => {
     { slug: "bronze-mirror", count: 2 },
     { slug: "limestone", count: 4 },
   ]);
+});
+
+test("Legend chest: two formulas of 3 different Rares, all 6 Rares used once", () => {
+  assert.ok(existsSync("public/relics/legend-chest.png"));
+  assert.equal(legendChestRecipes.length, 2);
+  const slugs = legendChestRecipes.flat().map((p) => p.slug);
+  assert.equal(new Set(slugs).size, 6);
+  slugs.forEach((s) => assert.equal(relicBySlug.get(s).tier, "rare", s));
 });
 
 test("two Mythic groups of four, each with four chest formulas from its own Legends", () => {
