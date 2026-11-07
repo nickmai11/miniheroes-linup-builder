@@ -137,11 +137,20 @@ function Formula({
   );
 }
 
-/** Formula rows for the given relics under a label. */
-function FormulaList({ label, slugs }: { label: string; slugs: string[] }) {
+/** Formula rows for the given relics under a label; `children` go first. */
+function FormulaList({
+  label,
+  slugs,
+  children,
+}: {
+  label: string;
+  slugs: string[];
+  children?: ReactNode;
+}) {
   return (
     <div className="flex flex-col gap-3 border-t pt-3">
       <span className="text-sm font-medium">{label}</span>
+      {children}
       {slugs.map((slug) => (
         <Formula
           key={slug}
@@ -211,7 +220,15 @@ export function RelicGroups() {
                   <FormulaList
                     label={t("Legend formulas")}
                     slugs={group.legends}
-                  />
+                  >
+                    {legendChestRecipes.map((recipe, i) => (
+                      <Formula
+                        key={i}
+                        result={<RelicIcon slug={LEGEND_CHEST} />}
+                        parts={recipe}
+                      />
+                    ))}
+                  </FormulaList>
                 </CardContent>
               </Card>
             </Tabs.Panel>
@@ -225,18 +242,6 @@ export function RelicGroups() {
               </CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
-              <div className="flex flex-col gap-3">
-                <span className="text-sm font-medium">
-                  {t("Legend chest: a random Legend relic")}
-                </span>
-                {legendChestRecipes.map((recipe, i) => (
-                  <Formula
-                    key={i}
-                    result={<RelicIcon slug={LEGEND_CHEST} />}
-                    parts={recipe}
-                  />
-                ))}
-              </div>
               <FormulaList
                 label={t("Rare formulas")}
                 slugs={relics

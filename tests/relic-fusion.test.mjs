@@ -85,6 +85,7 @@ test("the page shows both groups as icons, names only as labels, in both languag
   assert.match(en, /role="tab"[^>]*>Mythic group 2</);
   assert.match(en, /aria-label="Night Twinblades"/);
   assert.match(en, /aria-label="Mythic chest"/);
+  assert.match(en, /aria-label="Legend chest"/); // first of the group's Legend formulas
   assert.match(en, /aria-label="Limestone ×16"/);
   assert.doesNotMatch(en.replace(/<[^>]+>/g, " "), /Night Twinblades/);
   assert.doesNotMatch(en, /calculator|base relics/i);
