@@ -352,6 +352,13 @@ export const heroSeeds: HeroSeed[] = [
     imageUrl: img("radiant-envoy"),
   },
   {
+    slug: "storm-sage",
+    name: "Storm Sage",
+    role: "mage",
+    rarity: "mythic",
+    imageUrl: null,
+  },
+  {
     slug: "two-headed-dragon",
     name: "Two-Headed Dragon",
     role: "mage",

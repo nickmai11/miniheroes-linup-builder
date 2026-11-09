@@ -8950,4 +8950,128 @@ export const heroDetailSeeds: Record<string, HeroDetailSeed> = {
     ],
     divinities: ["atk", "melee-dmg-boost"],
   },
+  // November 9 owner-supplied Chinese guide (gameplay/heroes/Storm Sage/CN.png).
+  // English names are provisional translations; icons are cut from the guide.
+  "storm-sage": {
+    awakeningSkills: [
+      {
+        stage: "I",
+        name: "Electric Surge",
+        description:
+          "Casting Ball Lightning or Electron Barrier increases own ATK by 4% and Energy Regen per second by 4% for 8s, stacking up to 3 times (duration cannot be refreshed).",
+        sourceScreenshot: "../heroes/Storm Sage/CN.png",
+      },
+      {
+        stage: "III",
+        name: "Overcharge",
+        description:
+          "Overload requires 1 fewer Basic ATK or skill cast to trigger; Quantum Storm's energy orb bounces 2 more times.",
+        sourceScreenshot: "../heroes/Storm Sage/CN.png",
+      },
+    ],
+    artifact: {
+      name: "Jade Prayer Beads",
+      iconUrl: "/artifacts/storm-sage.png",
+      bonuses: [
+        {
+          tier: "purple",
+          skill: "Overload",
+          description: "[Overload] Magic DMG dealt increased by 70%",
+        },
+        {
+          tier: "gold",
+          skill: "Electron Barrier",
+          description:
+            "[Electron Barrier] First cast interval reduced by 5s; each cast also grants an Electron Barrier to all melee allies",
+        },
+        {
+          tier: "red",
+          skill: "Ball Lightning",
+          description:
+            "[Ball Lightning] After reaching the end, the phantom returns to its starting position, dealing 0.5x its dash DMG to enemies along the way and reducing their Physical RES by 10% and Magic RES by 10% for 6s",
+        },
+        {
+          tier: "rainbow",
+          name: "Quantum Storm",
+          description:
+            "[Quantum Storm] Every 13s, Storm Sage releases 1 energy orb that bounces between enemies 3 times; each hit deals Magic DMG equal to 120% ATK and stuns for 1.4s",
+        },
+      ],
+    },
+    skills: [
+      {
+        kind: "ultimate",
+        name: "Ball Lightning",
+        unlockStars: 0,
+        iconUrl: talent("storm-sage", "ball-lightning"),
+        description:
+          "Storm Sage summons an unstable electric phantom that dashes forward, dealing Magic DMG equal to 260% ATK to enemies along its path with a Knockback Effect",
+      },
+      {
+        kind: "battle",
+        name: "Overload",
+        unlockStars: 2,
+        iconUrl: talent("storm-sage", "overload"),
+        description:
+          "After 3 Basic ATKs or skill casts, additionally unleashes an Overload attack that calls a thunderstorm, dealing Magic DMG equal to 170% ATK to the frontmost enemy and targets around it. Hit targets' ATK SPD and MOV SPD are reduced by 50% for 2s",
+      },
+      {
+        kind: "enhance",
+        name: "Voltage Boost",
+        unlockStars: 5,
+        iconUrl: talent("storm-sage", "voltage-boost"),
+        description:
+          "Ball Lightning: Magic DMG dealt to enemies along its path increased by 65%",
+      },
+      {
+        kind: "special",
+        name: "Electron Barrier",
+        unlockStars: 8,
+        iconUrl: talent("storm-sage", "electron-barrier"),
+        description:
+          "Every 11s, Storm Sage generates an electric shield that absorbs DMG equal to 180% of Storm Sage's ATK, lasting 5s",
+      },
+      {
+        kind: "passive",
+        name: "Storm Soul",
+        unlockStars: 12,
+        iconUrl: talent("storm-sage", "storm-soul"),
+        description: "ATK increased by 10%, HP increased by 15%",
+      },
+      {
+        kind: "enhance",
+        name: "Thundercloud Echo",
+        unlockStars: 16,
+        iconUrl: talent("storm-sage", "thundercloud-echo"),
+        description:
+          "Ball Lightning: Energy required reduced by 10%; the phantom also inflicts Electrified on enemies along its path: Storm Sage's DMG Result against Electrified targets increased by 12% for 5s",
+      },
+    ],
+    cores: [
+      {
+        name: "Wizard's Wand",
+        skill: "Ball Lightning",
+        description:
+          "「Ball Lightning」 Magic DMG to enemies along its path increased by 25%(75%) of ATK",
+      },
+      {
+        name: "Arcane Hat",
+        skill: "Overload",
+        description: "「Overload」 Thunderstorm range increased by 25%(75%)",
+      },
+      {
+        name: "Mage Robe",
+        skill: "Electron Barrier",
+        description:
+          "「Electron Barrier」 Subsequent cast interval reduced by 1(3)s; the shield absorbs an additional 30%(90%) of Storm Sage's ATK",
+      },
+      {
+        name: "Spell Tome",
+        skill: "Thundercloud Echo",
+        description:
+          "「Thundercloud Echo」 Energy required reduced by an additional 2%(6%); Storm Sage's DMG Result against Electrified targets increased by an additional 3%(10%)",
+      },
+    ],
+    divinities: ["crit-rate", "dmg-reduction"],
+  },
 };

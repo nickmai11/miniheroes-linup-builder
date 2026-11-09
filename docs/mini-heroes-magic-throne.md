@@ -307,6 +307,34 @@ continuing to deny detail images from the catalog and unrelated pages. Local
 routes still require an invited session; authenticated HTTP/image responses and
 interactive browser checks remain unverified.
 
+#### Storm Sage (owner Chinese guide, 2026-11-09)
+
+Source: `gameplay/heroes/Storm Sage/CN.png` (323×2000 compendium, 神话·法师,
+four-piece set 魔法增伤). English name **Storm Sage** is owner-given; every
+other English label is a provisional translation, not a verified in-game name.
+Released (owner, 2026-11-09). Talent and artifact icons are cut from the guide
+(low-res) by `scripts/slice-talent-icons.py`. The guide has no Archive card, so
+the portrait stays in `PENDING_PORTRAITS` until the owner supplies one.
+
+| Stars | Kind     | Chinese / English                           |
+| ----- | -------- | ------------------------------------------- |
+| 0     | Ultimate | 球状闪电 / Ball Lightning                   |
+| 2     | Battle   | 过载 / Overload                             |
+| 5     | Enhance  | 电势增幅 / Voltage Boost                    |
+| 8     | Special  | 电子屏障 / Electron Barrier                 |
+| 12    | Passive  | 风暴之魂 / Storm Soul (12★ + Legend)        |
+| 16    | Enhance  | 雷云回响 / Thundercloud Echo (16★ + Mythic) |
+
+- **Artifact** 碧玉念珠 / Jade Prayer Beads: Epic → Overload, Legend → Electron
+  Barrier, Mythic → Ball Lightning, Eternal standalone 量子风暴 / **Quantum Storm**.
+- **Cores** (tier-3 talent lines): Wizard's Wand → Ball Lightning, Arcane Hat →
+  Overload, Mage Robe → Electron Barrier, Spell Tome → Thundercloud Echo.
+- **Divinities** (red, left / right): 全体暴击率 CRIT Rate / 全体伤害减免 DMG
+  Reduction. Other badges: HP ×2 and ATK (high), Mage ATK.
+- **Awakening:** I 电能激荡 / Electric Surge and III 超负荷 / Overcharge are the
+  unique skills; II 法术屏障 and IV 灵能波动 are Mage common skills, excluded.
+- Skins: 原始皮肤 (default) and 奥术贤者 (HP +8400).
+
 #### Dreamstar Spirit (owner screenshots, 2026-09-17)
 
 `gameplay/heroes/image.png`, `1.png`–`9.png`, and `image1.png` show
@@ -1605,11 +1633,15 @@ relics are independent of the groups (owner, 2026-11-06): the "Common" tab lists
 tier by tier down to base relics (Mythic chest = Legends = Rares = Commons =
 base; owner, 2026-11-06), one tier per line, relics in catalog order with no
 blank slots, each formula in its own boxed panel. The two groups are tabs
-("Mythic group 1" / "Mythic group 2", owner, 2026-11-06), and a third
-"Common" tab holds the shared Rare and Common formulas (owner, 2026-11-06). The Common tab leads with the **Legend chest** (random Legend relic)
-and its two formulas, Puppet Doll + Beast Totem + Assembly Flag and Tribal Goblet +
-Bone Scepter + Mithril Axe (owner, 2026-11-07: the page had missed it; icon sliced
-by `scripts/slice-relic-archive.py` from `fusion-archive-2026-11-06-2.png`). Nothing else is on the page (owner removed the calculator, the per-group cost line and the Legend
+("Group 1" / "Group 2"; owner, 2026-11-09, renamed from "Mythic group n"), and a third
+"Common" tab holds the shared Rare and Common formulas (owner, 2026-11-06). The
+**Legend chest** is per group (owner, 2026-11-09: "there is only 1 random chest
+per group, 1st chest is of group 1, 2nd chest is of group 2"): Puppet Doll +
+Beast Totem + Assembly Flag gives a random group-1 Legend and Tribal Goblet +
+Bone Scepter + Mithril Axe a random group-2 Legend, so each group tab leads its
+Legend formulas with only its own chest formula (owner, 2026-11-07: the page had
+missed the chest; icon sliced by `scripts/slice-relic-archive.py` from
+`fusion-archive-2026-11-06-2.png`). Nothing else is on the page (owner removed the calculator, the per-group cost line and the Legend
 checkboxes, 2026-11-06). The Mythic grouping is
 the Eternal recipes' pairing; which Legend group feeds which Mythic group is
 inferred (one red chest icon for all eight recipes); the page no longer notes it.
@@ -1899,6 +1931,18 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-11-09 — **Storm Sage (风暴禅师) added, released.** The owner named the
+  new Mythic Mage **Storm Sage** (slug `storm-sage`) and said it is released.
+  Source: owner-supplied Chinese compendium `gameplay/heroes/Storm Sage/CN.png`.
+  Details are under "Storm Sage" in Talents, artifact and cores.
+
+- 2026-11-09 — **Legend chest is per Mythic group.** "There is only 1 random
+  chest per group, 1st chest is of group 1, 2nd chest is of group 2": the Fusion
+  Archive's first Legend-chest formula (Puppet Doll + Beast Totem + Assembly
+  Flag) gives a random Legend of group 1, the second (Tribal Goblet + Bone
+  Scepter + Mithril Axe) one of group 2. The `/relics` tabs are renamed
+  "Group 1" / "Group 2" (from "Mythic group n").
 
 - 2026-11-06 — **Nightmare Source was released.** Removed from the unreleased
   list in `src/data/hero-release-status.ts`; the hero now appears under the

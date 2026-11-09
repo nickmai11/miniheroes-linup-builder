@@ -125,7 +125,7 @@ export const chestRecipes = (legends: string[]): Ingredient[][] =>
     legends.filter((_, i) => i !== skip).map((slug) => r(slug)),
   );
 
-/** The Legend chest (random Legend relic): the Fusion Archive's two formulas, 3 different Rares each. */
+/** The Legend chest, one per Mythic group (owner, 2026-11-09): formula i gives a random Legend of group i. 3 different Rares each. */
 export const legendChestRecipes: Ingredient[][] = [
   [r("puppet-doll"), r("beast-totem"), r("assembly-flag")],
   [r("tribal-goblet"), r("bone-scepter"), r("mithril-axe")],

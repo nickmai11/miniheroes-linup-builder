@@ -395,6 +395,13 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
 
 ## 6. Known gaps
 
+- **Storm Sage (November 9):** all text data (six talents, four artifact tiers,
+  four cores, two divinities, I/III) comes from the owner's Chinese guide
+  `gameplay/heroes/Storm Sage/CN.png`, with provisional English labels. Talent
+  and artifact icons are low-res cuts from that guide. The portrait
+  (`PENDING_PORTRAITS`) still needs the Archive card; in-game talent popups and
+  Artifact Overview would replace the icons (bump `ASSET_VERSION`).
+
 - **Discord import (September 30):** 48 heroes received 96 previously missing
   I/III stages. Together with the 20 existing heroes, 68 of 71 now have both
   descriptions. Only **Swordmaster, Bone Archer, and Nightmare Source** still

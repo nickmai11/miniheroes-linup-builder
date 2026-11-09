@@ -569,7 +569,7 @@
   "Copy pattern": "Sao chép mẫu",
   "Pages covered by this rule will require an access code or admin login unless another public access rule applies. You can add this rule again later.": "Các trang thuộc quy tắc này sẽ cần mã truy cập hoặc đăng nhập quản trị, trừ khi có quy tắc truy cập công khai khác áp dụng. Bạn có thể thêm lại quy tắc này sau.",
   "Latest changes from followed lineups and heroes.": "Những thay đổi mới nhất từ đội hình và anh hùng đang theo dõi.",
-  "Mythic group {n}": "Nhóm Thần thoại {n}",
+  "Group {n}": "Nhóm {n}",
   "Mythic chest: any 3 different Legends of the group": "Rương Thần thoại: 3 di vật Truyền thuyết khác nhau bất kỳ trong nhóm",
   "Mythic chest": "Rương Thần thoại",
   "Legend chest": "Rương Truyền thuyết",

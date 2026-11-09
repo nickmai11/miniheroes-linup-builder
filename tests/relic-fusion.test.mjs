@@ -80,12 +80,14 @@ test("the page shows both groups as icons, names only as labels, in both languag
       ),
     );
   const en = render("en");
-  assert.match(en, /Mythic group 1/);
-  assert.match(en, /role="tab"[^>]*>Mythic group 1</);
-  assert.match(en, /role="tab"[^>]*>Mythic group 2</);
+  assert.match(en, /Group 1/);
+  assert.match(en, /role="tab"[^>]*>Group 1</);
+  assert.match(en, /role="tab"[^>]*>Group 2</);
   assert.match(en, /aria-label="Night Twinblades"/);
   assert.match(en, /aria-label="Mythic chest"/);
   assert.match(en, /aria-label="Legend chest"/); // first of the group's Legend formulas
+  // one Legend chest per group: group 1's tab shows only the first formula
+  assert.equal(en.match(/aria-label="Legend chest"/g).length, 1);
   assert.match(en, /aria-label="Limestone ×16"/);
   assert.doesNotMatch(en.replace(/<[^>]+>/g, " "), /Night Twinblades/);
   assert.doesNotMatch(en, /calculator|base relics/i);
@@ -93,7 +95,7 @@ test("the page shows both groups as icons, names only as labels, in both languag
   assert.match(en, /role="tab"[^>]*>Common</);
   assert.doesNotMatch(en, /Rare formulas/); // the Common tab isn't open by default
   const vi = render("vi");
-  assert.match(vi, /Nhóm Thần thoại 2/);
+  assert.match(vi, /role="tab"[^>]*>Nhóm 2</);
   assert.match(vi, /aria-label="Song Đao Bóng Đêm"/);
 });
 

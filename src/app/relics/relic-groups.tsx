@@ -181,7 +181,7 @@ export function RelicGroups() {
               value={index}
               className="text-muted-foreground hover:text-foreground data-active:bg-background data-active:text-foreground focus-visible:ring-ring rounded-md px-4 py-1.5 text-sm font-medium outline-none focus-visible:ring-2 data-active:shadow-sm"
             >
-              {t("Mythic group {n}", { n: index + 1 })}
+              {t("Group {n}", { n: index + 1 })}
             </Tabs.Tab>
           ))}
           <Tabs.Tab
@@ -221,13 +221,10 @@ export function RelicGroups() {
                     label={t("Legend formulas")}
                     slugs={group.legends}
                   >
-                    {legendChestRecipes.map((recipe, i) => (
-                      <Formula
-                        key={i}
-                        result={<RelicIcon slug={LEGEND_CHEST} />}
-                        parts={recipe}
-                      />
-                    ))}
+                    <Formula
+                      result={<RelicIcon slug={LEGEND_CHEST} />}
+                      parts={legendChestRecipes[index]}
+                    />
                   </FormulaList>
                 </CardContent>
               </Card>

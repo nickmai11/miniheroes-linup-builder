@@ -41,7 +41,9 @@ LAYOUT = [
 
 
 # Verified overview, awaiting the owner's whole Archive card; use no substitute art.
-PENDING_PORTRAITS = {}
+PENDING_PORTRAITS = {
+    "storm-sage": ("Storm Sage", "mage", "mythic", "Storm Sage/CN.png"),
+}
 
 # Small Archive cards need a precise diamond-only patch so nearby feet/armor
 # remain intact. Coordinates are relative to the trimmed colored art panel.
