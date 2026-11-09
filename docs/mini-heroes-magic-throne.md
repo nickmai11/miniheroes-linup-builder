@@ -43,8 +43,8 @@ Hero portraits show an indicator when that hero has at least one saved build
 of whether a build is assigned to a particular lineup slot.
 The hero catalog is labeled **Heroes** in the UI (owner, 2026-09-15).
 The catalog has **Released** and **Unreleased** tabs, defaulting to Released
-(owner, 2026-09-17). Dreamstar Spirit, Nether Soul, and Panda Warrior belong to
-Unreleased; Nightmare Source was released (owner, 2026-11-06). Search and class filters apply within the selected
+(owner, 2026-09-17). Dreamstar Spirit, Nether Soul, Panda Warrior, and Storm Sage belong to
+Unreleased (Storm Sage: owner, 2026-11-09); Nightmare Source was released (owner, 2026-11-06). Search and class filters apply within the selected
 tab. Release status is maintained in `src/data/hero-release-status.ts`, separately
 from rarity and detail coverage. The catalog includes these four even when their
 detail import is pending; existing lineup/detail listing rules are preserved.
@@ -312,7 +312,7 @@ interactive browser checks remain unverified.
 Source: `gameplay/heroes/Storm Sage/CN.png` (323×2000 compendium, 神话·法师,
 four-piece set 魔法增伤). English name **Storm Sage** is owner-given; every
 other English label is a provisional translation, not a verified in-game name.
-Released (owner, 2026-11-09). Talent and artifact icons are cut from the guide
+Unreleased (owner, 2026-11-09). Talent and artifact icons are cut from the guide
 (low-res) by `scripts/slice-talent-icons.py`. The guide has no Archive card, so
 the portrait stays in `PENDING_PORTRAITS` until the owner supplies one.
 
@@ -1931,6 +1931,9 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-11-09 — **Storm Sage is unreleased.** Correction to the entry below: the
+  owner moved it to the Unreleased tab (`src/data/hero-release-status.ts`).
 
 - 2026-11-09 — **Storm Sage (风暴禅师) added, released.** The owner named the
   new Mythic Mage **Storm Sage** (slug `storm-sage`) and said it is released.
