@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { Tooltip as TooltipPrimitive } from "@base-ui/react/tooltip";
 import { cn } from "cn";
 
@@ -16,12 +17,67 @@ function TooltipProvider({
   );
 }
 
-function Tooltip({ ...props }: TooltipPrimitive.Root.Props) {
-  return <TooltipPrimitive.Root data-slot="tooltip" {...props} />;
+/** Base UI tooltips open on hover/focus only; touch taps toggle them here. */
+const TapToggle = React.createContext<{
+  setTouch: (touch: boolean) => void;
+  isTouch: () => boolean;
+  toggle: () => void;
+} | null>(null);
+
+function Tooltip({
+  open: openProp,
+  onOpenChange,
+  ...props
+}: TooltipPrimitive.Root.Props) {
+  const [open, setOpen] = React.useState(false);
+  const touch = React.useRef(false);
+  const tap = React.useMemo(
+    () => ({
+      setTouch: (value: boolean) => {
+        touch.current = value;
+      },
+      isTouch: () => touch.current,
+      toggle: () => setOpen((value) => !value),
+    }),
+    [],
+  );
+  return (
+    <TapToggle.Provider value={tap}>
+      <TooltipPrimitive.Root
+        data-slot="tooltip"
+        open={openProp ?? open}
+        onOpenChange={(next, details) => {
+          // A tap is handled by the trigger's click toggle below.
+          if (touch.current && details.reason === "trigger-press") return;
+          setOpen(next);
+          onOpenChange?.(next, details);
+        }}
+        {...props}
+      />
+    </TapToggle.Provider>
+  );
 }
 
-function TooltipTrigger({ ...props }: TooltipPrimitive.Trigger.Props) {
-  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />;
+function TooltipTrigger({
+  onPointerDown,
+  onClick,
+  ...props
+}: TooltipPrimitive.Trigger.Props) {
+  const tap = React.useContext(TapToggle);
+  return (
+    <TooltipPrimitive.Trigger
+      data-slot="tooltip-trigger"
+      onPointerDown={(event) => {
+        tap?.setTouch(event.pointerType === "touch");
+        onPointerDown?.(event);
+      }}
+      onClick={(event) => {
+        onClick?.(event);
+        if (tap?.isTouch()) tap.toggle();
+      }}
+      {...props}
+    />
+  );
 }
 
 function TooltipContent({
