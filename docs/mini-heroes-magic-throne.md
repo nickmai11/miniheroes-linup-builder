@@ -1691,7 +1691,11 @@ Desert Beach (17), Frost Land (19), Jungle Lakes (19), and Idyllic Paradise (20)
 Each row records a name, type (Small / Medium / Large / Aquatic), collection,
 up to three stat names, and optional bait. Area comes from the sheet filename.
 Preserve the sheet's names and stat wording, trimming whitespace and treating
-`-` as unrecorded.
+`-` as unrecorded. Exception (owner, 2026-11-11, flagged duplicates/typos):
+`STAT_FIXES` in the importer maps sheet typos and variants (`ATk`, `Knockback
+Effet`, `Melee DMG Reduct`/`Reductoin`, `Range DMG …`, `SPD Redction RES`) to
+the divinity popup wording, and `COLLECTION_FIXES` maps "Dazzeling Colors" to
+"Dazzling Colors".
 
 Each fish has a size ratio for each stat (owner, 2026-09-17): divide a
 screenshot's stat value by that catch's size in cm, then multiply by the best

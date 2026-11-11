@@ -25,6 +25,18 @@ RARITIES = {"blue": "rare", "purple": "epic", "gold": "legend", "red": "mythic",
 # values come from the original screenshots (before display color management).
 RARITY_COLORS = {"blue": (44, 110, 178), "purple": (140, 73, 209), "gold": (236, 162, 41),
                  "red": (200, 76, 75), "rainbow": (88, 127, 234)}
+# Sheet typos and variants -> the divinity popup wording (src/data/divinities.ts).
+STAT_FIXES = {
+    "ATk": "ATK",
+    "Knockback Effet": "Knockback Effect",
+    "Melee DMG Reduct": "Melee DMG Reduction",
+    "Melee DMG Reductoin": "Melee DMG Reduction",
+    "Range DMG Boost": "Ranged DMG Boost",
+    "Range DMG Reduct": "Ranged DMG Reduction",
+    "Range DMG Reduction": "Ranged DMG Reduction",
+    "SPD Redction RES": "SPD Reduction RES",
+}
+COLLECTION_FIXES = {"Dazzeling Colors": "Dazzling Colors"}
 BASE_STATS = {"ATK", "HP", "DEF"} | {
     f"{role} {stat}" for role in ("Warrior", "Marksman", "Mage", "Support")
     for stat in ("ATK", "HP")
@@ -103,9 +115,9 @@ def read_fishes(directory: Path) -> list[dict]:
                     "name": name,
                     "area": area,
                     "fishType": row["Type"],
-                    "collection": row["Collection"],
-                    "stats": [row[f"Stat {i}"] for i in (1, 2, 3)
-                              if row[f"Stat {i}"] not in ("", "-")],
+                    "collection": COLLECTION_FIXES.get(row["Collection"], row["Collection"]),
+                    "stats": [STAT_FIXES.get(row[f"Stat {i}"], row[f"Stat {i}"])
+                              for i in (1, 2, 3) if row[f"Stat {i}"] not in ("", "-")],
                     "bait": row["Bait"] if row["Bait"] not in ("", "-") else None,
                 })
                 count += 1
