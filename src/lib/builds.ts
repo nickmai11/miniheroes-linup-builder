@@ -3,6 +3,7 @@ import { getViewerKey } from "@/lib/viewer-profile";
 import { getAdminId } from "@/lib/admin-access";
 import { buildPrivacyFilter, buildReadFilter } from "@/lib/build-privacy";
 import { matchingGameSlugs } from "@/lib/i18n/game-labels";
+import { getDescriptionLocalizer } from "@/lib/i18n/game-text";
 import { and, asc, eq, ilike, inArray, ne, or, type SQL } from "drizzle-orm";
 import { db, schema } from "@/db";
 import type { HeroBuild, ImportableBuildPage } from "@/lib/build-types";
@@ -124,6 +125,7 @@ async function loadBuilds(where: SQL): Promise<HeroBuild[]> {
         asc(schema.heroBuildCores.id),
       ),
   ]);
+  const localize = await getDescriptionLocalizer();
 
   return builds.map(({ privateOwnerId, ...b }) => ({
     ...b,
@@ -139,7 +141,11 @@ async function loadBuilds(where: SQL): Promise<HeroBuild[]> {
       .map((w) => ({ ...w.weapon, priority: w.priority })),
     cores: coreRows
       .filter((c) => c.buildId === b.id)
-      .map((c) => ({ ...c.core, skill: c.skill, priority: c.priority })),
+      .map((c) => ({
+        ...localize(c.core),
+        skill: c.skill && localize(c.skill),
+        priority: c.priority,
+      })),
   }));
 }
 

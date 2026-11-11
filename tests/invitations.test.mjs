@@ -645,3 +645,28 @@ test("API and action entry points check registration even without Proxy", async 
     await assert.rejects(call, denied);
   }
 });
+
+test("the proxy reuses a full-access device for a minute but never caches a denial", async () => {
+  const lookups = [];
+  let device = null;
+  const proxy = loadTypeScript("src/proxy.ts", {
+    "@/lib/invitations": {
+      findRegisteredDevice: async (value) => {
+        lookups.push(value);
+        return device;
+      },
+      newDeviceToken: () => token,
+    },
+  }).proxy;
+  const page = () =>
+    proxy(
+      request("/heroes/sea-captain", {
+        headers: { cookie: `${policy.DEVICE_COOKIE}=${token}` },
+      }),
+    );
+  assert.equal((await page()).status, 307);
+  device = { id: 1, fullAccess: true, lineupIds: [] };
+  assert.equal((await page()).headers.get("x-middleware-next"), "1");
+  assert.equal((await page()).headers.get("x-middleware-next"), "1");
+  assert.equal(lookups.length, 2);
+});

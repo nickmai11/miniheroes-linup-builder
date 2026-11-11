@@ -31,7 +31,14 @@ Names of heroes, talents, awakenings, cores, artifacts, and divinities display
 through `gameLabel()` in the selected language (owner, 2026-09-14). Keep original
 English names in seeds and the database so talent links, core matching, and seed
 fingerprints remain stable. Add corresponding keys to `game-en.json` and
-`game-vi.json` when importing new names. Descriptions remain source transcriptions.
+`game-vi.json` when importing new names. Seeds keep the English source
+transcription of every description; Vietnamese visitors see talent, artifact,
+core and awakening descriptions in Vietnamese (owner, 2026-11-11), including
+in build cores and core popovers. `src/lib/i18n/game-text-vi.json` maps each
+exact English description to its translation and is loaded only on the server
+(`getDescriptionLocalizer()`). Adding or editing a description requires its
+entry; `tests/game-text-vi.test.mjs` fails on missing, stale or number-changing
+translations. Translations are app-made, not in-game Vietnamese text.
 
 The Heroes catalog has Released / Unreleased tabs, defaulting to Released.
 Dreamstar Spirit, Nether Soul, and Panda Warrior are Unreleased (owner,

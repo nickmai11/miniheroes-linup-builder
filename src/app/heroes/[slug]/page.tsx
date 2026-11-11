@@ -1,6 +1,7 @@
 import { ContentVotes } from "@/components/content-votes";
 import { LineupPopover } from "@/components/lineup-popover";
 import { getI18n } from "@/lib/i18n/server";
+import { getDescriptionLocalizer } from "@/lib/i18n/game-text";
 import { FollowButton } from "@/components/follow-button";
 import { hasAppAccess, requirePageAccess } from "@/lib/app-access";
 import type { Metadata } from "next";
@@ -47,8 +48,16 @@ export default async function HeroPage(props: PageProps<"/heroes/[slug]">) {
 
   await requirePageAccess();
   const { slug } = await props.params;
-  const hero = await getHeroDetail(slug);
-  if (!hero) notFound();
+  const detail = await getHeroDetail(slug);
+  if (!detail) notFound();
+  const localize = await getDescriptionLocalizer();
+  const hero = {
+    ...detail,
+    skills: detail.skills.map(localize),
+    awakeningSkills: detail.awakeningSkills.map(localize),
+    cores: detail.cores.map(localize),
+    artifactBonuses: detail.artifactBonuses.map(localize),
+  };
   const canEdit = (await canEditContent()) && (await hasAppAccess());
   const canViewSavedContent = Boolean(await getViewerKey());
   const [builds, runeAttributes, weaponAttributes] = await Promise.all([

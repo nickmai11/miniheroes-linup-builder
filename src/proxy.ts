@@ -32,6 +32,34 @@ import {
   setDeviceCookie,
 } from "@/lib/invitation-cookie";
 
+// The proxy runs at the edge nearest the visitor, a cross-region round trip
+// from the database per query. Pages, metadata and APIs re-check access
+// uncached, so full-access devices are reused here: a revoked device can still
+// load public/ artwork for at most GRANT_TTL_MS; denials are never cached.
+// Public page rules are not cached: their removal applies on the next request.
+const GRANT_TTL_MS = 60_000;
+const grants = new Map<string, { expires: number; value: Promise<unknown> }>();
+
+function cachedGrant<T>(
+  key: string,
+  load: () => Promise<T>,
+  granted: (value: T) => boolean,
+): Promise<T> {
+  const hit = grants.get(key);
+  if (hit && hit.expires > Date.now()) return hit.value as Promise<T>;
+  // ponytail: crude bound per instance; switch to LRU if visitors outgrow it.
+  if (grants.size > 1000) grants.clear();
+  const value = load();
+  grants.set(key, { expires: Date.now() + GRANT_TTL_MS, value });
+  value.then(
+    (result) => {
+      if (!granted(result)) grants.delete(key);
+    },
+    () => grants.delete(key),
+  );
+  return value;
+}
+
 export async function proxy(request: NextRequest) {
   const url = request.nextUrl;
   const path = url.pathname;
@@ -155,7 +183,11 @@ export async function proxy(request: NextRequest) {
   try {
     // Files in public/ have no page or data layer, so validate their access here
     // too. Pages, metadata, APIs, and actions also check their own entry points.
-    const device = await findRegisteredDevice(token);
+    const device = await cachedGrant(
+      `device:${token}`,
+      () => findRegisteredDevice(token),
+      (found) => Boolean(found?.fullAccess),
+    );
     if (device?.fullAccess && isDeviceToken(token)) {
       let response: NextResponse;
       if (path === "/invite") {

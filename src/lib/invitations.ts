@@ -65,12 +65,14 @@ async function deviceAccess(
     .where(eq(schema.registeredDevices.tokenHash, tokenHash));
   if (!rows.length) return null;
   const key = `device:${rows[0].id}`;
-  const shared = await sharedDestinations(key, database);
   // Reading every lineup and build needs every page they appear on.
-  const [profile] = await database
-    .select({ allContent: schema.viewerProfiles.allContent })
-    .from(schema.viewerProfiles)
-    .where(eq(schema.viewerProfiles.viewerKey, key));
+  const [shared, [profile]] = await Promise.all([
+    sharedDestinations(key, database),
+    database
+      .select({ allContent: schema.viewerProfiles.allContent })
+      .from(schema.viewerProfiles)
+      .where(eq(schema.viewerProfiles.viewerKey, key)),
+  ]);
   return {
     ...(shared.lineupIds.length
       ? {

@@ -1943,6 +1943,12 @@ daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
 
+- 2026-11-11 — **Hero details must be translated into Vietnamese.** "The hero
+  details aren't translated into VNese if user switch to VNese": talent,
+  artifact-bonus, core and awakening descriptions now display in Vietnamese
+  when the visitor selects Vietnamese (`src/lib/i18n/game-text-vi.json`,
+  app translations keyed by the English text; English seeds unchanged).
+
 - 2026-11-11 — **Storm Sage was released.** Removed from the unreleased list in
   `src/data/hero-release-status.ts` (supersedes the November 9 "unreleased"
   correction). The owner asked for its details to be read from the **Kong** MuMu
