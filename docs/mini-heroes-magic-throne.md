@@ -2939,9 +2939,11 @@ images from the internet — the owner rejected that.
    per-screenshot layout table inside the script.
 
 If a screenshot is added or a card moves, edit the `LAYOUT` table in the script (names
-in reading order, roles, rarity per screenshot) and rerun it. New heroes are
-inserted by the normal `ensureHeroesSeeded()` read flow;
-`scripts/upsert-heroes.sql` is also regenerated for explicit roster updates.
+in reading order, roles, rarity per screenshot) and rerun it. The normal
+`ensureHeroesSeeded()` read flow inserts new heroes and, once per server start,
+updates existing rows whose name, role, rarity or portrait differ from the seed
+(2026-11-11: Storm Sage's portrait stayed NULL because the flow previously only
+inserted). `scripts/upsert-heroes.sql` is still regenerated for manual syncs.
 
 Because image files are replaced in place, every game image URL carries a
 cache-busting `?v=N` from `src/lib/asset-version.ts` (`versioned()`). Bump

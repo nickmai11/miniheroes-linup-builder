@@ -4,7 +4,8 @@
 Writes src/data/fishes.ts and scripts/upsert-fishes.sql. The upsert preserves
 existing fish IDs and lineup selections. Icon sources and screenshot-corrected
 names are recorded in gameplay/fishes/icons.json.
-Names and stat wording are preserved, with surrounding whitespace removed.
+Names and stat wording are preserved, with surrounding whitespace removed,
+except the sheet typos in STAT_FIXES and COLLECTION_FIXES.
 """
 
 import csv

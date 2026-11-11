@@ -2,7 +2,7 @@ import "server-only";
 import { getViewerKey } from "@/lib/viewer-profile";
 import { createHash } from "node:crypto";
 import { cache } from "react";
-import { and, asc, eq, inArray } from "drizzle-orm";
+import { and, asc, eq, inArray, sql } from "drizzle-orm";
 import { getAdminId } from "@/lib/admin-access";
 import { lineupReadFilter } from "@/lib/lineup-privacy";
 import { db, schema } from "@/db";
@@ -57,12 +57,25 @@ export function sortHeroes<T extends Hero>(list: T[]): T[] {
   );
 }
 
-/** Insert any seed heroes that aren't in the table yet. Safe to call repeatedly. */
+/**
+ * Insert new seed heroes and apply roster changes (name, role, rarity, portrait)
+ * to existing ones, writing only rows that differ. Safe to call repeatedly.
+ */
 export const ensureHeroesSeeded = onceAsync(async () => {
+  const { name, role, rarity, imageUrl } = schema.heroes;
   await db
     .insert(schema.heroes)
     .values(heroSeeds)
-    .onConflictDoNothing({ target: schema.heroes.slug });
+    .onConflictDoUpdate({
+      target: schema.heroes.slug,
+      set: {
+        name: sql`excluded.name`,
+        role: sql`excluded.role`,
+        rarity: sql`excluded.rarity`,
+        imageUrl: sql`excluded.image_url`,
+      },
+      setWhere: sql`(${name}, ${role}, ${rarity}, ${imageUrl}) is distinct from (excluded.name, excluded.role, excluded.rarity, excluded.image_url)`,
+    });
 });
 
 export type HeroWithDivinities = Hero & {
