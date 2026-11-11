@@ -1694,8 +1694,10 @@ Preserve the sheet's names and stat wording, trimming whitespace and treating
 `-` as unrecorded. Exception (owner, 2026-11-11, flagged duplicates/typos):
 `STAT_FIXES` in the importer maps sheet typos and variants (`ATk`, `Knockback
 Effet`, `Melee DMG Reduct`/`Reductoin`, `Range DMG …`, `SPD Redction RES`) to
-the divinity popup wording, and `COLLECTION_FIXES` maps "Dazzeling Colors" to
-"Dazzling Colors".
+the divinity popup wording, and aligns `Crit` casing to the in-game `CRIT`
+(`CRIT Rate`, `CRIT DMG`, `Anti-CRIT Rate`, `CRIT DMG RES`; migration
+`0042_fish_crit_casing.sql` renames existing sample keys). `COLLECTION_FIXES`
+maps "Dazzeling Colors" to "Dazzling Colors".
 
 Each fish has a size ratio for each stat (owner, 2026-09-17): divide a
 screenshot's stat value by that catch's size in cm, then multiply by the best
@@ -1738,8 +1740,8 @@ The owner's September 17 aquarium follow-ups add seven complete samples:
 | Ancient Black Fish | 1107            | ATK 2245; Support HP 79560; Physical DMG Boost 4.68%            | `image copy 5.png`                                 |
 | Hermit Crab        | 21.6            | Warrior HP 69232; DMG Reduction 2.84%; Physical DMG Boost 4.41% | `image copy 5.png`                                 |
 
-Zebrafish's screenshot label Anti-CRIT Rate maps to the catalog key
-`Anti-Crit Rate`. Repeated Kissing Fish, Lophiomus, Oarfish, and Hermit Crab
+Zebrafish's screenshot label Anti-CRIT Rate is the catalog key
+`Anti-CRIT Rate`. Repeated Kissing Fish, Lophiomus, Oarfish, and Hermit Crab
 rows are duplicate samples, not additional ratios. Use the complete Ancient
 Black Fish row in `image copy 5.png`, not the clipped row in `image copy 4.png`.
 The aquarium follow-ups alone do not establish highest records, and sample

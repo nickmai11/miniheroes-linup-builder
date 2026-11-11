@@ -23,7 +23,7 @@ export const fishMeasurementSeeds: Record<
       sizeCm: 7.27,
       stats: {
         "Warrior HP": 62185,
-        "Crit DMG": 8.08,
+        "CRIT DMG": 8.08,
         "DMG Reduction": 2.55,
       },
     },
@@ -33,7 +33,7 @@ export const fishMeasurementSeeds: Record<
     bestSizeCm: fishHighestRecordSeeds["zebrafish"].bestSizeCm,
     statSample: {
       sizeCm: 18,
-      stats: { "Mage ATK": 5211, DEF: 693, "Anti-Crit Rate": 4.37 },
+      stats: { "Mage ATK": 5211, DEF: 693, "Anti-CRIT Rate": 4.37 },
     },
   },
   "rose-fish": {

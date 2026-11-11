@@ -25,9 +25,13 @@ RARITIES = {"blue": "rare", "purple": "epic", "gold": "legend", "red": "mythic",
 # values come from the original screenshots (before display color management).
 RARITY_COLORS = {"blue": (44, 110, 178), "purple": (140, 73, 209), "gold": (236, 162, 41),
                  "red": (200, 76, 75), "rainbow": (88, 127, 234)}
-# Sheet typos and variants -> the divinity popup wording (src/data/divinities.ts).
+# Sheet typos, variants and casing -> the divinity popup wording (src/data/divinities.ts).
 STAT_FIXES = {
     "ATk": "ATK",
+    "Anti-Crit Rate": "Anti-CRIT Rate",
+    "Crit DMG": "CRIT DMG",
+    "Crit DMG RES": "CRIT DMG RES",
+    "Crit Rate": "CRIT Rate",
     "Knockback Effet": "Knockback Effect",
     "Melee DMG Reduct": "Melee DMG Reduction",
     "Melee DMG Reductoin": "Melee DMG Reduction",

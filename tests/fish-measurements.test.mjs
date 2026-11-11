@@ -61,7 +61,7 @@ test("screenshot ratios calculate all maximums with independent percentage scali
     assert.deepEqual(Object.keys(measurement.statSample.stats), fish.stats);
   }
   const snail = fishMeasurementSeeds["rainbow-snail"];
-  assert.equal(fishStatMaximum("Crit DMG", 8.1, snail.statSample, true), 9);
+  assert.equal(fishStatMaximum("CRIT DMG", 8.1, snail.statSample, true), 9);
 });
 
 test("missing or invalid measurements stay unknown and genuine zero stays zero", () => {
