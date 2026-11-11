@@ -15,22 +15,17 @@ test("the owner's unreleased heroes have roster entries and portrait assets", ()
     .filter((hero) => getHeroReleaseStatus(hero.slug) === "unreleased")
     .map((hero) => hero.name)
     .sort();
-  assert.deepEqual(names, [
-    "Dreamstar Spirit",
-    "Nether Soul",
-    "Panda Warrior",
-    "Storm Sage",
-  ]);
+  assert.deepEqual(names, ["Dreamstar Spirit", "Nether Soul", "Panda Warrior"]);
   for (const slug of UNRELEASED_HERO_SLUGS) {
     const hero = heroSeeds.find((candidate) => candidate.slug === slug);
-    assert.ok(hero);
-    if (!hero.imageUrl) continue; // portrait pending (PENDING_PORTRAITS)
+    assert.ok(hero.imageUrl);
     const bytes = readFileSync(
       new URL(`../public${hero.imageUrl}`, import.meta.url),
     );
     assert.equal(bytes.subarray(0, 8).toString("hex"), "89504e470d0a1a0a");
   }
   assert.equal(getHeroReleaseStatus("sea-captain"), "released");
+  assert.equal(getHeroReleaseStatus("storm-sage"), "released");
 });
 
 test("the catalog renders accessible release tabs and defaults to released heroes", () => {

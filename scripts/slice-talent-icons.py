@@ -106,27 +106,24 @@ LAYOUT = {
         "artifact_corner_radius": 6,
         "artifact_popup": None,
     },
-    # ponytail: icons cut from the 323px-wide Chinese guide (low-res); replace
-    # with in-game popups and bump ASSET_VERSION once the owner supplies them.
+    # Kong's in-game Archive popups (1080x1920), owner request 2026-11-11.
     "storm-sage": {
         "popups": [
-            ('../heroes/Storm Sage/CN.png', 'Ball Lightning'),
-            ('../heroes/Storm Sage/CN.png', 'Overload'),
-            ('../heroes/Storm Sage/CN.png', 'Voltage Boost'),
-            ('../heroes/Storm Sage/CN.png', 'Electron Barrier'),
-            ('../heroes/Storm Sage/CN.png', 'Storm Soul'),
-            ('../heroes/Storm Sage/CN.png', 'Thundercloud Echo'),
+            ('../heroes/Storm Sage/Ultimate.png', 'Ball Lightning'),
+            ('../heroes/Storm Sage/Skill1.png', 'Overload'),
+            ('../heroes/Storm Sage/Skill2.png', 'Volt Surge'),
+            ('../heroes/Storm Sage/Skill3.png', 'Electron Barrier'),
+            ('../heroes/Storm Sage/Skill4.png', 'Storm Soul'),
+            ('../heroes/Storm Sage/Skill5.png', 'Thundercloud Echo'),
         ],
         "talent_icons": {
-            'Ball Lightning': {"box": (37, 493, 70, 526), "inset": 0},
-            'Overload': {"box": (37, 550, 70, 583), "inset": 0},
-            'Voltage Boost': {"box": (37, 620, 70, 653), "inset": 0},
-            'Electron Barrier': {"box": (37, 669, 70, 702), "inset": 0},
-            'Storm Soul': {"box": (37, 718, 70, 751), "inset": 0},
-            'Thundercloud Echo': {"box": (37, 759, 70, 792), "inset": 0},
+            name: {"box": (192, 670, 346, 824), "inset": 20}
+            for name in ('Ball Lightning', 'Overload', 'Volt Surge',
+                         'Electron Barrier', 'Storm Soul', 'Thundercloud Echo')
         },
-        "artifact": "../heroes/Storm Sage/CN.png",
-        "artifact_box": (125, 903, 194, 972),
+        "artifact": "../heroes/Storm Sage/Artifact Details.png",
+        "artifact_box": (112, 372, 372, 628),
+        "artifact_corner_radius": 24,
         "artifact_popup": None,
     },
     "dreamstar-spirit": {

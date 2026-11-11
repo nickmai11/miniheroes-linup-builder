@@ -71,6 +71,6 @@ INSERT INTO heroes (slug, name, role, rarity, image_url) VALUES
 ('nether-soul','Nether Soul','warrior','mythic','/heroes/nether-soul.png'),
 ('nightmare-source','Nightmare Source','support','mythic','/heroes/nightmare-source.png'),
 ('panda-warrior','Panda Warrior','warrior','mythic','/heroes/panda-warrior.png'),
-('storm-sage','Storm Sage','mage','mythic',NULL)
+('storm-sage','Storm Sage','mage','mythic','/heroes/storm-sage.png')
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, role = EXCLUDED.role, rarity = EXCLUDED.rarity, image_url = EXCLUDED.image_url;

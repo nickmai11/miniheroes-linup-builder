@@ -37,13 +37,12 @@ LAYOUT = [
     ("Nether Soul/Profile.png", ["Nether Soul"], [W], "mythic"),
     ("Nightmare Source/Profile.png", ["Nightmare Source"], [U], "mythic"),
     ("Panda Warrior/Profile.png", ["Panda Warrior"], [W], "mythic"),
+    ("Storm Sage/Profile.png", ["Storm Sage"], [G], "mythic"),
 ]
 
 
 # Verified overview, awaiting the owner's whole Archive card; use no substitute art.
-PENDING_PORTRAITS = {
-    "storm-sage": ("Storm Sage", "mage", "mythic", "Storm Sage/CN.png"),
-}
+PENDING_PORTRAITS = {}
 
 # Small Archive cards need a precise diamond-only patch so nearby feet/armor
 # remain intact. Coordinates are relative to the trimmed colored art panel.

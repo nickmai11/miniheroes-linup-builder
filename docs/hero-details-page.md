@@ -35,8 +35,8 @@ fingerprints remain stable. Add corresponding keys to `game-en.json` and
 
 The Heroes catalog has Released / Unreleased tabs, defaulting to Released.
 Dreamstar Spirit, Nether Soul, and Panda Warrior are Unreleased (owner,
-2026-09-17); Nightmare Source was released on 2026-11-06 (owner). Search and class filters apply within the selected tab.
-The catalog includes these four roster entries even while detail imports are
+2026-09-17); Nightmare Source (2026-11-06) and Storm Sage (2026-11-11) were released (owner). Search and class filters apply within the selected tab.
+The catalog includes these roster entries even while detail imports are
 pending. Lineup pickers and divinity hero lists still require an entry in
 `heroDetailSeeds`. Partly recorded heroes remain visible; adding a detail entry
 automatically makes a hero eligible for these lists.
@@ -395,12 +395,10 @@ Schema changes need a Drizzle migration; append the RLS policy + grant for
 
 ## 6. Known gaps
 
-- **Storm Sage (November 9):** all text data (six talents, four artifact tiers,
-  four cores, two divinities, I/III) comes from the owner's Chinese guide
-  `gameplay/heroes/Storm Sage/CN.png`, with provisional English labels. Talent
-  and artifact icons are low-res cuts from that guide. The portrait
-  (`PENDING_PORTRAITS`) still needs the Archive card; in-game talent popups and
-  Artifact Overview would replace the icons (bump `ASSET_VERSION`).
+- **Storm Sage (November 11):** talents, cores, artifact, divinities, icons and
+  portrait now come from the owner's Kong account in-game captures
+  (`gameplay/heroes/Storm Sage/`). Only **Awakening I/III** remain the Chinese
+  guide translations; replace them once Kong's Storm Sage reaches Hero Awaken.
 
 - **Discord import (September 30):** 48 heroes received 96 previously missing
   I/III stages. Together with the 20 existing heroes, 68 of 71 now have both

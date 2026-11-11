@@ -356,7 +356,7 @@ export const heroSeeds: HeroSeed[] = [
     name: "Storm Sage",
     role: "mage",
     rarity: "mythic",
-    imageUrl: null,
+    imageUrl: img("storm-sage"),
   },
   {
     slug: "two-headed-dragon",

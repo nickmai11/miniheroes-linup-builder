@@ -43,10 +43,11 @@ Hero portraits show an indicator when that hero has at least one saved build
 of whether a build is assigned to a particular lineup slot.
 The hero catalog is labeled **Heroes** in the UI (owner, 2026-09-15).
 The catalog has **Released** and **Unreleased** tabs, defaulting to Released
-(owner, 2026-09-17). Dreamstar Spirit, Nether Soul, Panda Warrior, and Storm Sage belong to
-Unreleased (Storm Sage: owner, 2026-11-09); Nightmare Source was released (owner, 2026-11-06). Search and class filters apply within the selected
+(owner, 2026-09-17). Dreamstar Spirit, Nether Soul, and Panda Warrior belong to
+Unreleased; Nightmare Source (owner, 2026-11-06) and Storm Sage (owner, 2026-11-11)
+were released. Search and class filters apply within the selected
 tab. Release status is maintained in `src/data/hero-release-status.ts`, separately
-from rarity and detail coverage. The catalog includes these four even when their
+from rarity and detail coverage. The catalog includes these even when their
 detail import is pending; existing lineup/detail listing rules are preserved.
 In the hero pool, heroes with at least one saved build appear first (owner,
 2026-09-14). Within each group, sort by rarity (Eternal, Mythic, Legend, Epic),
@@ -307,33 +308,43 @@ continuing to deny detail images from the catalog and unrelated pages. Local
 routes still require an invited session; authenticated HTTP/image responses and
 interactive browser checks remain unverified.
 
-#### Storm Sage (owner Chinese guide, 2026-11-09)
+#### Storm Sage (Kong in-game captures, 2026-11-11)
 
-Source: `gameplay/heroes/Storm Sage/CN.png` (323×2000 compendium, 神话·法师,
-four-piece set 魔法增伤). English name **Storm Sage** is owner-given; every
-other English label is a provisional translation, not a verified in-game name.
-Unreleased (owner, 2026-11-09). Talent and artifact icons are cut from the guide
-(low-res) by `scripts/slice-talent-icons.py`. The guide has no Archive card, so
-the portrait stays in `PENDING_PORTRAITS` until the owner supplies one.
+Released (owner, 2026-11-11). At the owner's request, everything except
+Awakening I/III was read from the owner's **Kong** account (MuMu instance, ADB
+1080×1920 captures) and replaces the November 9 guide translations. Captures in
+`gameplay/heroes/Storm Sage/`: `Archive.png` (Archive grid; `Profile.png` is its
+Storm Sage card scaled ×699/1080 for `scripts/slice-hero-cards.py`), `Archive
+Overview.png` (the Archive hero popup), `Ultimate.png` and `Skill1–5.png`
+(talent popups; `-1` files are the same popup scrolled to its core),
+`Artifact Details(-1).png` (artifact ability list), `Artifact Overview.png`
+(Artifact tab, divinity badges) and `Talents.png` (Talent tab ring). Archive
+popups include the Artifact Bonus and Core panels, so a hero need not be owned
+or awakened to read them. Talent icons and the artifact image are cut from these.
+Kong's Archive card shows **Mythic Mage**; its Hero screen offers an **Upgrade**
+to Eternal (not taken; app rarity stays Mythic).
 
-| Stars | Kind     | Chinese / English                           |
-| ----- | -------- | ------------------------------------------- |
-| 0     | Ultimate | 球状闪电 / Ball Lightning                   |
-| 2     | Battle   | 过载 / Overload                             |
-| 5     | Enhance  | 电势增幅 / Voltage Boost                    |
-| 8     | Special  | 电子屏障 / Electron Barrier                 |
-| 12    | Passive  | 风暴之魂 / Storm Soul (12★ + Legend)        |
-| 16    | Enhance  | 雷云回响 / Thundercloud Echo (16★ + Mythic) |
+| Stars | Kind     | Talent            | Artifact bonus | Core          |
+| ----- | -------- | ----------------- | -------------- | ------------- |
+| 0     | Ultimate | Ball Lightning    | Mythic         | Wizard's Wand |
+| 2     | Battle   | Overload          | Epic           | Arcane Hat    |
+| 5     | Enhance  | **Volt Surge**    | —              | —             |
+| 8     | Special  | Electron Barrier  | Legend         | Mage Robe     |
+| 12    | Passive  | Storm Soul        | —              | —             |
+| 16    | Enhance  | Thundercloud Echo | —              | Spell Tome    |
 
-- **Artifact** 碧玉念珠 / Jade Prayer Beads: Epic → Overload, Legend → Electron
-  Barrier, Mythic → Ball Lightning, Eternal standalone 量子风暴 / **Quantum Storm**.
-- **Cores** (tier-3 talent lines): Wizard's Wand → Ball Lightning, Arcane Hat →
-  Overload, Mage Robe → Electron Barrier, Spell Tome → Thundercloud Echo.
-- **Divinities** (red, left / right): 全体暴击率 CRIT Rate / 全体伤害减免 DMG
-  Reduction. Other badges: HP ×2 and ATK (high), Mage ATK.
-- **Awakening:** I 电能激荡 / Electric Surge and III 超负荷 / Overcharge are the
-  unique skills; II 法术屏障 and IV 灵能波动 are Mage common skills, excluded.
-- Skins: 原始皮肤 (default) and 奥术贤者 (HP +8400).
+- The in-game 5★ name is **Volt Surge**; the guide translation "Voltage Boost"
+  is retired (icon `volt-surge.png`, i18n key `skill.volt-surge`). Every other
+  provisional English name matched the game. Its text renders as
+  "Ball Lightningincreases" in game; the seed adds the missing space.
+- **Artifact** Jade Prayer Beads; Eternal is standalone **Quantum Storm**.
+- **Divinities** (red, left / right): **CRIT Rate / DMG Reduction**, matched
+  to the catalog icons on the Artifact tab; agrees with the guide.
+- **Awakening** I/III remain the guide's 电能激荡 / Electric Surge and 超负荷 /
+  Overcharge (`CN.png`): Kong's Storm Sage has no Hero Awaken button yet, and
+  that screen has no hero switcher. II/IV are Mage common skills, excluded.
+- `CN.png` (323×2000 compendium, 神话·法师, four-piece set 魔法增伤) also
+  lists skins 原始皮肤 (default) and 奥术贤者 (HP +8400).
 
 #### Dreamstar Spirit (owner screenshots, 2026-09-17)
 
@@ -1931,6 +1942,11 @@ Story campaign, Tower of the Throne, Land of Trials, 1v1 Arena, guild-vs-guild
 daily/weekly missions, limited events, redemption codes.
 
 ## Owner-stated facts (log)
+
+- 2026-11-11 — **Storm Sage was released.** Removed from the unreleased list in
+  `src/data/hero-release-status.ts` (supersedes the November 9 "unreleased"
+  correction). The owner asked for its details to be read from the **Kong** MuMu
+  instance; see "Storm Sage" in Talents, artifact and cores.
 
 - 2026-11-09 — **Storm Sage is unreleased.** Correction to the entry below: the
   owner moved it to the Unreleased tab (`src/data/hero-release-status.ts`).

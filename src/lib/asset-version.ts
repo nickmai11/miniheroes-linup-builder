@@ -4,7 +4,7 @@
  * URL, so a new query string forces a fresh fetch. next.config.ts allows exactly
  * this query string for every local image.
  */
-export const ASSET_VERSION = "6";
+export const ASSET_VERSION = "7";
 
 /** Append the cache-busting version to a /public image path. */
 export function versioned(url: string) {
